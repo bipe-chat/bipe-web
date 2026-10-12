@@ -78,7 +78,7 @@ ${route.noindex ? "" : `<link rel="alternate" type="text/markdown" href="${route
 <meta property="og:description" content="${esc(route.description)}">
 <meta property="og:url" content="${site}${route.path}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Proseio">
+<meta property="og:site_name" content="Bipe">
 <meta property="og:locale" content="${route.lang === "pt" ? "pt_BR" : "en_US"}">
 ${ogImageTags(route)}
 <meta name="theme-color" content="#80307B" media="(prefers-color-scheme: light)">

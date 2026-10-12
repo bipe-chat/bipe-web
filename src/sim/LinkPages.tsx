@@ -77,7 +77,7 @@ export function ProfileLanding(_: Record<string, never>) {
   }
   return (
     <section className="wrap narrow section">
-      <h1 style={{ overflowWrap: "anywhere" }}>{handle ? `@${handle}` : "Proseio"}</h1>
+      <h1 style={{ overflowWrap: "anywhere" }}>{handle ? `@${handle}` : "Bipe"}</h1>
       <p className="lede">{c.lead}</p>
       <p>{c.noApp}</p>
       <div className="actions"><InstallButton /></div>

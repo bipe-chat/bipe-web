@@ -81,7 +81,7 @@ export function renderMarkdown(route: Route): string {
 }
 
 export function llmsTxt(): string {
-  const lines = ["# Proseio", "", `> ${product.promise.en.lede}`, "", `${chrome.en.steward} ${distribution.steward.name}: ${distribution.steward.url}`, ""];
+  const lines = ["# Bipe", "", `> ${product.promise.en.lede}`, "", `${chrome.en.steward} ${distribution.steward.name}: ${distribution.steward.url}`, ""];
   for (const lang of ["pt", "en"] as Lang[]) {
     lines.push(`## ${lang === "pt" ? "Português" : "English"}`, "");
     for (const r of routes.filter((x) => x.lang === lang && !x.noindex)) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);

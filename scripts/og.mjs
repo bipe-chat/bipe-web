@@ -48,7 +48,7 @@ function cardSvg({ markPath, title, description, fontBase64 }) {
 text{font-family:Nunito,sans-serif;fill:#fff}</style>
 <rect x="0" y="${-pad}" width="${W}" height="${W}" fill="${PLUM}"/>
 <g transform="translate(88 82) scale(1.5)"><path d="${markPath}" fill="#fff"/></g>
-<text x="196" y="146" font-size="56" font-weight="800">proseio</text>
+<text x="196" y="146" font-size="56" font-weight="800">bipe</text>
 ${text(titleLines, titleTop, titleSize, 800, 1)}
 ${text(descLines, descTop, descSize, 500, 0.85)}
 </svg>`;

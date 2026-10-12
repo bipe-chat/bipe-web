@@ -23,7 +23,7 @@ export function Layout({ route }: { route: Route }) {
       <a className="visually-hidden" href="#main">{c.skip}</a>
       <header className="site-head">
         <div className="wrap">
-          <a href={paths.home(lang)} aria-label="Proseio" style={{ textDecoration: "none" }}><Wordmark size={26} /></a>
+          <a href={paths.home(lang)} aria-label="Bipe" style={{ textDecoration: "none" }}><Wordmark size={26} /></a>
           <nav aria-label={lang === "pt" ? "Principal" : "Main"}>
             {nav.map((n) => <a key={n.key} href={n.href} aria-current={route.section === n.key ? "page" : undefined}>{n.label}</a>)}
             {route.alt && <a className="lang" href={route.alt} hrefLang={c.other.lang === "pt" ? "pt-BR" : "en"} lang={c.other.lang === "pt" ? "pt-BR" : "en"}>{c.other.label}</a>}

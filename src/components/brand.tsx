@@ -29,7 +29,7 @@ export function Wordmark({ id = MARK, size = 26 }: { id?: MarkId; size?: number 
   return (
     <span className="wordmark" style={{ fontSize: size }}>
       <Mark id={id} size={Math.round(size * 1.05)} />
-      <span>proseio</span>
+      <span>bipe</span>
     </span>
   );
 }
