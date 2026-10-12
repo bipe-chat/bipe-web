@@ -1,0 +1,99 @@
+// The site's only door into proseio-shared. Registries, strings and product copy come from there;
+// the scam, handle and name logic is the reference implementation every app must match.
+import familyTerms from "@shared/registries/family-terms.json";
+import handles from "@shared/registries/handles.json";
+import homoglyphs from "@shared/registries/homoglyphs.json";
+import reservedNames from "@shared/registries/reserved-names.json";
+import scamPatterns from "@shared/registries/scam-patterns.json";
+import stringsEn from "@shared/strings/en.json";
+import stringsPt from "@shared/strings/pt-BR.json";
+import distributionJson from "@shared/product/distribution.json";
+import productJson from "@shared/product/product.json";
+import * as lib from "@shared/tools/lib/registries.mjs";
+
+export type ScamKind = "pixCode" | "boleto" | "pixKey" | "receipt" | "newNumber" | "urgency";
+export type Registries = {
+  reserved: { categories: Record<string, string[]> };
+  family: { terms: string[] };
+  scam: { warningKindPriority: string[] } & Record<string, unknown>;
+  homoglyphs: { map: Record<string, string> };
+  handles: { minLength: number; maxLength: number; pattern: string; skeletonStrip: string; changeCooldownDays: number; releaseHoldDays: number };
+  strings: { strings: Record<string, string> };
+  stringsEn: { strings: Record<string, string> };
+};
+
+// Typed views of the reference implementation (plain JS in proseio-shared).
+export const normalize = lib.normalize as (input: string, homoglyphMap: Record<string, string>) => string;
+export const scamWarningKind = lib.scamWarningKind as (text: string, reg: Registries) => ScamKind | null;
+export const handleProblem = lib.handleProblem as (handle: string, reg: Registries) => "too_short" | "too_long" | "invalid_characters" | "reserved" | null;
+export const handleSkeleton = lib.handleSkeleton as (handle: string, reg: Registries) => string;
+
+export const reg = {
+  reserved: reservedNames,
+  family: familyTerms,
+  scam: scamPatterns,
+  homoglyphs,
+  handles,
+  strings: stringsPt,
+  stringsEn,
+} as unknown as Registries;
+
+export type Lang = "pt" | "en";
+export type Status = "testing" | "planned" | "policy";
+type Copy<T> = { pt: T; en: T };
+
+export type Tentpole = {
+  id: string;
+  slug: Copy<string>;
+  status: Status;
+  demos: DemoId[];
+  features: string[];
+  docs: string[];
+} & Copy<{ name: string; title: string; summary: string; points: string[]; demos: { title: string; caption: string }[] }>;
+
+export type DemoId = "scam" | "identity" | "handle" | "groups";
+
+export type Feature = {
+  id: string;
+  area: string;
+  status: { ios: Status; android: Status };
+} & Copy<{ name: string; body: string }>;
+
+export const product = productJson as unknown as {
+  promise: Copy<{ title: string; lede: string }>;
+  headlineVariants: Copy<string[]>;
+  tentpoles: Tentpole[];
+  areas: ({ id: string } & Copy<string>)[];
+  features: Feature[];
+  about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
+  origin: Copy<{ title: string; body: string }>;
+  redirects: Record<string, string>;
+};
+
+type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;
+type SourceRepo = { id: string; url: string; public: boolean } & Copy<string>;
+export const distribution = distributionJson as unknown as {
+  ios: Channel;
+  android: Channel;
+  source: { org: string; repos: SourceRepo[] };
+  contact: string;
+};
+/** Repos the site may link: only public ones (ADR 0024). Empty until the code is published. */
+export const publicRepos = distribution.source.repos.filter((r) => r.public);
+
+/** A Proseio UI string from proseio-shared, with %1$s placeholders filled. */
+export function t(lang: Lang, key: string, ...args: string[]): string {
+  const table = (lang === "pt" ? stringsPt : stringsEn).strings as Record<string, string>;
+  const value = table[key];
+  if (value === undefined) throw new Error(`missing string ${key}`);
+  return value.replace(/%(\d+)\$s/g, (_, i) => args[Number(i) - 1] ?? "");
+}
+
+export const scamStringKey: Record<string, string> = {
+  pixCode: "proseio_scam_warning_pix_code",
+  boleto: "proseio_scam_warning_boleto",
+  pixKey: "proseio_scam_warning_pix_key",
+  receipt: "proseio_scam_warning_receipt",
+  newNumber: "proseio_scam_warning_new_number",
+  urgency: "proseio_scam_warning_urgency",
+};
