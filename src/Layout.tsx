@@ -36,6 +36,7 @@ export function Layout({ route }: { route: Route }) {
       { href: paths.privacy(lang), label: c.privacy },
       { href: paths.terms(lang), label: c.terms },
       ...(publicRepos.length > 0 ? [{ href: distribution.source.org, label: c.source }] : []),
+      ...(route.alt ? [{ href: route.alt, label: c.other.label, lang: c.other.lang === "pt" ? "pt-BR" : "en" }] : []),
     ] },
   ];
   return (
@@ -57,7 +58,7 @@ export function Layout({ route }: { route: Route }) {
             {footer.map((g) => (
               <div key={g.heading}>
                 <h2>{g.heading}</h2>
-                <ul>{g.links.map((l) => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}</ul>
+                <ul>{g.links.map((l) => <li key={l.href}><a href={l.href} {...("lang" in l ? { hrefLang: l.lang, lang: l.lang } : {})}>{l.label}</a></li>)}</ul>
               </div>
             ))}
           </nav>

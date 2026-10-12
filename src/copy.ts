@@ -1,10 +1,11 @@
 // Site chrome copy only (navigation, labels). Product copy lives in proseio-shared/product.
-import type { Status } from "./shared";
+import type { Lang, Status } from "./shared";
 import type { SceneId } from "./sim/scenes";
 
 export const chrome = {
   pt: {
     features: "Recursos", download: "Baixar", about: "Sobre", privacy: "Privacidade", terms: "Termos", contact: "Contato",
+    other: { lang: "en" as Lang, label: "English" },
     skip: "Pular pro conteúdo",
     status: { testing: "No app de testes", built: "Em desenvolvimento", planned: "Em breve", policy: "Sempre" } satisfies Record<Status, string>,
     more: "Ver como funciona",
@@ -72,6 +73,7 @@ export const chrome = {
   },
   en: {
     features: "Features", download: "Download", about: "About", privacy: "Privacy", terms: "Terms", contact: "Contact",
+    other: { lang: "pt" as Lang, label: "Português" },
     skip: "Skip to content",
     status: { testing: "In the test app", built: "In development", planned: "Coming soon", policy: "Always" } satisfies Record<Status, string>,
     more: "See how it works",
