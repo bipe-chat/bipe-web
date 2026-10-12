@@ -3,7 +3,7 @@ import { chrome } from "./copy";
 import { product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
-import { AboutPage, BrandPage, DownloadPage, FeaturesPage, HomePage, TentpolePage } from "./pages";
+import { AboutPage, BusinessPage, BrandPage, DownloadPage, FeaturesPage, HomePage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -18,7 +18,7 @@ export type Route = {
   /** Render a 1200x630 link-preview card from title and description (scripts/og.mjs). Name of the PNG under /og/. */
   ogCard?: string;
   /** The nav item this page belongs to. */
-  section?: "features" | "download" | "about";
+  section?: "features" | "download" | "business" | "about";
   body: () => ReactNode;
 };
 
@@ -44,6 +44,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     path: paths.download(lang), alt: paths.download(other(lang)), lang, section: "download",
     title: `${chrome[lang].downloadTitle} · Proseio`, description: chrome[lang].downloadLede,
     body: () => <DownloadPage lang={lang} />,
+  },
+  {
+    path: paths.business(lang), alt: paths.business(other(lang)), lang, section: "business",
+    title: `${product.business[lang].nav} · Proseio`, description: product.business[lang].lede,
+    body: () => <BusinessPage lang={lang} />,
   },
   {
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",

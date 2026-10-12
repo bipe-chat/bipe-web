@@ -4,6 +4,7 @@ import { DownloadButtons, Icon, StatusChip } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
+import { BusinessFigure } from "./sim/BusinessFigure";
 import { GroupsFigure } from "./sim/GroupsFigure";
 import { distribution, product, publicRepos, type DemoId, type Lang, type Tentpole } from "./shared";
 
@@ -214,6 +215,43 @@ export function DownloadPage({ lang }: { lang: Lang }) {
         </div>
       )}
     </section>
+  );
+}
+
+export function BusinessPage({ lang }: { lang: Lang }) {
+  const b = product.business[lang];
+  const [why, ...rest] = b.sections;
+  return (
+    <>
+      <section className="wrap section">
+        <div className="split">
+          <div>
+            <p className="eyebrow">{b.nav} <span className="chip planned">{b.label}</span></p>
+            <h1>{b.title}</h1>
+            <p className="lede">{b.lede}</p>
+            <h2 style={{ fontSize: 24, marginTop: 36 }}>{why.heading}</h2>
+            <Points items={why.points} />
+          </div>
+          <BusinessFigure lang={lang} caption={b.figureCaption} />
+        </div>
+      </section>
+      <section className="wrap section">
+        <div className="grid">
+          {rest.map((s) => (
+            <div className="card" key={s.heading}>
+              <h3 style={{ fontSize: 20 }}>{s.heading}</h3>
+              <ul className="points" style={{ marginTop: 12 }}>{s.points.map((p) => <li key={p} style={{ color: "var(--muted)", fontSize: 15 }}><Icon name="check" size={16} />{p}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="wrap section">
+        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
+          <h2 style={{ fontSize: 26 }}>{b.cta}</h2>
+          <a className="button primary" href={`mailto:${distribution.contact}?subject=${encodeURIComponent(b.ctaSubject)}`}><Icon name="mail" />{distribution.contact}</a>
+        </div>
+      </section>
+    </>
   );
 }
 

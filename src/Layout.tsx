@@ -2,7 +2,7 @@ import { chrome } from "./copy";
 import { Wordmark } from "./components/brand";
 import { paths } from "./paths";
 import type { Route } from "./routes";
-import { distribution, publicRepos } from "./shared";
+import { distribution, product, publicRepos } from "./shared";
 
 export function Layout({ route }: { route: Route }) {
   const { lang } = route;
@@ -10,6 +10,7 @@ export function Layout({ route }: { route: Route }) {
   const nav = [
     { key: "features", href: paths.features(lang), label: c.features },
     { key: "download", href: paths.download(lang), label: c.download },
+    { key: "business", href: paths.business(lang), label: product.business[lang].nav },
     { key: "about", href: paths.about(lang), label: c.about },
   ] as const;
   return (

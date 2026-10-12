@@ -67,6 +67,7 @@ export const product = productJson as unknown as {
   features: Feature[];
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
+  business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
   redirects: Record<string, string>;
 };
 

@@ -44,6 +44,10 @@ export function renderMarkdown(route: Route): string {
       const f = product.features.find((x) => x.id === id);
       if (f) out.push(`- ${f[lang].name} (${c.status[f.status.ios]}): ${f[lang].body}`);
     }
+  } else if (route.path === paths.business(lang)) {
+    out.push(`(${product.business[lang].label})`, "");
+    for (const sec of product.business[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
+    out.push(`${product.business[lang].cta} ${distribution.contact}`, "");
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
   }

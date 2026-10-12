@@ -1,4 +1,4 @@
-// Headline test (issue #77, ADR 0026). The home page shows one arm per browser; the arm is kept in
+// Headline test (issue #77, ADR 0032). The home page shows one arm per browser; the arm is kept in
 // localStorage and travels with install clicks and waitlist sign-ups. The server keeps only counts.
 import { API_URL } from "./config";
 import { product } from "./shared";
