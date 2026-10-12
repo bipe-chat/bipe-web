@@ -1,5 +1,6 @@
 // Site chrome copy only (navigation, labels). Product copy lives in proseio-shared/product.
 import type { Lang, Status } from "./shared";
+import type { SceneId } from "./sim/scenes";
 
 export const chrome = {
   pt: {
@@ -37,6 +38,14 @@ export const chrome = {
       error: "Não deu certo agora. Tente de novo daqui a pouco.",
       note: "A gente manda um único e-mail quando o app sair e depois apaga seu endereço.",
     },
+    people: (n: number) => `${n} pessoas`,
+    notInContacts: "Não está nos seus contatos",
+    automated: "Mensagem automática",
+    levelsLabel: "Escolha uma situação",
+    scenes: {
+      verificado: "Verificado", "numero-novo": "Número desconhecido", "nome-diferente": "Nome diferente", "aparelho-novo": "Celular novo",
+      "de-fora": "Conta de fora", instituicao: "Instituição", mae: "Apelido", grupo: "Grupo", conversas: "Conversas", perfil: "Seu perfil",
+    } satisfies Record<SceneId, string>,
     profile: {
       lead: "Esse é um link de perfil do Proseio. Com o app instalado, abre direto na conversa.",
       noApp: "Ainda não tem o Proseio? A gente está em fase de testes no iPhone.",
@@ -94,5 +103,13 @@ export const chrome = {
       error: "That did not work. Try again in a moment.",
       note: "We send one email when the app is out, then delete your address.",
     },
+    people: (n: number) => `${n} people`,
+    notInContacts: "Not in your contacts",
+    automated: "Automated message",
+    levelsLabel: "Pick a situation",
+    scenes: {
+      verificado: "Verified", "numero-novo": "Unknown number", "nome-diferente": "Different name", "aparelho-novo": "New phone",
+      "de-fora": "Outside account", instituicao: "Institution", mae: "Nickname", grupo: "Group", conversas: "Chats", perfil: "Your profile",
+    } satisfies Record<SceneId, string>,
   },
 };

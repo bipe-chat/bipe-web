@@ -3,7 +3,9 @@ import { chrome } from "../copy";
 import { paths } from "../paths";
 import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind } from "../shared";
 
-export function Icon({ name, size = 18 }: { name: "warning" | "check" | "person" | "send" | "apple" | "android" | "mail"; size?: number }) {
+export type IconName = "warning" | "check" | "person" | "send" | "apple" | "android" | "mail" | "globe" | "shield" | "pix" | "circle";
+
+export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const p = {
     warning: "M12 3 2 21h20L12 3Zm0 6v5m0 3v.5",
     check: "m5 12.5 4.5 4.5L19 7.5",
@@ -12,6 +14,10 @@ export function Icon({ name, size = 18 }: { name: "warning" | "check" | "person"
     apple: "M16 3c0 1.7-1.4 3.4-3.2 3.4-.2-1.8 1.4-3.4 3.2-3.4ZM19.5 16.8c-.6 1.3-.9 1.9-1.6 3-1 1.5-2.4 3.2-4.1 3.2-1.5 0-1.9-1-4-1s-2.5 1-4 1c-1.7 0-3-1.6-4-3.1-2.8-4.2-3-9.1-1.3-11.7 1.2-1.9 3.1-3 4.9-3 1.8 0 3 1 4.5 1s2.4-1 4.6-1c1.6 0 3.3.9 4.5 2.4-4 2.2-3.3 7.8.5 9.2Z",
     android: "M7 10h10v7.5a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 7 17.5V10Zm0-1a5 5 0 0 1 10 0H7Zm-3 2v5m16-5v5M8.5 4.5 7.5 3m8 1.5 1-1.5",
     mail: "M3 6h18v12H3zm0 0 9 7 9-7",
+    globe: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm-9 9h18M12 3c2.4 2.5 3.5 5.5 3.5 9s-1.1 6.5-3.5 9c-2.4-2.5-3.5-5.5-3.5-9s1.1-6.5 3.5-9Z",
+    shield: "M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6L12 3Zm-3 9.5a3 3 0 0 1 5.6-1.5m.4 2.5a3 3 0 0 1-5.6 1.5",
+    pix: "M12 3.5 20.5 12 12 20.5 3.5 12 12 3.5Zm-3 8.5h6",
+    circle: "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z",
   }[name];
   const filled = name === "apple";
   return (
@@ -41,7 +47,7 @@ export function ScamWarningCard({ lang, kind }: { lang: Lang; kind: ScamKind }) 
   );
 }
 
-export function TrustCard({ level, title, children, icon = "person" }: { level: "caution" | "danger" | "neutral" | "verified"; title?: string; children?: ReactNode; icon?: "person" | "warning" }) {
+export function TrustCard({ level, title, children, icon = "person" }: { level: "caution" | "danger" | "neutral" | "verified"; title?: string; children?: ReactNode; icon?: IconName }) {
   return (
     <div className={`trust ${level}`} role="note">
       <Icon name={icon} size={16} />
@@ -53,19 +59,20 @@ export function TrustCard({ level, title, children, icon = "person" }: { level: 
   );
 }
 
-export function Phone({ lang, head, children, composer = true }: { lang: Lang; head: ReactNode; children: ReactNode; composer?: boolean }) {
+/** Phone frame. A chat by default; `list` lays the body out from the top, `footer` replaces the composer. */
+export function Phone({ lang, head, children, composer = true, list = false, footer }: { lang: Lang; head: ReactNode; children: ReactNode; composer?: boolean; list?: boolean; footer?: ReactNode }) {
   return (
     <div className="phone" aria-hidden="true">
       <div className="screen">
         <div className="statusbar"><span>9:41</span><span className="island" /><span>5G</span></div>
         <div className="chat-head">{head}</div>
-        <div className="timeline">{children}</div>
-        {composer && (
+        <div className={list ? "screen-list" : "timeline"}>{children}</div>
+        {footer ?? (composer && (
           <div className="composer">
             <div className="field">{lang === "pt" ? "Mensagem" : "Message"}</div>
             <div className="send"><Icon name="send" size={16} /></div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

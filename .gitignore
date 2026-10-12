@@ -4,3 +4,4 @@ dist
 public/favicon.svg
 public/brand/
 scripts/deploy.env
+cast-originals

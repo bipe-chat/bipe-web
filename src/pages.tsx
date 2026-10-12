@@ -6,6 +6,9 @@ import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
 import { BusinessFigure } from "./sim/BusinessFigure";
 import { GroupsFigure } from "./sim/GroupsFigure";
+import { ScenePhone, TrustMark } from "./sim/ScenePhone";
+import { scenes, type SceneId } from "./sim/scenes";
+import { Avatar, cast, label } from "./cast";
 import { distribution, product, publicRepo, publicRepos, sideOf, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
@@ -15,6 +18,7 @@ function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) 
   if (id === "identity") return <Island name="IdentitySim" props={{ lang, caption }} />;
   if (id === "handle") return <Island name="HandleSim" props={{ lang, caption }} />;
   if (id === "groups") return <GroupsFigure lang={lang} caption={caption} />;
+  if (id === "levels") return <Island name="TrustLevels" props={{ lang, caption }} />;
   return <NoAdsFigure lang={lang} />;
 }
 
@@ -140,7 +144,13 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
     <>
       <section className="wrap section"><TentpoleSection lang={lang} tp={tp} headingLevel={1} /></section>
       {tp.demos[0] && <section className="wrap narrow section" style={{ paddingTop: 48 }}><Try lang={lang} id={tp.demos[0]} /></section>}
-      {tp.demos.slice(1).map((id, i) => (
+      {tp.demos.slice(1).map((id, i) => id === "levels" ? (
+        // The level picker is the left column, so the island spans the section.
+        <section className="wrap section" key={id}>
+          <h2>{tp[lang].demos[i + 1]?.title}</h2>
+          <Demo lang={lang} tp={tp} index={i + 1} />
+        </section>
+      ) : (
         <section className="wrap section" key={id}>
           <div className={`split${i % 2 === 0 ? " flip" : ""}`}>
             <div>
@@ -346,6 +356,37 @@ export function BrandPage() {
             <div className="dark"><Mark id={id} size={32} /><span style={{ fontFamily: "var(--brand)", fontWeight: 900, fontSize: 28 }}>proseio</span></div>
             <p style={{ margin: 0, display: "flex", gap: 6, alignItems: "center" }}>Ana Souza <Seal size={14} label="Verificado" /></p>
           </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/** Internal board (noindex): the sample cast and every phone scene, for review and screenshots. */
+export function CastPage() {
+  const lang: Lang = "pt";
+  return (
+    <section className="wrap section">
+      <h1>Elenco e cenas</h1>
+      <p className="lede">Pessoas de exemplo para as simulações do site. Todas são fictícias. Dados em <span className="mono">proseio-web/src/cast/cast.json</span>, regras de estilo em <span className="mono">STYLE.md</span>, fotos com <span className="mono">node scripts/cast.mjs</span>.</p>
+      <div className="cast-grid">
+        {cast.map((e) => (
+          <div className="card cast-card" key={e.id}>
+            <Avatar id={e.id} size={96} />
+            <strong>{label(e)} <TrustMark lang={lang} trust={e.trust} /></strong>
+            <span className="small muted mono">{e.id} · {e.trust}{e.photo && "style" in e.photo ? ` · ${e.photo.style}` : ""}</span>
+            <span className="small">{e.name ?? e.phone}</span>
+            <span className="small muted">{e.about}</span>
+          </div>
+        ))}
+      </div>
+      <h2 style={{ marginTop: 64 }}>Cenas</h2>
+      <div className="scene-grid">
+        {(Object.keys(scenes) as SceneId[]).map((id) => (
+          <figure key={id}>
+            <ScenePhone lang={lang} id={id} />
+            <figcaption><strong>{chrome[lang].scenes[id]}</strong> <span className="mono small muted">{id}</span></figcaption>
+          </figure>
         ))}
       </div>
     </section>

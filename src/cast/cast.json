@@ -1,0 +1,104 @@
+{
+  "$comment": "Sample people, groups and institutions for site simulations. Style rules: STYLE.md. Photos: photos/<id>.jpg, made by scripts/cast.mjs. Every entry is fictional.",
+  "version": 1,
+  "base": "Square 1:1 image. The subject is centred so a small circular crop still reads. No text, no lettering, no watermark, no logos, no brand names, no flags, no football club crests. Not a real or famous person.",
+  "styles": {
+    "selfie": "WhatsApp profile photo. Front-camera selfie of {look}. Shot on a mid-range Android phone: slight wide-angle distortion, a little noise, imperfect framing, arm-length distance, whole head inside the frame. Photorealistic, ordinary, not a model, not retouched.",
+    "mirror": "WhatsApp profile photo. Mirror selfie of {look}. The phone partly covers the chin, a real home mirror with small marks, normal room light. Photorealistic, ordinary, not retouched.",
+    "candid": "WhatsApp profile photo. Photo of {look}, taken by a friend with a phone. Natural light, a little motion blur or backlight is fine. Photorealistic, ordinary, not posed like an advert.",
+    "family": "WhatsApp profile photo. Phone photo of {look}. Both faces are visible and close together, warm and casual. Photorealistic, ordinary home snapshot.",
+    "pet": "WhatsApp profile photo. Phone photo of {look}. No people. The animal fills most of the frame. Photorealistic, ordinary snapshot.",
+    "object": "WhatsApp profile photo. Phone photo of {look}. No people. Photorealistic, slightly saturated, the kind of picture people pick as a profile photo.",
+    "stylized": "WhatsApp profile photo. {look}. Clean background in one soft colour, head and shoulders, friendly. Original character, not a copy of any film studio, brand or app style.",
+    "stock": "WhatsApp profile photo. Polished stock-style headshot of {look}. Studio light, very smooth skin, neutral grey background, a little too perfect, like a photo taken from an image bank.",
+    "group": "WhatsApp group photo. Phone photo of {look}. Faces small but visible, everyone close together, real people of mixed ages and skin tones. Photorealistic, ordinary snapshot.",
+    "logo": "Profile picture for a small fictional Brazilian business: {look}. Flat vector mark, one or two colours, centred on a plain background, no letters, no words."
+  },
+  "cast": [
+    {
+      "id": "joana", "kind": "person", "name": "Joana Lima", "short": "Joana", "handle": "joanalima",
+      "about": "61, retired teacher, Recife. Saved as Mãe by her daughter Gabi.", "trust": "pix",
+      "photo": { "style": "selfie", "look": "a 61-year-old Brazilian woman, warm brown skin, short curly grey-black hair, small gold earrings, smiling with closed mouth, in a backyard garden with potted plants and a tiled wall behind her, late afternoon light" }
+    },
+    {
+      "id": "gabi", "kind": "person", "name": "Gabriela Moreira", "short": "Gabi", "handle": "gabi.moreira",
+      "about": "29, graphic designer, São Paulo. The viewer: 'você' in the scenes.", "trust": "profile",
+      "photo": { "style": "selfie", "look": "a 29-year-old Brazilian woman with light brown skin and long dark wavy hair, a light denim shirt, sitting at a small pavement café table in São Paulo with a cup of coffee, daylight, smiling" }
+    },
+    {
+      "id": "rafa", "kind": "person", "name": "Rafael Oliveira", "short": "Rafa", "handle": "rafaoliveira",
+      "about": "38, sells second-hand bikes, Belo Horizonte. Verified, gets paid by Pix.", "trust": "pix",
+      "photo": { "style": "pet", "look": "a caramel-coloured Brazilian mixed-breed street dog (vira-lata caramelo) with a red collar, sitting on a tiled porch, head tilted, looking at the camera" }
+    },
+    {
+      "id": "antonio", "kind": "person", "name": "Antônio Pereira", "short": "Seu Antônio", "handle": "antonio.pereira",
+      "about": "74, retired bus driver, Curitiba. Verified with gov.br.", "trust": "govbr",
+      "photo": { "style": "family", "look": "a 74-year-old white Brazilian grandfather with a grey moustache and a checked short-sleeve shirt, cheek to cheek with his 6-year-old granddaughter at a family birthday party, paper decorations behind them" }
+    },
+    {
+      "id": "cida", "kind": "person", "name": "Aparecida Santos", "short": "Dona Cida", "handle": null,
+      "about": "58, runs a small sewing business, Goiânia. A contact, not verified.", "trust": "none",
+      "photo": { "style": "object", "look": "a close-up of pink and red roses in a garden with morning dew and soft sunlight" }
+    },
+    {
+      "id": "bia", "kind": "person", "name": "Beatriz Ramos", "short": "Bia", "handle": "biaramos",
+      "about": "21, nursing student, Salvador. Uses an illustrated avatar.", "trust": "none",
+      "photo": { "style": "stylized", "look": "A soft 3D illustrated avatar of a 21-year-old Black Brazilian woman with voluminous natural curly hair, round glasses and big hoop earrings, smiling" }
+    },
+    {
+      "id": "leo", "kind": "person", "name": "Leonardo Costa", "short": "Léo", "handle": "leocosta",
+      "about": "23, surf instructor, Florianópolis.", "trust": "none",
+      "photo": { "style": "candid", "look": "a 23-year-old white Brazilian man with sun-bleached hair, shirtless with a wetsuit at the waist, on a beach at sunset, partly backlit, laughing and looking away from the camera" }
+    },
+    {
+      "id": "caio", "kind": "person", "name": "Caio Nascimento", "short": "Caio", "handle": "caionasc",
+      "about": "24, works at a bank call centre, Rio de Janeiro.", "trust": "none",
+      "photo": { "style": "candid", "look": "a 24-year-old Black Brazilian man with a short fade haircut in a plain striped football shirt with no crest, holding a beer can at a crowded neighbourhood bar table in Rio, night, warm string lights" }
+    },
+    {
+      "id": "duda", "kind": "person", "name": "Maria Eduarda Ferreira", "short": "Duda", "handle": "dudaferreira",
+      "about": "22, law student, Campinas.", "trust": "none",
+      "photo": { "style": "mirror", "look": "a 22-year-old Brazilian woman of mixed Japanese and Brazilian descent with a straight dark bob, a denim jacket over a plain white t-shirt and jeans, in the hallway mirror of her family flat, a coat rack and a shoe shelf behind her" }
+    },
+    {
+      "id": "fernanda", "kind": "person", "name": "Fernanda Rocha", "short": "Fernanda", "handle": "fernandarocha",
+      "about": "45, dentist, Porto Alegre. Verified, then logs in on a new phone (badge suspended).", "trust": "pix",
+      "photo": { "style": "selfie", "look": "a 45-year-old white Brazilian woman with shoulder-length straight auburn hair and sunglasses pushed up on her head, sitting in the driver's seat of a parked car with the seatbelt on, daylight from the side window" }
+    },
+    {
+      "id": "marina", "kind": "person", "name": "Marina Takahashi", "short": "Marina", "handle": "marina:matrix.outro.org",
+      "about": "33, researcher. Account on another Matrix server (external).", "trust": "external",
+      "photo": { "style": "object", "look": "a wide sunset over the sea seen from a hill, orange and purple sky, a small silhouette of trees in the foreground" }
+    },
+    {
+      "id": "joao", "kind": "person", "name": "João Pereira", "short": "João", "handle": "joao.pereira.oficial",
+      "about": "The verified name on an account that the viewer saved as 'Paulo Mendes'. Hard name mismatch.", "trust": "pix",
+      "photo": { "style": "stock", "look": "a 40-year-old Brazilian man with light brown skin, short neat hair, white teeth, navy blazer and open-collar shirt, arms crossed" }
+    },
+    {
+      "id": "golpista", "kind": "person", "name": null, "short": null, "handle": null, "phone": "+55 11 98765-4321",
+      "about": "Unknown number that copies Joana's photo: the 'troquei de número' scam.", "trust": "none",
+      "photo": { "copyOf": "joana" }
+    },
+    {
+      "id": "thiago", "kind": "person", "name": "Thiago Almeida", "short": "Thiago", "handle": "thiagoalmeida",
+      "about": "41, mechanic, Manaus. No profile photo.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "clinica", "kind": "institution", "name": "Clínica Vida", "short": "Clínica Vida", "handle": "clinicavida",
+      "about": "Fictional health clinic. Verified institution (CNPJ).", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a health clinic, a simple rounded leaf merged with a heart, teal on white" }
+    },
+    {
+      "id": "familia", "kind": "group", "name": "Família Lima", "short": "Família Lima", "handle": null, "members": 12,
+      "about": "Family group: Joana, Gabi, Seu Antônio and others.", "trust": "none",
+      "photo": { "style": "group", "look": "a Brazilian family of about ten people of three generations around a long table at Sunday lunch in a backyard, plates of food, plastic chairs" }
+    },
+    {
+      "id": "faculdade", "kind": "group", "name": "Galera da faculdade", "short": "Galera da faculdade", "handle": null, "members": 34,
+      "about": "University friends: Bia, Léo, Caio, Duda.", "trust": "none",
+      "photo": { "style": "group", "look": "six university friends in their early twenties squeezed into a selfie at an outdoor churrasco, one holding the phone, smoke from the grill behind them" }
+    }
+  ]
+}

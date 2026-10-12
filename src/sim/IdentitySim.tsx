@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Avatar, who } from "../cast";
 import { chrome } from "../copy";
 import { Seal } from "../components/brand";
 import { Icon, Phone, TrustCard } from "../components/ui";
@@ -14,7 +15,7 @@ export function reservedCategory(name: string): string | null {
 
 // "Itаú" below uses a Cyrillic "а". The check folds it and finds the reserved bank name.
 const IMPOSTOR = "It\u0430\u00fa";
-const VERIFIED = "Joana Lima";
+const VERIFIED = who("joana").name!;
 const hold = (beat: number) => (beat === 0 ? 900 : beat >= 3 ? 5600 : 2800);
 
 export function IdentitySim({ lang, caption }: { lang: Lang; caption: string }) {
@@ -25,7 +26,7 @@ export function IdentitySim({ lang, caption }: { lang: Lang; caption: string }) 
         <Phone
           lang={lang}
           head={<>
-            <div className="avatar">{mom[0]}</div>
+            <Avatar id="joana" savedAs={mom} />
             <div className="who">
               <div className="name">{mom} <Seal size={14} label={t(lang, "proseio_badge_verified")} /></div>
               <div className="sub">{t(lang, "proseio_badge_verified_name", VERIFIED)}</div>

@@ -1,19 +1,21 @@
+import { Avatar, who } from "../cast";
+import { chrome } from "../copy";
 import { Phone } from "../components/ui";
 import { t, type Lang } from "../shared";
 
 // Static illustration of a planned feature: a quiet group opened after a gap, with the
 // "O que você perdeu" block above the unread messages. Sample data; the block lines are the app's own strings.
 export function GroupsFigure({ lang, caption }: { lang: Lang; caption: string }) {
-  const pt = lang === "pt";
+  const group = who("faculdade");
   return (
     <div className="stage">
       <Phone
         lang={lang}
         head={<>
-          <div className="avatar">GF</div>
+          <Avatar id="faculdade" />
           <div className="who">
-            <div className="name">Galera da faculdade</div>
-            <div className="sub">{pt ? "34 pessoas" : "34 people"}</div>
+            <div className="name">{group.name}</div>
+            <div className="sub">{chrome[lang].people(group.members ?? 0)}</div>
           </div>
         </>}
       >

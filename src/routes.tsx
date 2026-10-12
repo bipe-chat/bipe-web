@@ -3,7 +3,7 @@ import { chrome } from "./copy";
 import { product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
-import { AboutPage, BusinessPage, BrandPage, DownloadPage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BusinessPage, BrandPage, CastPage, DownloadPage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -65,6 +65,10 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/marca/", alt: null, lang: "pt", noindex: true,
   title: "Marca (rascunho) · Proseio", description: "Rascunhos do símbolo do Proseio.",
   body: () => <BrandPage />,
+}, {
+  path: "/elenco/", alt: null, lang: "pt", noindex: true,
+  title: "Elenco e cenas (interno) · Proseio", description: "Pessoas de exemplo e cenas das simulações do site.",
+  body: () => <CastPage />,
 }, {
   // Target of the Caddy rewrite for /@handle.
   path: "/perfil/", alt: null, lang: "pt", noindex: true,

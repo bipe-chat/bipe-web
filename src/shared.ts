@@ -59,7 +59,7 @@ export type Tentpole = {
 export type TechPart = { id: string; repo?: string; upstream?: { name: string; url: string }[] } & Copy<{ name: string; body: string }>;
 export type TechGroup = { id: string; parts: TechPart[] } & Copy<{ heading: string; line: string }>;
 
-export type DemoId = "scam" | "identity" | "handle" | "groups";
+export type DemoId = "scam" | "identity" | "handle" | "groups" | "levels";
 
 /** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
 export type Side = { id: "other" | "you"; tentpoles: string[]; areas: string[] } & Copy<{ name: string; line: string }>;

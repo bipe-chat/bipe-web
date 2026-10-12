@@ -1,5 +1,6 @@
 import { useState } from "react";
 import vectors from "@shared/test-vectors/scam-warnings.json";
+import { Avatar, who } from "../cast";
 import { chrome } from "../copy";
 import { Icon, Phone, ScamWarningCard } from "../components/ui";
 import { scamWarningKind, reg, type Lang } from "../shared";
@@ -27,10 +28,10 @@ export function ScamSim({ lang, caption }: { lang: Lang; caption: string }) {
         <Phone
           lang={lang}
           head={<>
-            <div className="avatar">?</div>
+            <Avatar id="golpista" />
             <div className="who">
-              <div className="name">+55 11 98765-4321</div>
-              <div className="sub">{lang === "pt" ? "Não está nos seus contatos" : "Not in your contacts"}</div>
+              <div className="name">{who("golpista").phone}</div>
+              <div className="sub">{chrome[lang].notInContacts}</div>
             </div>
           </>}
         >
