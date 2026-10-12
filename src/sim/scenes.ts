@@ -90,7 +90,42 @@ export const scenes = {
       { from: "antonio", text: { pt: "Bom dia, família! Domingo tem almoço aqui em casa", en: "Bom dia, família! Domingo tem almoço aqui em casa (Sunday lunch at my place)" } },
       { from: "cida", text: { pt: "Bom dia! Levo a sobremesa", en: "Bom dia! Levo a sobremesa (I will bring dessert)" } },
       { from: "joana", text: { pt: "Eu levo a farofa", en: "Eu levo a farofa (I will bring farofa)" } },
+      { from: "kaua", text: { pt: "Eu levo o violão", en: "Eu levo o violão (I will bring the guitar)" } },
       { from: ME, text: { pt: "Vou sim! Levo o refri", en: "Vou sim! Levo o refri (Coming! I will bring soda)" } },
+    ],
+  },
+  "falso-suporte": {
+    kind: "chat", with: "suporte",
+    lines: [
+      { card: "unverified", age: { pt: "5 horas", en: "5 hours" } },
+      { from: "suporte", text: "Olá, aqui é da central de segurança do seu banco. Identificamos uma compra de R$ 2.399 no seu cartão. Foi você?" },
+      { from: ME, text: { pt: "Não fui eu!", en: "Não fui eu! (It wasn't me!)" } },
+      { from: "suporte", text: "Pra cancelar a compra, me passa o código que chegou agora por SMS" },
+    ],
+  },
+  "renda-extra": {
+    kind: "chat", with: "camila",
+    lines: [
+      { card: "unverified", age: { pt: "3 dias", en: "3 days" } },
+      { from: "camila", text: "Oi! Temos uma vaga de renda extra: você ganha R$ 50 por tarefa curtindo vídeos. Posso explicar?" },
+      { from: ME, text: { pt: "Como funciona?", en: "Como funciona? (How does it work?)" } },
+      { from: "camila", text: "Pra liberar seus ganhos, faz um Pix de R$ 30 de taxa pra chave 11987654321" },
+    ],
+  },
+  pessoalmente: {
+    kind: "chat", with: "pedro",
+    lines: [
+      { from: "pedro", text: { pt: "Foi ótimo te conhecer ontem! Te mandei o arquivo da apresentação", en: "Foi ótimo te conhecer ontem! Te mandei o arquivo da apresentação (Great to meet you yesterday! Sent you the slides)" } },
+      { from: ME, text: { pt: "Recebi! Valeu, Pedro", en: "Recebi! Valeu, Pedro (Got it, thanks Pedro)" } },
+    ],
+  },
+  condominio: {
+    kind: "chat", with: "condominio", names: { valdir: "Seu Valdir (síndico)" },
+    lines: [
+      { from: "valdir", text: { pt: "Pessoal, a água vai ser cortada amanhã das 8h às 12h", en: "Pessoal, a água vai ser cortada amanhã das 8h às 12h (Water is off tomorrow from 8 to 12)" } },
+      { from: "ivone", text: { pt: "Marmita de frango hoje, 22 reais. Quem quiser me chama", en: "Marmita de frango hoje, 22 reais. Quem quiser me chama (Chicken lunch boxes today, 22 reais)" } },
+      { from: "lucia", text: { pt: "Obrigada, Seu Valdir", en: "Obrigada, Seu Valdir (Thank you, Seu Valdir)" } },
+      { from: ME, text: { pt: "Dona Ivone, quero duas!", en: "Dona Ivone, quero duas! (Dona Ivone, two for me!)" } },
     ],
   },
   conversas: {
@@ -112,6 +147,6 @@ export const scenes = {
 export type SceneId = keyof typeof scenes;
 
 /** Scenes in the trust-levels picker, in order. Labels are chrome copy: chrome[lang].scenes. */
-export const TRUST_LEVEL_SCENES: SceneId[] = ["verificado", "numero-novo", "nome-diferente", "aparelho-novo", "de-fora", "instituicao", "mae", "conversas", "perfil"];
+export const TRUST_LEVEL_SCENES: SceneId[] = ["verificado", "pessoalmente", "numero-novo", "falso-suporte", "renda-extra", "nome-diferente", "aparelho-novo", "de-fora", "instituicao", "mae", "conversas", "perfil"];
 
 export const text = (t: Text, lang: "pt" | "en") => (typeof t === "string" ? t : t[lang]);

@@ -91,6 +91,41 @@
       "photo": { "style": "logo", "look": "a health clinic, a simple rounded leaf merged with a heart, teal on white" }
     },
     {
+      "id": "lucia", "kind": "person", "name": "Lúcia Barbosa", "short": "Dona Lúcia", "handle": null,
+      "about": "79, retired seamstress, Belém. Lives in the Bela Vista building. Front camera too close.", "trust": "none",
+      "photo": { "style": "selfie", "look": "a 79-year-old Brazilian woman with brown skin, white hair in a bun and reading glasses, holding the phone too close and slightly below her face, in her living room with a crocheted doily on the sofa, dim indoor light, a little blurry" }
+    },
+    {
+      "id": "kaua", "kind": "person", "name": "Kauã Rodrigues", "short": "Kauã", "handle": "kaua.rdg",
+      "about": "16, high-school student, Fortaleza. Gabi's cousin, in the Família Lima group.", "trust": "none",
+      "photo": { "style": "candid", "look": "a 16-year-old Brazilian boy with dark brown skin in a plain black cap and a plain grey hoodie, riding a skateboard in a concrete seaside skate park, caught mid-push, face turned three-quarters to the camera" }
+    },
+    {
+      "id": "ivone", "kind": "person", "name": "Ivone Batista", "short": "Dona Ivone", "handle": "marmitasdaivone",
+      "about": "50, sells home-made lunch boxes from her flat in the Bela Vista building. Verified, paid by Pix.", "trust": "pix",
+      "photo": { "style": "object", "look": "a home-made Brazilian lunch box (marmita) seen from above on a kitchen counter: rice, black beans, grilled chicken, farofa and a little salad in a foil tray" }
+    },
+    {
+      "id": "valdir", "kind": "person", "name": "Valdir Gonçalves", "short": "Seu Valdir", "handle": "valdir.sindico",
+      "about": "66, retired accountant and building manager (síndico) of the Bela Vista building, São Paulo. Verified with gov.br.", "trust": "govbr",
+      "photo": { "style": "candid", "look": "a 66-year-old white Brazilian man with a grey beard, a plain grey cap and a polo shirt, standing with his hands on his hips in the garden of a residential building, midday sun, squinting a little" }
+    },
+    {
+      "id": "pedro", "kind": "person", "name": "Pedro Henrique Souza", "short": "Pedro", "handle": "pedrohsouza",
+      "about": "35, civil servant, Brasília. Met the viewer at an event and confirmed by QR in person.", "trust": "contact",
+      "photo": { "style": "family", "look": "a 35-year-old Brazilian man with brown skin and short black hair and his husband, a 38-year-old white Brazilian man with a red beard, smiling cheek to cheek at a beach kiosk, coconuts on the table, bright daylight" }
+    },
+    {
+      "id": "suporte", "kind": "person", "name": null, "short": null, "handle": null, "phone": "+55 11 91234-5678",
+      "about": "Unknown number that poses as a bank's security desk and asks for the SMS code.", "trust": "none",
+      "photo": { "style": "stock", "look": "a smiling 30-year-old Brazilian woman wearing a call-centre headset with a microphone, white blouse" }
+    },
+    {
+      "id": "camila", "kind": "person", "name": "Camila Duarte", "short": "Camila", "handle": "camila.vagas",
+      "about": "New unverified account with a job offer for 'renda extra' (task scam), then asks for a Pix fee.", "trust": "none",
+      "photo": { "style": "stock", "look": "a 27-year-old Brazilian woman with long straight brown hair and a beige blazer, smiling at a laptop in a bright co-working space" }
+    },
+    {
       "id": "familia", "kind": "group", "name": "Família Lima", "short": "Família Lima", "handle": null, "members": 12,
       "about": "Family group: Joana, Gabi, Seu Antônio and others.", "trust": "none",
       "photo": { "style": "group", "look": "a Brazilian family of about ten people of three generations around a long table at Sunday lunch in a backyard, plates of food, plastic chairs" }
@@ -99,6 +134,11 @@
       "id": "faculdade", "kind": "group", "name": "Galera da faculdade", "short": "Galera da faculdade", "handle": null, "members": 34,
       "about": "University friends: Bia, Léo, Caio, Duda.", "trust": "none",
       "photo": { "style": "group", "look": "six university friends in their early twenties squeezed into a selfie at an outdoor churrasco, one holding the phone, smoke from the grill behind them" }
+    },
+    {
+      "id": "condominio", "kind": "group", "name": "Condomínio Bela Vista", "short": "Condomínio Bela Vista", "handle": null, "members": 48,
+      "about": "Building group: Seu Valdir (síndico), Dona Ivone, Dona Lúcia and the viewer.", "trust": "none",
+      "photo": { "style": "object", "look": "a mid-rise residential building in São Paulo seen from the street, pale yellow walls, balconies with plants and laundry, a palm tree at the gate, blue sky" }
     }
   ]
 }

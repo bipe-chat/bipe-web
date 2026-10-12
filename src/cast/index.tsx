@@ -3,7 +3,8 @@
 import data from "./cast.json";
 
 /** What the app would show about this account (proseio/docs/trust-levels.md, design/trust-ui.md). */
-export type Trust = "none" | "profile" | "pix" | "govbr" | "institution" | "external" | "suspended";
+/** `contact`: confirmed by QR in person (the seal with a QR corner). */
+export type Trust = "none" | "profile" | "pix" | "govbr" | "contact" | "institution" | "external" | "suspended";
 
 export type CastEntry = {
   id: string;
@@ -47,11 +48,11 @@ export function matrixId(e: CastEntry) {
   return local.includes(":") ? `@${local}` : `@${local}:proseio.com.br`;
 }
 
-export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; savedAs?: string }) {
 /** Compound decorative colour 1 to 6, the same hash as the apps: sum of character codes mod 6. */
 export const decor = (e: CastEntry) => 1 + ([...matrixId(e)].reduce((sum, ch) => sum + (ch.codePointAt(0) ?? 0), 0) % 6);
 
 /** Mirrors PlaceholderAvatarImage (proseio-ios): photo, else the first letter on the decorative colour. */
+export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; savedAs?: string }) {
   const e = who(id);
   const src = photoUrl(e);
   const style = { width: size, height: size, fontSize: size * 0.5625 };

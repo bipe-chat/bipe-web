@@ -49,6 +49,7 @@ export const chrome = {
     scenes: {
       verificado: "Verificado", "numero-novo": "Número desconhecido", "nome-diferente": "Nome diferente", "aparelho-novo": "Celular novo",
       "de-fora": "Conta de fora", instituicao: "Instituição", mae: "Apelido", grupo: "Grupo", conversas: "Conversas", perfil: "Seu perfil",
+      pessoalmente: "Conheci pessoalmente", "falso-suporte": "Falso suporte do banco", "renda-extra": "Renda extra", condominio: "Condomínio",
     } satisfies Record<SceneId, string>,
     profile: {
       lead: "Esse é um link de perfil do Bipe. Com o app instalado, abre direto na conversa.",
@@ -118,6 +119,7 @@ export const chrome = {
     scenes: {
       verificado: "Verified", "numero-novo": "Unknown number", "nome-diferente": "Different name", "aparelho-novo": "New phone",
       "de-fora": "Outside account", instituicao: "Institution", mae: "Nickname", grupo: "Group", conversas: "Chats", perfil: "Your profile",
+      pessoalmente: "Met in person", "falso-suporte": "Fake bank support", "renda-extra": "Side income", condominio: "Building group",
     } satisfies Record<SceneId, string>,
   },
 };

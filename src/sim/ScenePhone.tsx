@@ -11,6 +11,7 @@ import { Stage } from "./Stage";
 /** The mark next to a name. The same state looks the same everywhere (design/trust-ui.md). */
 export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust; size?: number }) {
   if (trust === "pix" || trust === "govbr") return <Seal size={size} label={t(lang, "proseio_badge_verified")} />;
+  if (trust === "contact") return <span className="seal-qr"><Seal size={size} label={t(lang, "proseio_badge_verified_contact")} /></span>;
   if (trust === "institution") return <Seal size={size} label={t(lang, "proseio_badge_institution")} />;
   if (trust === "suspended") return <span className="seal off" title={t(lang, "proseio_badge_suspended")}><Mark size={size} /></span>;
   if (trust === "external") return <span className="globe"><Icon name="globe" size={size} /></span>;
@@ -21,6 +22,7 @@ function subline(lang: Lang, e: CastEntry, trust: Trust) {
   const c = chrome[lang];
   if (e.kind === "group") return c.people(e.members ?? 0);
   if (trust === "pix" || trust === "govbr") return t(lang, "proseio_badge_verified_name", e.name ?? "");
+  if (trust === "contact") return t(lang, "proseio_badge_verified_contact");
   if (trust === "institution") return `${t(lang, "proseio_badge_institution")} · CNPJ ${e.cnpj}`;
   if (trust === "suspended") return <span className="caution-text">{t(lang, "proseio_badge_suspended")}</span>;
   if (!e.name) return c.notInContacts;
@@ -85,10 +87,10 @@ function Card({ lang, line, partner, savedAs }: { lang: Lang; line: Exclude<Line
 function ChatBody({ lang, scene, beat }: { lang: Lang; scene: Extract<Scene, { kind: "chat" }>; beat: number }) {
   const partner = who(scene.with);
   const group = partner.kind === "group";
-  return (
-    <>
   const lines = scene.lines.slice(0, beat);
   const run = runs(lines.map((l) => ("from" in l ? l.from : null)));
+  return (
+    <>
       {lines.map((line, i) => {
         if (!("from" in line)) return <div className="msg card-item" key={i}><Card lang={lang} line={line} partner={partner} savedAs={scene.savedAs} /></div>;
         const body = text(line.text, lang);
