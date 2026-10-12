@@ -52,7 +52,6 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
   return (
     <div className={`split${flip ? " flip" : ""}`}>
       <div>
-        <p className="status-line"><StatusChip lang={lang} status={tp.status} /></p>
         <H>{tp[lang].title}</H>
         <p className="lede">{tp[lang].summary}</p>
         <Points items={tp[lang].points} />
