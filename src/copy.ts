@@ -29,6 +29,7 @@ export const chrome = {
     footerNote: "Proseio, um app de mensagens brasileiro.",
     steward: "Um projeto da",
     source: "Código", sourceTitle: "Código-fonte", sourceLede: "O código do Proseio é aberto. Qualquer pessoa pode ler, conferir e ajudar.",
+    tech: { code: "Ver o código", codeSoon: "Código: em breve", basedOn: "Base:", licence: "O código do Proseio usa a licença AGPL-3.0. Quem muda o Proseio e roda a versão mudada como serviço também precisa abrir o código." },
     waitlist: {
       label: "Seu e-mail", placeholder: "seu@email.com", submit: "Me avise",
       heroLead: "Ainda não vai instalar? Deixe seu e-mail e a gente avisa quando o Proseio abrir pra todo mundo.",
@@ -85,6 +86,7 @@ export const chrome = {
     footerNote: "Proseio, a Brazilian messenger.",
     steward: "A project by",
     source: "Code", sourceTitle: "Source code", sourceLede: "Proseio's code is open. Anyone can read it, check it and help.",
+    tech: { code: "See the code", codeSoon: "Code: coming soon", basedOn: "Based on:", licence: "Proseio's code uses the AGPL-3.0 licence. Anyone who changes Proseio and runs the changed version as a service must open their code too." },
     waitlist: {
       label: "Your email", placeholder: "you@email.com", submit: "Tell me",
       heroLead: "Not installing yet? Leave your email and we will tell you when Proseio opens to everyone.",

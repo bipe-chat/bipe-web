@@ -6,7 +6,7 @@ import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
 import { BusinessFigure } from "./sim/BusinessFigure";
 import { GroupsFigure } from "./sim/GroupsFigure";
-import { distribution, product, publicRepos, sideOf, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
+import { distribution, product, publicRepo, publicRepos, sideOf, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -273,6 +273,42 @@ export function BusinessPage({ lang }: { lang: Lang }) {
         </div>
       </section>
     </>
+  );
+}
+
+/** The stack, part by part. A part links its repo only when the repo is public (ADR 0024). */
+export function TechnologyPage({ lang }: { lang: Lang }) {
+  const c = chrome[lang];
+  const tech = product.technical;
+  return (
+    <section className="wrap section">
+      <h1>{tech[lang].title}</h1>
+      <p className="lede">{tech[lang].lede}</p>
+      {tech.groups.map((g) => (
+        <div className="side" id={g.id} key={g.id}>
+          <h2>{g[lang].heading}</h2>
+          <p className="side-line muted">{g[lang].line}</p>
+          <div className="grid">
+            {g.parts.map((p) => {
+              const repo = publicRepo(p.repo);
+              return (
+                <div className="card feature" key={p.id} id={p.id}>
+                  <h3>{p[lang].name}</h3>
+                  <p>{p[lang].body}</p>
+                  {p.upstream && <p className="small muted">{c.tech.basedOn} {p.upstream.map((u, i) => <span key={u.url}>{i > 0 && ", "}<a href={u.url}>{u.name}</a></span>)}</p>}
+                  {p.repo && (repo ? <p className="small"><a href={repo.url}>{c.tech.code} →</a></p> : <p className="small muted">{c.tech.codeSoon}</p>)}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      <div className="side" id="source">
+        <h2>{c.sourceTitle}</h2>
+        <p className="side-line muted">{c.tech.licence}</p>
+        {publicRepos.length > 0 && <ul>{publicRepos.map((r) => <li key={r.id}><a href={r.url}>{r[lang]}</a></li>)}</ul>}
+      </div>
+    </section>
   );
 }
 

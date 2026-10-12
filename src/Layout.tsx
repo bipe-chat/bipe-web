@@ -35,6 +35,7 @@ export function Layout({ route }: { route: Route }) {
         <div className="wrap">
           <span>{c.footerNote}</span>
           <span>{c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a></span>
+          <a href={paths.technology(lang)}>{product.technical[lang].nav}</a>
           <a href={paths.privacy(lang)}>{c.privacy}</a>
           <a href={paths.terms(lang)}>{c.terms}</a>
           <a href={`mailto:${distribution.contact}`}>{c.contact}</a>

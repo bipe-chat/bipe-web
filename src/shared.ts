@@ -55,6 +55,10 @@ export type Tentpole = {
   docs: string[];
 } & Copy<{ name: string; title: string; summary: string; points: string[]; demos: { title: string; caption: string }[] }>;
 
+/** A part of the stack on the technology page. repo is an id in distribution.json source.repos. */
+export type TechPart = { id: string; repo?: string; upstream?: { name: string; url: string }[] } & Copy<{ name: string; body: string }>;
+export type TechGroup = { id: string; parts: TechPart[] } & Copy<{ heading: string; line: string }>;
+
 export type DemoId = "scam" | "identity" | "handle" | "groups";
 
 /** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
@@ -76,6 +80,7 @@ export const product = productJson as unknown as {
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
+  technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
   redirects: Record<string, string>;
 };
 
@@ -93,6 +98,9 @@ export const sideOf = (tp: Tentpole): Side | undefined => product.sides.find((s)
 
 /** Repos the site may link: only public ones (ADR 0024). Empty until the code is published. */
 export const publicRepos = distribution.source.repos.filter((r) => r.public);
+
+/** A repo by id, only when it is public. */
+export const publicRepo = (id?: string) => publicRepos.find((r) => r.id === id);
 
 /** A Proseio UI string from proseio-shared, with %1$s placeholders filled. */
 export function t(lang: Lang, key: string, ...args: string[]): string {

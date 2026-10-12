@@ -59,6 +59,17 @@ export function renderMarkdown(route: Route): string {
     out.push(`(${product.business[lang].label})`, "");
     for (const sec of product.business[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
     out.push(`${product.business[lang].cta} ${distribution.contact}`, "");
+  } else if (route.path === paths.technology(lang)) {
+    for (const g of product.technical.groups) {
+      out.push(`## ${g[lang].heading}`, "", g[lang].line, "");
+      for (const p of g.parts) {
+        const repo = publicRepos.find((r) => r.id === p.repo);
+        const refs = [...(p.upstream ?? []).map((u) => `${c.tech.basedOn} [${u.name}](${u.url})`), ...(repo ? [`[${c.tech.code}](${repo.url})`] : [])];
+        out.push(`- **${p[lang].name}**: ${p[lang].body}${refs.length ? ` (${refs.join("; ")})` : ""}`);
+      }
+      out.push("");
+    }
+    out.push(`## ${c.sourceTitle}`, "", c.tech.licence, "");
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
   }
