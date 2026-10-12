@@ -69,7 +69,6 @@ export function renderMarkdown(route: Route): string {
       }
       out.push("");
     }
-    out.push(`## ${c.sourceTitle}`, "", c.tech.licence, "");
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
   }

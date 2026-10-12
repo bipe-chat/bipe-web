@@ -276,7 +276,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
   );
 }
 
-/** The stack, part by part. A part links its repo only when the repo is public (ADR 0024). */
+/** The stack, part by part. A part links its repo only when the repo is public (ADR 0024); until then it shows no code line. */
 export function TechnologyPage({ lang }: { lang: Lang }) {
   const c = chrome[lang];
   const tech = product.technical;
@@ -296,18 +296,19 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
                   <h3>{p[lang].name}</h3>
                   <p>{p[lang].body}</p>
                   {p.upstream && <p className="small muted">{c.tech.basedOn} {p.upstream.map((u, i) => <span key={u.url}>{i > 0 && ", "}<a href={u.url}>{u.name}</a></span>)}</p>}
-                  {p.repo && (repo ? <p className="small"><a href={repo.url}>{c.tech.code} →</a></p> : <p className="small muted">{c.tech.codeSoon}</p>)}
+                  {repo && <p className="small"><a href={repo.url}>{c.tech.code} →</a></p>}
                 </div>
               );
             })}
           </div>
         </div>
       ))}
-      <div className="side" id="source">
-        <h2>{c.sourceTitle}</h2>
-        <p className="side-line muted">{c.tech.licence}</p>
-        {publicRepos.length > 0 && <ul>{publicRepos.map((r) => <li key={r.id}><a href={r.url}>{r[lang]}</a></li>)}</ul>}
-      </div>
+      {publicRepos.length > 0 && (
+        <div className="side" id="source">
+          <h2>{c.sourceTitle}</h2>
+          <ul>{publicRepos.map((r) => <li key={r.id}><a href={r.url}>{r[lang]}</a></li>)}</ul>
+        </div>
+      )}
     </section>
   );
 }
