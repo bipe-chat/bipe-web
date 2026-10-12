@@ -442,10 +442,12 @@ function CompareFoot({ lang, apps }: { lang: Lang; apps: CompareApp[] }) {
   );
 }
 
-/** Summary table: one row per threat, Bipe first. Bipe's cell is the status of the threat's first feature. */
+/** Bipe's level for a threat: on when any of its features is live, else coming soon. */
+export const bipeOn = (t: CompareThreat) => t.features.some((id) => product.features.find((f) => f.id === id)!.status.ios !== "planned");
+
+/** Summary table: one row per threat, Bipe first, then each app's level from the register. */
 function CompareTable({ lang }: { lang: Lang }) {
   const c = compare[lang];
-  const bipeLevel = { testing: "on", built: "limited", planned: "soon", policy: "on" } as const;
   return (
     <div className="side">
       <h2>{c.tableTitle}</h2>
@@ -460,11 +462,11 @@ function CompareTable({ lang }: { lang: Lang }) {
           </thead>
           <tbody>
             {compare.threats.map((t) => {
-              const f = product.features.find((x) => x.id === t.features[0])!;
+              const on = bipeOn(t);
               return (
                 <tr key={t.id}>
                   <th scope="row"><a href={`#${t.id}`}>{t[lang].threat}</a></th>
-                  <td><span className={`lvl lvl-${bipeLevel[f.status.ios]}`}>{chrome[lang].status[f.status.ios]}</span></td>
+                  <td><span className={`lvl lvl-${on ? "on" : "soon"}`}>{on ? c.levels.on : chrome[lang].status.planned}</span></td>
                   {compare.apps.map((a) => {
                     const cell = a.cells[t.id];
                     return <td key={a.id}>{cell && <span className={`lvl lvl-${cell.level}`}>{c.levels[cell.level]}</span>}</td>;
