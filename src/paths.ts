@@ -5,6 +5,7 @@ export const paths = {
   home: base,
   tentpole: (lang: Lang, tp: Tentpole) => `${base(lang)}${tp.slug[lang]}/`,
   features: (lang: Lang) => `${base(lang)}${lang === "pt" ? "recursos" : "features"}/`,
+  feature: (lang: Lang, f: { slug: { pt: string; en: string } }) => `${base(lang)}${lang === "pt" ? "recursos" : "features"}/${f.slug[lang]}/`,
   download: (lang: Lang) => `${base(lang)}${lang === "pt" ? "baixar" : "download"}/`,
   business: (lang: Lang) => `${base(lang)}${lang === "pt" ? "empresas" : "business"}/`,
   technology: (lang: Lang) => `${base(lang)}${lang === "pt" ? "tecnologia" : "technology"}/`,

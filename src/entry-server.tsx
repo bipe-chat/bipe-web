@@ -34,10 +34,11 @@ export function renderMarkdown(route: Route): string {
   const out: string[] = [`# ${route.title}`, "", route.description, ""];
   const tp = product.tentpoles.find((t) => paths.tentpole(lang, t) === route.path);
   const cmpApp = compare.apps.find((a) => paths.compareApp(lang, a) === route.path);
+  const feature = product.features.find((f) => paths.feature(lang, f) === route.path);
   if (route.path === paths.home(lang) || route.path === paths.features(lang)) {
     // Same grouping as the pages: the two sides of ADR 0047, then what sits outside them.
     const tpLine = (t: (typeof product.tentpoles)[number]) => `- [${t[lang].title}](${abs(paths.tentpole(lang, t))}) (${c.status[t.status]}): ${t[lang].summary}`;
-    const fLine = (f: (typeof product.features)[number]) => `- ${f[lang].name} (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]}): ${f[lang].body}`;
+    const fLine = (f: (typeof product.features)[number]) => `- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]}): ${f[lang].body}`;
     for (const side of product.sides) {
       out.push(`## ${side[lang].name}`, "", side[lang].line, "");
       for (const id of side.tentpoles) out.push(tpLine(product.tentpoles.find((t) => t.id === id)!));
@@ -54,8 +55,11 @@ export function renderMarkdown(route: Route): string {
     out.push(...tp[lang].points.map((p) => `- ${p}`), "");
     for (const id of tp.features) {
       const f = product.features.find((x) => x.id === id);
-      if (f) out.push(`- ${f[lang].name} (${c.status[f.status.ios]}): ${f[lang].body}`);
+      if (f) out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (${c.status[f.status.ios]}): ${f[lang].body}`);
     }
+  } else if (feature) {
+    out.push(`iPhone: ${c.status[feature.status.ios]}; Android: ${c.status[feature.status.android]}`, "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
+    for (const t of product.tentpoles.filter((x) => x.features.includes(feature.id))) out.push(`${c.partOf} [${t[lang].name}](${abs(paths.tentpole(lang, t))})`, "");
   } else if (route.path === paths.business(lang)) {
     out.push(`(${product.business[lang].label})`, "");
     for (const sec of product.business[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");

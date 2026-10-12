@@ -163,13 +163,7 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
       ))}
       <section className="wrap section">
         <div className="grid">
-          {features.map((f) => (
-            <div className="card feature" key={f.id}>
-              <h3>{f[lang].name}</h3>
-              <p>{f[lang].body}</p>
-              <PlatformStatus lang={lang} f={f} />
-            </div>
-          ))}
+          {features.map((f) => <FeatureCard lang={lang} f={f} key={f.id} />)}
         </div>
         <p style={{ marginTop: 24 }}><a href={paths.features(lang)}>{chrome[lang].allFeatures} →</a></p>
         {tp.id === "trust" && <p><a href={paths.compare(lang)}>{compare[lang].title} →</a></p>}
@@ -205,15 +199,49 @@ function FeatureArea({ lang, area, level }: { lang: Lang; area: (typeof product.
     <div className="area">
       <H>{area[lang]}</H>
       <div className="grid">
-        {items.map((f) => (
-          <div className="card feature" key={f.id} id={f.id}>
-            <h3>{f[lang].name}</h3>
-            <p>{f[lang].body}</p>
-            <PlatformStatus lang={lang} f={f} />
-          </div>
-        ))}
+        {items.map((f) => <FeatureCard lang={lang} f={f} key={f.id} anchor />)}
       </div>
     </div>
+  );
+}
+
+/** One building block as a card that opens its page. anchor keeps the old #id links on the features page working. */
+function FeatureCard({ lang, f, anchor }: { lang: Lang; f: Feature; anchor?: boolean }) {
+  return (
+    <a className="card feature" href={paths.feature(lang, f)} id={anchor ? f.id : undefined}>
+      <h3>{f[lang].name}</h3>
+      <p>{f[lang].body}</p>
+      <PlatformStatus lang={lang} f={f} />
+    </a>
+  );
+}
+
+/** One building block on its own page: what it does, how it works, its status, and where it belongs. */
+export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
+  const c = chrome[lang];
+  const area = product.areas.find((a) => a.id === f.area)!;
+  const tentpoles = product.tentpoles.filter((t) => t.features.includes(f.id));
+  const related = product.features.filter((x) => x.area === f.area && x.id !== f.id);
+  return (
+    <>
+      <section className="wrap narrow section">
+        <p className="small"><a href={`${paths.features(lang)}#${f.id}`}>{c.allFeatures}</a> · {area[lang]}</p>
+        <h1>{f[lang].name}</h1>
+        <p className="lede">{f[lang].body}</p>
+        <PlatformStatus lang={lang} f={f} />
+        <h2 style={{ marginTop: 40 }}>{c.howItWorks}</h2>
+        <ul>{f[lang].points.map((x) => <li key={x}>{x}</li>)}</ul>
+        {tentpoles.length > 0 && (
+          <p style={{ marginTop: 24 }}>{c.partOf} {tentpoles.map((t, i) => <span key={t.id}>{i > 0 && ", "}<a href={paths.tentpole(lang, t)}>{t[lang].name}</a></span>)}</p>
+        )}
+      </section>
+      {related.length > 0 && (
+        <section className="wrap section">
+          <h2>{c.alsoIn(area[lang])}</h2>
+          <div className="grid">{related.map((x) => <FeatureCard lang={lang} f={x} key={x.id} />)}</div>
+        </section>
+      )}
+    </>
   );
 }
 
@@ -332,7 +360,7 @@ function BipeCell({ lang, t }: { lang: Lang; t: CompareThreat }) {
       <p>{t[lang].bipe}</p>
       {t.features.map((id) => product.features.find((f) => f.id === id)!).map((f) => (
         <div className="compare-status" key={f.id}>
-          <strong className="small">{f[lang].name}</strong>
+          <strong className="small"><a href={paths.feature(lang, f)}>{f[lang].name}</a></strong>
           <PlatformStatus lang={lang} f={f} />
         </div>
       ))}

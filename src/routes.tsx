@@ -3,7 +3,7 @@ import { chrome } from "./copy";
 import { compare, product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
-import { AboutPage, BusinessPage, BrandPage, CastPage, CompareAppPage, ComparePage, DownloadPage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BusinessPage, BrandPage, CastPage, CompareAppPage, ComparePage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -41,6 +41,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     title: `${chrome[lang].allFeatures} · Bipe`, description: product.promise[lang].lede,
     body: () => <FeaturesPage lang={lang} />,
   },
+  ...product.features.map((f): Route => ({
+    path: paths.feature(lang, f), alt: paths.feature(other(lang), f), lang, section: "features",
+    title: `${f[lang].name} · Bipe`, description: f[lang].body,
+    body: () => <FeaturePage lang={lang} f={f} />,
+  })),
   {
     path: paths.download(lang), alt: paths.download(other(lang)), lang, section: "download",
     title: `${chrome[lang].downloadTitle} · Bipe`, description: chrome[lang].downloadLede,

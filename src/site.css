@@ -81,6 +81,7 @@ h3 { font-size: 19px; margin: 0 0 6px; }
 .card p { margin: 0; color: var(--muted); font-size: 15px; }
 a.card { display: block; color: inherit; text-decoration: none; border: 1px solid transparent; }
 a.card:hover { border-color: var(--acai); }
+a.card.feature { display: flex; }
 a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: column; gap: 10px; min-height: 200px; }
 .tentpole-card .display { font-size: 24px; }
 .tentpole-card .more { margin-top: auto; color: var(--acai); font-weight: 600; font-size: 15px; }

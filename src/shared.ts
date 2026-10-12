@@ -74,11 +74,13 @@ export type CompareApp = {
   sources: { name: string; url: string }[];
 } & Copy<{ title: string; lede: string; line: string; on: string; ahead: string[] }>;
 
+/** A building block. Each one has its own page; audience pages are made of these. */
 export type Feature = {
   id: string;
   area: string;
   status: { ios: Status; android: Status };
-} & Copy<{ name: string; body: string }>;
+  slug: Copy<string>;
+} & Copy<{ name: string; body: string; points: string[] }>;
 
 export const product = productJson as unknown as {
   promise: Copy<{ title: string; lede: string }>;
