@@ -27,8 +27,8 @@ function Try({ lang, id }: { lang: Lang; id: DemoId }) {
 /** Static figure for the no-ads tentpole: the promise as a short ledger, no fake UI. */
 function NoAdsFigure({ lang }: { lang: Lang }) {
   const rows = lang === "pt"
-    ? [["Anúncios", "0"], ["Perfil de anúncio", "nenhum"], ["Preço para você", "R$ 0"], ["Servidores", "no Brasil"]]
-    : [["Ads", "0"], ["Ad profile", "none"], ["Price for you", "R$ 0"], ["Servers", "in Brazil"]];
+    ? [["Anúncios", "0"], ["Dados vendidos", "nenhum"], ["Preço para você", "R$ 0"], ["Servidores", "no Brasil"]]
+    : [["Ads", "0"], ["Data sold", "none"], ["Price for you", "R$ 0"], ["Servers", "in Brazil"]];
   return (
     <div className="stage">
       <div className="card" style={{ width: "100%", maxWidth: 380, background: "var(--bg)" }}>
