@@ -4,6 +4,7 @@ import { hydrateRoot } from "react-dom/client";
 import { ISLANDS, type IslandName } from "./island-registry";
 
 import { sendEvent } from "./experiment";
+import { runStaticClocks } from "./components/clock";
 
 // Headline test: count TestFlight clicks per arm, on every page.
 document.addEventListener("click", (e) => {
@@ -14,3 +15,5 @@ for (const el of document.querySelectorAll<HTMLElement>("[data-island]")) {
   const Component = ISLANDS[el.dataset.island as IslandName];
   if (Component) hydrateRoot(el, <Component {...JSON.parse(el.dataset.props ?? "{}")} />);
 }
+
+runStaticClocks();

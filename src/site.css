@@ -118,8 +118,13 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 /* Shape, ratio and bezel come from Phone in components/ui.tsx (iPhone 16 Pro geometry, continuous corners). */
 .phone { width: 320px; max-width: 100%; min-height: 0; aspect-ratio: var(--phone-ratio); padding: var(--phone-bezel); display: flex; background: var(--phone-body) 0 0 / 100% 100% no-repeat; filter: drop-shadow(0 22px 24px rgba(40, 10, 40, .28)); }
 .screen { flex: 1; min-width: 0; min-height: 0; background: var(--bg); overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
-.statusbar { height: 40px; flex: none; display: flex; justify-content: space-between; align-items: center; padding: 2px 30px 0; font-size: 13px; font-weight: 600; }
+.statusbar { height: 40px; flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 2px 18px 0; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.statusbar .clock { justify-self: center; }
+.statusbar .sysicons { justify-self: center; }
 .statusbar .island { width: 92px; height: 27px; border-radius: 99px; background: #15171b; }
+/* Home indicator inside the 34pt bottom safe area (25px at this scale). */
+.home-indicator { flex: none; height: 22px; display: grid; place-items: center; }
+.home-indicator::after { content: ""; width: 100px; height: 4px; border-radius: 99px; background: var(--text); }
 .chat-head { display: flex; align-items: center; gap: 10px; padding: 8px 14px 10px; border-bottom: 1px solid var(--line); }
 .avatar { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px; background: var(--acai-tint); color: var(--acai-deep); flex: none; }
 .chat-head .who { line-height: 1.2; min-width: 0; }
@@ -137,7 +142,7 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .bubble.in { background: var(--surface); align-self: flex-start; border-bottom-left-radius: 6px; }
 .bubble.out { background: var(--acai-tint); align-self: flex-end; border-bottom-right-radius: 6px; }
 .msg { display: flex; flex-direction: column; gap: 6px; animation: rise .35s ease-out both; }
-.composer { display: flex; gap: 8px; align-items: center; padding: 10px 12px 16px; border-top: 1px solid var(--line); }
+.composer { display: flex; gap: 8px; align-items: center; padding: 10px 12px 4px; border-top: 1px solid var(--line); }
 .composer .field { flex: 1; border-radius: 999px; border: 1px solid var(--line); padding: 8px 14px; font-size: 14px; color: var(--muted); min-height: 36px; }
 .composer .send { width: 34px; height: 34px; border-radius: 50%; background: var(--acai); color: var(--on-acai); display: grid; place-items: center; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
@@ -231,7 +236,7 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .inbox-top .time { font-size: 12px; color: var(--muted); flex: none; }
 .inbox-bottom .preview { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .inbox-bottom .unread { flex: none; min-width: 20px; height: 20px; border-radius: 99px; padding: 0 6px; background: var(--acai); color: var(--on-acai); font-size: 12px; font-weight: 700; display: grid; place-items: center; }
-.tabbar { display: flex; justify-content: space-around; padding: 10px 12px 18px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.tabbar { display: flex; justify-content: space-around; padding: 10px 12px 4px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 .tabbar .on { color: var(--acai); font-weight: 700; }
 .ladder { padding: 14px; display: flex; flex-direction: column; gap: 12px; font-size: 14px; }
 .ladder .sub { font-size: 12px; color: var(--muted); margin: 0; }
