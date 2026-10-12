@@ -17,6 +17,9 @@ Static site for proseio.com.br. Vite + React 19 + TypeScript, prerendered to HTM
 - Rendered copy: no em or en dashes; run the humanizer rubric before it ships.
 - Source links come from `source` in `../proseio-shared/product/distribution.json`. The site links a repo only when its `public` flag is true. Set the flag when the GitHub repo goes public (ADR 0024).
 - A feature is "No app de testes" only when it is in a TestFlight build.
+- Headline test (issue #77, ADR 0032): `src/experiment.ts` holds the inline script that sets `#hero-title` before paint and the `sendBeacon` events. Arms live in `headlineTest` in `product.json`; h0 is `promise.pt.title`. Change a headline only there. Stop the test with `headlineTest.active: false`.
+- Waitlist forms post to `POST /v1/waitlist` (ADR 0025) through `src/sim/WaitlistForm.tsx`; the arm travels in `source`. `API_URL` is in `src/config.ts`.
+- `/empresas/` copy is `business` in `product.json` and follows ADRs 0035 to 0037. Keep its "proposal" label until the business API ships. Change it together with `../proseio/docs/business-messaging.md`.
 
 ## Traps
 
