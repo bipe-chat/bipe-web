@@ -287,6 +287,16 @@ export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
           <a className="button primary" href={`mailto:${distribution.contact}?subject=${encodeURIComponent(copy.ctaSubject)}`}><Icon name="mail" />{distribution.contact}</a>
         </div>
       </section>
+      <section className="wrap section">
+        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
+          <AppIcon size={72} />
+          <div style={{ flex: 1, minWidth: 240 }}>
+            <h2>{chrome[lang].downloadTitle}</h2>
+            <p className="muted" style={{ margin: "8px 0 0" }}>{chrome[lang].downloadLede}</p>
+          </div>
+          <DownloadButtons lang={lang} />
+        </div>
+      </section>
     </>
   );
 }
