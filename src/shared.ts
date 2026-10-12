@@ -84,10 +84,10 @@ export type Feature = {
   slug: Copy<string>;
 } & Copy<{ name: string; body: string; points: string[] }>;
 
-/** A step of the ICP ladder (ADR 0058). Internal: never rendered. */
-export type Icp = { id: string; step: number; current: boolean; adr: string; name: string; who: string };
+/** A step of the ICP ladder (ADR 0060). Internal: never rendered. */
+export type Icp = { id: string; step: number; current: boolean; adr: string; name: string; who: string; platforms: ("ios" | "android")[]; gate: string[] };
 
-/** An audience page (/para/<slug>/): names an ICP, built from feature pages. Sections share feature ids across languages. */
+/** An audience page (/para/<slug>/): names an ICP (ADR 0060), built from feature pages. Sections share feature ids across languages. */
 export type Audience = {
   id: string;
   icp: string;

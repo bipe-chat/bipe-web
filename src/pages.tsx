@@ -249,7 +249,7 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
   );
 }
 
-/** An audience page (ADR 0058): a need per section, each carried by feature cards with their true status. */
+/** An audience page (ADR 0060): a need per section, each carried by feature cards with their true status. */
 export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
   const copy = a[lang];
   return (
