@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { chrome } from "../copy";
 import { paths } from "../paths";
-import { distribution, scamStringKey, t, type Lang, type ScamKind, type Status } from "../shared";
+import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind } from "../shared";
 
 export function Icon({ name, size = 18 }: { name: "warning" | "check" | "person" | "send" | "apple" | "android" | "mail"; size?: number }) {
   const p = {
@@ -21,8 +21,11 @@ export function Icon({ name, size = 18 }: { name: "warning" | "check" | "person"
   );
 }
 
-export function StatusChip({ lang, status }: { lang: Lang; status: Status }) {
-  return <span className={`chip ${status}`}>{chrome[lang].status[status]}</span>;
+/** Status per platform as plain text, no pill. A policy feature has no platform status to show. */
+export function PlatformStatus({ lang, f }: { lang: Lang; f: Feature }) {
+  const c = chrome[lang];
+  if (f.status.ios === "policy" && f.status.android === "policy") return null;
+  return <p className="small muted">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>;
 }
 
 /** Mirrors ProseioScamWarningView (proseio-ios): caution card under the message. */

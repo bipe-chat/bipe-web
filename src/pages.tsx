@@ -1,6 +1,6 @@
 import { chrome } from "./copy";
 import { AppIcon, Mark, MARK, MARKS, Seal, Wordmark, type MarkId } from "./components/brand";
-import { DownloadButtons, Icon, StatusChip } from "./components/ui";
+import { DownloadButtons, Icon, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
@@ -67,7 +67,7 @@ const byId = (id: string): Tentpole => product.tentpoles.find((tp) => tp.id === 
 function TentpoleCard({ lang, tp }: { lang: Lang; tp: Tentpole }) {
   return (
     <a className="card tentpole-card" href={paths.tentpole(lang, tp)}>
-      <StatusChip lang={lang} status={tp.status} />
+      {tp.status === "planned" && <span className="small muted">{chrome[lang].status.planned}</span>}
       <span className="display">{tp[lang].title}</span>
       <p>{tp[lang].summary}</p>
       <span className="more">{chrome[lang].more} →</span>
@@ -155,8 +155,9 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
         <div className="grid">
           {features.map((f) => (
             <div className="card feature" key={f.id}>
-              <div className="row"><h3>{f[lang].name}</h3><StatusChip lang={lang} status={f.status.ios} /></div>
+              <h3>{f[lang].name}</h3>
               <p>{f[lang].body}</p>
+              <PlatformStatus lang={lang} f={f} />
             </div>
           ))}
         </div>
@@ -172,9 +173,6 @@ export function FeaturesPage({ lang }: { lang: Lang }) {
     <section className="wrap section">
       <h1>{c.allFeatures}</h1>
       <p className="lede">{product.promise[lang].lede}</p>
-      <p className="small muted" style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <StatusChip lang={lang} status="testing" /> <StatusChip lang={lang} status="planned" /> <StatusChip lang={lang} status="policy" />
-      </p>
       {product.sides.map((side) => (
         <div className="side" id={side.id} key={side.id}>
           <h2>{side[lang].name}</h2>
@@ -198,9 +196,9 @@ function FeatureArea({ lang, area, level }: { lang: Lang; area: (typeof product.
       <div className="grid">
         {items.map((f) => (
           <div className="card feature" key={f.id} id={f.id}>
-            <div className="row"><h3>{f[lang].name}</h3><StatusChip lang={lang} status={f.status.ios} /></div>
+            <h3>{f[lang].name}</h3>
             <p>{f[lang].body}</p>
-            <p className="small">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>
+            <PlatformStatus lang={lang} f={f} />
           </div>
         ))}
       </div>
@@ -249,7 +247,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
       <section className="wrap section">
         <div className="split">
           <div>
-            <p className="status-line"><span className="chip planned">{b.label}</span></p>
+            <p className="eyebrow">{b.label}</p>
             <h1>{b.title}</h1>
             <p className="lede">{b.lede}</p>
             <h2 style={{ fontSize: 24, marginTop: 36 }}>{why.heading}</h2>
