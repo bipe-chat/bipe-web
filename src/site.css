@@ -164,6 +164,10 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 /* Link landing pages (/@handle, /convite/<code>) */
 .invite-code { font-size: 22px; font-weight: 600; letter-spacing: 1px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; user-select: all; -webkit-user-select: all; }
 .steps { padding-left: 22px; margin-top: 28px; }
+.profile-photo { width: 112px; height: 112px; border-radius: 50%; object-fit: cover; background: var(--acai-wash); display: block; margin-bottom: 16px; }
+.profile h1 { margin-bottom: 4px; }
+.profile-handle { color: var(--muted); margin-top: 0; overflow-wrap: anywhere; }
+.profile-bio { white-space: pre-line; overflow-wrap: anywhere; font-size: 18px; }
 .steps li { margin-bottom: 14px; }
 .button:disabled { opacity: .5; cursor: default; }
 button.button { font: inherit; font-weight: 600; cursor: pointer; }

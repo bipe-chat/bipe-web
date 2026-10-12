@@ -6,7 +6,7 @@ import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
 import { Icon } from "../components/ui";
 import { API_URL } from "../config";
-import { distribution, extractInviteCodeRef, reg } from "../shared";
+import { distribution, extractInviteCodeRef, reg, t } from "../shared";
 
 /** Same rule as the apps and the API: proseio-shared/registries/invite-codes.json. */
 export function extractInviteCode(text: string): string | null {
@@ -31,14 +31,50 @@ function InstallButton() {
   return ios.url ? <a className="button primary" href={ios.url}><Icon name="apple" />{ios.pt.label}</a> : null;
 }
 
+type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string };
+
+/** Accepts only the fields the page renders, and photos only from the API host (ADR 0041). */
+function readProfile(p: unknown, handle: string): PublicProfile | null {
+  if (!p || typeof p !== "object") return null;
+  const { handle: h, name, bio, photo_url } = p as Record<string, unknown>;
+  if (h !== handle || typeof name !== "string" || !name) return null;
+  return {
+    handle,
+    name,
+    ...(typeof bio === "string" && bio ? { bio } : {}),
+    ...(typeof photo_url === "string" && photo_url.startsWith(`${API_URL}/v1/profiles/`) ? { photo_url } : {}),
+  };
+}
+
 export function ProfileLanding(_: Record<string, never>) {
   const c = chrome.pt.profile;
   const [handle, setHandle] = useState<string | null>(null);
+  const [profile, setProfile] = useState<PublicProfile | null>(null);
   useEffect(() => {
-    // Never looks the handle up: the page must not reveal whether an account exists (no directory).
     const m = location.pathname.match(/^\/@([^/]+)$/);
-    if (m && new RegExp(reg.handles.pattern).test(m[1])) setHandle(m[1]);
+    const h = m?.[1]?.toLowerCase();
+    if (!h || !new RegExp(reg.handles.pattern).test(h)) return;
+    setHandle(h);
+    // Published profiles only (opt-in). The API answers the same 404 for "no handle" and "profile off".
+    fetch(`${API_URL}/v1/profiles/${encodeURIComponent(h)}`, { referrerPolicy: "no-referrer" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((p) => setProfile(readProfile(p, h)))
+      .catch(() => {});
   }, []);
+  if (profile) {
+    return (
+      <section className="wrap narrow section profile">
+        {profile.photo_url && <img className="profile-photo" src={profile.photo_url} alt="" width={112} height={112} referrerPolicy="no-referrer" />}
+        <h1 style={{ overflowWrap: "anywhere" }}>{profile.name}</h1>
+        <p className="profile-handle">@{profile.handle}</p>
+        <p><span className="chip policy">{t("pt", "proseio_public_profile_not_verified")}</span></p>
+        {profile.bio && <p className="profile-bio">{profile.bio}</p>}
+        <p className="lede">{c.lead}</p>
+        <p>{c.noApp}</p>
+        <div className="actions"><InstallButton /></div>
+      </section>
+    );
+  }
   return (
     <section className="wrap narrow section">
       <h1 style={{ overflowWrap: "anywhere" }}>{handle ? `@${handle}` : "Proseio"}</h1>
