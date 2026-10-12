@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { who } from "../cast";
 import { chrome } from "../copy";
 import { Bubble, Phone } from "../components/phone";
@@ -9,16 +10,11 @@ import { pixExamples, text, type PixExample } from "./scenes";
 import { Stage } from "./Stage";
 import "./PixDemo.css";
 
-// The Pix request card (status "planned"; the card look is a draft), played through a small
-// library of examples. Each one: ask, card, copy, bank check. When the bank shows the card's
-// name, the payer marks "Enviei" and the card says "pago" only after the requester marks "Recebi".
-// When the bank shows another name, the story stops there.
+// The Pix request card (status "planned"; the card look is a draft). Each page load plays one
+// example from the library, picked at random: ask, card, copy, bank check. When the bank shows the
+// card's name, the payer marks "Enviei" and the card says "pago" only after the requester marks
+// "Recebi". When the bank shows another name, the story stops there.
 const beatsOf = (ex: PixExample) => (ex.bank === "match" ? 5 : 3);
-const TIMELINE = pixExamples.flatMap((ex, i) => Array.from({ length: beatsOf(ex) }, (_, b) => ({ i, b: b + 1 })));
-const hold = (beat: number) => {
-  const at = TIMELINE[beat - 1];
-  return beat === 0 ? 700 : at && at.b === beatsOf(pixExamples[at.i]) ? 4200 : 2200;
-};
 
 function PixPhone({ lang, ex, b }: { lang: Lang; ex: PixExample; b: number }) {
   const c = chrome[lang].pix;
@@ -47,12 +43,15 @@ function PixPhone({ lang, ex, b }: { lang: Lang; ex: PixExample; b: number }) {
 }
 
 export function PixDemo({ lang, caption }: { lang: Lang; caption: string }) {
+  // The prerendered HTML shows the first example; the client picks one after hydration.
+  const [pick, setPick] = useState(0);
+  useEffect(() => setPick(Math.floor(Math.random() * pixExamples.length)), []);
+  const ex = pixExamples[pick];
+  const steps = beatsOf(ex);
+  const hold = (beat: number) => (beat === 0 ? 700 : beat >= steps ? 4200 : 2200);
   return (
-    <Stage lang={lang} caption={caption} steps={TIMELINE.length} holdMs={hold}>
-      {(beat) => {
-        const at = beat === 0 ? { i: 0, b: 0 } : TIMELINE[Math.min(beat, TIMELINE.length) - 1];
-        return <PixPhone lang={lang} ex={pixExamples[at.i]} b={at.b} />;
-      }}
+    <Stage key={pick} lang={lang} caption={caption} steps={steps} holdMs={hold}>
+      {(beat) => <PixPhone lang={lang} ex={ex} b={beat} />}
     </Stage>
   );
 }
