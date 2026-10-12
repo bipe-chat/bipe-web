@@ -54,12 +54,13 @@ export function renderMarkdown(route: Route): string {
   out.push("", `## ${c.download}`, "");
   if (distribution.ios.url) out.push(`- ${distribution.ios[lang].label}: ${distribution.ios.url} (${distribution.ios[lang].note})`);
   out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${distribution.contact}`);
+  out.push("", `${c.steward} ${distribution.steward.name}: ${distribution.steward.url}`);
   if (publicRepos.length > 0) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
   return out.join("\n") + "\n";
 }
 
 export function llmsTxt(): string {
-  const lines = ["# Proseio", "", `> ${product.promise.en.lede}`, ""];
+  const lines = ["# Proseio", "", `> ${product.promise.en.lede}`, "", `${chrome.en.steward} ${distribution.steward.name}: ${distribution.steward.url}`, ""];
   for (const lang of ["pt", "en"] as Lang[]) {
     lines.push(`## ${lang === "pt" ? "Português" : "English"}`, "");
     for (const r of routes.filter((x) => x.lang === lang && !x.noindex)) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);

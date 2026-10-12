@@ -82,6 +82,7 @@ export const distribution = distributionJson as unknown as {
   android: Channel;
   source: { org: string; repos: SourceRepo[] };
   contact: string;
+  steward: { name: string; url: string };
 };
 /** Repos the site may link: only public ones (ADR 0024). Empty until the code is published. */
 export const publicRepos = distribution.source.repos.filter((r) => r.public);
