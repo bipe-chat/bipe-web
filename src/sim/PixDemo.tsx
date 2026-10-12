@@ -43,14 +43,23 @@ function PixPhone({ lang, ex, b }: { lang: Lang; ex: PixExample; b: number }) {
 }
 
 export function PixDemo({ lang, caption }: { lang: Lang; caption: string }) {
-  // The prerendered HTML shows the first example; the client picks one after hydration.
-  const [pick, setPick] = useState(0);
+  // The prerendered phone is empty. The client picks the example on mount, before the demo
+  // (far down the page) scrolls into view, so a reader never sees one example swap for another.
+  const [pick, setPick] = useState<number | null>(null);
   useEffect(() => setPick(Math.floor(Math.random() * pixExamples.length)), []);
+  if (pick === null) {
+    return (
+      <div className="stage">
+        <Phone lang={lang} head={null}>{null}</Phone>
+        <p className="caption">{caption}</p>
+      </div>
+    );
+  }
   const ex = pixExamples[pick];
   const steps = beatsOf(ex);
   const hold = (beat: number) => (beat === 0 ? 700 : beat >= steps ? 4200 : 2200);
   return (
-    <Stage key={pick} lang={lang} caption={caption} steps={steps} holdMs={hold}>
+    <Stage lang={lang} caption={caption} steps={steps} holdMs={hold}>
       {(beat) => <PixPhone lang={lang} ex={ex} b={beat} />}
     </Stage>
   );
