@@ -21,7 +21,7 @@ export function GroupsFigure({ lang, caption }: { lang: Lang; caption: string })
           <div className="missed-head">{t(lang, "proseio_group_missed_title")}</div>
           <div className="missed-row">
             <strong>{t(lang, "proseio_group_missed_mention", "Bia")}</strong>
-            <span>@mz você leva o carvão?</span>
+            <span>@gabi você leva o carvão?</span>
           </div>
           <div className="missed-row">
             <strong>{t(lang, "proseio_group_missed_reply", "Léo")}</strong>
