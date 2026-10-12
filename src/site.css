@@ -268,3 +268,16 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .cast-card strong { display: flex; gap: 4px; align-items: center; }
 .scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px 16px; margin-top: 24px; }
 .scene-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+/* Staff page /admin/convites/ (proseio ADR 0056). */
+.staff-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 28px 0; }
+.staff-tiles .card { display: flex; flex-direction: column; gap: 4px; padding: 16px; }
+.staff-tiles strong { font-size: 28px; font-variant-numeric: tabular-nums; }
+.staff-scroll { overflow-x: auto; margin: 0 -16px; padding: 0 16px; }
+.staff-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.staff-table th, .staff-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.staff-table th { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.staff-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.staff-table th button, .linklike { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.staff-table th button:hover, .linklike { text-decoration: underline; }
+.staff-table td .mono { overflow-wrap: anywhere; }

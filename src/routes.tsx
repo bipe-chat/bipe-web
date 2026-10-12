@@ -94,4 +94,9 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/convite/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "convite",
   title: "Convite para o Bipe", description: chrome.pt.invite.lead,
   body: () => <Island name="InviteLanding" props={{}} />,
+}, {
+  // Staff only (proseio ADR 0056). The HTML holds no data; the island signs in and asks the API.
+  path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true,
+  title: "Quem mais convida (equipe) · Bipe", description: "Relatório interno de convites.",
+  body: () => <Island name="InviterReport" props={{}} />,
 });

@@ -2,11 +2,12 @@ import type { ComponentType } from "react";
 import { HandleSim, HandleTry } from "./sim/HandleSim";
 import { InviteLanding, ProfileLanding } from "./sim/LinkPages";
 import { WaitlistForm } from "./sim/WaitlistForm";
+import { InviterReport } from "./admin/InviterReport";
 import { IdentitySim, NameTry } from "./sim/IdentitySim";
 import { ScamSim, ScamTry } from "./sim/ScamSim";
 import { SceneSim, TrustLevels } from "./sim/ScenePhone";
 
-export const ISLANDS = { ScamSim, ScamTry, IdentitySim, NameTry, HandleSim, HandleTry, ProfileLanding, InviteLanding, WaitlistForm, SceneSim, TrustLevels } as const satisfies Record<string, ComponentType<any>>;
+export const ISLANDS = { ScamSim, ScamTry, IdentitySim, NameTry, HandleSim, HandleTry, ProfileLanding, InviteLanding, WaitlistForm, SceneSim, TrustLevels, InviterReport } as const satisfies Record<string, ComponentType<any>>;
 export type IslandName = keyof typeof ISLANDS;
 
 /** Server-rendered component that the client hydrates with the same props. */
