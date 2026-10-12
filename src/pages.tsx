@@ -172,6 +172,7 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
           ))}
         </div>
         <p style={{ marginTop: 24 }}><a href={paths.features(lang)}>{chrome[lang].allFeatures} →</a></p>
+        {tp.id === "trust" && <p><a href={paths.comparison(lang)}>{product.comparison[lang].title} →</a></p>}
       </section>
     </>
   );
@@ -319,6 +320,54 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
           <ul>{publicRepos.map((r) => <li key={r.id}><a href={r.url}>{r[lang]}</a></li>)}</ul>
         </div>
       )}
+    </section>
+  );
+}
+
+/** Bipe and WhatsApp, threat by threat (proseio/docs/vs-whatsapp.md). Bipe status comes from the features, never from the copy. */
+export function ComparisonPage({ lang }: { lang: Lang }) {
+  const cmp = product.comparison;
+  const c = cmp[lang];
+  return (
+    <section className="wrap section">
+      <h1>{c.title}</h1>
+      <p className="lede">{c.lede}</p>
+      <div className="compare">
+        {cmp.rows.map((r) => (
+          <div className="card compare-row" id={r.id} key={r.id}>
+            <h2>{r[lang].threat}</h2>
+            <div className="compare-cols">
+              <div>
+                <h3>{c.whatsapp}</h3>
+                <p>{r[lang].whatsapp}</p>
+              </div>
+              <div>
+                <h3>{c.bipe}</h3>
+                <p>{r[lang].bipe}</p>
+                {r.features.map((id) => product.features.find((f) => f.id === id)!).map((f) => (
+                  <div className="compare-status" key={f.id}>
+                    <strong className="small">{f[lang].name}</strong>
+                    <PlatformStatus lang={lang} f={f} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="side narrow">
+        <h2>{c.aheadTitle}</h2>
+        <ul>{c.ahead.map((a) => <li key={a}>{a}</li>)}</ul>
+      </div>
+      <div className="side narrow">
+        <h2>{c.limitTitle}</h2>
+        <p>{c.limit}</p>
+      </div>
+      <div className="side narrow">
+        <h2>{c.sourcesTitle}</h2>
+        <p className="small muted">{c.sourcesNote}</p>
+        <ul className="small">{cmp.sources.map((s) => <li key={s.url}><a href={s.url}>{s.name}</a></li>)}</ul>
+      </div>
     </section>
   );
 }

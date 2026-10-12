@@ -69,6 +69,19 @@ export function renderMarkdown(route: Route): string {
       }
       out.push("");
     }
+  } else if (route.path === paths.comparison(lang)) {
+    const cmp = product.comparison;
+    for (const r of cmp.rows) {
+      out.push(`## ${r[lang].threat}`, "", `- **${cmp[lang].whatsapp}**: ${r[lang].whatsapp}`, `- **${cmp[lang].bipe}**: ${r[lang].bipe}`);
+      for (const id of r.features) {
+        const f = product.features.find((x) => x.id === id)!;
+        out.push(`  - ${f[lang].name} (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]})`);
+      }
+      out.push("");
+    }
+    out.push(`## ${cmp[lang].aheadTitle}`, "", ...cmp[lang].ahead.map((a) => `- ${a}`), "");
+    out.push(`## ${cmp[lang].limitTitle}`, "", cmp[lang].limit, "");
+    out.push(`## ${cmp[lang].sourcesTitle}`, "", cmp[lang].sourcesNote, "", ...cmp.sources.map((s) => `- [${s.name}](${s.url})`), "");
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
   }

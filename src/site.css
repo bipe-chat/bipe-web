@@ -95,6 +95,13 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .side > h2 { font-size: 30px; }
 .side-line { margin: 6px 0 20px; max-width: 40em; }
 .side > h3 { font-family: var(--brand); font-weight: 850; font-size: 24px; letter-spacing: -.02em; margin: 0; }
+.compare { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+.compare-row h2 { font-size: 24px; margin: 0 0 16px; }
+.compare-row h3 { font-size: 15px; margin: 0 0 6px; }
+.compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.compare-status { margin-top: 12px; }
+.compare-status p { margin: 2px 0 0; }
+@media (max-width: 640px) { .compare-cols { grid-template-columns: 1fr; gap: 16px; } }
 .feature { display: flex; flex-direction: column; gap: 8px; }
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 

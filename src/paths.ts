@@ -8,6 +8,7 @@ export const paths = {
   download: (lang: Lang) => `${base(lang)}${lang === "pt" ? "baixar" : "download"}/`,
   business: (lang: Lang) => `${base(lang)}${lang === "pt" ? "empresas" : "business"}/`,
   technology: (lang: Lang) => `${base(lang)}${lang === "pt" ? "tecnologia" : "technology"}/`,
+  comparison: (lang: Lang) => `${base(lang)}${lang === "pt" ? "bipe-e-whatsapp" : "bipe-and-whatsapp"}/`,
   about: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre" : "about"}/`,
   privacy: (lang: Lang) => (lang === "pt" ? "/privacidade" : "/en/privacy"),
   terms: (lang: Lang) => (lang === "pt" ? "/termos" : "/en/terms"),

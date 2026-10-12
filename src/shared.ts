@@ -64,6 +64,9 @@ export type DemoId = "scam" | "identity" | "handle" | "groups" | "levels";
 /** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
 export type Side = { id: "other" | "you"; tentpoles: string[]; areas: string[] } & Copy<{ name: string; line: string }>;
 
+/** A threat on the Bipe and WhatsApp page. Bipe status comes from the listed features. */
+export type ComparisonRow = { id: string; features: string[] } & Copy<{ threat: string; whatsapp: string; bipe: string }>;
+
 export type Feature = {
   id: string;
   area: string;
@@ -81,6 +84,8 @@ export const product = productJson as unknown as {
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
+  comparison: { date: string; rows: ComparisonRow[]; sources: { name: string; url: string }[] }
+    & Copy<{ nav: string; title: string; lede: string; whatsapp: string; bipe: string; aheadTitle: string; ahead: string[]; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string }>;
   redirects: Record<string, string>;
 };
 

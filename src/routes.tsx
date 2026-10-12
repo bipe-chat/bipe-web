@@ -3,7 +3,7 @@ import { chrome } from "./copy";
 import { product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
-import { AboutPage, BusinessPage, BrandPage, CastPage, DownloadPage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BusinessPage, BrandPage, CastPage, ComparisonPage, DownloadPage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -55,6 +55,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     path: paths.technology(lang), alt: paths.technology(other(lang)), lang,
     title: `${product.technical[lang].nav} · Bipe`, description: product.technical[lang].lede,
     body: () => <TechnologyPage lang={lang} />,
+  },
+  {
+    path: paths.comparison(lang), alt: paths.comparison(other(lang)), lang, section: "trust",
+    title: `${product.comparison[lang].title} · Bipe`, description: product.comparison[lang].lede,
+    body: () => <ComparisonPage lang={lang} />,
   },
   {
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",
