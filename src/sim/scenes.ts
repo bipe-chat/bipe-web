@@ -174,6 +174,23 @@ export const scenes = {
 
 export type SceneId = keyof typeof scenes;
 
+/** Pix request examples for the Pix demo. `bank`: what the payer's bank app shows after pasting the code. */
+export type PixExample = { from: string; amount: number; description: string; bank: "match" | "other"; ask: Text; thanks?: Text };
+
+export const pixExamples: PixExample[] = [
+  { from: "rafa", amount: 850, description: "Bike usada, revisada", bank: "match",
+    ask: { pt: "Fechado, me manda o Pix", en: "Fechado, me manda o Pix (Deal, send me the request)" },
+    thanks: { pt: "Recebi, valeu! Pode buscar amanhã", en: "Recebi, valeu! Pode buscar amanhã (Got it, pick it up tomorrow)" } },
+  { from: "ivone", amount: 44, description: "2 marmitas de frango", bank: "match",
+    ask: { pt: "Dona Ivone, quero duas! Me manda o Pix", en: "Dona Ivone, quero duas! Me manda o Pix (Two for me, send the request)" },
+    thanks: { pt: "Recebido! Desço com elas já já", en: "Recebido! Desço com elas já já (Got it, bringing them down)" } },
+  { from: "valdir", amount: 120, description: "Reserva do salão de festas", bank: "other",
+    ask: { pt: "Seu Valdir, quero reservar o salão no sábado", en: "Seu Valdir, quero reservar o salão no sábado (I want to book the party room)" } },
+  { from: "leo", amount: 60, description: "Aula de surf de sábado", bank: "match",
+    ask: { pt: "Léo, fechou a aula de sábado. Manda o Pix", en: "Léo, fechou a aula de sábado. Manda o Pix (Saturday's lesson is on, send the request)" },
+    thanks: { pt: "Recebi! Sábado, 7h, na praia", en: "Recebi! Sábado, 7h, na praia (Got it, Saturday 7am at the beach)" } },
+];
+
 /** Scenes in the trust-levels picker, in order. Labels are chrome copy: chrome[lang].scenes. */
 export const TRUST_LEVEL_SCENES: SceneId[] = ["verificado", "pessoalmente", "numero-novo", "falso-suporte", "renda-extra", "nome-diferente", "aparelho-novo", "de-fora", "instituicao", "mae", "conversas", "perfil"];
 

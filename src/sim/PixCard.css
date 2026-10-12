@@ -13,3 +13,6 @@
 .pixreq-action.wait { background: var(--surface); color: var(--muted); }
 .pixreq-status { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
 .pixreq.received { border-width: 2px; }
+.pixreq-main { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.pixreq-main > div { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.pixreq-qr { flex: none; border-radius: 4px; }

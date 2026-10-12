@@ -49,13 +49,7 @@ export const chrome = {
     levelsLabel: "Escolha uma situação",
     sceneCaption: "Simulação com pessoas e mensagens de exemplo.",
     pix: {
-      amount: "Valor", description: "Descrição", descriptionDefault: "Bike usada, revisada",
-      bankShows: "O app do banco mostra o nome", otherName: "Pagamentos JP Ltda",
-      stepCopy: "Copiar o código Pix", stepSent: "Paguei no banco: marcar Enviei", stepReceived: (n: string) => `Ver o lado de ${n}: Recebi`, stepRestart: "Recomeçar",
-      blocked: "O nome no banco não é o do cartão. Pare aqui e fale com a pessoa por outro meio.",
-      note: "Simulação. Nada é copiado e nenhum dinheiro sai daqui.",
-      ask: "Fechado, me manda o Pix", thanks: "Recebi, valeu!",
-      bankApp: "App do seu banco", bankTo: "Pix para",
+      amount: "Valor", otherName: "Pagamentos JP Ltda", bankApp: "App do seu banco", bankTo: "Pix para",
       mismatch: "Este não é o nome do cartão. Não pague.", match: "O nome é o mesmo do cartão.",
     },
     scenes: {
@@ -132,13 +126,7 @@ export const chrome = {
     levelsLabel: "Pick a situation",
     sceneCaption: "Simulation with sample people and messages.",
     pix: {
-      amount: "Amount", description: "Description", descriptionDefault: "Bike usada, revisada",
-      bankShows: "The bank app shows the name", otherName: "Pagamentos JP Ltda",
-      stepCopy: "Copy the Pix code", stepSent: "Paid in the bank: mark I sent it", stepReceived: (n: string) => `See ${n}'s side: I got it`, stepRestart: "Start over",
-      blocked: "The name in the bank is not the name on the card. Stop here and check with the person another way.",
-      note: "Simulation. Nothing is copied and no money leaves this page.",
-      ask: "Fechado, me manda o Pix (Deal, send me the request)", thanks: "Recebi, valeu! (Got it, thanks!)",
-      bankApp: "Your bank app", bankTo: "Pix to",
+      amount: "Amount", otherName: "Pagamentos JP Ltda", bankApp: "Your bank app", bankTo: "Pix to",
       mismatch: "This is not the name on the card. Do not pay.", match: "The name matches the card.",
     },
     scenes: {
