@@ -171,6 +171,12 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .pix-card .pix-head { display: flex; justify-content: space-between; color: var(--acai); font-weight: 600; }
 .pix-card .pix-head strong { font-size: 18px; color: var(--text); }
 .pix-card p { margin: 4px 0 0; }
+.missed { border: 1px solid var(--acai-tint); border-radius: 14px; overflow: hidden; background: var(--bg); font-size: 13px; }
+.missed-head { background: var(--acai-wash); color: var(--acai-deep); padding: 6px 10px; font-weight: 600; }
+.missed-row { padding: 6px 10px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 1px; }
+.missed-row strong { font-weight: 600; }
+.missed-row span { color: var(--muted); overflow-wrap: anywhere; }
+.missed-more { padding: 6px 10px; border-top: 1px solid var(--line); color: var(--acai); font-weight: 600; }
 .origin { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; }
 @media (max-width: 640px) { .origin { grid-template-columns: 1fr; } }
 

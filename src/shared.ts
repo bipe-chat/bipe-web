@@ -3,6 +3,7 @@
 import familyTerms from "@shared/registries/family-terms.json";
 import handles from "@shared/registries/handles.json";
 import homoglyphs from "@shared/registries/homoglyphs.json";
+import inviteCodes from "@shared/registries/invite-codes.json";
 import reservedNames from "@shared/registries/reserved-names.json";
 import scamPatterns from "@shared/registries/scam-patterns.json";
 import stringsEn from "@shared/strings/en.json";
@@ -17,6 +18,7 @@ export type Registries = {
   family: { terms: string[] };
   scam: { warningKindPriority: string[] } & Record<string, unknown>;
   homoglyphs: { map: Record<string, string> };
+  inviteCodes: { pattern: string; alphabet: string; maxInputLength: number };
   handles: { minLength: number; maxLength: number; pattern: string; skeletonStrip: string; changeCooldownDays: number; releaseHoldDays: number };
   strings: { strings: Record<string, string> };
   stringsEn: { strings: Record<string, string> };
@@ -27,6 +29,7 @@ export const normalize = lib.normalize as (input: string, homoglyphMap: Record<s
 export const scamWarningKind = lib.scamWarningKind as (text: string, reg: Registries) => ScamKind | null;
 export const handleProblem = lib.handleProblem as (handle: string, reg: Registries) => "too_short" | "too_long" | "invalid_characters" | "reserved" | null;
 export const handleSkeleton = lib.handleSkeleton as (handle: string, reg: Registries) => string;
+export const extractInviteCodeRef = lib.extractInviteCode as (text: string, reg: Registries) => string | null;
 
 export const reg = {
   reserved: reservedNames,
@@ -34,6 +37,7 @@ export const reg = {
   scam: scamPatterns,
   homoglyphs,
   handles,
+  inviteCodes,
   strings: stringsPt,
   stringsEn,
 } as unknown as Registries;

@@ -2,17 +2,15 @@
 // /convite/<code> to /convite/, so both read the real path in the browser. With the app installed,
 // universal links (.well-known/apple-app-site-association) open the app before these pages load.
 import { useEffect, useState } from "react";
-import inviteCodes from "@shared/test-vectors/invite-codes.json";
 import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
 import { Icon } from "../components/ui";
 import { API_URL } from "../config";
-import { distribution, reg } from "../shared";
+import { distribution, extractInviteCodeRef, reg } from "../shared";
 
-/** Same rule as the apps and the API: proseio-shared/test-vectors/invite-codes.json. */
+/** Same rule as the apps and the API: proseio-shared/registries/invite-codes.json. */
 export function extractInviteCode(text: string): string | null {
-  const m = new RegExp(inviteCodes.pattern).exec(text.toUpperCase());
-  return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
+  return extractInviteCodeRef(text, reg);
 }
 
 
