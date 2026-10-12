@@ -126,6 +126,36 @@
       "photo": { "style": "stock", "look": "a 27-year-old Brazilian woman with long straight brown hair and a beige blazer, smiling at a laptop in a bright co-working space" }
     },
     {
+      "id": "debora", "kind": "person", "name": "Débora Martins", "short": "Pastora Débora", "handle": "pastoradebora",
+      "about": "48, pastor of Comunidade Vida Nova, Recife. Verified with gov.br.", "trust": "govbr",
+      "photo": { "style": "selfie", "look": "a 48-year-old Black Brazilian woman with short natural hair, small pearl earrings and a mustard blazer, smiling in front of a simple church hall with white plastic chairs, daylight" }
+    },
+    {
+      "id": "falsapastora", "kind": "person", "name": "Pastora Débora", "short": "Pastora Débora", "handle": "pastora.debora.oficial",
+      "about": "Unverified account that copies Pastora Débora's name and photo to ask for an 'oferta' by Pix.", "trust": "none",
+      "photo": { "copyOf": "debora" }
+    },
+    {
+      "id": "sandra", "kind": "person", "name": "Sandra Lopes", "short": "Tia Sandra", "handle": "tiasandra.prof",
+      "about": "39, teacher of the 3º ano B at a public school, Belo Horizonte. Verified (Pix).", "trust": "pix",
+      "photo": { "style": "selfie", "look": "a 39-year-old Brazilian woman with medium brown skin, curly hair tied up with a colourful scarf, in a primary-school classroom with paper flowers and children's drawings on the wall" }
+    },
+    {
+      "id": "juliana", "kind": "person", "name": "Juliana Prado", "short": "Juliana", "handle": "juprado",
+      "about": "34, nurse, mother of a pupil in the 3º B.", "trust": "none",
+      "photo": { "style": "family", "look": "a 34-year-old white Brazilian woman with straight blonde hair, cheek to cheek with her 8-year-old daughter who has a gap-toothed smile, in a city park on a sunny day" }
+    },
+    {
+      "id": "marcos", "kind": "person", "name": "Marcos Vieira", "short": "Marcos", "handle": null,
+      "about": "42, app driver, father of a pupil in the 3º B.", "trust": "none",
+      "photo": { "style": "candid", "look": "a 42-year-old Black Brazilian man in a plain white t-shirt kneeling on a dirt football pitch next to his 9-year-old son in a plain blue kit with no crest, both giving a thumbs up, late afternoon light" }
+    },
+    {
+      "id": "intruso", "kind": "person", "name": null, "short": null, "handle": null, "phone": "+55 31 99876-5432",
+      "about": "Unknown number in the school group. Posts a fake excursion fee. No photo.", "trust": "none",
+      "photo": null
+    },
+    {
       "id": "familia", "kind": "group", "name": "Família Lima", "short": "Família Lima", "handle": null, "members": 12,
       "about": "Family group: Joana, Gabi, Seu Antônio and others.", "trust": "none",
       "photo": { "style": "group", "look": "a Brazilian family of about ten people of three generations around a long table at Sunday lunch in a backyard, plates of food, plastic chairs" }
@@ -139,6 +169,16 @@
       "id": "condominio", "kind": "group", "name": "Condomínio Bela Vista", "short": "Condomínio Bela Vista", "handle": null, "members": 48,
       "about": "Building group: Seu Valdir (síndico), Dona Ivone, Dona Lúcia and the viewer.", "trust": "none",
       "photo": { "style": "object", "look": "a mid-rise residential building in São Paulo seen from the street, pale yellow walls, balconies with plants and laundry, a palm tree at the gate, blue sky" }
+    },
+    {
+      "id": "igreja", "kind": "group", "name": "Comunidade Vida Nova", "short": "Comunidade Vida Nova", "handle": null, "members": 86,
+      "about": "Church group: Pastora Débora, Dona Cida, Seu Antônio and the viewer.", "trust": "none",
+      "photo": { "style": "group", "look": "about twenty members of a small Brazilian evangelical church, of mixed ages, posing together after the Sunday service in a simple church hall with white plastic chairs, warm light" }
+    },
+    {
+      "id": "escola", "kind": "group", "name": "Pais do 3º B", "short": "Pais do 3º B", "handle": null, "members": 31,
+      "about": "School parents' group: Tia Sandra, Juliana, Marcos, and an unknown number.", "trust": "none",
+      "photo": { "style": "object", "look": "colourful children's drawings and paintings of houses, suns and families pinned to a classroom wall" }
     }
   ]
 }

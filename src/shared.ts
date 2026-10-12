@@ -12,8 +12,9 @@ import distributionJson from "@shared/product/distribution.json";
 import productJson from "@shared/product/product.json";
 import compareJson from "@shared/product/compare.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
+import type { SceneId } from "./sim/scenes";
 
-export type ScamKind = "pixCode" | "boleto" | "pixKey" | "receipt" | "newNumber" | "urgency";
+export type ScamKind = "pixCode" | "boleto" | "pixKey" | "deliveryFee" | "receipt" | "newNumber" | "urgency";
 export type Registries = {
   reserved: { categories: Record<string, string[]> };
   family: { terms: string[] };
@@ -92,7 +93,8 @@ export type Audience = {
   id: string;
   icp: string;
   slug: Copy<string>;
-  sections: { id: string; features: string[] }[];
+  /** Optional phone scene (src/sim/scenes.ts) beside the section text. */
+  sections: { id: string; features: string[]; scene?: SceneId }[];
 } & Copy<{ name: string; title: string; headline: string; lede: string; sections: { heading: string; body: string }[]; note: string; cta: string; ctaSubject: string }>;
 
 export const product = productJson as unknown as {
@@ -148,6 +150,7 @@ export const scamStringKey: Record<string, string> = {
   pixCode: "proseio_scam_warning_pix_code",
   boleto: "proseio_scam_warning_boleto",
   pixKey: "proseio_scam_warning_pix_key",
+  deliveryFee: "proseio_scam_warning_delivery_fee",
   receipt: "proseio_scam_warning_receipt",
   newNumber: "proseio_scam_warning_new_number",
   urgency: "proseio_scam_warning_urgency",

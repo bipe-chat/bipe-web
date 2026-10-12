@@ -262,8 +262,20 @@ export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
       </section>
       {a.sections.map((s, i) => (
         <section className="wrap section" id={s.id} key={s.id}>
-          <h2>{copy.sections[i].heading}</h2>
-          <p className="muted" style={{ maxWidth: "40em" }}>{copy.sections[i].body}</p>
+          {s.scene ? (
+            <div className="split">
+              <div>
+                <h2>{copy.sections[i].heading}</h2>
+                <p className="muted" style={{ maxWidth: "40em" }}>{copy.sections[i].body}</p>
+              </div>
+              <Island name="SceneSim" props={{ lang, id: s.scene, caption: chrome[lang].sceneCaption }} />
+            </div>
+          ) : (
+            <>
+              <h2>{copy.sections[i].heading}</h2>
+              <p className="muted" style={{ maxWidth: "40em" }}>{copy.sections[i].body}</p>
+            </>
+          )}
           <div className="grid" style={{ marginTop: 24 }}>
             {s.features.map((id) => product.features.find((f) => f.id === id)!).map((f) => <FeatureCard lang={lang} f={f} key={f.id} />)}
           </div>

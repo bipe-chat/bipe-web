@@ -128,6 +128,34 @@ export const scenes = {
       { from: ME, text: { pt: "Dona Ivone, quero duas!", en: "Dona Ivone, quero duas! (Dona Ivone, two for me!)" } },
     ],
   },
+  igreja: {
+    kind: "chat", with: "igreja", names: { antonio: "Vô Antônio" },
+    lines: [
+      { from: "debora", text: { pt: "Irmãos, culto de oração quinta às 19h30. Tragam alimentos pra cesta básica", en: "Irmãos, culto de oração quinta às 19h30. Tragam alimentos pra cesta básica (Prayer service Thursday 7:30 pm, bring food for the food bank)" } },
+      { from: "cida", text: { pt: "Amém, pastora! Levo arroz e feijão", en: "Amém, pastora! Levo arroz e feijão (Amen! I will bring rice and beans)" } },
+      { from: "antonio", text: { pt: "Eu levo óleo e macarrão", en: "Eu levo óleo e macarrão (I will bring oil and pasta)" } },
+      { from: ME, text: { pt: "Conta comigo", en: "Conta comigo (Count me in)" } },
+    ],
+  },
+  "falso-pastor": {
+    kind: "chat", with: "falsapastora",
+    lines: [
+      { card: "unverified", age: { pt: "1 dia", en: "1 day" } },
+      { from: "falsapastora", text: "Graça e paz, irmã! Estou usando este número novo" },
+      { from: ME, text: { pt: "Pastora? Aconteceu alguma coisa?", en: "Pastora? Aconteceu alguma coisa? (Pastor? Is something wrong?)" } },
+      { from: "falsapastora", text: "A igreja precisa de uma oferta urgente pra reforma do telhado. Faz um Pix pra chave 11987654321 ainda hoje" },
+    ],
+  },
+  escola: {
+    kind: "chat", with: "escola",
+    lines: [
+      { from: "sandra", text: { pt: "Bom dia, famílias! Amanhã é dia do brinquedo. Mandem com o nome da criança", en: "Bom dia, famílias! Amanhã é dia do brinquedo. Mandem com o nome da criança (Tomorrow is toy day, label the toys)" } },
+      { from: "juliana", text: { pt: "Pode ser bicicleta?", en: "Pode ser bicicleta? (Can it be a bike?)" } },
+      { from: "intruso", text: "Pais, a taxa da excursão é R$ 45. Pix pra chave 11987654321 até hoje" },
+      { from: "sandra", text: { pt: "Atenção: a escola não cobra nada por aqui. A excursão é paga só na secretaria", en: "Atenção: a escola não cobra nada por aqui. A excursão é paga só na secretaria (The school never charges here, pay at the office)" } },
+      { from: "marcos", text: { pt: "Valeu, Tia Sandra. Eu ia pagar agora", en: "Valeu, Tia Sandra. Eu ia pagar agora (Thanks, I was about to pay)" } },
+    ],
+  },
   conversas: {
     kind: "inbox",
     rows: [
