@@ -88,6 +88,8 @@ a.card.feature { display: flex; }
 a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: column; gap: 10px; min-height: 200px; }
 .tentpole-card .display { font-size: 24px; }
 .tentpole-card .more { margin-top: auto; color: var(--acai); font-weight: 600; font-size: 15px; }
+.tentpole-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { .tentpole-grid { grid-template-columns: 1fr; } }
 
 .chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; vertical-align: middle; }
 .chip.policy { background: var(--cpd-color-bg-trust-neutral-subtle); color: var(--cpd-color-text-trust-neutral); border: 1px solid var(--cpd-color-border-trust-neutral); }

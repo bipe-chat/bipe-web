@@ -103,11 +103,11 @@ export function HomePage({ lang }: { lang: Lang }) {
           <div className="side" id={side.id} key={side.id}>
             <h3>{side[lang].name}</h3>
             <p className="side-line muted">{side[lang].line}</p>
-            <div className="grid">{side.tentpoles.map((id) => <TentpoleCard lang={lang} tp={byId(id)} key={id} />)}</div>
+            <div className="grid tentpole-grid">{side.tentpoles.map((id) => <TentpoleCard lang={lang} tp={byId(id)} key={id} />)}</div>
           </div>
         ))}
         <div className="side">
-          <div className="grid">{product.tentpoles.filter((tp) => !sideOf(tp)).map((tp) => <TentpoleCard lang={lang} tp={tp} key={tp.id} />)}</div>
+          <div className="grid tentpole-grid">{product.tentpoles.filter((tp) => !sideOf(tp)).map((tp) => <TentpoleCard lang={lang} tp={tp} key={tp.id} />)}</div>
         </div>
       </section>
 
