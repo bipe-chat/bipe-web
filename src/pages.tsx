@@ -9,7 +9,7 @@ import { GroupsFigure } from "./sim/GroupsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
 import { scenes, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
-import { compare, distribution, product, publicRepo, publicRepos, sideOf, type Audience, type CompareApp, type CompareThreat, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
+import { compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -67,7 +67,6 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
   );
 }
 
-const byId = (id: string): Tentpole => product.tentpoles.find((tp) => tp.id === id)!;
 
 function TentpoleCard({ lang, tp }: { lang: Lang; tp: Tentpole }) {
   return (
@@ -99,16 +98,7 @@ export function HomePage({ lang }: { lang: Lang }) {
 
       <section className="wrap section">
         <h2 style={{ marginBottom: 24 }}>{chrome[lang].tentpolesTitle}</h2>
-        {product.sides.map((side) => (
-          <div className="side" id={side.id} key={side.id}>
-            <h3>{side[lang].name}</h3>
-            <p className="side-line muted">{side[lang].line}</p>
-            <div className="grid tentpole-grid">{side.tentpoles.map((id) => <TentpoleCard lang={lang} tp={byId(id)} key={id} />)}</div>
-          </div>
-        ))}
-        <div className="side">
-          <div className="grid tentpole-grid">{product.tentpoles.filter((tp) => !sideOf(tp)).map((tp) => <TentpoleCard lang={lang} tp={tp} key={tp.id} />)}</div>
-        </div>
+        <div className="grid tentpole-grid">{product.tentpoles.map((tp) => <TentpoleCard lang={lang} tp={tp} key={tp.id} />)}</div>
       </section>
 
       {rest.map((tp, i) => (
