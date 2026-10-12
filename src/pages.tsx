@@ -52,7 +52,7 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
   return (
     <div className={`split${flip ? " flip" : ""}`}>
       <div>
-        <p className="eyebrow">{sideOf(tp) && <>{sideOf(tp)![lang].name} · </>}{tp[lang].name} <StatusChip lang={lang} status={tp.status} /></p>
+        <p className="status-line"><StatusChip lang={lang} status={tp.status} /></p>
         <H>{tp[lang].title}</H>
         <p className="lede">{tp[lang].summary}</p>
         <Points items={tp[lang].points} />
@@ -97,7 +97,7 @@ export function HomePage({ lang }: { lang: Lang }) {
         <h2 style={{ marginBottom: 24 }}>{chrome[lang].tentpolesTitle}</h2>
         {product.sides.map((side) => (
           <div className="side" id={side.id} key={side.id}>
-            <p className="eyebrow">{side[lang].name}</p>
+            <h3>{side[lang].name}</h3>
             <p className="side-line muted">{side[lang].line}</p>
             <div className="grid">{side.tentpoles.map((id) => <TentpoleCard lang={lang} tp={byId(id)} key={id} />)}</div>
           </div>
@@ -250,7 +250,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
       <section className="wrap section">
         <div className="split">
           <div>
-            <p className="eyebrow">{b.nav} <span className="chip planned">{b.label}</span></p>
+            <p className="status-line"><span className="chip planned">{b.label}</span></p>
             <h1>{b.title}</h1>
             <p className="lede">{b.lede}</p>
             <h2 style={{ fontSize: 24, marginTop: 36 }}>{why.heading}</h2>
