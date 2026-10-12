@@ -16,6 +16,7 @@ Static site for proseio.com.br. Vite + React 19 + TypeScript, prerendered to HTM
 - Colours only from proseio-tokens CSS variables. Nunito only for the wordmark and titles.
 - pt-BR copy follows `../proseio/docs/design/language.md` (ADR 0039).
 - Rendered copy: no em or en dashes; run the humanizer rubric before it ships.
+- Public pages never refer to MZ: no name, handle, initials or first-person founder voice, also not in sample data.
 - Source links come from `source` in `../proseio-shared/product/distribution.json`. The site links a repo only when its `public` flag is true. Set the flag when the GitHub repo goes public (ADR 0024).
 - A feature is "No app de testes" only when it is in a TestFlight build.
 - Headline test (issue #77, ADR 0032): `src/experiment.ts` holds the inline script that sets `#hero-title` before paint and the `sendBeacon` events. Arms live in `headlineTest` in `product.json`; h0 is `promise.pt.title`. Change a headline only there. Stop the test with `headlineTest.active: false`.
