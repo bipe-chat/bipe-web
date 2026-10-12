@@ -61,7 +61,7 @@ export type Tentpole = {
 export type TechPart = { id: string; repo?: string; upstream?: { name: string; url: string }[] } & Copy<{ name: string; body: string }>;
 export type TechGroup = { id: string; parts: TechPart[] } & Copy<{ heading: string; line: string }>;
 
-export type DemoId = "scam" | "identity" | "handle" | "groups" | "levels";
+export type DemoId = "scam" | "identity" | "handle" | "groups" | "levels" | "pix";
 
 /** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
 export type Side = { id: "other" | "you"; tentpoles: string[]; areas: string[] } & Copy<{ name: string; line: string }>;
@@ -106,6 +106,7 @@ export const product = productJson as unknown as {
   features: Feature[];
   icps: Icp[];
   audiences: Audience[];
+  audiencesHub: Copy<{ nav: string; title: string; lede: string }>;
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;

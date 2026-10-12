@@ -6,6 +6,7 @@ import { Icon, ScamWarningCard, TrustCard } from "../components/ui";
 import { Bubble, Phone, runs, TabBar } from "../components/phone";
 import { reg, scamWarningKind, t, type Lang } from "../shared";
 import { ME, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type Line, type Scene, type SceneId } from "./scenes";
+import { PixCard } from "./PixCard";
 import { Stage } from "./Stage";
 
 /** The mark next to a name. The same state looks the same everywhere (design/trust-ui.md). */
@@ -29,7 +30,7 @@ function subline(lang: Lang, e: CastEntry, trust: Trust) {
   return e.handle ? `@${e.handle}` : "";
 }
 
-function ChatHead({ lang, id, savedAs, trust }: { lang: Lang; id: string; savedAs?: string; trust: Trust }) {
+export function ChatHead({ lang, id, savedAs, trust }: { lang: Lang; id: string; savedAs?: string; trust: Trust }) {
   const e = who(id);
   return (
     <>
@@ -66,14 +67,7 @@ function Card({ lang, line, partner, savedAs }: { lang: Lang; line: Exclude<Line
         </TrustCard>
       );
     case "pix":
-      // Outgoing: the bank-name check. Incoming: a money request, with pay held for the pause.
-      return (
-        <div className={`pix-card${line.out ? "" : " in"}`}>
-          <div className="pix-head"><span><Icon name="pix" size={14} /> {line.out ? "Pix" : t(lang, "proseio_warning_money_request_title")}</span><strong>{line.amount}</strong></div>
-          <p>{t(lang, "proseio_pix_card_bank_name", name)}</p>
-          {!line.out && <div className="pix-pay">{t(lang, "proseio_pause_countdown", "5")}</div>}
-        </div>
-      );
+      return <PixCard lang={lang} from={partner.id} amount={line.amount} description={line.description} pause={line.pause} />;
     case "notice":
       return (
         <div className="notice">

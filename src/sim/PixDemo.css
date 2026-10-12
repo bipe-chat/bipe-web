@@ -1,0 +1,17 @@
+/* Pix request try-it: controls beside the phone, like the trust-levels picker. */
+.pix-demo { display: grid; grid-template-columns: minmax(0, 300px) 1fr; gap: 24px; align-items: start; margin-top: 24px; }
+.pix-controls { display: flex; flex-direction: column; gap: 14px; }
+.pix-controls label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 15px; }
+.pix-controls input:not([type="radio"]) { font: inherit; font-weight: 400; font-size: 16px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.pix-controls input:focus-visible { outline: 2px solid var(--acai); outline-offset: 1px; }
+.pix-controls fieldset { border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.pix-controls legend { font-weight: 600; font-size: 15px; padding: 0 4px; }
+.pix-controls label.radio { flex-direction: row; align-items: center; gap: 8px; font-weight: 400; }
+.pix-controls .button { justify-content: center; }
+.pix-restart { font: inherit; font-size: 14px; background: none; border: none; color: var(--acai); cursor: pointer; padding: 0; align-self: flex-start; text-decoration: underline; }
+.bank-sheet { border-radius: 14px; background: var(--surface); padding: 10px 12px; font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
+.bank-head { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.bank-row { display: flex; justify-content: space-between; gap: 8px; }
+.bank-row strong { text-align: right; overflow-wrap: anywhere; }
+.bank-ok { display: flex; gap: 6px; align-items: center; color: var(--cpd-color-text-trust-verified); font-weight: 600; }
+@media (max-width: 720px) { .pix-demo { grid-template-columns: 1fr; } }

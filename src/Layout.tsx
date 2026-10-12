@@ -18,6 +18,27 @@ export function Layout({ route }: { route: Route }) {
     { key: "business", href: paths.business(lang), label: product.business[lang].nav },
     { key: "about", href: paths.about(lang), label: c.about },
   ] as const;
+  // Footer: three groups by what the reader looks for. Single audiences live on the hub, never here.
+  const footer = [
+    { heading: c.footerGroups.product, links: [
+      { href: paths.tentpole(lang, trust), label: trust[lang].name },
+      { href: paths.features(lang), label: c.features },
+      { href: paths.compare(lang), label: compare[lang].nav },
+      { href: paths.technology(lang), label: product.technical[lang].nav },
+      { href: paths.download(lang), label: c.download },
+    ] },
+    { heading: c.footerGroups.for, links: [
+      { href: paths.audiences(lang), label: product.audiencesHub[lang].nav },
+      { href: paths.business(lang), label: product.business[lang].nav },
+    ] },
+    { heading: c.footerGroups.bipe, links: [
+      { href: paths.about(lang), label: c.about },
+      { href: `mailto:${distribution.contact}`, label: c.contact },
+      { href: paths.privacy(lang), label: c.privacy },
+      { href: paths.terms(lang), label: c.terms },
+      ...(publicRepos.length > 0 ? [{ href: distribution.source.org, label: c.source }] : []),
+    ] },
+  ];
   return (
     <>
       <a className="visually-hidden" href="#main">{c.skip}</a>
@@ -33,15 +54,15 @@ export function Layout({ route }: { route: Route }) {
       <main id="main">{route.body()}</main>
       <footer className="site-foot">
         <div className="wrap">
-          <span>{c.footerNote}</span>
-          <span>{c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a></span>
-          {product.audiences.map((a) => <a key={a.id} href={paths.audience(lang, a)}>{a[lang].title}</a>)}
-          <a href={paths.compare(lang)}>{compare[lang].nav}</a>
-          <a href={paths.technology(lang)}>{product.technical[lang].nav}</a>
-          <a href={paths.privacy(lang)}>{c.privacy}</a>
-          <a href={paths.terms(lang)}>{c.terms}</a>
-          <a href={`mailto:${distribution.contact}`}>{c.contact}</a>
-          {publicRepos.length > 0 && <a href={distribution.source.org}>{c.source}</a>}
+          <nav className="foot-groups" aria-label={c.footerGroups.bipe}>
+            {footer.map((g) => (
+              <div key={g.heading}>
+                <h2>{g.heading}</h2>
+                <ul>{g.links.map((l) => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}</ul>
+              </div>
+            ))}
+          </nav>
+          <p className="foot-note">{c.footerNote} {c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a>.</p>
         </div>
       </footer>
     </>

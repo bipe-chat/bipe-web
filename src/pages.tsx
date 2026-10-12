@@ -19,6 +19,7 @@ function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) 
   if (id === "handle") return <Island name="HandleSim" props={{ lang, caption }} />;
   if (id === "groups") return <GroupsFigure lang={lang} caption={caption} />;
   if (id === "levels") return <Island name="TrustLevels" props={{ lang, caption }} />;
+  if (id === "pix") return <Island name="PixDemo" props={{ lang, caption }} />;
   return <NoAdsFigure lang={lang} />;
 }
 
@@ -144,8 +145,8 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
     <>
       <section className="wrap section"><TentpoleSection lang={lang} tp={tp} headingLevel={1} /></section>
       {tp.demos[0] && <section className="wrap narrow section" style={{ paddingTop: 48 }}><Try lang={lang} id={tp.demos[0]} /></section>}
-      {tp.demos.slice(1).map((id, i) => id === "levels" ? (
-        // The level picker is the left column, so the island spans the section.
+      {tp.demos.slice(1).map((id, i) => id === "levels" || id === "pix" ? (
+        // These islands hold their own controls column, so they span the section.
         <section className="wrap section" key={id}>
           <h2>{tp[lang].demos[i + 1]?.title}</h2>
           <Demo lang={lang} tp={tp} index={i + 1} />
@@ -249,13 +250,36 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
   );
 }
 
+/** The hub for audience pages: one card per audience, in ICP order (ADR 0060). */
+export function AudiencesPage({ lang }: { lang: Lang }) {
+  const hub = product.audiencesHub[lang];
+  return (
+    <section className="wrap section">
+      <h1>{hub.title}</h1>
+      <p className="lede">{hub.lede}</p>
+      <div className="grid" style={{ marginTop: 40 }}>
+        {product.audiences.map((a) => (
+          <a className="card feature" href={paths.audience(lang, a)} key={a.id}>
+            <h3>{a[lang].name}</h3>
+            <p>{a[lang].headline}</p>
+          </a>
+        ))}
+        <a className="card feature" href={paths.business(lang)}>
+          <h3>{product.business[lang].nav}</h3>
+          <p>{product.business[lang].title}</p>
+        </a>
+      </div>
+    </section>
+  );
+}
+
 /** An audience page (ADR 0060): a need per section, each carried by feature cards with their true status. */
 export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
   const copy = a[lang];
   return (
     <>
       <section className="wrap narrow section">
-        <p className="small muted">{copy.title}</p>
+        <p className="small"><a href={paths.audiences(lang)}>{product.audiencesHub[lang].title}</a> · {copy.name}</p>
         <h1>{copy.headline}</h1>
         <p className="lede">{copy.lede}</p>
         <p className="small muted">{copy.note}</p>

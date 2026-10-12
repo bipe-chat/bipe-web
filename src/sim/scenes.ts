@@ -12,7 +12,7 @@ export type Line =
   | { card: "unverified"; age: Text }
   | { card: "external" | "securityChange" | "suspended" | "mismatch" }
   | { card: "nickname" }
-  | { card: "pix"; amount: string; out?: boolean }
+  | { card: "pix"; amount: string; description?: string; pause?: boolean }
   | { card: "notice"; text: Text };
 
 export type InboxRow = { with: string; savedAs?: string; trust?: Trust; preview: string; time: string; unread?: number };
@@ -30,8 +30,8 @@ export const scenes = {
     lines: [
       { from: ME, text: { pt: "Oi Rafa, a bike ainda tá disponível?", en: "Oi Rafa, a bike ainda tá disponível? (Is the bike still for sale?)" } },
       { from: "rafa", text: { pt: "Tá sim! Fica 850 com a revisão feita", en: "Tá sim! Fica 850 com a revisão feita (Yes! 850, serviced)" } },
-      { from: ME, text: { pt: "Fechado, vou te mandar o Pix", en: "Fechado, vou te mandar o Pix (Deal, sending the Pix)" } },
-      { card: "pix", amount: "R$ 850,00", out: true },
+      { from: ME, text: { pt: "Fechado, me manda o Pix", en: "Fechado, me manda o Pix (Deal, send me the Pix request)" } },
+      { card: "pix", amount: "R$ 850,00", description: "Bike usada, revisada" },
     ],
   },
   "numero-novo": {
@@ -47,7 +47,7 @@ export const scenes = {
     kind: "chat", with: "joao", savedAs: "Paulo Mendes",
     lines: [
       { from: "joao", text: "Oi sobrinha, tô sem acesso ao app do banco. Me empresta 850? Devolvo sexta" },
-      { card: "pix", amount: "R$ 850,00" },
+      { card: "pix", amount: "R$ 850,00", pause: true },
       { card: "mismatch" },
     ],
   },

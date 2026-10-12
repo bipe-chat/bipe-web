@@ -59,6 +59,9 @@ export function renderMarkdown(route: Route): string {
       const f = product.features.find((x) => x.id === id);
       if (f) out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (${c.status[f.status.ios]}): ${f[lang].body}`);
     }
+  } else if (route.path === paths.audiences(lang)) {
+    for (const a of product.audiences) out.push(`- [${a[lang].title}](${abs(paths.audience(lang, a))}): ${a[lang].headline}`);
+    out.push(`- [${product.business[lang].nav}](${abs(paths.business(lang))}): ${product.business[lang].title}`, "");
   } else if (audience) {
     const copy = audience[lang];
     out.push(`**${copy.headline}**`, "", `(${copy.note})`, "");
