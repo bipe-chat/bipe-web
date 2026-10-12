@@ -14,7 +14,7 @@ import compareJson from "@shared/product/compare.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import type { SceneId } from "./sim/scenes";
 
-export type ScamKind = "pixCode" | "boleto" | "pixKey" | "deliveryFee" | "receipt" | "newNumber" | "urgency";
+export type ScamKind = "pixCode" | "boleto" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
 export type Registries = {
   reserved: { categories: Record<string, string[]> };
   family: { terms: string[] };
@@ -152,6 +152,8 @@ export const scamStringKey: Record<string, string> = {
   boleto: "proseio_scam_warning_boleto",
   pixKey: "proseio_scam_warning_pix_key",
   deliveryFee: "proseio_scam_warning_delivery_fee",
+  lookalikeLink: "proseio_scam_warning_lookalike_link",
+  bankAlert: "proseio_scam_warning_bank_alert",
   receipt: "proseio_scam_warning_receipt",
   newNumber: "proseio_scam_warning_new_number",
   urgency: "proseio_scam_warning_urgency",
