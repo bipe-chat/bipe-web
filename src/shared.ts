@@ -57,6 +57,9 @@ export type Tentpole = {
 
 export type DemoId = "scam" | "identity" | "handle" | "groups";
 
+/** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
+export type Side = { id: "other" | "you"; tentpoles: string[]; areas: string[] } & Copy<{ name: string; line: string }>;
+
 export type Feature = {
   id: string;
   area: string;
@@ -66,6 +69,7 @@ export type Feature = {
 export const product = productJson as unknown as {
   promise: Copy<{ title: string; lede: string }>;
   headlineTest: { experiment: string; active: boolean; arms: ({ id: string; angle: string } & Copy<string>)[] };
+  sides: Side[];
   tentpoles: Tentpole[];
   areas: ({ id: string } & Copy<string>)[];
   features: Feature[];
@@ -84,6 +88,9 @@ export const distribution = distributionJson as unknown as {
   contact: string;
   steward: { name: string; url: string };
 };
+/** The side a tentpole belongs to, or undefined (groups sit outside the frame). */
+export const sideOf = (tp: Tentpole): Side | undefined => product.sides.find((s) => s.tentpoles.includes(tp.id));
+
 /** Repos the site may link: only public ones (ADR 0024). Empty until the code is published. */
 export const publicRepos = distribution.source.repos.filter((r) => r.public);
 

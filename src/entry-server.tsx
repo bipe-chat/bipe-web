@@ -34,10 +34,21 @@ export function renderMarkdown(route: Route): string {
   const out: string[] = [`# ${route.title}`, "", route.description, ""];
   const tp = product.tentpoles.find((t) => paths.tentpole(lang, t) === route.path);
   if (route.path === paths.home(lang) || route.path === paths.features(lang)) {
+    // Same grouping as the pages: the two sides of ADR 0047, then what sits outside them.
+    const tpLine = (t: (typeof product.tentpoles)[number]) => `- [${t[lang].title}](${abs(paths.tentpole(lang, t))}) (${c.status[t.status]}): ${t[lang].summary}`;
+    const fLine = (f: (typeof product.features)[number]) => `- ${f[lang].name} (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]}): ${f[lang].body}`;
+    for (const side of product.sides) {
+      out.push(`## ${side[lang].name}`, "", side[lang].line, "");
+      for (const id of side.tentpoles) out.push(tpLine(product.tentpoles.find((t) => t.id === id)!));
+      out.push("");
+      for (const f of product.features.filter((x) => side.areas.includes(x.area))) out.push(fLine(f));
+      out.push("");
+    }
+    const sidedAreas = product.sides.flatMap((s) => s.areas);
     out.push(`## ${c.tentpolesTitle}`, "");
-    for (const t of product.tentpoles) out.push(`- [${t[lang].title}](${abs(paths.tentpole(lang, t))}) (${c.status[t.status]}): ${t[lang].summary}`);
-    out.push("", `## ${c.allFeatures}`, "");
-    for (const f of product.features) out.push(`- ${f[lang].name} (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]}): ${f[lang].body}`);
+    for (const t of product.tentpoles.filter((x) => !product.sides.some((s) => s.tentpoles.includes(x.id)))) out.push(tpLine(t));
+    out.push("");
+    for (const f of product.features.filter((x) => !sidedAreas.includes(x.area))) out.push(fLine(f));
   } else if (tp) {
     out.push(...tp[lang].points.map((p) => `- ${p}`), "");
     for (const id of tp.features) {

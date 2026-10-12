@@ -4,10 +4,15 @@ import { paths } from "./paths";
 import type { Route } from "./routes";
 import { distribution, product, publicRepos } from "./shared";
 
+/** The nav leads with the identity side (ADR 0047): its first tentpole page. */
+const trustId = product.sides.find((s) => s.id === "other")!.tentpoles[0];
+const trust = product.tentpoles.find((tp) => tp.id === trustId)!;
+
 export function Layout({ route }: { route: Route }) {
   const { lang } = route;
   const c = chrome[lang];
   const nav = [
+    { key: "trust", href: paths.tentpole(lang, trust), label: trust[lang].name },
     { key: "features", href: paths.features(lang), label: c.features },
     { key: "download", href: paths.download(lang), label: c.download },
     { key: "business", href: paths.business(lang), label: product.business[lang].nav },

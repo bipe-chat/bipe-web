@@ -18,7 +18,7 @@ export type Route = {
   /** Render a 1200x630 link-preview card from title and description (scripts/og.mjs). Name of the PNG under /og/. */
   ogCard?: string;
   /** The nav item this page belongs to. */
-  section?: "features" | "download" | "business" | "about";
+  section?: "trust" | "features" | "download" | "business" | "about";
   body: () => ReactNode;
 };
 
@@ -31,7 +31,8 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     body: () => <HomePage lang={lang} />,
   },
   ...product.tentpoles.map((tp): Route => ({
-    path: paths.tentpole(lang, tp), alt: paths.tentpole(other(lang), tp), lang, section: "features",
+    path: paths.tentpole(lang, tp), alt: paths.tentpole(other(lang), tp), lang,
+    section: product.sides.find((s) => s.id === "other")!.tentpoles.includes(tp.id) ? "trust" : "features",
     title: `${tp[lang].name} · Proseio`, description: tp[lang].summary,
     body: () => <TentpolePage lang={lang} tp={tp} />,
   })),

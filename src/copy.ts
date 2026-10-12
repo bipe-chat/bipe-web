@@ -43,7 +43,7 @@ export const chrome = {
     invite: {
       title: "Você recebeu um convite pro Proseio",
       titleFrom: (handle: string) => `@${handle} te convidou pro Proseio`,
-      lead: "O Proseio é um mensageiro brasileiro, aberto e sem anúncios.",
+      lead: "Um app de mensagens brasileiro que avisa quando tem golpe e esconde seu número.",
       yourCode: "Seu código de convite:",
       copy: "Copiar código", copied: "Copiado", copyFailed: "Segure o código pra copiar",
       oneUse: "Vale pra uma pessoa só. Guarde até criar a conta.",

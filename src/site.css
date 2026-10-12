@@ -93,6 +93,11 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 
 .area { margin-top: 40px; }
 .area h2 { font-size: 24px; margin-bottom: 16px; }
+.area h3 { font-size: 20px; margin-bottom: 14px; }
+.side { margin-top: 40px; }
+.side > h2 { font-size: 30px; }
+.side-line { margin: 6px 0 20px; max-width: 40em; }
+.side > .eyebrow + .side-line { margin-top: -6px; }
 .feature { display: flex; flex-direction: column; gap: 8px; }
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 

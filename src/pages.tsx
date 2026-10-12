@@ -6,7 +6,7 @@ import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
 import { BusinessFigure } from "./sim/BusinessFigure";
 import { GroupsFigure } from "./sim/GroupsFigure";
-import { distribution, product, publicRepos, type DemoId, type Lang, type Tentpole } from "./shared";
+import { distribution, product, publicRepos, sideOf, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -52,7 +52,7 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
   return (
     <div className={`split${flip ? " flip" : ""}`}>
       <div>
-        <p className="eyebrow">{tp[lang].name} <StatusChip lang={lang} status={tp.status} /></p>
+        <p className="eyebrow">{sideOf(tp) && <>{sideOf(tp)![lang].name} · </>}{tp[lang].name} <StatusChip lang={lang} status={tp.status} /></p>
         <H>{tp[lang].title}</H>
         <p className="lede">{tp[lang].summary}</p>
         <Points items={tp[lang].points} />
@@ -60,6 +60,19 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
       </div>
       <Demo lang={lang} tp={tp} index={0} />
     </div>
+  );
+}
+
+const byId = (id: string): Tentpole => product.tentpoles.find((tp) => tp.id === id)!;
+
+function TentpoleCard({ lang, tp }: { lang: Lang; tp: Tentpole }) {
+  return (
+    <a className="card tentpole-card" href={paths.tentpole(lang, tp)}>
+      <StatusChip lang={lang} status={tp.status} />
+      <span className="display">{tp[lang].title}</span>
+      <p>{tp[lang].summary}</p>
+      <span className="more">{chrome[lang].more} →</span>
+    </a>
   );
 }
 
@@ -82,15 +95,15 @@ export function HomePage({ lang }: { lang: Lang }) {
 
       <section className="wrap section">
         <h2 style={{ marginBottom: 24 }}>{chrome[lang].tentpolesTitle}</h2>
-        <div className="grid">
-          {product.tentpoles.map((tp) => (
-            <a className="card tentpole-card" href={paths.tentpole(lang, tp)} key={tp.id}>
-              <StatusChip lang={lang} status={tp.status} />
-              <span className="display">{tp[lang].title}</span>
-              <p>{tp[lang].summary}</p>
-              <span className="more">{chrome[lang].more} →</span>
-            </a>
-          ))}
+        {product.sides.map((side) => (
+          <div className="side" id={side.id} key={side.id}>
+            <p className="eyebrow">{side[lang].name}</p>
+            <p className="side-line muted">{side[lang].line}</p>
+            <div className="grid">{side.tentpoles.map((id) => <TentpoleCard lang={lang} tp={byId(id)} key={id} />)}</div>
+          </div>
+        ))}
+        <div className="side">
+          <div className="grid">{product.tentpoles.filter((tp) => !sideOf(tp)).map((tp) => <TentpoleCard lang={lang} tp={tp} key={tp.id} />)}</div>
         </div>
       </section>
 
@@ -163,25 +176,36 @@ export function FeaturesPage({ lang }: { lang: Lang }) {
       <p className="small muted" style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
         <StatusChip lang={lang} status="testing" /> <StatusChip lang={lang} status="planned" /> <StatusChip lang={lang} status="policy" />
       </p>
-      {product.areas.map((area) => {
-        const items = product.features.filter((f) => f.area === area.id);
-        if (!items.length) return null;
-        return (
-          <div className="area" key={area.id}>
-            <h2>{area[lang]}</h2>
-            <div className="grid">
-              {items.map((f) => (
-                <div className="card feature" key={f.id} id={f.id}>
-                  <div className="row"><h3>{f[lang].name}</h3><StatusChip lang={lang} status={f.status.ios} /></div>
-                  <p>{f[lang].body}</p>
-                  <p className="small">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })}
+      {product.sides.map((side) => (
+        <div className="side" id={side.id} key={side.id}>
+          <h2>{side[lang].name}</h2>
+          <p className="side-line muted">{side[lang].line}</p>
+          {product.areas.filter((a) => side.areas.includes(a.id)).map((area) => <FeatureArea lang={lang} area={area} level={3} key={area.id} />)}
+        </div>
+      ))}
+      {product.areas.filter((a) => !product.sides.some((s) => s.areas.includes(a.id))).map((area) => <FeatureArea lang={lang} area={area} level={2} key={area.id} />)}
     </section>
+  );
+}
+
+function FeatureArea({ lang, area, level }: { lang: Lang; area: (typeof product.areas)[number]; level: 2 | 3 }) {
+  const c = chrome[lang];
+  const items: Feature[] = product.features.filter((f) => f.area === area.id);
+  if (!items.length) return null;
+  const H = level === 2 ? "h2" : "h3";
+  return (
+    <div className="area">
+      <H>{area[lang]}</H>
+      <div className="grid">
+        {items.map((f) => (
+          <div className="card feature" key={f.id} id={f.id}>
+            <div className="row"><h3>{f[lang].name}</h3><StatusChip lang={lang} status={f.status.ios} /></div>
+            <p>{f[lang].body}</p>
+            <p className="small">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
