@@ -4,7 +4,7 @@ _Bipe, test version. Updated 12 October 2026._
 Bipe is a Brazilian messaging app, still in testing. This page tells you plainly what data we keep, where it lives and why. The Portuguese version is the reference text.
 
 ## Who looks after your data
-During testing, Bipe is run by Michell Zappa together with Envisioning. Questions or requests about your data: [contact@envisioning.com](mailto:contact@envisioning.com).
+During testing, Bipe is run by Envisioning. Questions or requests about your data: [contact@envisioning.com](mailto:contact@envisioning.com).
 
 ## What we keep
 - **Your account:** username, display name and a protected form of your password. We never see the password itself.

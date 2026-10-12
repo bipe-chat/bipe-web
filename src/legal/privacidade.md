@@ -4,7 +4,7 @@ _Bipe, versão de testes. Atualizada em 12 de outubro de 2026._
 O Bipe é um app de mensagens brasileiro e ainda está em fase de testes. Aqui você vê, sem rodeio, quais dados a gente guarda, onde eles ficam e por quê.
 
 ## Quem cuida dos seus dados
-Durante os testes, o Bipe é tocado por Michell Zappa, junto com a Envisioning. Dúvidas ou pedidos sobre seus dados: [contact@envisioning.com](mailto:contact@envisioning.com).
+Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre seus dados: [contact@envisioning.com](mailto:contact@envisioning.com).
 
 ## O que a gente guarda
 - **Sua conta:** nome de usuário, nome de exibição e uma versão protegida da sua senha. A senha em si, a gente nunca vê.
