@@ -223,15 +223,6 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .trust .buttons { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
 .trust .buttons span { border: 1px solid currentColor; border-radius: 999px; padding: 3px 10px; font-weight: 600; font-size: 12px; }
 
-/* Try it */
-.tryit { margin-top: 28px; }
-.tryit label { font-weight: 600; display: block; margin-bottom: 8px; }
-.tryit textarea, .tryit input { width: 100%; font: inherit; font-size: 16px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--text); resize: vertical; }
-.tryit textarea:focus, .tryit input:focus { outline: 2px solid var(--acai); outline-offset: 1px; }
-.tryit .examples { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 14px; }
-.tryit .examples button { font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer; text-align: left; }
-.tryit .result { min-height: 64px; }
-.tryit .ok { font-size: 14px; color: var(--muted); padding: 10px 0; }
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
 
 /* Download */

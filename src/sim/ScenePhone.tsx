@@ -197,6 +197,23 @@ export function SceneSim({ lang, id, caption }: { lang: Lang; id: SceneId; capti
   );
 }
 
+/** Several scenes played back to back, each to its end. */
+export function SceneReel({ lang, ids, caption }: { lang: Lang; ids: SceneId[]; caption: string }) {
+  const timeline = ids.flatMap((id, i) => Array.from({ length: sceneSteps(scenes[id]) }, (_, b) => ({ i, b: b + 1 })));
+  const holdMs = (beat: number) => {
+    const at = timeline[beat - 1];
+    return beat === 0 ? 700 : at && timeline[beat]?.i !== at.i ? 4200 : 2200;
+  };
+  return (
+    <Stage lang={lang} caption={caption} steps={timeline.length} holdMs={holdMs}>
+      {(beat) => {
+        const at = beat === 0 ? { i: 0, b: 0 } : timeline[Math.min(beat, timeline.length) - 1];
+        return <ScenePhone lang={lang} id={ids[at.i]} beat={at.b} />;
+      }}
+    </Stage>
+  );
+}
+
 /** Trust levels: pick a state, the phone plays that scene. */
 export function TrustLevels({ lang, caption }: { lang: Lang; caption: string }) {
   const [id, setId] = useState<SceneId>(TRUST_LEVEL_SCENES[0]);

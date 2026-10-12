@@ -7,27 +7,20 @@ import { assignScript, HEADLINE } from "./experiment";
 import { BusinessFigure } from "./sim/BusinessFigure";
 import { GroupsFigure } from "./sim/GroupsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
-import { scenes, type SceneId } from "./sim/scenes";
+import { SCAM_REEL, scenes, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
 import { compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
   const caption = tp[lang].demos[index]?.caption ?? "";
-  if (id === "scam") return <Island name="ScamSim" props={{ lang, caption }} />;
+  if (id === "scam") return <Island name="SceneReel" props={{ lang, ids: SCAM_REEL, caption }} />;
   if (id === "identity") return <Island name="IdentitySim" props={{ lang, caption }} />;
   if (id === "handle") return <Island name="HandleSim" props={{ lang, caption }} />;
   if (id === "groups") return <GroupsFigure lang={lang} caption={caption} />;
   if (id === "levels") return <Island name="TrustLevels" props={{ lang, caption }} />;
   if (id === "pix") return <Island name="PixDemo" props={{ lang, caption }} />;
   return <NoAdsFigure lang={lang} />;
-}
-
-function Try({ lang, id }: { lang: Lang; id: DemoId }) {
-  if (id === "scam") return <Island name="ScamTry" props={{ lang }} />;
-  if (id === "identity") return <Island name="NameTry" props={{ lang }} />;
-  if (id === "handle") return <Island name="HandleTry" props={{ lang }} />;
-  return null;
 }
 
 /** Static figure for the no-ads tentpole: the promise as a short ledger, no fake UI. */
@@ -134,22 +127,10 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
   return (
     <>
       <section className="wrap section"><TentpoleSection lang={lang} tp={tp} headingLevel={1} /></section>
-      {tp.demos[0] && <section className="wrap narrow section" style={{ paddingTop: 48 }}><Try lang={lang} id={tp.demos[0]} /></section>}
-      {tp.demos.slice(1).map((id, i) => id === "levels" || id === "pix" ? (
-        // These islands hold their own controls column, so they span the section.
+      {tp.demos.slice(1).map((id, i) => (
         <section className="wrap section" key={id}>
           <h2>{tp[lang].demos[i + 1]?.title}</h2>
           <Demo lang={lang} tp={tp} index={i + 1} />
-        </section>
-      ) : (
-        <section className="wrap section" key={id}>
-          <div className={`split${i % 2 === 0 ? " flip" : ""}`}>
-            <div>
-              <h2>{tp[lang].demos[i + 1]?.title}</h2>
-              <Try lang={lang} id={id} />
-            </div>
-            <Demo lang={lang} tp={tp} index={i + 1} />
-          </div>
         </section>
       ))}
       <section className="wrap section">

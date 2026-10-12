@@ -191,6 +191,9 @@ export const pixExamples: PixExample[] = [
     thanks: { pt: "Recebi! Sábado, 7h, na praia", en: "Recebi! Sábado, 7h, na praia (Got it, Saturday 7am at the beach)" } },
 ];
 
+/** Scam scenes for the scam-warning demo, played back to back. Every warning comes from the detector. */
+export const SCAM_REEL: SceneId[] = ["numero-novo", "falso-suporte", "renda-extra", "falso-pastor", "escola"];
+
 /** Scenes in the trust-levels picker, in order. Labels are chrome copy: chrome[lang].scenes. */
 export const TRUST_LEVEL_SCENES: SceneId[] = ["verificado", "pessoalmente", "numero-novo", "falso-suporte", "renda-extra", "nome-diferente", "aparelho-novo", "de-fora", "instituicao", "mae", "conversas", "perfil"];
 

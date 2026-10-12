@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { chrome } from "../copy";
 import { Mark } from "../components/brand";
 import { TrustCard } from "../components/ui";
@@ -34,7 +33,9 @@ function Result({ lang, handle }: { lang: Lang; handle: string }) {
   );
 }
 
-const TYPED = ["ana.souza", "ana_souza", "ana.souza.rj"];
+// Handles typed one after another, each checked live by the reference logic: the same name with
+// another separator, capitals, a reserved bank name, too short, then one that is free.
+const TYPED = ["ana_souza", "Ana.Souza", "itau", "ab", "ana.souza.rj"];
 const hold = (beat: number) => (beat >= TYPED.length ? 5000 : 2600);
 
 export function HandleSim({ lang, caption }: { lang: Lang; caption: string }) {
@@ -60,21 +61,5 @@ export function HandleSim({ lang, caption }: { lang: Lang; caption: string }) {
         );
       }}
     </Stage>
-  );
-}
-
-export function HandleTry({ lang }: { lang: Lang }) {
-  const c = chrome[lang];
-  const [handle, setHandle] = useState("anasouza");
-  return (
-    <div className="tryit">
-      <label htmlFor="handle-try">{c.tryHandle}</label>
-      <input id="handle-try" value={handle} onChange={(e) => setHandle(e.target.value.replace(/^@/, ""))} placeholder={t(lang, "proseio_handle_placeholder")} autoComplete="off" autoCapitalize="none" spellCheck={false} />
-      <div className="examples" aria-label={c.examples}>
-        {["anasouza", "ana__souza", "itau", "ab", "Ana.Souza", "ana.souza.rj"].map((m) => <button type="button" key={m} onClick={() => setHandle(m)}>@{m}</button>)}
-      </div>
-      <div className="result" aria-live="polite"><Result lang={lang} handle={handle} /></div>
-      <p className="small muted">{c.tryHandleHint}</p>
-    </div>
   );
 }
