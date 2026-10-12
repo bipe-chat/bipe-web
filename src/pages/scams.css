@@ -54,3 +54,5 @@
 .scam-more .scam-source { margin-top: 2px; }
 .scam-ticks + .scam-col .scam-cap { left: 0; transform: translateY(-4px); }
 .scam-col:last-child .scam-cap { left: auto; right: 0; transform: translateY(-4px); }
+.scam-type-more { margin-top: 6px; font-size: 15px; }
+.scam-others { padding-left: 20px; display: grid; gap: 8px; }

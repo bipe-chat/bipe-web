@@ -12,7 +12,7 @@ export const redirects = Object.fromEntries(Object.entries(product.redirects).fi
 
 import inviteCodes from "@shared/test-vectors/invite-codes.json";
 import { extractInviteCode } from "./sim/LinkPages";
-import { scamsMarkdown } from "./pages/ScamsPage";
+import { scams, scamsMarkdown, scamTypeMarkdown } from "./pages/ScamsPage";
 
 /** Fails the build when the invite page disagrees with the shared invite-code vectors. */
 export function selfTest(): void {
@@ -117,6 +117,8 @@ export function renderMarkdown(route: Route): string {
     out.push(`## ${compare[lang].sourcesTitle}`, "", compare[lang].sourcesNote, "", ...sources.map((x) => `- [${x.name}](${x.url})`), "");
   } else if (route.path === paths.scams(lang)) {
     out.push(...scamsMarkdown(lang, abs));
+  } else if (scams.types.some((t) => route.path === paths.scamType(lang, t))) {
+    out.push(...scamTypeMarkdown(lang, scams.types.find((t) => route.path === paths.scamType(lang, t))!, abs));
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
   }
@@ -126,6 +128,11 @@ export function renderMarkdown(route: Route): string {
   out.push("", `${c.steward} ${distribution.steward.name}: ${distribution.steward.url}`);
   if (publicRepos.length > 0) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
   return out.join("\n") + "\n";
+}
+
+/** <script type="application/ld+json"> tags for the head. "<" is escaped so the JSON cannot close the tag. */
+export function renderJsonLd(route: Route): string {
+  return (route.jsonLd?.(abs) ?? []).map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
 }
 
 export function llmsTxt(): string {

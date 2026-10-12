@@ -21,6 +21,7 @@ export function Layout({ route }: { route: Route }) {
   const footer = [
     { heading: c.footerGroups.product, links: [
       { href: paths.tentpole(lang, trust), label: trust[lang].name },
+      { href: paths.scams(lang), label: c.scams },
       { href: paths.features(lang), label: c.features },
       { href: paths.compare(lang), label: compare[lang].nav },
       { href: paths.technology(lang), label: product.technical[lang].nav },

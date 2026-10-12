@@ -1,7 +1,7 @@
 // /golpes-no-brasil/ and /en/scams-in-brazil/: digital scams in Brazil, from the sourced register
 // proseio-shared/product/scams.json (research: proseio/docs/scams-brazil.md). Every number on the page
-// comes from that file with its source; this file only lays it out. Charts are static: HTML labels and
-// values, SVG marks, no script. Styles: ./scams.css (loaded by src/islands.tsx).
+// comes from that file with its source; this file only lays it out. Each scam type also has its own page
+// (ScamTypePage, /golpes-no-brasil/<slug>/). Charts are static: HTML labels and values, SVG marks, no script. Styles: ./scams.css (loaded by src/islands.tsx).
 import scamsJson from "@shared/product/scams.json";
 import { chrome } from "../copy";
 import { paths } from "../paths";
@@ -12,11 +12,13 @@ export type ScamSource = { id: string; name: string; publisher: string; url: str
 export type ScamStat = { id: string; source: string } & Copy<{ value: string; label: string; period: string }>;
 type Row = { id: string; value: number; highlight?: boolean } & Copy<{ label: string; value: string }>;
 export type ScamChart = { id: string; form: "columns" | "bars"; sources: string[]; rows: Row[] } & Copy<{ title: string; note: string }>;
-type Section = { heading: string; body: string };
+type TypeCopy = { heading: string; body: string; title: string; headline: string; lede: string; how: string[]; signs: string[]; todo: string[] };
+export type ScamType = { id: string; slug: Copy<string>; stats: string[]; protect: string[] } & Copy<TypeCopy>;
 type PageCopy = {
   title: string; headline: string; lede: string; numbersTitle: string; chartsTitle: string;
   channelsTitle: string; channelsBody: string;
-  typesTitle: string; types: Section[];
+  typesTitle: string;
+  typeNumbers: string; typeHow: string; typeSigns: string; typeTodo: string; typeOthers: string; typeMore: string;
   moreTitle: string; moreBody: string;
   protectTitle: string; protectLede: string; advice: string[];
   bipeTitle: string; bipeLede: string; limit: string;
@@ -32,7 +34,7 @@ export const scams = scamsJson as unknown as {
   more: string[];
   charts: ScamChart[];
   channelCharts: string[];
-  types: { id: string; stat: string }[];
+  types: ScamType[];
   protect: ({ feature: string } & Copy<string>)[];
 } & Copy<PageCopy>;
 
@@ -41,6 +43,8 @@ const statOf = (id: string) => scams.stats.find((s) => s.id === id)!;
 const chartOf = (id: string) => scams.charts.find((c) => c.id === id)!;
 /** Sources in the order the page uses them. */
 const usedSources = () => scams.sources.filter((s) => scams.stats.some((x) => x.source === s.id) || scams.charts.some((c) => c.sources.includes(s.id)));
+/** Sources of one type page: only those its numbers cite. */
+const typeSources = (t: ScamType) => scams.sources.filter((s) => t.stats.some((id) => statOf(id).source === s.id));
 
 /** "Fonte: Publisher" with a link, and the kind when it is not a primary source. */
 function SourceLine({ lang, ids, extra }: { lang: Lang; ids: string[]; extra?: string }) {
@@ -172,9 +176,22 @@ function Chart({ lang, chart }: { lang: Lang; chart: ScamChart }) {
   );
 }
 
+/** A Bipe feature that protects against the scam, with its status per platform from product.json. */
+function ProtectCard({ lang, feature }: { lang: Lang; feature: string }) {
+  const st = chrome[lang].status;
+  const f = product.features.find((x) => x.id === feature)!;
+  const p = scams.protect.find((x) => x.feature === feature)!;
+  return (
+    <a className="card feature" href={paths.feature(lang, f)}>
+      <h3>{f[lang].name}</h3>
+      <p>{p[lang]}</p>
+      <p className="small">iPhone: {st[f.status.ios]} · Android: {st[f.status.android]}</p>
+    </a>
+  );
+}
+
 export function ScamsPage({ lang }: { lang: Lang }) {
   const c = scams[lang];
-  const st = chrome[lang].status;
   return (
     <section className="wrap section scams">
       <h1>{c.headline}</h1>
@@ -198,14 +215,15 @@ export function ScamsPage({ lang }: { lang: Lang }) {
 
       <div className="side narrow">
         <h2>{c.typesTitle}</h2>
-        {scams.types.map((t, i) => {
-          const s = statOf(t.stat);
+        {scams.types.map((t) => {
+          const s = statOf(t.stats[0]);
           return (
-            <div className="scam-type" key={t.id}>
-              <h3>{c.types[i].heading}</h3>
-              <p>{c.types[i].body}</p>
+            <div className="scam-type" key={t.id} id={t.id}>
+              <h3><a href={paths.scamType(lang, t)}>{t[lang].heading}</a></h3>
+              <p>{t[lang].body}</p>
               <p className="scam-type-stat"><strong>{s[lang].value}</strong> {s[lang].label}</p>
               <SourceLine lang={lang} ids={[s.source]} extra={s[lang].period} />
+              <p className="scam-type-more"><a href={paths.scamType(lang, t)}>{c.typeMore}</a></p>
             </div>
           );
         })}
@@ -234,16 +252,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
         <h2>{c.bipeTitle}</h2>
         <p className="side-line">{c.bipeLede}</p>
         <div className="grid">
-          {scams.protect.map((p) => {
-            const f = product.features.find((x) => x.id === p.feature)!;
-            return (
-              <a className="card feature" href={paths.feature(lang, f)} key={f.id}>
-                <h3>{f[lang].name}</h3>
-                <p>{p[lang]}</p>
-                <p className="small">iPhone: {st[f.status.ios]} · Android: {st[f.status.android]}</p>
-              </a>
-            );
-          })}
+          {scams.protect.map((p) => <ProtectCard lang={lang} feature={p.feature} key={p.feature} />)}
         </div>
         <p className="small muted scam-limit">{c.limit}</p>
       </div>
@@ -261,15 +270,106 @@ export function ScamsPage({ lang }: { lang: Lang }) {
   );
 }
 
+/** /golpes-no-brasil/<slug>/: one scam type. How it works, how to spot it, what to do, its numbers, and
+ *  the Bipe features that protect against it. Copy and numbers come from the type's entry in scams.json. */
+export function ScamTypePage({ lang, t }: { lang: Lang; t: ScamType }) {
+  const c = scams[lang];
+  const x = t[lang];
+  return (
+    <section className="wrap section scams">
+      <div className="narrow">
+        <p className="small"><a href={paths.scams(lang)}>{c.title}</a> · {x.heading}</p>
+        <h1>{x.headline}</h1>
+        <p className="lede">{x.lede}</p>
+      </div>
+
+      <h2 className="visually-hidden">{c.typeNumbers}</h2>
+      <div className="scam-stats">{t.stats.map((id) => <BigNumber lang={lang} id={id} key={id} />)}</div>
+
+      <div className="side narrow">
+        <h2>{c.typeHow}</h2>
+        <ol className="scam-advice">{x.how.map((a) => <li key={a}>{a}</li>)}</ol>
+      </div>
+
+      <div className="side narrow">
+        <h2>{c.typeSigns}</h2>
+        <ul className="scam-advice">{x.signs.map((a) => <li key={a}>{a}</li>)}</ul>
+      </div>
+
+      <div className="side narrow">
+        <h2>{c.typeTodo}</h2>
+        <ul className="scam-advice">{x.todo.map((a) => <li key={a}>{a}</li>)}</ul>
+      </div>
+
+      <div className="side">
+        <h2>{c.bipeTitle}</h2>
+        <p className="side-line">{c.bipeLede}</p>
+        <div className="grid">{t.protect.map((id) => <ProtectCard lang={lang} feature={id} key={id} />)}</div>
+        <p className="small muted scam-limit">{c.limit}</p>
+      </div>
+
+      <div className="side narrow">
+        <h2>{c.typeOthers}</h2>
+        <ul className="scam-others">
+          {scams.types.filter((o) => o.id !== t.id).map((o) => <li key={o.id}><a href={paths.scamType(lang, o)}>{o[lang].heading}</a></li>)}
+        </ul>
+        <p><a href={paths.scams(lang)}>{c.title}</a></p>
+      </div>
+
+      <div className="side narrow">
+        <h2>{c.sourcesTitle}</h2>
+        <p className="small muted">{c.sourcesNote}</p>
+        <ul className="small">
+          {typeSources(t).map((s) => (
+            <li key={s.id}><a href={s.url}>{s.name}</a> ({s.publisher}, {s.date}){s.kind !== "primary" && `, ${c.kinds[s.kind]}`}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/** schema.org data for the hub and the type pages: an Article that cites its sources, and the breadcrumb. */
+export function scamsJsonLd(lang: Lang, t: ScamType | null, abs: (p: string) => string): object[] {
+  const c = scams[lang];
+  const url = abs(t ? paths.scamType(lang, t) : paths.scams(lang));
+  const crumbs = [{ name: c.title, url: abs(paths.scams(lang)) }, ...(t ? [{ name: t[lang].heading, url }] : [])];
+  return [
+    {
+      "@context": "https://schema.org", "@type": "Article", mainEntityOfPage: url, url,
+      headline: t ? t[lang].headline : c.headline, description: t ? t[lang].lede : c.lede,
+      inLanguage: lang === "pt" ? "pt-BR" : "en", datePublished: scams.date, dateModified: scams.date,
+      author: { "@type": "Organization", name: "Bipe", url: abs(paths.home(lang)) },
+      publisher: { "@type": "Organization", name: "Bipe", url: abs(paths.home(lang)) },
+      citation: (t ? typeSources(t) : usedSources()).map((s) => s.url),
+    },
+    {
+      "@context": "https://schema.org", "@type": "BreadcrumbList",
+      itemListElement: crumbs.map((x, i) => ({ "@type": "ListItem", position: i + 1, name: x.name, item: x.url })),
+    },
+  ];
+}
+
 /** Markdown twin for entry-server.tsx renderMarkdown. */
+const mdSources = (lang: Lang, ids: string[]) =>
+  ids.map(sourceOf).map((s) => `[${s.publisher}](${s.url})${s.kind !== "primary" ? ` (${scams[lang].kinds[s.kind]})` : ""}`).join("; ");
+const mdStat = (lang: Lang, id: string) => {
+  const s = statOf(id);
+  return `**${s[lang].value}** ${s[lang].label} (${s[lang].period}. ${scams[lang].source}: ${mdSources(lang, [s.source])})`;
+};
+const mdSourceList = (lang: Lang, list: ScamSource[]) =>
+  list.map((s) => `- [${s.name}](${s.url}) (${s.publisher}, ${s.date})${s.kind !== "primary" ? `, ${scams[lang].kinds[s.kind]}` : ""}`);
+function protectLine(lang: Lang, feature: string, abs: (p: string) => string): string {
+  const st = chrome[lang].status;
+  const f = product.features.find((x) => x.id === feature)!;
+  const p = scams.protect.find((x) => x.feature === feature)!;
+  return `- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${st[f.status.ios]}; Android: ${st[f.status.android]}): ${p[lang]}`;
+}
+
 export function scamsMarkdown(lang: Lang, abs: (p: string) => string): string[] {
   const c = scams[lang];
-  const st = chrome[lang].status;
-  const src = (ids: string[]) => ids.map(sourceOf).map((s) => `[${s.publisher}](${s.url})${s.kind !== "primary" ? ` (${c.kinds[s.kind]})` : ""}`).join("; ");
-  const statLine = (id: string) => {
-    const s = statOf(id);
-    return `**${s[lang].value}** ${s[lang].label} (${s[lang].period}. ${c.source}: ${src([s.source])})`;
-  };
+  const src = (ids: string[]) => mdSources(lang, ids);
+  const statLine = (id: string) => mdStat(lang, id);
   const out: string[] = [`**${c.headline}**`, "", `## ${c.numbersTitle}`, "", ...scams.hero.map((id) => `- ${statLine(id)}`), ""];
   out.push(`## ${c.channelsTitle}`, "", c.channelsBody, "");
   const chartMd = (ch: ScamChart) => [`### ${ch[lang].title}`, "", ch[lang].note, "", ...ch.rows.map((r) => `- ${r[lang].label}: ${r[lang].value}`), "", `${c.source}: ${src(ch.sources)}`, ""];
@@ -277,16 +377,26 @@ export function scamsMarkdown(lang: Lang, abs: (p: string) => string): string[] 
   out.push(`## ${c.chartsTitle}`, "");
   for (const ch of scams.charts.filter((x) => !scams.channelCharts.includes(x.id))) out.push(...chartMd(ch));
   out.push(`## ${c.typesTitle}`, "");
-  scams.types.forEach((t, i) => out.push(`### ${c.types[i].heading}`, "", c.types[i].body, "", statLine(t.stat), ""));
+  scams.types.forEach((t) => out.push(`### [${t[lang].heading}](${abs(paths.scamType(lang, t))})`, "", t[lang].body, "", statLine(t.stats[0]), ""));
   out.push(`## ${c.moreTitle}`, "", c.moreBody, "", ...scams.more.map((id) => `- ${statLine(id)}`), "");
   out.push(`## ${c.protectTitle}`, "", c.protectLede, "", ...c.advice.map((a) => `- ${a}`), "");
   out.push(`## ${c.bipeTitle}`, "", c.bipeLede, "");
-  for (const p of scams.protect) {
-    const f = product.features.find((x) => x.id === p.feature)!;
-    out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${st[f.status.ios]}; Android: ${st[f.status.android]}): ${p[lang]}`);
-  }
+  for (const p of scams.protect) out.push(protectLine(lang, p.feature, abs));
   out.push("", c.limit, "", `## ${c.sourcesTitle}`, "", c.sourcesNote, "");
-  for (const s of usedSources()) out.push(`- [${s.name}](${s.url}) (${s.publisher}, ${s.date})${s.kind !== "primary" ? `, ${c.kinds[s.kind]}` : ""}`);
-  out.push("");
+  out.push(...mdSourceList(lang, usedSources()), "");
+  return out;
+}
+
+/** Markdown twin of ScamTypePage. */
+export function scamTypeMarkdown(lang: Lang, t: ScamType, abs: (p: string) => string): string[] {
+  const c = scams[lang];
+  const x = t[lang];
+  const out: string[] = [`**${x.headline}**`, "", `## ${c.typeNumbers}`, "", ...t.stats.map((id) => `- ${mdStat(lang, id)}`), ""];
+  out.push(`## ${c.typeHow}`, "", ...x.how.map((a, i) => `${i + 1}. ${a}`), "");
+  out.push(`## ${c.typeSigns}`, "", ...x.signs.map((a) => `- ${a}`), "");
+  out.push(`## ${c.typeTodo}`, "", ...x.todo.map((a) => `- ${a}`), "");
+  out.push(`## ${c.bipeTitle}`, "", c.bipeLede, "", ...t.protect.map((id) => protectLine(lang, id, abs)), "", c.limit, "");
+  out.push(`## ${c.typeOthers}`, "", ...scams.types.filter((o) => o.id !== t.id).map((o) => `- [${o[lang].heading}](${abs(paths.scamType(lang, o))})`), `- [${c.title}](${abs(paths.scams(lang))})`, "");
+  out.push(`## ${c.sourcesTitle}`, "", c.sourcesNote, "", ...mdSourceList(lang, typeSources(t)), "");
   return out;
 }

@@ -81,6 +81,7 @@ ${route.noindex ? "" : `<link rel="alternate" type="text/markdown" href="${route
 <meta property="og:site_name" content="Bipe">
 <meta property="og:locale" content="${route.lang === "pt" ? "pt_BR" : "en_US"}">
 ${ogImageTags(route)}
+${ssr.renderJsonLd(route)}
 <meta name="theme-color" content="#80307B" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#101317" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">

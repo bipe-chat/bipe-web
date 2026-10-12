@@ -3,7 +3,7 @@ import { chrome } from "./copy";
 import { compare, product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
-import { ScamsPage, scams } from "./pages/ScamsPage";
+import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle } from "./pages/LegalPage";
 import { AboutPage, BusinessPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
@@ -21,6 +21,8 @@ export type Route = {
   ogCard?: string;
   /** The page's own Markdown source. The .md twin is this text as is. */
   markdown?: string;
+  /** schema.org objects for the head, built from absolute URLs (entry-server.tsx renderJsonLd). */
+  jsonLd?: (abs: (p: string) => string) => object[];
   /** The nav item this page belongs to. */
   section?: "trust" | "features" | "compare" | "download" | "business" | "about";
   body: () => ReactNode;
@@ -88,8 +90,15 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   {
     path: paths.scams(lang), alt: paths.scams(other(lang)), lang, section: "trust",
     title: `${scams[lang].title} · Bipe`, description: scams[lang].lede,
+    jsonLd: (abs) => scamsJsonLd(lang, null, abs),
     body: () => <ScamsPage lang={lang} />,
   },
+  ...scams.types.map((t): Route => ({
+    path: paths.scamType(lang, t), alt: paths.scamType(other(lang), t), lang, section: "trust",
+    title: `${t[lang].title} · Bipe`, description: t[lang].lede,
+    jsonLd: (abs) => scamsJsonLd(lang, t, abs),
+    body: () => <ScamTypePage lang={lang} t={t} />,
+  })),
   ...(["privacy", "terms"] as const).map((doc): Route => ({
     path: paths[doc](lang), alt: paths[doc](other(lang)), lang,
     title: `${legalTitle(legal[doc][lang])} · Bipe`, description: legal[doc][lang].split("\n\n")[1],
