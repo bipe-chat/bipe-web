@@ -10,6 +10,7 @@ import stringsEn from "@shared/strings/en.json";
 import stringsPt from "@shared/strings/pt-BR.json";
 import distributionJson from "@shared/product/distribution.json";
 import productJson from "@shared/product/product.json";
+import compareJson from "@shared/product/compare.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 
 export type ScamKind = "pixCode" | "boleto" | "pixKey" | "receipt" | "newNumber" | "urgency";
@@ -64,8 +65,14 @@ export type DemoId = "scam" | "identity" | "handle" | "groups" | "levels";
 /** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
 export type Side = { id: "other" | "you"; tentpoles: string[]; areas: string[] } & Copy<{ name: string; line: string }>;
 
-/** A threat on the Bipe and WhatsApp page. Bipe status comes from the listed features. */
-export type ComparisonRow = { id: string; features: string[] } & Copy<{ threat: string; whatsapp: string; bipe: string }>;
+/** A threat in the comparison register. Bipe status comes from the listed features. */
+export type CompareThreat = { id: string; features: string[] } & Copy<{ threat: string; bipe: string }>;
+/** Another app in the register. A cell exists only when we have a sourced fact. */
+export type CompareApp = {
+  id: string; slug: string; name: string;
+  cells: Record<string, Copy<string>>;
+  sources: { name: string; url: string }[];
+} & Copy<{ title: string; lede: string; line: string; on: string; ahead: string[] }>;
 
 export type Feature = {
   id: string;
@@ -84,10 +91,15 @@ export const product = productJson as unknown as {
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
-  comparison: { date: string; rows: ComparisonRow[]; sources: { name: string; url: string }[] }
-    & Copy<{ nav: string; title: string; lede: string; whatsapp: string; bipe: string; aheadTitle: string; ahead: string[]; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string }>;
   redirects: Record<string, string>;
 };
+
+/** Comparison register (proseio-shared/product/compare.json): the hub and one page per app. */
+export const compare = compareJson as unknown as {
+  date: string;
+  threats: CompareThreat[];
+  apps: CompareApp[];
+} & Copy<{ nav: string; title: string; lede: string; bipe: string; appsTitle: string; more: string; aheadTitle: string; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string }>;
 
 type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;
 type SourceRepo = { id: string; url: string; public: boolean } & Copy<string>;

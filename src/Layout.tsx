@@ -2,7 +2,7 @@ import { chrome } from "./copy";
 import { Wordmark } from "./components/brand";
 import { paths } from "./paths";
 import type { Route } from "./routes";
-import { distribution, product, publicRepos } from "./shared";
+import { distribution, product, publicRepos, compare } from "./shared";
 
 /** The nav leads with the identity side (ADR 0047): its first tentpole page. */
 const trustId = product.sides.find((s) => s.id === "other")!.tentpoles[0];
@@ -35,7 +35,7 @@ export function Layout({ route }: { route: Route }) {
         <div className="wrap">
           <span>{c.footerNote}</span>
           <span>{c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a></span>
-          <a href={paths.comparison(lang)}>{product.comparison[lang].nav}</a>
+          <a href={paths.compare(lang)}>{compare[lang].nav}</a>
           <a href={paths.technology(lang)}>{product.technical[lang].nav}</a>
           <a href={paths.privacy(lang)}>{c.privacy}</a>
           <a href={paths.terms(lang)}>{c.terms}</a>

@@ -9,7 +9,7 @@ import { GroupsFigure } from "./sim/GroupsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
 import { scenes, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
-import { distribution, product, publicRepo, publicRepos, sideOf, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
+import { compare, distribution, product, publicRepo, publicRepos, sideOf, type CompareApp, type CompareThreat, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -172,7 +172,7 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
           ))}
         </div>
         <p style={{ marginTop: 24 }}><a href={paths.features(lang)}>{chrome[lang].allFeatures} →</a></p>
-        {tp.id === "trust" && <p><a href={paths.comparison(lang)}>{product.comparison[lang].title} →</a></p>}
+        {tp.id === "trust" && <p><a href={paths.compare(lang)}>{compare[lang].title} →</a></p>}
       </section>
     </>
   );
@@ -324,41 +324,27 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
   );
 }
 
-/** Bipe and WhatsApp, threat by threat (proseio/docs/vs-whatsapp.md). Bipe status comes from the features, never from the copy. */
-export function ComparisonPage({ lang }: { lang: Lang }) {
-  const cmp = product.comparison;
-  const c = cmp[lang];
+/** The Bipe side of one threat: the claim, then the status of each feature that carries it. */
+function BipeCell({ lang, t }: { lang: Lang; t: CompareThreat }) {
   return (
-    <section className="wrap section">
-      <h1>{c.title}</h1>
-      <p className="lede">{c.lede}</p>
-      <div className="compare">
-        {cmp.rows.map((r) => (
-          <div className="card compare-row" id={r.id} key={r.id}>
-            <h2>{r[lang].threat}</h2>
-            <div className="compare-cols">
-              <div>
-                <h3>{c.whatsapp}</h3>
-                <p>{r[lang].whatsapp}</p>
-              </div>
-              <div>
-                <h3>{c.bipe}</h3>
-                <p>{r[lang].bipe}</p>
-                {r.features.map((id) => product.features.find((f) => f.id === id)!).map((f) => (
-                  <div className="compare-status" key={f.id}>
-                    <strong className="small">{f[lang].name}</strong>
-                    <PlatformStatus lang={lang} f={f} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="side narrow">
-        <h2>{c.aheadTitle}</h2>
-        <ul>{c.ahead.map((a) => <li key={a}>{a}</li>)}</ul>
-      </div>
+    <div>
+      <h3>{compare[lang].bipe}</h3>
+      <p>{t[lang].bipe}</p>
+      {t.features.map((id) => product.features.find((f) => f.id === id)!).map((f) => (
+        <div className="compare-status" key={f.id}>
+          <strong className="small">{f[lang].name}</strong>
+          <PlatformStatus lang={lang} f={f} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CompareFoot({ lang, apps }: { lang: Lang; apps: CompareApp[] }) {
+  const c = compare[lang];
+  const sources = [...new Map(apps.flatMap((a) => a.sources).map((s) => [s.url, s])).values()];
+  return (
+    <>
       <div className="side narrow">
         <h2>{c.limitTitle}</h2>
         <p>{c.limit}</p>
@@ -366,8 +352,84 @@ export function ComparisonPage({ lang }: { lang: Lang }) {
       <div className="side narrow">
         <h2>{c.sourcesTitle}</h2>
         <p className="small muted">{c.sourcesNote}</p>
-        <ul className="small">{cmp.sources.map((s) => <li key={s.url}><a href={s.url}>{s.name}</a></li>)}</ul>
+        <ul className="small">{sources.map((s) => <li key={s.url}><a href={s.url}>{s.name}</a></li>)}</ul>
       </div>
+    </>
+  );
+}
+
+/** Hub: every threat, Bipe first, then each app that has a sourced fact for it (proseio/docs/vs-whatsapp.md). */
+export function ComparePage({ lang }: { lang: Lang }) {
+  const c = compare[lang];
+  return (
+    <section className="wrap section">
+      <h1>{c.title}</h1>
+      <p className="lede">{c.lede}</p>
+      <div className="side">
+        <h2>{c.appsTitle}</h2>
+        <div className="grid">
+          {compare.apps.map((a) => (
+            <div className="card feature" key={a.id}>
+              <h3>{a.name}</h3>
+              <p>{a[lang].line}</p>
+              <p className="small"><a href={paths.compareApp(lang, a)}>{c.more} →</a></p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="compare">
+        {compare.threats.map((t) => (
+          <div className="card compare-row" id={t.id} key={t.id}>
+            <h2>{t[lang].threat}</h2>
+            <div className="compare-cols">
+              <BipeCell lang={lang} t={t} />
+              <div>
+                {compare.apps.filter((a) => a.cells[t.id]).map((a) => (
+                  <div className="compare-app" key={a.id}>
+                    <h3><a href={paths.compareApp(lang, a)}>{a[lang].on}</a></h3>
+                    <p>{a.cells[t.id][lang]}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <CompareFoot lang={lang} apps={compare.apps} />
+    </section>
+  );
+}
+
+/** One app against Bipe. Only threats with a sourced fact for this app appear. */
+export function CompareAppPage({ lang, app }: { lang: Lang; app: CompareApp }) {
+  const c = compare[lang];
+  const a = app[lang];
+  return (
+    <section className="wrap section">
+      <p className="small"><a href={paths.compare(lang)}>← {c.title}</a></p>
+      <h1>{a.title}</h1>
+      <p className="lede">{a.lede}</p>
+      <div className="compare">
+        {compare.threats.filter((t) => app.cells[t.id]).map((t) => (
+          <div className="card compare-row" id={t.id} key={t.id}>
+            <h2>{t[lang].threat}</h2>
+            <div className="compare-cols">
+              <div>
+                <h3>{a.on}</h3>
+                <p>{app.cells[t.id][lang]}</p>
+              </div>
+              <BipeCell lang={lang} t={t} />
+            </div>
+          </div>
+        ))}
+      </div>
+      {a.ahead.length > 0 && (
+        <div className="side narrow">
+          <h2>{c.aheadTitle.replace("{app}", app.name)}</h2>
+          <ul>{a.ahead.map((x) => <li key={x}>{x}</li>)}</ul>
+        </div>
+      )}
+      <CompareFoot lang={lang} apps={[app]} />
     </section>
   );
 }

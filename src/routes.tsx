@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import { chrome } from "./copy";
-import { product, type Lang } from "./shared";
+import { compare, product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
-import { AboutPage, BusinessPage, BrandPage, CastPage, ComparisonPage, DownloadPage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BusinessPage, BrandPage, CastPage, CompareAppPage, ComparePage, DownloadPage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -57,10 +57,15 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     body: () => <TechnologyPage lang={lang} />,
   },
   {
-    path: paths.comparison(lang), alt: paths.comparison(other(lang)), lang, section: "trust",
-    title: `${product.comparison[lang].title} · Bipe`, description: product.comparison[lang].lede,
-    body: () => <ComparisonPage lang={lang} />,
+    path: paths.compare(lang), alt: paths.compare(other(lang)), lang, section: "trust",
+    title: `${compare[lang].title} · Bipe`, description: compare[lang].lede,
+    body: () => <ComparePage lang={lang} />,
   },
+  ...compare.apps.map((app): Route => ({
+    path: paths.compareApp(lang, app), alt: paths.compareApp(other(lang), app), lang, section: "trust",
+    title: `${app[lang].title} · Bipe`, description: app[lang].lede,
+    body: () => <CompareAppPage lang={lang} app={app} />,
+  })),
   {
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",
     title: `${chrome[lang].about} · Bipe`, description: product.about[lang].lede,

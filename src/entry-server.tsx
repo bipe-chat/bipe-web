@@ -4,7 +4,7 @@ import { Layout } from "./Layout";
 import { paths } from "./paths";
 import { routes, type Route } from "./routes";
 import { chrome } from "./copy";
-import { distribution, product, publicRepos, type Lang } from "./shared";
+import { compare, distribution, product, publicRepos, type Lang } from "./shared";
 
 export { routes };
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
@@ -33,6 +33,7 @@ export function renderMarkdown(route: Route): string {
   const c = chrome[lang];
   const out: string[] = [`# ${route.title}`, "", route.description, ""];
   const tp = product.tentpoles.find((t) => paths.tentpole(lang, t) === route.path);
+  const cmpApp = compare.apps.find((a) => paths.compareApp(lang, a) === route.path);
   if (route.path === paths.home(lang) || route.path === paths.features(lang)) {
     // Same grouping as the pages: the two sides of ADR 0047, then what sits outside them.
     const tpLine = (t: (typeof product.tentpoles)[number]) => `- [${t[lang].title}](${abs(paths.tentpole(lang, t))}) (${c.status[t.status]}): ${t[lang].summary}`;
@@ -69,19 +70,25 @@ export function renderMarkdown(route: Route): string {
       }
       out.push("");
     }
-  } else if (route.path === paths.comparison(lang)) {
-    const cmp = product.comparison;
-    for (const r of cmp.rows) {
-      out.push(`## ${r[lang].threat}`, "", `- **${cmp[lang].whatsapp}**: ${r[lang].whatsapp}`, `- **${cmp[lang].bipe}**: ${r[lang].bipe}`);
-      for (const id of r.features) {
+  } else if (cmpApp || route.path === paths.compare(lang)) {
+    const apps = cmpApp ? [cmpApp] : compare.apps;
+    if (!cmpApp) {
+      out.push(`## ${compare[lang].appsTitle}`, "", ...apps.map((a) => `- [${a.name}](${abs(paths.compareApp(lang, a))}): ${a[lang].line}`), "");
+    }
+    for (const t of compare.threats.filter((x) => !cmpApp || cmpApp.cells[x.id])) {
+      out.push(`## ${t[lang].threat}`, "");
+      for (const a of apps.filter((x) => x.cells[t.id])) out.push(`- **${a[lang].on}**: ${a.cells[t.id][lang]}`);
+      out.push(`- **${compare[lang].bipe}**: ${t[lang].bipe}`);
+      for (const id of t.features) {
         const f = product.features.find((x) => x.id === id)!;
         out.push(`  - ${f[lang].name} (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]})`);
       }
       out.push("");
     }
-    out.push(`## ${cmp[lang].aheadTitle}`, "", ...cmp[lang].ahead.map((a) => `- ${a}`), "");
-    out.push(`## ${cmp[lang].limitTitle}`, "", cmp[lang].limit, "");
-    out.push(`## ${cmp[lang].sourcesTitle}`, "", cmp[lang].sourcesNote, "", ...cmp.sources.map((s) => `- [${s.name}](${s.url})`), "");
+    if (cmpApp?.[lang].ahead.length) out.push(`## ${compare[lang].aheadTitle.replace("{app}", cmpApp.name)}`, "", ...cmpApp[lang].ahead.map((x) => `- ${x}`), "");
+    out.push(`## ${compare[lang].limitTitle}`, "", compare[lang].limit, "");
+    const sources = [...new Map(apps.flatMap((a) => a.sources).map((x) => [x.url, x])).values()];
+    out.push(`## ${compare[lang].sourcesTitle}`, "", compare[lang].sourcesNote, "", ...sources.map((x) => `- [${x.name}](${x.url})`), "");
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
   }

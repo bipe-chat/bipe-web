@@ -101,6 +101,8 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .compare-status { margin-top: 12px; }
 .compare-status p { margin: 2px 0 0; }
+.compare-app + .compare-app { margin-top: 16px; }
+.compare-row h3 a { color: inherit; }
 @media (max-width: 640px) { .compare-cols { grid-template-columns: 1fr; gap: 16px; } }
 .feature { display: flex; flex-direction: column; gap: 8px; }
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
