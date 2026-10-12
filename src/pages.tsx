@@ -3,6 +3,7 @@ import { AppIcon, Mark, MARK, MARKS, Seal, Wordmark, type MarkId } from "./compo
 import { DownloadButtons, Icon, StatusChip } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
+import { assignScript, HEADLINE } from "./experiment";
 import { GroupsFigure } from "./sim/GroupsFigure";
 import { distribution, product, publicRepos, type DemoId, type Lang, type Tentpole } from "./shared";
 
@@ -67,10 +68,13 @@ export function HomePage({ lang }: { lang: Lang }) {
     <>
       <section className="wrap hero">
         <div>
-          <h1>{product.promise[lang].title}</h1>
+          <h1 id="hero-title">{product.promise[lang].title}</h1>
+          {lang === "pt" && HEADLINE.active && <script dangerouslySetInnerHTML={{ __html: assignScript() }} />}
           <p className="lede">{product.promise[lang].lede}</p>
           <DownloadButtons lang={lang} />
           <p className="small muted" style={{ marginTop: 14 }}>{distribution.ios[lang].note}</p>
+          <p style={{ marginTop: 28, marginBottom: 0 }}>{chrome[lang].waitlist.heroLead}</p>
+          <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.home(lang) }} />
         </div>
         <Demo lang={lang} tp={lead} index={0} />
       </section>

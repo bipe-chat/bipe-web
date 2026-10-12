@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import inviteCodes from "@shared/test-vectors/invite-codes.json";
 import { chrome } from "../copy";
+import { detectPlatform, type Platform } from "../platform";
 import { Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { distribution, reg } from "../shared";
@@ -14,14 +15,6 @@ export function extractInviteCode(text: string): string | null {
   return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
 }
 
-type Platform = "ios" | "android" | "other";
-function detectPlatform(): Platform {
-  const ua = navigator.userAgent;
-  if (/android/i.test(ua)) return "android";
-  // iPadOS reports a Mac user agent, so touch support decides there.
-  if (/iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1)) return "ios";
-  return "other";
-}
 
 // The Clipboard API needs a secure context and some in-app browsers block it; fall back to a selection copy.
 async function copyText(text: string): Promise<boolean> {

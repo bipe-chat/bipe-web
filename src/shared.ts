@@ -61,7 +61,7 @@ export type Feature = {
 
 export const product = productJson as unknown as {
   promise: Copy<{ title: string; lede: string }>;
-  headlineVariants: Copy<string[]>;
+  headlineTest: { experiment: string; active: boolean; arms: ({ id: string; angle: string } & Copy<string>)[] };
   tentpoles: Tentpole[];
   areas: ({ id: string } & Copy<string>)[];
   features: Feature[];

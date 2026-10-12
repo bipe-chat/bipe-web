@@ -30,6 +30,7 @@ export const chrome = {
     source: "Código", sourceTitle: "Código-fonte", sourceLede: "O código do Proseio é aberto. Qualquer pessoa pode ler, conferir e ajudar.",
     waitlist: {
       label: "Seu e-mail", placeholder: "seu@email.com", submit: "Me avise",
+      heroLead: "Ainda não vai instalar? Deixe seu e-mail e a gente avisa quando o Proseio abrir para todo mundo.",
       done: "Pronto. A gente avisa quando sair.",
       error: "Não deu certo agora. Tente de novo daqui a pouco.",
       note: "A gente manda um único e-mail quando o app sair e depois apaga seu endereço.",
@@ -84,6 +85,7 @@ export const chrome = {
     source: "Code", sourceTitle: "Source code", sourceLede: "Proseio's code is open. Anyone can read it, check it and help.",
     waitlist: {
       label: "Your email", placeholder: "you@email.com", submit: "Tell me",
+      heroLead: "Not installing yet? Leave your email and we will tell you when Proseio opens to everyone.",
       done: "Done. We will tell you when it is out.",
       error: "That did not work. Try again in a moment.",
       note: "We send one email when the app is out, then delete your address.",

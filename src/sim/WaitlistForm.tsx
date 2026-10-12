@@ -1,13 +1,17 @@
 import { useState, type FormEvent } from "react";
 import { chrome } from "../copy";
+import { detectPlatform, type Platform } from "../platform";
 import { API_URL } from "../config";
+import { currentArm } from "../experiment";
 import { paths } from "../paths";
 import type { Lang } from "../shared";
 
 type State = "idle" | "sending" | "done" | "error";
 
 /** POST /v1/waitlist (ADR 0025). The API answers 202 for every well-formed request. */
-export function WaitlistForm({ lang, platform, source }: { lang: Lang; platform: "android" | "ios" | "other"; source: string }) {
+
+
+export function WaitlistForm({ lang, platform, source }: { lang: Lang; platform: Platform | "auto"; source: string }) {
   const c = chrome[lang].waitlist;
   const [state, setState] = useState<State>("idle");
 
@@ -20,7 +24,14 @@ export function WaitlistForm({ lang, platform, source }: { lang: Lang; platform:
         method: "POST",
         headers: { "content-type": "application/json" },
         referrerPolicy: "no-referrer",
-        body: JSON.stringify({ email: String(form.get("email") ?? ""), platform, lang, source, website: String(form.get("website") ?? "") }),
+        body: JSON.stringify({
+          email: String(form.get("email") ?? ""),
+          platform: platform === "auto" ? detectPlatform() : platform,
+          lang,
+          // The headline arm travels with the sign-up, so the server counts sign-ups per arm.
+          source: currentArm() ? `${source}:${currentArm()}` : source,
+          website: String(form.get("website") ?? ""),
+        }),
       });
       setState(r.status === 202 ? "done" : "error");
     } catch {
