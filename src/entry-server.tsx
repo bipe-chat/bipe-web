@@ -35,6 +35,7 @@ export function renderMarkdown(route: Route): string {
   const tp = product.tentpoles.find((t) => paths.tentpole(lang, t) === route.path);
   const cmpApp = compare.apps.find((a) => paths.compareApp(lang, a) === route.path);
   const feature = product.features.find((f) => paths.feature(lang, f) === route.path);
+  const audience = product.audiences.find((a) => paths.audience(lang, a) === route.path);
   if (route.path === paths.home(lang) || route.path === paths.features(lang)) {
     // Same grouping as the pages: the two sides of ADR 0047, then what sits outside them.
     const tpLine = (t: (typeof product.tentpoles)[number]) => `- [${t[lang].title}](${abs(paths.tentpole(lang, t))}) (${c.status[t.status]}): ${t[lang].summary}`;
@@ -57,6 +58,17 @@ export function renderMarkdown(route: Route): string {
       const f = product.features.find((x) => x.id === id);
       if (f) out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (${c.status[f.status.ios]}): ${f[lang].body}`);
     }
+  } else if (audience) {
+    const copy = audience[lang];
+    out.push(`**${copy.headline}**`, "", `(${copy.note})`, "");
+    audience.sections.forEach((s, i) => {
+      out.push(`## ${copy.sections[i].heading}`, "", copy.sections[i].body, "");
+      for (const f of s.features.map((id) => product.features.find((x) => x.id === id)!)) {
+        out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]}): ${f[lang].body}`);
+      }
+      out.push("");
+    });
+    out.push(`${copy.cta} ${distribution.contact}`, "");
   } else if (feature) {
     out.push(`iPhone: ${c.status[feature.status.ios]}; Android: ${c.status[feature.status.android]}`, "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
     for (const t of product.tentpoles.filter((x) => x.features.includes(feature.id))) out.push(`${c.partOf} [${t[lang].name}](${abs(paths.tentpole(lang, t))})`, "");

@@ -84,6 +84,17 @@ export type Feature = {
   slug: Copy<string>;
 } & Copy<{ name: string; body: string; points: string[] }>;
 
+/** A step of the ICP ladder (ADR 0058). Internal: never rendered. */
+export type Icp = { id: string; step: number; current: boolean; adr: string; name: string; who: string };
+
+/** An audience page (/para/<slug>/): names an ICP, built from feature pages. Sections share feature ids across languages. */
+export type Audience = {
+  id: string;
+  icp: string;
+  slug: Copy<string>;
+  sections: { id: string; features: string[] }[];
+} & Copy<{ name: string; title: string; headline: string; lede: string; sections: { heading: string; body: string }[]; note: string; cta: string; ctaSubject: string }>;
+
 export const product = productJson as unknown as {
   promise: Copy<{ title: string; lede: string }>;
   headlineTest: { experiment: string; active: boolean; arms: ({ id: string; angle: string } & Copy<string>)[] };
@@ -91,6 +102,8 @@ export const product = productJson as unknown as {
   tentpoles: Tentpole[];
   areas: ({ id: string } & Copy<string>)[];
   features: Feature[];
+  icps: Icp[];
+  audiences: Audience[];
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;

@@ -9,7 +9,7 @@ import { GroupsFigure } from "./sim/GroupsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
 import { scenes, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
-import { compare, distribution, product, publicRepo, publicRepos, sideOf, type CompareApp, type CompareThreat, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
+import { compare, distribution, product, publicRepo, publicRepos, sideOf, type Audience, type CompareApp, type CompareThreat, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -222,6 +222,7 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
   const area = product.areas.find((a) => a.id === f.area)!;
   const tentpoles = product.tentpoles.filter((t) => t.features.includes(f.id));
   const related = product.features.filter((x) => x.area === f.area && x.id !== f.id);
+  const audiences = product.audiences.filter((a) => a.sections.some((s) => s.features.includes(f.id)));
   return (
     <>
       <section className="wrap narrow section">
@@ -231,6 +232,9 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
         <PlatformStatus lang={lang} f={f} />
         <h2 style={{ marginTop: 40 }}>{c.howItWorks}</h2>
         <ul>{f[lang].points.map((x) => <li key={x}>{x}</li>)}</ul>
+        {audiences.length > 0 && (
+          <p style={{ marginTop: 24 }}>{c.usedFor} {audiences.map((a, i) => <span key={a.id}>{i > 0 && ", "}<a href={paths.audience(lang, a)}>{a[lang].name.toLowerCase()}</a></span>)}</p>
+        )}
         {tentpoles.length > 0 && (
           <p style={{ marginTop: 24 }}>{c.partOf} {tentpoles.map((t, i) => <span key={t.id}>{i > 0 && ", "}<a href={paths.tentpole(lang, t)}>{t[lang].name}</a></span>)}</p>
         )}
@@ -241,6 +245,36 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
           <div className="grid">{related.map((x) => <FeatureCard lang={lang} f={x} key={x.id} />)}</div>
         </section>
       )}
+    </>
+  );
+}
+
+/** An audience page (ADR 0058): a need per section, each carried by feature cards with their true status. */
+export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
+  const copy = a[lang];
+  return (
+    <>
+      <section className="wrap narrow section">
+        <p className="small muted">{copy.title}</p>
+        <h1>{copy.headline}</h1>
+        <p className="lede">{copy.lede}</p>
+        <p className="small muted">{copy.note}</p>
+      </section>
+      {a.sections.map((s, i) => (
+        <section className="wrap section" id={s.id} key={s.id}>
+          <h2>{copy.sections[i].heading}</h2>
+          <p className="muted" style={{ maxWidth: "40em" }}>{copy.sections[i].body}</p>
+          <div className="grid" style={{ marginTop: 24 }}>
+            {s.features.map((id) => product.features.find((f) => f.id === id)!).map((f) => <FeatureCard lang={lang} f={f} key={f.id} />)}
+          </div>
+        </section>
+      ))}
+      <section className="wrap section">
+        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
+          <h2 style={{ fontSize: 26 }}>{copy.cta}</h2>
+          <a className="button primary" href={`mailto:${distribution.contact}?subject=${encodeURIComponent(copy.ctaSubject)}`}><Icon name="mail" />{distribution.contact}</a>
+        </div>
+      </section>
     </>
   );
 }
