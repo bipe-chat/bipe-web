@@ -26,7 +26,6 @@ function subline(lang: Lang, e: CastEntry, trust: Trust) {
   if (trust === "contact") return t(lang, "proseio_badge_verified_contact");
   if (trust === "institution") return `${t(lang, "proseio_badge_institution")} · CNPJ ${e.cnpj}`;
   if (trust === "suspended") return <span className="caution-text">{t(lang, "proseio_badge_suspended")}</span>;
-  if (!e.name) return c.notInContacts;
   return e.handle ? `@${e.handle}` : "";
 }
 

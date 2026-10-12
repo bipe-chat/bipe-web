@@ -76,8 +76,8 @@
       "photo": { "style": "stock", "look": "a 40-year-old Brazilian man with light brown skin, short neat hair, white teeth, navy blazer and open-collar shirt, arms crossed" }
     },
     {
-      "id": "golpista", "kind": "person", "name": null, "short": null, "handle": null, "phone": "+55 11 98765-4321",
-      "about": "Unknown number that copies Joana's photo: the 'troquei de número' scam.", "trust": "none",
+      "id": "golpista", "kind": "person", "name": "Joana Lima", "short": "Joana Lima", "handle": "joana.lima.2",
+      "about": "New unverified account that copies Joana's name and photo: the 'troquei de número' scam on Bipe. Bipe never shows phone numbers.", "trust": "none",
       "photo": { "copyOf": "joana" }
     },
     {
@@ -116,8 +116,8 @@
       "photo": { "style": "family", "look": "a 35-year-old Brazilian man with brown skin and short black hair and his husband, a 38-year-old white Brazilian man with a red beard, smiling cheek to cheek at a beach kiosk, coconuts on the table, bright daylight" }
     },
     {
-      "id": "suporte", "kind": "person", "name": null, "short": null, "handle": null, "phone": "+55 11 91234-5678",
-      "about": "Unknown number that poses as a bank's security desk and asks for the SMS code.", "trust": "none",
+      "id": "suporte", "kind": "person", "name": "Atendimento Cartões", "short": "Atendimento Cartões", "handle": "atendimento.cartoes",
+      "about": "New unverified account that poses as a bank's card desk and asks for the SMS code.", "trust": "none",
       "photo": { "style": "stock", "look": "a smiling 30-year-old Brazilian woman wearing a call-centre headset with a microphone, white blouse" }
     },
     {
@@ -151,8 +151,8 @@
       "photo": { "style": "candid", "look": "a 42-year-old Black Brazilian man in a plain white t-shirt kneeling on a dirt football pitch next to his 9-year-old son in a plain blue kit with no crest, both giving a thumbs up, late afternoon light" }
     },
     {
-      "id": "intruso", "kind": "person", "name": null, "short": null, "handle": null, "phone": "+55 31 99876-5432",
-      "about": "Unknown number in the school group. Posts a fake excursion fee. No photo.", "trust": "none",
+      "id": "intruso", "kind": "person", "name": "Mãe do Davi", "short": "Mãe do Davi", "handle": "maedodavi",
+      "about": "Unverified account in the school group. Posts a fake excursion fee. No photo.", "trust": "none",
       "photo": null
     },
     {

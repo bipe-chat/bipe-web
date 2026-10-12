@@ -605,7 +605,7 @@ export function CastPage() {
             <Avatar id={e.id} size={96} />
             <strong>{label(e)} <TrustMark lang={lang} trust={e.trust} /></strong>
             <span className="small muted mono">{e.id} · {e.trust}{e.photo && "style" in e.photo ? ` · ${e.photo.style}` : ""}</span>
-            <span className="small">{e.name ?? e.phone}</span>
+            <span className="small">{e.name}</span>
             <span className="small muted">{e.about}</span>
           </div>
         ))}

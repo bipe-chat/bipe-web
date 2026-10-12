@@ -9,12 +9,11 @@ export type Trust = "none" | "profile" | "pix" | "govbr" | "contact" | "institut
 export type CastEntry = {
   id: string;
   kind: "person" | "group" | "institution";
-  /** Verified or full name. Null for an unknown number. */
+  /** Verified or full name; for an unverified account, the name it chose. */
   name: string | null;
   /** The name friends use in chats. */
   short: string | null;
   handle: string | null;
-  phone?: string;
   cnpj?: string;
   members?: number;
   about: string;
@@ -39,12 +38,12 @@ export function photoUrl(e: CastEntry): string | undefined {
   return files[`./photos/${id}.jpg`];
 }
 
-/** The name on screen: what the viewer saved, else the short name, else the phone number. */
-export const label = (e: CastEntry, savedAs?: string) => savedAs ?? e.short ?? e.name ?? e.phone ?? "?";
+/** The name on screen: what the viewer saved, else the short name. Bipe never shows a phone number. */
+export const label = (e: CastEntry, savedAs?: string) => savedAs ?? e.short ?? e.name ?? "?";
 
 /** The Matrix user ID the app would use as the avatar's content ID. */
 export function matrixId(e: CastEntry) {
-  const local = e.handle ?? e.phone?.replace(/\D/g, "") ?? e.id;
+  const local = e.handle ?? e.id;
   return local.includes(":") ? `@${local}` : `@${local}:proseio.com.br`;
 }
 

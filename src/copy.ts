@@ -44,7 +44,7 @@ export const chrome = {
       mismatch: "Este não é o nome do cartão. Não pague.", match: "O nome é o mesmo do cartão.",
     },
     scenes: {
-      verificado: "Verificado", "numero-novo": "Número desconhecido", "nome-diferente": "Nome diferente", "aparelho-novo": "Celular novo",
+      verificado: "Verificado", "numero-novo": "Conta nova", "nome-diferente": "Nome diferente", "aparelho-novo": "Celular novo",
       "de-fora": "Conta de fora", instituicao: "Instituição", mae: "Apelido", grupo: "Grupo", conversas: "Conversas", perfil: "Seu perfil",
       pessoalmente: "Conheci pessoalmente", "falso-suporte": "Falso suporte do banco", "renda-extra": "Renda extra", condominio: "Condomínio",
       igreja: "Grupo da igreja", "falso-pastor": "Falsa pastora", escola: "Grupo da escola",
@@ -112,7 +112,7 @@ export const chrome = {
       mismatch: "This is not the name on the card. Do not pay.", match: "The name matches the card.",
     },
     scenes: {
-      verificado: "Verified", "numero-novo": "Unknown number", "nome-diferente": "Different name", "aparelho-novo": "New phone",
+      verificado: "Verified", "numero-novo": "New account", "nome-diferente": "Different name", "aparelho-novo": "New phone",
       "de-fora": "Outside account", instituicao: "Institution", mae: "Nickname", grupo: "Group", conversas: "Chats", perfil: "Your profile",
       pessoalmente: "Met in person", "falso-suporte": "Fake bank support", "renda-extra": "Side income", condominio: "Building group",
       igreja: "Church group", "falso-pastor": "Fake pastor", escola: "School group",

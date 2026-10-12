@@ -38,7 +38,7 @@ export const scenes = {
     kind: "chat", with: "golpista",
     lines: [
       { card: "unverified", age: { pt: "2 dias", en: "2 days" } },
-      { from: "golpista", text: "Oi filha, troquei de número. Salva esse aqui" },
+      { from: "golpista", text: "Oi filha, troquei de número. Essa é minha conta nova aqui" },
       { from: ME, text: { pt: "Mãe? O que houve com o outro?", en: "Mãe? O que houve com o outro? (Mom? What happened to the old one?)" } },
       { from: "golpista", text: "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo" },
     ],
@@ -161,7 +161,7 @@ export const scenes = {
     rows: [
       { with: "joana", savedAs: "Mãe", preview: "Chego sábado de manhã. Me busca?", time: "10:24", unread: 2 },
       { with: "familia", preview: "Vô Antônio: Domingo tem almoço aqui em casa", time: "09:58", unread: 5 },
-      { with: "golpista", preview: "Oi filha, troquei de número. Salva esse aqui", time: "09:12", unread: 1 },
+      { with: "golpista", preview: "Oi filha, troquei de número. Essa é minha conta nova aqui", time: "09:12", unread: 1 },
       { with: "rafa", preview: "Pix recebido, valeu!", time: "ontem" },
       { with: "clinica", preview: "Consulta confirmada. Até amanhã.", time: "ontem" },
       { with: "fernanda", trust: "suspended", preview: "Ligo sim, 2 min", time: "seg" },
