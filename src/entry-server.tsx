@@ -77,6 +77,13 @@ export function renderMarkdown(route: Route): string {
   } else if (cmpApp || route.path === paths.compare(lang)) {
     const apps = cmpApp ? [cmpApp] : compare.apps;
     if (!cmpApp) {
+      const cc = compare[lang];
+      out.push(`## ${cc.tableTitle}`, "", `| ${cc.threatCol} | Bipe | ${apps.map((a) => a.name).join(" | ")} |`, `|---|---|${apps.map(() => "---|").join("")}`);
+      for (const t of compare.threats) {
+        const f = product.features.find((x) => x.id === t.features[0])!;
+        out.push(`| ${t[lang].threat} | ${c.status[f.status.ios]} | ${apps.map((a) => (a.cells[t.id] ? cc.levels[a.cells[t.id].level] : "")).join(" | ")} |`);
+      }
+      out.push("");
       out.push(`## ${compare[lang].appsTitle}`, "", ...apps.map((a) => `- [${a.name}](${abs(paths.compareApp(lang, a))}): ${a[lang].line}`), "");
     }
     for (const t of compare.threats.filter((x) => !cmpApp || cmpApp.cells[x.id])) {

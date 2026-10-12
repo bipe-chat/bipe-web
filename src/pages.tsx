@@ -386,6 +386,43 @@ function CompareFoot({ lang, apps }: { lang: Lang; apps: CompareApp[] }) {
   );
 }
 
+/** Summary table: one row per threat, Bipe first. Bipe's cell is the status of the threat's first feature. */
+function CompareTable({ lang }: { lang: Lang }) {
+  const c = compare[lang];
+  const bipeLevel = { testing: "on", built: "limited", planned: "soon", policy: "on" } as const;
+  return (
+    <div className="side">
+      <h2>{c.tableTitle}</h2>
+      <div className="table-scroll">
+        <table className="compare-table">
+          <thead>
+            <tr>
+              <th scope="col">{c.threatCol}</th>
+              <th scope="col">Bipe</th>
+              {compare.apps.map((a) => <th scope="col" key={a.id}><a href={paths.compareApp(lang, a)}>{a.name}</a></th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {compare.threats.map((t) => {
+              const f = product.features.find((x) => x.id === t.features[0])!;
+              return (
+                <tr key={t.id}>
+                  <th scope="row"><a href={`#${t.id}`}>{t[lang].threat}</a></th>
+                  <td><span className={`lvl lvl-${bipeLevel[f.status.ios]}`}>{chrome[lang].status[f.status.ios]}</span></td>
+                  {compare.apps.map((a) => {
+                    const cell = a.cells[t.id];
+                    return <td key={a.id}>{cell && <span className={`lvl lvl-${cell.level}`}>{c.levels[cell.level]}</span>}</td>;
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 /** Hub: every threat, Bipe first, then each app that has a sourced fact for it (proseio/docs/vs-whatsapp.md). */
 export function ComparePage({ lang }: { lang: Lang }) {
   const c = compare[lang];
@@ -393,6 +430,7 @@ export function ComparePage({ lang }: { lang: Lang }) {
     <section className="wrap section">
       <h1>{c.title}</h1>
       <p className="lede">{c.lede}</p>
+      <CompareTable lang={lang} />
       <div className="side">
         <h2>{c.appsTitle}</h2>
         <div className="grid">

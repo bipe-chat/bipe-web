@@ -65,12 +65,14 @@ export type DemoId = "scam" | "identity" | "handle" | "groups" | "levels";
 /** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
 export type Side = { id: "other" | "you"; tentpoles: string[]; areas: string[] } & Copy<{ name: string; line: string }>;
 
+/** How an app covers a threat: on by default, the user turns it on, with a stated limit, not covered. */
+export type CompareLevel = "on" | "setting" | "limited" | "none";
 /** A threat in the comparison register. Bipe status comes from the listed features. */
 export type CompareThreat = { id: string; features: string[] } & Copy<{ threat: string; bipe: string }>;
 /** Another app in the register. A cell exists only when we have a sourced fact. */
 export type CompareApp = {
   id: string; slug: string; name: string;
-  cells: Record<string, Copy<string>>;
+  cells: Record<string, { level: CompareLevel } & Copy<string>>;
   sources: { name: string; url: string }[];
 } & Copy<{ title: string; lede: string; line: string; on: string; ahead: string[] }>;
 
@@ -101,7 +103,7 @@ export const compare = compareJson as unknown as {
   date: string;
   threats: CompareThreat[];
   apps: CompareApp[];
-} & Copy<{ nav: string; title: string; lede: string; bipe: string; appsTitle: string; more: string; aheadTitle: string; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string }>;
+} & Copy<{ nav: string; title: string; lede: string; bipe: string; appsTitle: string; more: string; aheadTitle: string; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string; tableTitle: string; threatCol: string; levels: Record<CompareLevel, string> }>;
 
 type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;
 type SourceRepo = { id: string; url: string; public: boolean } & Copy<string>;
