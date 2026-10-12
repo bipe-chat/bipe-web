@@ -184,14 +184,14 @@ export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: Scen
   const scene: Scene = scenes[id];
   if (scene.kind === "inbox") {
     return (
-      <Phone lang={lang} list head={<div className="screen-title">{t(lang, "proseio_tab_chats")}</div>} footer={<TabBar lang={lang} active="chats" />}>
+      <Phone lang={lang} layout="list" head={<div className="screen-title">{t(lang, "proseio_tab_chats")}</div>} footer={<TabBar lang={lang} active="chats" />}>
         {scene.rows.slice(0, beat).map((row) => <InboxItem lang={lang} row={row} key={row.with} />)}
       </Phone>
     );
   }
   if (scene.kind === "trustProfile") {
     return (
-      <Phone lang={lang} list head={<div className="screen-title">{t(lang, "proseio_trust_title")}</div>} footer={<TabBar lang={lang} active="you" />}>
+      <Phone lang={lang} layout="list" head={<div className="screen-title">{t(lang, "proseio_trust_title")}</div>} footer={<TabBar lang={lang} active="you" />}>
         <TrustProfile lang={lang} me={scene.me} done={scene.done} beat={beat} />
       </Phone>
     );

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { chrome } from "../copy";
 import { paths } from "../paths";
 import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind } from "../shared";
@@ -59,15 +59,54 @@ export function TrustCard({ level, title, children, icon = "person" }: { level: 
   );
 }
 
-/** Phone frame. A chat by default; `list` lays the body out from the top, `footer` replaces the composer. */
-export function Phone({ lang, head, children, composer = true, list = false, footer }: { lang: Lang; head: ReactNode; children: ReactNode; composer?: boolean; list?: boolean; footer?: ReactNode }) {
+// iPhone 16 Pro in points: 402x874 screen, 62pt display corners, 15pt bezel.
+const SCREEN_W = 402, SCREEN_H = 874, SCREEN_R = 62, BEZEL = 15;
+const BODY_W = SCREEN_W + 2 * BEZEL, BODY_H = SCREEN_H + 2 * BEZEL;
+
+/** Apple's continuous corner (the iOS 7 rounded-rect bezier): the curve starts 1.53r from the corner, not r. */
+function squircle(x: number, y: number, w: number, h: number, r: number) {
+  const corners = [
+    [x + w, y, 1, 0, 0, 1],
+    [x + w, y + h, 0, 1, -1, 0],
+    [x, y + h, -1, 0, 0, -1],
+    [x, y, 0, -1, 1, 0],
+  ] as const;
+  const curve = [[1.52866483, 0], [1.08849296, 0], [0.86840694, 0], [0.63149399, 0.074911], [0.37282392, 0.16905899], [0.16905899, 0.37282392], [0.074911, 0.63149399], [0, 0.86840694], [0, 1.08849296], [0, 1.52866483]];
+  let d = `M${+(x + 1.52866483 * r).toFixed(2)} ${y}`;
+  for (const [cx, cy, ux, uy, vx, vy] of corners) {
+    const pt = ([a, b]: number[]) => `${+(cx - a * r * ux + b * r * vx).toFixed(2)} ${+(cy - a * r * uy + b * r * vy).toFixed(2)}`;
+    d += `L${pt(curve[0])}`;
+    for (let i = 1; i < curve.length; i += 3) d += `C${pt(curve[i])} ${pt(curve[i + 1])} ${pt(curve[i + 2])}`;
+  }
+  return `${d}Z`;
+}
+
+const svgUrl = (w: number, h: number, paths: string) =>
+  `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${paths}</svg>`)}")`;
+
+// The phone keeps a fixed aspect ratio, so the stretched SVGs never distort the corners.
+const PHONE_SHAPE = {
+  "--phone-body": svgUrl(BODY_W, BODY_H,
+    `<path fill="#3a3d44" d="${squircle(0, 0, BODY_W, BODY_H, SCREEN_R + BEZEL)}"/>` +
+    `<path fill="#15171b" d="${squircle(2, 2, BODY_W - 4, BODY_H - 4, SCREEN_R + BEZEL - 2)}"/>`),
+  "--phone-screen": svgUrl(SCREEN_W, SCREEN_H, `<path d="${squircle(0, 0, SCREEN_W, SCREEN_H, SCREEN_R)}"/>`),
+  "--phone-ratio": `${BODY_W} / ${BODY_H}`,
+  "--phone-bezel": `${(BEZEL / BODY_W) * 100}%`,
+} as CSSProperties;
+
+/**
+ * The one phone frame. Every simulated screen renders through it.
+ * `layout`: "chat" stacks the body from the bottom with a composer, "list" runs edge to edge from the top,
+ * "form" runs padded from the top. `footer` replaces the composer.
+ */
+export function Phone({ lang, head, children, layout = "chat", footer }: { lang: Lang; head: ReactNode; children: ReactNode; layout?: "chat" | "list" | "form"; footer?: ReactNode }) {
   return (
-    <div className="phone" aria-hidden="true">
+    <div className="phone" style={PHONE_SHAPE} aria-hidden="true">
       <div className="screen">
         <div className="statusbar"><span>9:41</span><span className="island" /><span>5G</span></div>
         <div className="chat-head">{head}</div>
-        <div className={list ? "screen-list" : "timeline"}>{children}</div>
-        {footer ?? (composer && (
+        <div className={`screen-body ${layout}`}>{children}</div>
+        {footer ?? (layout === "chat" && (
           <div className="composer">
             <div className="field">{lang === "pt" ? "Mensagem" : "Message"}</div>
             <div className="send"><Icon name="send" size={16} /></div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { chrome } from "../copy";
 import { Mark } from "../components/brand";
-import { Icon, TrustCard } from "../components/ui";
+import { Phone, TrustCard } from "../components/ui";
 import { handleProblem, handleSkeleton, reg, t, type Lang } from "../shared";
 import { Stage } from "./Stage";
 
@@ -42,28 +42,20 @@ export function HandleSim({ lang, caption }: { lang: Lang; caption: string }) {
       {(beat) => {
         const handle = TYPED[Math.max(0, Math.min(beat, TYPED.length) - 1)];
         return (
-          <div className="phone" aria-hidden="true">
-            <div className="screen">
-              <div className="statusbar"><span>9:41</span><span className="island" /><span>5G</span></div>
-              <div className="chat-head"><div className="who"><div className="name">{t(lang, "proseio_settings_handle")}</div></div></div>
-              <div className="timeline" style={{ justifyContent: "flex-start", gap: 12 }}>
-                <div className="composer" style={{ border: 0, padding: 0 }}>
-                  <div className="field mono" style={{ color: "var(--text)" }}>@{beat === 0 ? "" : handle}</div>
+          <Phone lang={lang} layout="form" head={<div className="who"><div className="name">{t(lang, "proseio_settings_handle")}</div></div>}>
+            <div className="handle-field mono">@{beat === 0 ? "" : handle}</div>
+            <div className="msg" key={beat}>{beat > 0 && <Result lang={lang} handle={handle} />}</div>
+            <p className="small muted handle-footer">{t(lang, "proseio_handle_screen_footer")}</p>
+            {beat >= TYPED.length && (
+              <div className="card msg handle-card">
+                <Mark size={36} />
+                <div>
+                  <strong>@{handle}</strong>
+                  <p className="mono">proseio.com.br/@{handle}</p>
                 </div>
-                <div className="msg" key={beat}>{beat > 0 && <Result lang={lang} handle={handle} />}</div>
-                <p className="small muted" style={{ margin: 0 }}>{t(lang, "proseio_handle_screen_footer")}</p>
-                {beat >= TYPED.length && (
-                  <div className="card msg" style={{ display: "flex", gap: 12, alignItems: "center", marginTop: "auto" }}>
-                    <span style={{ color: "var(--acai)" }}><Mark size={36} /></span>
-                    <div>
-                      <strong>@{handle}</strong>
-                      <p className="mono">proseio.com.br/@{handle}</p>
-                    </div>
-                  </div>
-                )}
               </div>
-            </div>
-          </div>
+            )}
+          </Phone>
         );
       }}
     </Stage>
