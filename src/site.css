@@ -87,6 +87,7 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 
 .chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; vertical-align: middle; }
 .chip.testing { background: var(--acai-wash); color: var(--acai); border: 1px solid var(--acai-tint); }
+.chip.built { background: transparent; color: var(--acai); border: 1px dashed var(--acai-tint); }
 .chip.planned { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
 .chip.policy { background: var(--cpd-color-bg-trust-neutral-subtle); color: var(--cpd-color-text-trust-neutral); border: 1px solid var(--cpd-color-border-trust-neutral); }
 

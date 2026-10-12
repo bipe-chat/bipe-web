@@ -43,7 +43,7 @@ export const reg = {
 } as unknown as Registries;
 
 export type Lang = "pt" | "en";
-export type Status = "testing" | "planned" | "policy";
+export type Status = "testing" | "built" | "planned" | "policy";
 type Copy<T> = { pt: T; en: T };
 
 export type Tentpole = {
