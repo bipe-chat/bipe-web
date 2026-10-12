@@ -60,8 +60,8 @@ export function TrustCard({ level, title, children, icon = "person" }: { level: 
   );
 }
 
-// iPhone 16 Pro in points: 402x874 screen, 62pt display corners, 15pt bezel.
-const SCREEN_W = 402, SCREEN_H = 874, SCREEN_R = 62, BEZEL = 15;
+// iPhone 16 Pro in points: 402x874 screen, 62pt display corners. The bezel is half the real one, so the screen reads larger.
+const SCREEN_W = 402, SCREEN_H = 874, SCREEN_R = 62, BEZEL = 7.5;
 const BODY_W = SCREEN_W + 2 * BEZEL, BODY_H = SCREEN_H + 2 * BEZEL;
 
 /** Apple's continuous corner (the iOS 7 rounded-rect bezier): the curve starts 1.53r from the corner, not r. */
@@ -89,7 +89,7 @@ const svgUrl = (w: number, h: number, paths: string) =>
 const PHONE_SHAPE = {
   "--phone-body": svgUrl(BODY_W, BODY_H,
     `<path fill="#3a3d44" d="${squircle(0, 0, BODY_W, BODY_H, SCREEN_R + BEZEL)}"/>` +
-    `<path fill="#15171b" d="${squircle(2, 2, BODY_W - 4, BODY_H - 4, SCREEN_R + BEZEL - 2)}"/>`),
+    `<path fill="#15171b" d="${squircle(1.5, 1.5, BODY_W - 3, BODY_H - 3, SCREEN_R + BEZEL - 1.5)}"/>`),
   "--phone-screen": svgUrl(SCREEN_W, SCREEN_H, `<path d="${squircle(0, 0, SCREEN_W, SCREEN_H, SCREEN_R)}"/>`),
   "--phone-ratio": `${BODY_W} / ${BODY_H}`,
   "--phone-bezel": `${(BEZEL / BODY_W) * 100}%`,
