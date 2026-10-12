@@ -14,8 +14,7 @@ export function Layout({ route }: { route: Route }) {
   const nav = [
     { key: "trust", href: paths.tentpole(lang, trust), label: trust[lang].name },
     { key: "features", href: paths.features(lang), label: c.features },
-    { key: "download", href: paths.download(lang), label: c.download },
-    { key: "business", href: paths.business(lang), label: product.business[lang].nav },
+    { key: "compare", href: paths.compare(lang), label: compare[lang].nav },
     { key: "about", href: paths.about(lang), label: c.about },
   ] as const;
   // Footer: three groups by what the reader looks for. Single audiences live on the hub, never here.
@@ -47,7 +46,7 @@ export function Layout({ route }: { route: Route }) {
           <a href={paths.home(lang)} aria-label="Bipe" style={{ textDecoration: "none" }}><Wordmark size={26} /></a>
           <nav aria-label={lang === "pt" ? "Principal" : "Main"}>
             {nav.map((n) => <a key={n.key} href={n.href} aria-current={route.section === n.key ? "page" : undefined}>{n.label}</a>)}
-            {route.alt && <a className="lang" href={route.alt} hrefLang={c.other.lang === "pt" ? "pt-BR" : "en"} lang={c.other.lang === "pt" ? "pt-BR" : "en"}>{c.other.label}</a>}
+            <a className="nav-cta" href={paths.download(lang)} aria-current={route.section === "download" ? "page" : undefined}>{c.download}</a>
           </nav>
         </div>
       </header>

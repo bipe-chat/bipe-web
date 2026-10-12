@@ -22,7 +22,7 @@ export type Route = {
   /** The page's own Markdown source. The .md twin is this text as is. */
   markdown?: string;
   /** The nav item this page belongs to. */
-  section?: "trust" | "features" | "download" | "business" | "about";
+  section?: "trust" | "features" | "compare" | "download" | "business" | "about";
   body: () => ReactNode;
 };
 
@@ -76,12 +76,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     body: () => <TechnologyPage lang={lang} />,
   },
   {
-    path: paths.compare(lang), alt: paths.compare(other(lang)), lang, section: "trust",
+    path: paths.compare(lang), alt: paths.compare(other(lang)), lang, section: "compare",
     title: `${compare[lang].title} · Bipe`, description: compare[lang].lede,
     body: () => <ComparePage lang={lang} />,
   },
   ...compare.apps.map((app): Route => ({
-    path: paths.compareApp(lang, app), alt: paths.compareApp(other(lang), app), lang, section: "trust",
+    path: paths.compareApp(lang, app), alt: paths.compareApp(other(lang), app), lang, section: "compare",
     title: `${app[lang].title} · Bipe`, description: app[lang].lede,
     body: () => <CompareAppPage lang={lang} app={app} />,
   })),

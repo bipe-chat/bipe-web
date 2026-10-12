@@ -36,7 +36,8 @@ img, svg { display: block; }
 .site-head nav { margin-left: auto; display: flex; gap: 18px; align-items: center; font-size: 15px; flex-wrap: wrap; }
 .site-head nav a { color: var(--text); text-decoration: none; }
 .site-head nav a[aria-current="page"] { color: var(--acai); font-weight: 600; }
-.site-head nav .lang { color: var(--muted); }
+.site-head nav a.nav-cta { background: var(--acai); color: var(--on-acai); font-weight: 600; padding: 7px 16px; border-radius: 999px; }
+.site-head nav a.nav-cta:hover { background: var(--acai-deep); }
 .site-foot { border-top: 1px solid var(--line); margin-top: 96px; padding: 32px 0 48px; color: var(--muted); font-size: 15px; }
 .site-foot a { color: var(--muted); }
 .foot-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px 32px; }
