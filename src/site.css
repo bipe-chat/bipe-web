@@ -336,3 +336,8 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 /* Verified contact (QR in person): the seal with a small QR corner (design/trust-ui.md). */
 .seal-qr { position: relative; display: inline-flex; }
 .seal-qr::after { content: ""; position: absolute; right: -2px; bottom: -2px; width: 40%; height: 40%; border-radius: 1.5px; background: repeating-conic-gradient(var(--cpd-color-icon-trust-verified) 0 25%, var(--bg) 0 50%) 0 0 / 50% 50%; box-shadow: 0 0 0 1px var(--bg); }
+/* Legal pages (src/legal/*.md). */
+.legal h2 { font-size: 22px; margin: 36px 0 8px; }
+.legal p, .legal ul { margin: 0 0 12px; }
+.legal ul { padding-left: 1.2em; }
+.legal li { margin-bottom: 6px; }

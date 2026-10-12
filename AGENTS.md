@@ -11,6 +11,7 @@ Static site for proseio.com.br. Vite + React 19 + TypeScript, prerendered to HTM
 ## Rules
 
 - pt-BR is the default at `/`. English is secondary under `/en/`. Never redirect by browser language.
+- Privacy and terms text is `src/legal/*.md` (pt is the reference text). `src/pages/LegalPage.tsx` renders only the Markdown those files use: headings, `_meta_` lines, `- ` lists, paragraphs, bold and links.
 - Product copy, feature status and download links come only from `../proseio-shared/product/`. Do not write feature copy in a page. Chrome copy (nav, labels) is in `src/copy.ts`.
 - UI strings in simulations come from `../proseio-shared/strings/` through `t()`. Scam, handle and name results come from the reference logic in `../proseio-shared/tools/lib/registries.mjs`, never from hand-written results.
 - Colours only from proseio-tokens CSS variables. Nunito only for the wordmark and titles.

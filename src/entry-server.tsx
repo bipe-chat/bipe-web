@@ -31,6 +31,7 @@ const abs = (p: string) => site + p;
 
 /** Plain-Markdown twin of a page, for people and agents that read text. */
 export function renderMarkdown(route: Route): string {
+  if (route.markdown) return route.markdown;
   const lang = route.lang;
   const c = chrome[lang];
   const out: string[] = [`# ${route.title}`, "", route.description, ""];

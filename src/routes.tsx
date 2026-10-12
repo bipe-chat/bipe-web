@@ -4,6 +4,7 @@ import { compare, product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { ScamsPage, scams } from "./pages/ScamsPage";
+import { LegalPage, legal, legalTitle } from "./pages/LegalPage";
 import { AboutPage, BusinessPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -18,6 +19,8 @@ export type Route = {
   noReferrer?: boolean;
   /** Render a 1200x630 link-preview card from title and description (scripts/og.mjs). Name of the PNG under /og/. */
   ogCard?: string;
+  /** The page's own Markdown source. The .md twin is this text as is. */
+  markdown?: string;
   /** The nav item this page belongs to. */
   section?: "trust" | "features" | "download" | "business" | "about";
   body: () => ReactNode;
@@ -87,6 +90,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     title: `${scams[lang].title} · Bipe`, description: scams[lang].lede,
     body: () => <ScamsPage lang={lang} />,
   },
+  ...(["privacy", "terms"] as const).map((doc): Route => ({
+    path: paths[doc](lang), alt: paths[doc](other(lang)), lang,
+    title: `${legalTitle(legal[doc][lang])} · Bipe`, description: legal[doc][lang].split("\n\n")[1],
+    markdown: legal[doc][lang],
+    body: () => <LegalPage md={legal[doc][lang]} />,
+  })),
   {
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",
     title: `${chrome[lang].about} · Bipe`, description: product.about[lang].lede,
