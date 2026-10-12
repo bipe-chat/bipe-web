@@ -39,7 +39,7 @@ const PHONE_SHAPE = {
     `<path fill="#15171b" d="${squircle(1.5, 1.5, BODY_W - 3, BODY_H - 3, SCREEN_R + BEZEL - 1.5)}"/>`),
   "--phone-screen": svgUrl(SCREEN_W, SCREEN_H, `<path d="${squircle(0, 0, SCREEN_W, SCREEN_H, SCREEN_R)}"/>`),
   "--phone-ratio": `${BODY_W} / ${BODY_H}`,
-  "--phone-bezel": `${(BEZEL / BODY_W) * 100}%`,
+  "--phone-bezel": `${BEZEL}px`,
 } as CSSProperties;
 
 type Layout = "chat" | "list" | "form";
