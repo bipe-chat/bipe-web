@@ -30,9 +30,6 @@ export function GroupsFigure({ lang, caption }: { lang: Lang; caption: string })
           <div className="missed-row">
             <strong>{t(lang, "proseio_group_missed_poll", "Sábado ou domingo?")}</strong>
           </div>
-          <div className="missed-row">
-            <strong>{t(lang, "proseio_group_missed_pinned", "Endereço do Léo")}</strong>
-          </div>
           <div className="missed-more">{t(lang, "proseio_group_missed_more", "142")}</div>
         </div>
         <div className="bubble in"><strong>Caio</strong><br />Alguém viu o jogo ontem?</div>
