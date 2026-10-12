@@ -41,15 +41,21 @@ export function photoUrl(e: CastEntry): string | undefined {
 /** The name on screen: what the viewer saved, else the short name, else the phone number. */
 export const label = (e: CastEntry, savedAs?: string) => savedAs ?? e.short ?? e.name ?? e.phone ?? "?";
 
-function initials(text: string) {
-  const words = text.replace(/^(Seu|Dona|Tio|Tia)\s+/, "").split(/\s+/).filter((w) => /^\p{L}/u.test(w));
-  return words.length ? words.slice(0, 2).map((w) => w[0]).join("").toUpperCase() : "?";
+/** The Matrix user ID the app would use as the avatar's content ID. */
+export function matrixId(e: CastEntry) {
+  const local = e.handle ?? e.phone?.replace(/\D/g, "") ?? e.id;
+  return local.includes(":") ? `@${local}` : `@${local}:proseio.com.br`;
 }
 
 export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; savedAs?: string }) {
+/** Compound decorative colour 1 to 6, the same hash as the apps: sum of character codes mod 6. */
+export const decor = (e: CastEntry) => 1 + ([...matrixId(e)].reduce((sum, ch) => sum + (ch.codePointAt(0) ?? 0), 0) % 6);
+
+/** Mirrors PlaceholderAvatarImage (proseio-ios): photo, else the first letter on the decorative colour. */
   const e = who(id);
   const src = photoUrl(e);
-  const style = { width: size, height: size, fontSize: Math.round(size * 0.4) };
+  const style = { width: size, height: size, fontSize: size * 0.5625 };
   if (src) return <img className="avatar" src={src} alt="" width={size} height={size} style={style} loading="lazy" decoding="async" />;
-  return <div className="avatar" style={style}>{e.name || savedAs ? initials(label(e, savedAs)) : "?"}</div>;
+  const base = e.name || savedAs ? label(e, savedAs) : matrixId(e).replace(/^\W+/, "");
+  return <div className={`avatar d${decor(e)}`} style={style}>{base.charAt(0).toUpperCase()}</div>;
 }

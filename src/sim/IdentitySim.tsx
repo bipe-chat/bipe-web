@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Avatar, who } from "../cast";
 import { chrome } from "../copy";
 import { Seal } from "../components/brand";
-import { Icon, Phone, TrustCard } from "../components/ui";
+import { Icon, TrustCard } from "../components/ui";
+import { Bubble, Phone } from "../components/phone";
 import { normalize, reg, t, type Lang } from "../shared";
 import { Stage } from "./Stage";
 
@@ -26,9 +27,9 @@ export function IdentitySim({ lang, caption }: { lang: Lang; caption: string }) 
         <Phone
           lang={lang}
           head={<>
-            <Avatar id="joana" savedAs={mom} />
+            <Avatar id="joana" size={32} savedAs={mom} />
             <div className="who">
-              <div className="name">{mom} <Seal size={14} label={t(lang, "proseio_badge_verified")} /></div>
+              <div className="name">{mom} <Seal size={16} label={t(lang, "proseio_badge_verified")} /></div>
               <div className="sub">{t(lang, "proseio_badge_verified_name", VERIFIED)}</div>
             </div>
           </>}
@@ -46,7 +47,7 @@ export function IdentitySim({ lang, caption }: { lang: Lang; caption: string }) 
           )}
           {beat >= 2 && (
             <div className="msg">
-              <div className="bubble in"><strong>{IMPOSTOR}</strong><br />{lang === "pt" ? "Sua conta foi bloqueada. Confirme seus dados." : "Sua conta foi bloqueada. (Your account was blocked.)"}</div>
+              <Bubble lang={lang}><strong>{IMPOSTOR}</strong><br />{lang === "pt" ? "Sua conta foi bloqueada. Confirme seus dados." : "Sua conta foi bloqueada. (Your account was blocked.)"}</Bubble>
             </div>
           )}
           {beat >= 3 && reservedCategory(IMPOSTOR) && (

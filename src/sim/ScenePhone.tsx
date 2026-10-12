@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Avatar, label, who, type CastEntry, type Trust } from "../cast";
 import { Mark, Seal } from "../components/brand";
 import { chrome } from "../copy";
-import { Icon, Phone, ScamWarningCard, TrustCard } from "../components/ui";
+import { Icon, ScamWarningCard, TrustCard } from "../components/ui";
+import { Bubble, Phone, runs, TabBar } from "../components/phone";
 import { reg, scamWarningKind, t, type Lang } from "../shared";
 import { ME, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type Line, type Scene, type SceneId } from "./scenes";
 import { Stage } from "./Stage";
@@ -30,9 +31,9 @@ function ChatHead({ lang, id, savedAs, trust }: { lang: Lang; id: string; savedA
   const e = who(id);
   return (
     <>
-      <Avatar id={id} savedAs={savedAs} />
+      <Avatar id={id} size={32} savedAs={savedAs} />
       <div className="who">
-        <div className="name">{label(e, savedAs)} <TrustMark lang={lang} trust={trust} /></div>
+        <div className="name">{label(e, savedAs)} <TrustMark lang={lang} trust={trust} size={16} /></div>
         <div className="sub">{subline(lang, e, trust)}</div>
       </div>
     </>
@@ -86,24 +87,18 @@ function ChatBody({ lang, scene, beat }: { lang: Lang; scene: Extract<Scene, { k
   const group = partner.kind === "group";
   return (
     <>
-      {scene.lines.slice(0, beat).map((line, i) => {
-        if (!("from" in line)) return <div className="msg" key={i}><Card lang={lang} line={line} partner={partner} savedAs={scene.savedAs} /></div>;
+  const lines = scene.lines.slice(0, beat);
+  const run = runs(lines.map((l) => ("from" in l ? l.from : null)));
+      {lines.map((line, i) => {
+        if (!("from" in line)) return <div className="msg card-item" key={i}><Card lang={lang} line={line} partner={partner} savedAs={scene.savedAs} /></div>;
         const body = text(line.text, lang);
-        if (line.from === ME) return <div className="msg" key={i}><div className="bubble out">{body}</div></div>;
+        if (line.from === ME) return <div className="msg" key={i}><Bubble lang={lang} out run={run[i]}>{body}</Bubble></div>;
         // Incoming messages go through the reference detector, the same as in the app.
         const kind = scamWarningKind(typeof line.text === "string" ? line.text : line.text.pt, reg);
         const sender = who(line.from);
         return (
           <div className="msg" key={i}>
-            {group ? (
-              <div className="msg-row">
-                <Avatar id={sender.id} size={24} savedAs={scene.names?.[sender.id]} />
-                <div className="bubble in">
-                  <span className="sender">{label(sender, scene.names?.[sender.id])} <TrustMark lang={lang} trust={sender.trust} size={11} /></span>
-                  {body}
-                </div>
-              </div>
-            ) : <div className="bubble in">{body}</div>}
+            <Bubble lang={lang} run={run[i]} sender={group ? sender.id : undefined} savedAs={scene.names?.[sender.id]} mark={<TrustMark lang={lang} trust={sender.trust} size={14} />}>{body}</Bubble>
             {kind && <ScamWarningCard lang={lang} kind={kind} />}
           </div>
         );
@@ -112,25 +107,15 @@ function ChatBody({ lang, scene, beat }: { lang: Lang; scene: Extract<Scene, { k
   );
 }
 
-function TabBar({ lang, active }: { lang: Lang; active: "chats" | "you" }) {
-  return (
-    <div className="tabbar">
-      <span className={active === "chats" ? "on" : ""}>{t(lang, "proseio_tab_chats")}</span>
-      <span>{t(lang, "proseio_tab_groups")}</span>
-      <span className={active === "you" ? "on" : ""}>{t(lang, "proseio_tab_you")}</span>
-    </div>
-  );
-}
-
 function InboxItem({ lang, row }: { lang: Lang; row: InboxRow }) {
   const e = who(row.with);
   return (
     <div className="inbox-row msg">
-      <Avatar id={e.id} size={44} savedAs={row.savedAs} />
+      <Avatar id={e.id} size={52} savedAs={row.savedAs} />
       <div className="inbox-main">
         <div className="inbox-top">
-          <span className="name">{label(e, row.savedAs)} <TrustMark lang={lang} trust={row.trust ?? e.trust} size={13} /></span>
-          <span className="time">{row.time}</span>
+          <span className="name">{label(e, row.savedAs)} <TrustMark lang={lang} trust={row.trust ?? e.trust} size={16} /></span>
+          <span className={`time${row.unread ? " on" : ""}`}>{row.time}</span>
         </div>
         <div className="inbox-bottom">
           <span className="preview">{row.preview}</span>
@@ -184,14 +169,14 @@ export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: Scen
   const scene: Scene = scenes[id];
   if (scene.kind === "inbox") {
     return (
-      <Phone lang={lang} layout="list" head={<div className="screen-title">{t(lang, "proseio_tab_chats")}</div>} footer={<TabBar lang={lang} active="chats" />}>
+      <Phone lang={lang} layout="list" head={t(lang, "proseio_tab_chats")} footer={<TabBar lang={lang} active="chats" />}>
         {scene.rows.slice(0, beat).map((row) => <InboxItem lang={lang} row={row} key={row.with} />)}
       </Phone>
     );
   }
   if (scene.kind === "trustProfile") {
     return (
-      <Phone lang={lang} layout="list" head={<div className="screen-title">{t(lang, "proseio_trust_title")}</div>} footer={<TabBar lang={lang} active="you" />}>
+      <Phone lang={lang} layout="list" head={t(lang, "proseio_trust_title")} footer={<TabBar lang={lang} active="you" />}>
         <TrustProfile lang={lang} me={scene.me} done={scene.done} beat={beat} />
       </Phone>
     );

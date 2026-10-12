@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { chrome } from "../copy";
 import { Mark } from "../components/brand";
-import { Phone, TrustCard } from "../components/ui";
+import { TrustCard } from "../components/ui";
+import { Phone } from "../components/phone";
 import { handleProblem, handleSkeleton, reg, t, type Lang } from "../shared";
 import { Stage } from "./Stage";
 
@@ -42,7 +43,7 @@ export function HandleSim({ lang, caption }: { lang: Lang; caption: string }) {
       {(beat) => {
         const handle = TYPED[Math.max(0, Math.min(beat, TYPED.length) - 1)];
         return (
-          <Phone lang={lang} layout="form" head={<div className="who"><div className="name">{t(lang, "proseio_settings_handle")}</div></div>}>
+          <Phone lang={lang} layout="form" head={t(lang, "proseio_settings_handle")}>
             <div className="handle-field mono">@{beat === 0 ? "" : handle}</div>
             <div className="msg" key={beat}>{beat > 0 && <Result lang={lang} handle={handle} />}</div>
             <p className="small muted handle-footer">{t(lang, "proseio_handle_screen_footer")}</p>

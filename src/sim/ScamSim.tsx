@@ -2,7 +2,8 @@ import { useState } from "react";
 import vectors from "@shared/test-vectors/scam-warnings.json";
 import { Avatar, who } from "../cast";
 import { chrome } from "../copy";
-import { Icon, Phone, ScamWarningCard } from "../components/ui";
+import { Icon, ScamWarningCard } from "../components/ui";
+import { Bubble, Phone, runs } from "../components/phone";
 import { scamWarningKind, reg, type Lang } from "../shared";
 import { Stage } from "./Stage";
 
@@ -28,18 +29,18 @@ export function ScamSim({ lang, caption }: { lang: Lang; caption: string }) {
         <Phone
           lang={lang}
           head={<>
-            <Avatar id="golpista" />
+            <Avatar id="golpista" size={32} />
             <div className="who">
               <div className="name">{who("golpista").phone}</div>
               <div className="sub">{chrome[lang].notInContacts}</div>
             </div>
           </>}
         >
-          {SCRIPT.slice(0, beat).map((m, i) => {
+          {SCRIPT.slice(0, beat).map((m, i, shown) => {
             const kind = m.from === "in" ? scamWarningKind(m.text[lang], reg) : null;
             return (
               <div className="msg" key={i}>
-                <div className={`bubble ${m.from}`}>{m.text[lang]}</div>
+                <Bubble lang={lang} out={m.from === "out"} run={runs(shown.map((x) => x.from))[i]}>{m.text[lang]}</Bubble>
                 {kind && <ScamWarningCard lang={lang} kind={kind} />}
               </div>
             );
