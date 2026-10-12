@@ -102,10 +102,8 @@ export function renderMarkdown(route: Route): string {
       out.push(`## ${t[lang].threat}`, "");
       for (const a of apps.filter((x) => x.cells[t.id])) out.push(`- **${a[lang].on}**: ${a.cells[t.id][lang]}`);
       out.push(`- **${compare[lang].bipe}**: ${t[lang].bipe}`);
-      for (const id of t.features) {
-        const f = product.features.find((x) => x.id === id)!;
-        out.push(`  - ${f[lang].name} (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]})`);
-      }
+      const soon = t.features.map((id) => product.features.find((x) => x.id === id)!).filter((f) => f.status.ios === "planned");
+      if (soon.length) out.push(`  - ${c.status.planned}: ${soon.map((f) => f[lang].name).join(", ")}`);
       out.push("");
     }
     if (cmpApp?.[lang].ahead.length) out.push(`## ${compare[lang].aheadTitle.replace("{app}", cmpApp.name)}`, "", ...cmpApp[lang].ahead.map((x) => `- ${x}`), "");

@@ -408,18 +408,18 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
   );
 }
 
-/** The Bipe side of one threat: the claim, then the status of each feature that carries it. */
+/** The Bipe side of one threat: the claim, its features, and which of them are still planned. */
 function BipeCell({ lang, t }: { lang: Lang; t: CompareThreat }) {
+  const features = t.features.map((id) => product.features.find((f) => f.id === id)!);
+  const live = features.filter((f) => f.status.ios !== "planned");
+  const soon = features.filter((f) => f.status.ios === "planned");
+  const links = (fs: typeof features) => fs.map((f, i) => <span key={f.id}>{i > 0 && ", "}<a href={paths.feature(lang, f)}>{f[lang].name}</a></span>);
   return (
     <div>
       <h3>{compare[lang].bipe}</h3>
       <p>{t[lang].bipe}</p>
-      {t.features.map((id) => product.features.find((f) => f.id === id)!).map((f) => (
-        <div className="compare-status" key={f.id}>
-          <strong className="small"><a href={paths.feature(lang, f)}>{f[lang].name}</a></strong>
-          <PlatformStatus lang={lang} f={f} />
-        </div>
-      ))}
+      {live.length > 0 && <p className="small compare-status">{links(live)}</p>}
+      {soon.length > 0 && <p className="small muted compare-status">{chrome[lang].status.planned}: {links(soon)}</p>}
     </div>
   );
 }
