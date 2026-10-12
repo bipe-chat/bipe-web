@@ -1,5 +1,6 @@
 // Client entry. Pages are static HTML; only the elements marked data-island get React.
 import "./site.css";
+import "./pages/scams.css";
 import { hydrateRoot } from "react-dom/client";
 import { ISLANDS, type IslandName } from "./island-registry";
 

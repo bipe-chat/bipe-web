@@ -3,6 +3,7 @@ import { chrome } from "./copy";
 import { compare, product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
+import { ScamsPage, scams } from "./pages/ScamsPage";
 import { AboutPage, BusinessPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -81,6 +82,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     title: `${app[lang].title} · Bipe`, description: app[lang].lede,
     body: () => <CompareAppPage lang={lang} app={app} />,
   })),
+  {
+    path: paths.scams(lang), alt: paths.scams(other(lang)), lang, section: "trust",
+    title: `${scams[lang].title} · Bipe`, description: scams[lang].lede,
+    body: () => <ScamsPage lang={lang} />,
+  },
   {
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",
     title: `${chrome[lang].about} · Bipe`, description: product.about[lang].lede,

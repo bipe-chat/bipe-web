@@ -12,6 +12,7 @@ export const redirects = Object.fromEntries(Object.entries(product.redirects).fi
 
 import inviteCodes from "@shared/test-vectors/invite-codes.json";
 import { extractInviteCode } from "./sim/LinkPages";
+import { scamsMarkdown } from "./pages/ScamsPage";
 
 /** Fails the build when the invite page disagrees with the shared invite-code vectors. */
 export function selfTest(): void {
@@ -113,6 +114,8 @@ export function renderMarkdown(route: Route): string {
     out.push(`## ${compare[lang].limitTitle}`, "", compare[lang].limit, "");
     const sources = [...new Map(apps.flatMap((a) => a.sources).map((x) => [x.url, x])).values()];
     out.push(`## ${compare[lang].sourcesTitle}`, "", compare[lang].sourcesNote, "", ...sources.map((x) => `- [${x.name}](${x.url})`), "");
+  } else if (route.path === paths.scams(lang)) {
+    out.push(...scamsMarkdown(lang, abs));
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
   }

@@ -1,0 +1,56 @@
+/* /golpes-no-brasil/ (src/pages/ScamsPage.tsx). Marks are SVG, text is HTML, so labels stay
+   readable at phone width. One hue (açaí) per chart; gray for the rows a chart does not stress. */
+.scams { --mark: var(--acai); --mark-hover: var(--acai-deep); --mark-dim: var(--cpd-color-gray-800); --mark-dim-hover: var(--cpd-color-gray-1000); --grid: var(--cpd-color-gray-400); }
+/* Dark: one step down the açaí ramp keeps the mark inside the dataviz lightness band (checked with validate_palette.js). */
+@media (prefers-color-scheme: dark) { .scams { --mark: var(--cpd-color-acai-900); --mark-hover: var(--cpd-color-acai-1100); --grid: var(--cpd-color-gray-500); } }
+
+.scam-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 40px; }
+.scam-stat { border-top: 2px solid var(--mark); padding-top: 14px; }
+.scam-value { font: 600 clamp(40px, 6vw, 56px)/1.05 var(--ui); letter-spacing: -.02em; margin: 0; color: var(--text); }
+.scam-label { margin: 8px 0 0; font-size: 16px; }
+.scam-source { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+.scam-source a { color: inherit; }
+
+.scam-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 16px; margin-top: 20px; }
+.scam-chart { margin: 0; display: flex; flex-direction: column; gap: 16px; }
+.scam-chart h3 { margin: 0 0 4px; }
+.scam-chart figcaption p { margin: 0; }
+.scam-mark rect { fill: var(--mark); }
+
+/* Columns: change over time */
+.scam-columns { --plot: 200px; }
+.scam-plot { position: relative; height: var(--plot); padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2px; align-items: end; margin-top: 22px; }
+.scam-grid { position: absolute; inset: 0 0 0 3.6em; width: calc(100% - 3.6em); overflow: visible; }
+.scam-ticks span { position: absolute; left: 0; transform: translateY(50%); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scam-grid line { stroke: var(--grid); stroke-width: 1; }
+.scam-col { position: relative; height: 100%; display: flex; justify-content: center; }
+.scam-col .scam-mark { width: min(24px, 70%); }
+.scam-col:hover .scam-mark rect { fill: var(--mark-hover); }
+.scam-cap { position: absolute; left: 50%; transform: translate(-50%, -4px); font-size: 13px; color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.scam-axis { padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2px; margin-top: 6px; font-size: 12px; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+
+/* Bars: categories */
+.scam-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.scam-bar-label { display: block; font-size: 15px; margin-bottom: 4px; }
+.scam-bar { display: flex; align-items: center; gap: 8px; height: 16px; }
+.scam-bar-track { display: block; height: 16px; min-width: 2px; }
+.scam-bar-value { font-size: 14px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.scam-bars li.dim .scam-mark rect { fill: var(--mark-dim); }
+.scam-bars li:hover .scam-mark rect { fill: var(--mark-hover); }
+.scam-bars li.dim:hover .scam-mark rect { fill: var(--mark-dim-hover); }
+
+.scam-table summary { cursor: pointer; font-size: 14px; color: var(--acai); }
+.scam-table table { border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+.scam-table th, .scam-table td { padding: 4px 16px 4px 0; text-align: left; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.scam-table th { font-weight: 400; color: var(--muted); }
+
+.scam-type + .scam-type { margin-top: 20px; }
+.scam-type h3 { margin-top: 20px; }
+.scam-type p { margin: 0; }
+.scam-limit { margin-top: 16px; max-width: 40em; }
+@media (forced-colors: active) { .scam-mark rect { fill: CanvasText; } .scam-bars li.dim .scam-mark rect { fill: GrayText; } }
+.scam-type-stat { margin: 8px 0 0; font-size: 15px; }
+.scam-more, .scam-advice { padding-left: 20px; display: grid; gap: 12px; }
+.scam-more .scam-source { margin-top: 2px; }
+.scam-ticks + .scam-col .scam-cap { left: 0; transform: translateY(-4px); }
+.scam-col:last-child .scam-cap { left: auto; right: 0; transform: translateY(-4px); }
