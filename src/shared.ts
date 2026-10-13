@@ -121,6 +121,7 @@ export const product = productJson as unknown as {
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
+  partners: Copy<{ nav: string; label: string; title: string; lede: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; aboutLink: string }>;
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
   redirects: Record<string, string>;
 };

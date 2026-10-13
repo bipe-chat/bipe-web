@@ -15,6 +15,7 @@ export const paths = {
   compareApp: (lang: Lang, app: { slug: string }) => `${base(lang)}compare/${app.slug}/`,
   scams: (lang: Lang) => (lang === "pt" ? "/golpes-no-brasil/" : "/en/scams-in-brazil/"),
   scamType: (lang: Lang, t: { slug: { pt: string; en: string } }) => `${lang === "pt" ? "/golpes-no-brasil/" : "/en/scams-in-brazil/"}${t.slug[lang]}/`,
+  partners: (lang: Lang) => `${base(lang)}${lang === "pt" ? "parceiros" : "partners"}/`,
   about: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre" : "about"}/`,
   privacy: (lang: Lang) => (lang === "pt" ? "/privacidade/" : "/en/privacy/"),
   terms: (lang: Lang) => (lang === "pt" ? "/termos/" : "/en/terms/"),

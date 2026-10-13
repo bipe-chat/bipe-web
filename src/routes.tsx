@@ -5,7 +5,7 @@ import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle } from "./pages/LegalPage";
-import { AboutPage, BusinessPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BusinessPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -71,6 +71,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     path: paths.business(lang), alt: paths.business(other(lang)), lang, section: "business",
     title: `${product.business[lang].nav} · Bipe`, description: product.business[lang].lede,
     body: () => <BusinessPage lang={lang} />,
+  },
+  {
+    path: paths.partners(lang), alt: paths.partners(other(lang)), lang, section: "about",
+    title: `${product.partners[lang].nav} · Bipe`, description: product.partners[lang].lede,
+    body: () => <PartnersPage lang={lang} />,
   },
   {
     path: paths.technology(lang), alt: paths.technology(other(lang)), lang,

@@ -355,12 +355,47 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           ))}
         </div>
       </section>
+      <MailCta cta={b.cta} subject={b.ctaSubject} />
+    </>
+  );
+}
+
+/** Closing call to action on /empresas/ and /parceiros/: a mailto with the page's subject line. */
+function MailCta({ cta, subject }: { cta: string; subject: string }) {
+  return (
+    <section className="wrap section">
+      <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
+        <h2 style={{ fontSize: 26 }}>{cta}</h2>
+        <a className="button primary" href={`mailto:${distribution.contact}?subject=${encodeURIComponent(subject)}`}><Icon name="mail" />{distribution.contact}</a>
+      </div>
+    </section>
+  );
+}
+
+/** Organisations that want to help carry Bipe (ADR 0067). Copy: `partners` in product.json. */
+export function PartnersPage({ lang }: { lang: Lang }) {
+  const p = product.partners[lang];
+  const [why, ...rest] = p.sections;
+  return (
+    <>
+      <section className="wrap narrow section">
+        <p className="eyebrow">{p.label}</p>
+        <h1>{p.title}</h1>
+        <p className="lede">{p.lede}</p>
+        <h2 style={{ fontSize: 24, marginTop: 36 }}>{why.heading}</h2>
+        <Points items={why.points} />
+      </section>
       <section className="wrap section">
-        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
-          <h2 style={{ fontSize: 26 }}>{b.cta}</h2>
-          <a className="button primary" href={`mailto:${distribution.contact}?subject=${encodeURIComponent(b.ctaSubject)}`}><Icon name="mail" />{distribution.contact}</a>
+        <div className="grid">
+          {rest.map((s) => (
+            <div className="card" key={s.heading}>
+              <h3 style={{ fontSize: 20 }}>{s.heading}</h3>
+              <ul className="points" style={{ marginTop: 12 }}>{s.points.map((x) => <li key={x} style={{ color: "var(--muted)", fontSize: 15 }}><Icon name="check" size={16} />{x}</li>)}</ul>
+            </div>
+          ))}
         </div>
       </section>
+      <MailCta cta={p.cta} subject={p.ctaSubject} />
     </>
   );
 }
@@ -564,7 +599,8 @@ export function AboutPage({ lang }: { lang: Lang }) {
           <p style={{ margin: 0 }}>{s.body}</p>
         </div>
       ))}
-      <p style={{ marginTop: 40 }}><a href={`mailto:${distribution.contact}`}>{distribution.contact}</a></p>
+      <p style={{ marginTop: 40 }}><a href={paths.partners(lang)}>{product.partners[lang].aboutLink} →</a></p>
+      <p style={{ marginTop: 16 }}><a href={`mailto:${distribution.contact}`}>{distribution.contact}</a></p>
     </section>
   );
 }

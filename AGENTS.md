@@ -24,6 +24,7 @@ Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; on
 - Waitlist forms post to `POST /v1/waitlist` (ADR 0025) through `src/sim/WaitlistForm.tsx`; the arm travels in `source`. `API_URL` is in `src/config.ts`.
 - Sample people in simulations come only from the cast (`src/cast/cast.json`, rules in `src/cast/STYLE.md`). Phone scenes are data in `src/sim/scenes.ts`, rendered by `src/sim/ScenePhone.tsx`. Never hard-code a sample name or photo in a component. Never show a person's phone number in a simulation: Bipe hides numbers (ADR 0015); people appear by name and @handle. `/elenco/` (noindex) shows the cast and every scene. Skill: `.claude/skills/cast`.
 - Cast photos are made with `node scripts/cast.mjs` (ChatGPT app's bundled Codex CLI, built-in `image_gen`, ChatGPT login, no API key). Full-size originals stay in `cast-originals/` (git-ignored).
+- `/parceiros/` copy is `partners` in `product.json` (ADR 0067). It is the only public page that may use the Pix analogy (ADR 0071). Name no prospective partner, funder or institution until there is a signed agreement, and promise no seats, governance or equity. Keep the "Ideia em construção" label until the institution exists.
 - `/empresas/` copy is `business` in `product.json` and follows ADRs 0035 to 0037. Keep its "proposal" label until the business API ships. Change it together with `../bipe/docs/business-messaging.md`.
 
 ## Traps

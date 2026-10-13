@@ -144,6 +144,11 @@ export function renderMarkdown(route: Route): string {
     out.push(...scamTypeMarkdown(lang, scams.types.find((t) => route.path === paths.scamType(lang, t))!, abs));
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
+    out.push(`[${product.partners[lang].aboutLink}](${abs(paths.partners(lang))})`, "");
+  } else if (route.path === paths.partners(lang)) {
+    out.push(`(${product.partners[lang].label})`, "");
+    for (const sec of product.partners[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
+    out.push(`${product.partners[lang].cta} ${distribution.contact}`, "");
   }
   out.push("", `## ${c.download}`, "");
   if (distribution.ios.url) out.push(`- ${distribution.ios[lang].label}: ${distribution.ios.url} (${distribution.ios[lang].note})`);
