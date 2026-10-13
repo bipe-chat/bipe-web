@@ -48,19 +48,46 @@ function readProfile(p: unknown, handle: string): PublicProfile | null {
 
 export function ProfileLanding(_: Record<string, never>) {
   const c = chrome.pt.profile;
+  const ic = chrome.pt.invite;
   const [handle, setHandle] = useState<string | null>(null);
   const [profile, setProfile] = useState<PublicProfile | null>(null);
+  const [linkCode, setLinkCode] = useState<string | null>(null);
+  const [copyLabel, setCopyLabel] = useState(ic.copy);
   useEffect(() => {
-    const m = location.pathname.match(/^\/@([^/]+)$/);
+    // /@handle, or /@handle/continuar/XXXX-XXXX: a company's link to move a WhatsApp chat to Bipe (bipe/docs/business-track.md).
+    const m = location.pathname.match(/^\/@([^/]+)(?:\/continuar\/([0-9A-Za-z]{4}-[0-9A-Za-z]{4}))?\/?$/);
     const h = m?.[1]?.toLowerCase();
     if (!h || !new RegExp(reg.handles.pattern).test(h)) return;
     setHandle(h);
+    if (m?.[2]) setLinkCode(m[2].toUpperCase());
     // Published profiles only (opt-in). The API answers the same 404 for "no handle" and "profile off".
     fetch(`${API_URL}/v1/profiles/${encodeURIComponent(h)}`, { referrerPolicy: "no-referrer" })
       .then((r) => (r.ok ? r.json() : null))
       .then((p) => setProfile(readProfile(p, h)))
       .catch(() => {});
   }, []);
+  if (handle && linkCode) {
+    const message = `continuar ${linkCode}`;
+    return (
+      <section className="wrap narrow section profile">
+        {profile?.photo_url && <img className="profile-photo" src={profile.photo_url} alt="" width={112} height={112} referrerPolicy="no-referrer" />}
+        <h1 style={{ overflowWrap: "anywhere" }}>{c.continueTitle(handle)}</h1>
+        {profile && <p className="profile-handle">{profile.name}</p>}
+        <p className="lede">{c.continueLead}</p>
+        <ol className="steps">
+          {c.continueSteps(handle).map((step, i) => (
+            <li key={step}>{step}{i === 0 && <div style={{ marginTop: 10 }}><InstallButton /></div>}</li>
+          ))}
+        </ol>
+        <p style={{ marginTop: 24 }}>{c.continueMessage}</p>
+        <div className="actions" style={{ marginTop: 8 }}>
+          <output className="mono invite-code">{message}</output>
+          <button type="button" className="button secondary" onClick={async () => setCopyLabel((await copyText(message)) ? ic.copied : ic.copyFailed)}>{copyLabel}</button>
+        </div>
+        <p className="small muted">{c.continueOneUse}</p>
+      </section>
+    );
+  }
   if (profile) {
     return (
       <section className="wrap narrow section profile">

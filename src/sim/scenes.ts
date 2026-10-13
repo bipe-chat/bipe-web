@@ -23,7 +23,7 @@ export type Line =
   | { card: "app"; key: string; args?: string[] }
   /** A charge from a CNPJ-verified institution (pix-charges). Shows "pago" from line number `paidAt` (1-based). */
   | { card: "charge"; amount: string; description: Text; paidAt?: number }
-  | { card: "poll"; question: Text; options: { label: Text; votes: number }[]; mine?: number }
+  | { card: "poll"; question: Text; options: { label: Text; votes: number }[]; mine?: number; ask?: boolean }
   /** A request to join a group that takes only verified accounts (verified-groups). The result follows the person's trust. */
   | { card: "join"; person: string };
 
@@ -95,6 +95,15 @@ export const scenes = {
     lines: [
       { card: "notice", text: "Sua consulta é amanhã, às 14h, com a Dra. Ana. Responda 1 para confirmar ou 2 para remarcar." },
       { from: ME, text: "1" },
+      { from: "clinica", text: "Consulta confirmada. Até amanhã." },
+    ],
+  },
+  // /empresas/: a structured question instead of "reply 1 or 2" (ADR 0079).
+  "empresa-pergunta": {
+    kind: "chat", with: "clinica",
+    lines: [
+      { card: "notice", text: "Sua consulta é amanhã, às 14h, com a Dra. Ana." },
+      { card: "poll", question: { pt: "Você confirma?", en: "Você confirma? (Do you confirm?)" }, options: [{ label: { pt: "Confirmo", en: "Confirmo (I confirm)" }, votes: 1 }, { label: { pt: "Quero remarcar", en: "Quero remarcar (Reschedule)" }, votes: 0 }], mine: 0, ask: true },
       { from: "clinica", text: "Consulta confirmada. Até amanhã." },
     ],
   },
