@@ -98,14 +98,14 @@ export function renderMarkdown(route: Route): string {
       }
       out.push("");
     });
-    out.push(`${copy.cta} ${distribution.contact}`, "");
+    out.push(`${copy.cta} ${abs(paths.partners(lang))}#form`, "");
   } else if (feature) {
     out.push(`iPhone: ${c.status[feature.status.ios]}; Android: ${c.status[feature.status.android]}`, "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
     for (const t of product.tentpoles.filter((x) => x.features.includes(feature.id))) out.push(`${c.partOf} [${t[lang].name}](${abs(paths.tentpole(lang, t))})`, "");
   } else if (route.path === paths.business(lang)) {
     out.push(`(${product.business[lang].label})`, "");
     for (const sec of product.business[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
-    out.push(`${product.business[lang].cta} ${distribution.contact}`, "");
+    out.push(`${product.business[lang].cta} ${abs(paths.partners(lang))}#form`, "");
   } else if (route.path === paths.technology(lang)) {
     for (const g of product.technical.groups) {
       out.push(`## ${g[lang].heading}`, "", g[lang].line, "");
@@ -149,11 +149,11 @@ export function renderMarkdown(route: Route): string {
   } else if (route.path === paths.partners(lang)) {
     out.push(`(${product.partners[lang].label})`, "");
     for (const sec of product.partners[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
-    out.push(`${product.partners[lang].cta} ${abs(paths.partners(lang))}#form ${distribution.contact}`, "");
+    out.push(`${product.partners[lang].cta} ${abs(paths.partners(lang))}#form`, "");
   }
   out.push("", `## ${c.download}`, "");
   if (distribution.ios.url) out.push(`- ${distribution.ios[lang].label}: ${distribution.ios.url} (${distribution.ios[lang].note})`);
-  out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${distribution.contact}`);
+  out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${abs(paths.partners(lang))}#form`);
   out.push("", `${c.steward} ${distribution.steward.name}: ${distribution.steward.url}`);
   if (publicRepos.length > 0) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
   return out.join("\n") + "\n";

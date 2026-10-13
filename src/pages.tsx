@@ -285,7 +285,7 @@ export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
       <section className="wrap section">
         <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
           <h2 style={{ fontSize: 26 }}>{copy.cta}</h2>
-          <a className="button primary" href={`mailto:${distribution.contact}?subject=${encodeURIComponent(copy.ctaSubject)}`}><Icon name="mail" />{distribution.contact}</a>
+          <a className="button primary" href={`${paths.partners(lang)}#form`}><Icon name="mail" />{chrome[lang].contact}</a>
         </div>
       </section>
       <section className="wrap section">
@@ -379,18 +379,18 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           ))}
         </div>
       </section>
-      <MailCta cta={b.cta} subject={b.ctaSubject} />
+      <MailCta lang={lang} cta={b.cta} />
     </>
   );
 }
 
-/** Closing call to action on /empresas/ and /parceiros/: a mailto with the page's subject line. */
-function MailCta({ cta, subject }: { cta: string; subject: string }) {
+/** Closing call to action on /empresas/ and /parceiros/: a link to the contact form. */
+function MailCta({ lang, cta }: { lang: Lang; cta: string }) {
   return (
     <section className="wrap section">
       <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
         <h2 style={{ fontSize: 26 }}>{cta}</h2>
-        <a className="button primary" href={`mailto:${distribution.contact}?subject=${encodeURIComponent(subject)}`}><Icon name="mail" />{distribution.contact}</a>
+        <a className="button primary" href={`${paths.partners(lang)}#form`}><Icon name="mail" />{chrome[lang].contact}</a>
       </div>
     </section>
   );
@@ -422,7 +422,7 @@ export function PartnersPage({ lang }: { lang: Lang }) {
       <section className="wrap narrow section" id="form">
         <div className="card" style={{ padding: 32 }}>
           <h2 style={{ fontSize: 26, marginBottom: 16 }}>{p.cta}</h2>
-          <Island name="PartnerForm" props={{ lang, copy: p.form, contact: distribution.contact, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
+          <Island name="PartnerForm" props={{ lang, copy: p.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
         </div>
       </section>
     </>
@@ -629,7 +629,7 @@ export function AboutPage({ lang }: { lang: Lang }) {
         </div>
       ))}
       <p style={{ marginTop: 40 }}><a href={paths.partners(lang)}>{product.partners[lang].aboutLink} →</a></p>
-      <p style={{ marginTop: 16 }}><a href={`mailto:${distribution.contact}`}>{distribution.contact}</a></p>
+      <p style={{ marginTop: 16 }}><a href={`${paths.partners(lang)}#form`}>{chrome[lang].contact}</a></p>
     </section>
   );
 }

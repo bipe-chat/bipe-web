@@ -35,7 +35,7 @@ export function Layout({ route }: { route: Route }) {
     { heading: c.footerGroups.bipe, links: [
       { href: paths.about(lang), label: c.about },
       { href: paths.partners(lang), label: product.partners[lang].nav },
-      { href: `mailto:${distribution.contact}`, label: c.contact },
+      { href: `${paths.partners(lang)}#form`, label: c.contact },
       { href: paths.privacy(lang), label: c.privacy },
       { href: paths.terms(lang), label: c.terms },
       ...(publicRepos.length > 0 ? [{ href: distribution.source.org, label: c.source }] : []),

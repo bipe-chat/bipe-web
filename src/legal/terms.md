@@ -12,7 +12,7 @@ Bipe is in testing and, for now, invite only. By using the app you agree to thes
 No scams, spam, harassment, illegal content or pretending to be someone else. Accounts that do this get suspended.
 
 ## Contact
-[contact@envisioning.com](mailto:contact@envisioning.com)
+[Contact us](/en/partners/#form)
 
 ## Privacy
 See the [privacy policy](/en/privacy/).

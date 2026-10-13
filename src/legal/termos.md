@@ -12,7 +12,7 @@ O Bipe está em fase de testes e, por enquanto, só entra quem tem convite. Usan
 Nada de golpe, spam, assédio, conteúdo ilegal ou se passar por outra pessoa. Conta que fizer isso é suspensa.
 
 ## Contato
-[contact@envisioning.com](mailto:contact@envisioning.com)
+[Fale com a gente](/parceiros/#form)
 
 ## Privacidade
 Veja a [política de privacidade](/privacidade/).

@@ -6,11 +6,11 @@ type State = "idle" | "sending" | "done" | "error";
 export const PARTNER_KINDS = ["funder", "tech", "bank", "research", "civil", "public", "other"] as const;
 export type PartnerFormCopy = {
   organisation: string; name: string; email: string; kind: string; kinds: Record<(typeof PARTNER_KINDS)[number], string>;
-  message: string; submit: string; done: string; error: string; note: string; orEmail: string;
+  message: string; submit: string; done: string; error: string; note: string;
 };
 
 /** POST /v1/partners (bipe#177). The API answers 202 for every well-formed request. Copy: `partners.form` in product.json. */
-export function PartnerForm({ lang, copy: c, contact, privacy, privacyLabel }: { lang: Lang; copy: PartnerFormCopy; contact: string; privacy: string; privacyLabel: string }) {
+export function PartnerForm({ lang, copy: c, privacy, privacyLabel }: { lang: Lang; copy: PartnerFormCopy; privacy: string; privacyLabel: string }) {
   const [state, setState] = useState<State>("idle");
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -52,7 +52,6 @@ export function PartnerForm({ lang, copy: c, contact, privacy, privacyLabel }: {
       <div><button className="button primary" type="submit" disabled={state === "sending"}>{c.submit}</button></div>
       {state === "error" && <p className="small" role="alert" style={{ color: "var(--cpd-color-text-critical-primary)" }}>{c.error}</p>}
       <p className="small muted">{c.note} <a href={privacy}>{privacyLabel}</a></p>
-      <p className="small muted">{c.orEmail} <a href={`mailto:${contact}`}>{contact}</a></p>
     </form>
   );
 }
