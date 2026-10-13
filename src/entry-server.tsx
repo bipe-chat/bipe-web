@@ -2,16 +2,17 @@
 import { renderToString } from "react-dom/server";
 import { Layout } from "./Layout";
 import { paths } from "./paths";
-import { routes, type Route } from "./routes";
+import { ogImageName, routes, type Route } from "./routes";
 import { chrome } from "./copy";
 import { compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn } from "./pages";
 
-export { routes };
+export { routes, ogImageName };
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
 
 /** The section label for a route's share card footer: the same words as the site nav (Layout.tsx). */
 export function ogFamily(route: Route): string | undefined {
+  if (route.og?.family) return route.og.family;
   const lang: Lang = route.lang;
   const trustId = product.sides.find((s) => s.id === "other")!.tentpoles[0];
   const labels: Record<NonNullable<Route["section"]>, string> = {

@@ -5,7 +5,7 @@ import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle } from "./pages/LegalPage";
-import { AboutPage, BusinessPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BusinessPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -19,6 +19,8 @@ export type Route = {
   noReferrer?: boolean;
   /** Name of the link-preview PNG under /og/ (scripts/og.mjs). Default: from the path. Every route gets a card. */
   ogCard?: string;
+  /** Card text when it differs from the page title and description, and the label in the card's footer. */
+  og?: { title?: string; description?: string; family?: string };
   /** The page's own Markdown source. The .md twin is this text as is. */
   markdown?: string;
   /** schema.org objects for the head, built from absolute URLs (entry-server.tsx renderJsonLd). */
@@ -75,6 +77,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   {
     path: paths.partners(lang), alt: paths.partners(other(lang)), lang, section: "about",
     title: `${product.partners[lang].nav} · Bipe`, description: product.partners[lang].lede,
+    og: { title: product.partners[lang].card.title, description: product.partners[lang].card.line, family: product.partners[lang].nav },
     body: () => <PartnersPage lang={lang} />,
   },
   {
@@ -120,6 +123,10 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   title: "Marca (rascunho) · Bipe", description: "Rascunhos do símbolo do Bipe.",
   body: () => <BrandPage />,
 }, {
+  path: "/cartoes/", alt: null, lang: "pt", noindex: true,
+  title: "Cartões de link (interno) · Bipe", description: "A imagem que aparece quando alguém compartilha cada página.",
+  body: () => <OgCardsPage cards={routes.map((r) => ({ path: r.path, title: r.title, image: `/og/${ogImageName(r)}.png` }))} />,
+}, {
   path: "/elenco/", alt: null, lang: "pt", noindex: true,
   title: "Elenco e cenas (interno) · Bipe", description: "Pessoas de exemplo e cenas das simulações do site.",
   body: () => <CastPage />,
@@ -149,3 +156,8 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   title: "Quem mais convida (equipe) · Bipe", description: "Relatório interno de convites.",
   body: () => <Island name="InviterReport" props={{}} />,
 });
+
+/** Where a route's link-preview card is served: `/og/home.png` for `/`, else `/og/<path with dashes>.png`. */
+export function ogImageName(route: Route): string {
+  return route.ogCard ?? (route.path.replace(/^\/|\/$/g, "").replace(/\//g, "-") || "home");
+}

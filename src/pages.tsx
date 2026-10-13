@@ -628,6 +628,24 @@ export function BrandPage() {
 }
 
 /** Internal board (noindex): the sample cast and every phone scene, for review and screenshots. */
+/** Every route's link-preview card, for review (noindex). Cards are rendered by scripts/og.mjs at build time. */
+export function OgCardsPage({ cards }: { cards: { path: string; title: string; image: string }[] }) {
+  return (
+    <section className="wrap section">
+      <h1>Cartões de link</h1>
+      <p className="lede">A imagem que aparece no WhatsApp, iMessage e redes quando alguém compartilha uma página. {cards.length} cartões, gerados no build por <span className="mono">scripts/og.mjs</span>. O texto vem do título e da descrição da rota, ou de <span className="mono">og</span> na rota.</p>
+      <div className="grid" style={{ marginTop: 32 }}>
+        {cards.map((c) => (
+          <figure className="card" key={c.path} style={{ margin: 0, padding: 12 }}>
+            <a href={c.image}><img src={c.image} alt={c.title} width={1200} height={630} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block" }} /></a>
+            <figcaption className="small" style={{ marginTop: 8 }}><a href={c.path} className="mono">{c.path}</a></figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function CastPage() {
   const lang: Lang = "pt";
   return (

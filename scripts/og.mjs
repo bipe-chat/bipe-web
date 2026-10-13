@@ -69,12 +69,6 @@ function card({ markPath, title, description, family }) {
   );
 }
 
-/** Where a route's card is served: `/og/home.png` for `/`, else `/og/<path with dashes>.png`. */
-export function ogName(routePath) {
-  const slug = routePath.replace(/^\/|\/$/g, "").replace(/\//g, "-");
-  return slug || "home";
-}
-
 /** Writes the card PNG to outPath. */
 export async function writeOgCard({ outPath, markPath, title, description, family }) {
   const svg = await satori(card({ markPath, title, description, family }), { ...OG_SIZE, fonts });

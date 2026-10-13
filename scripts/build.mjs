@@ -7,7 +7,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { build } from "vite";
 import { writeIcons } from "./icon.mjs";
-import { ogName, writeOgCard } from "./og.mjs";
+import { writeOgCard } from "./og.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -44,8 +44,8 @@ mkdirSync(join(dist, "og"), { recursive: true });
 // The card shows the title without the " · Bipe" suffix: the wordmark is on the card.
 const cardTitle = (title) => title.replace(/^Bipe · /, "").replace(/ · Bipe$/, "");
 async function ogImageTags(route) {
-  const name = route.ogCard ?? ogName(route.path);
-  await writeOgCard({ outPath: join(dist, "og", `${name}.png`), markPath: marks.paths[marks.chosen], title: cardTitle(route.title), description: route.description, family: ssr.ogFamily(route) });
+  const name = ssr.ogImageName(route);
+  await writeOgCard({ outPath: join(dist, "og", `${name}.png`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, family: ssr.ogFamily(route) });
   return [
     `<meta property="og:image" content="${site}/og/${name}.png">`,
     '<meta property="og:image:type" content="image/png">',
@@ -111,7 +111,7 @@ for (const [from, to] of Object.entries(ssr.redirects)) {
 
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
 writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
-writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /marca/\nDisallow: /elenco/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
+writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /marca/\nDisallow: /elenco/\nDisallow: /cartoes/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
 rmSync(join(dist, ".vite"), { recursive: true, force: true });
 rmSync(ssrOut, { recursive: true, force: true });
 console.log(`built ${ssr.routes.length} pages into dist/`);
