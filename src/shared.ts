@@ -13,7 +13,7 @@ import distributionJson from "@shared/product/distribution.json";
 import productJson from "@shared/product/product.json";
 import compareJson from "@shared/product/compare.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
-import type { SceneId } from "./sim/scenes";
+import type { FigureId, SceneId } from "./sim/scenes";
 
 export type ScamKind = "pixCode" | "boleto" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
 export type Registries = {
@@ -69,7 +69,8 @@ export type Tentpole = {
 export type TechPart = { id: string; repo?: string; upstream?: { name: string; url: string }[] } & Copy<{ name: string; body: string }>;
 export type TechGroup = { id: string; parts: TechPart[] } & Copy<{ heading: string; line: string }>;
 
-export type DemoId = "scam" | "identity" | "handle" | "groups" | "levels" | "pix";
+/** A tentpole demo or a feature figure: a scene id or a sim id (src/sim/scenes.ts SIMS). */
+export type DemoId = FigureId;
 
 /** Positioning (ADR 0047): tentpoles and feature areas grouped by the side they protect. */
 export type Side = { id: "other" | "you"; tentpoles: string[]; areas: string[] } & Copy<{ name: string; line: string }>;
@@ -91,6 +92,8 @@ export type Feature = {
   area: string;
   status: { ios: Status; android: Status };
   slug: Copy<string>;
+  /** Phone scenes and sims that show the feature in practice; the first sits beside the text (bipe#176). */
+  figures?: FigureId[];
 } & Copy<{ name: string; body: string; points: string[] }>;
 
 /** A step of the ICP ladder (ADR 0060). Internal: never rendered. */

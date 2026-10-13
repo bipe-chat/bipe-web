@@ -174,6 +174,16 @@ export const scenes = {
 
 export type SceneId = keyof typeof scenes;
 
+/**
+ * Figures that are not a phone scene: sims and static figures, drawn by src/sim/Figure.tsx.
+ * A figure id in product.json (tentpole `demos`, feature `figures`) is a scene id above or one of these.
+ * bipe-shared/tools/gen-product-doc.mjs reads this line and the scene keys to validate those ids: keep it on one line.
+ */
+export const SIMS = ["scam", "identity", "handle", "groups", "levels", "pix", "business", "noAds"] as const;
+export type SimId = (typeof SIMS)[number];
+export type FigureId = SceneId | SimId;
+export const isFigureId = (id: string): id is FigureId => id in scenes || (SIMS as readonly string[]).includes(id);
+
 /** Pix request examples for the Pix demo. `bank`: what the payer's bank app shows after pasting the code. */
 export type PixExample = { from: string; amount: number; description: string; bank: "match" | "other"; ask: Text; thanks?: Text };
 

@@ -40,6 +40,9 @@ export const chrome = {
     automated: "Mensagem automática",
     levelsLabel: "Escolha uma situação",
     sceneCaption: "Simulação com pessoas e mensagens de exemplo.",
+    figureStatus: (ios: string, android: string) => `No iPhone: ${ios}. No Android: ${android}.`,
+    figuresTitle: "Na prática",
+    noAdsRows: [["Servidores", "no Brasil"], ["Anúncios", "0"], ["Dados vendidos", "nenhum"], ["Preço para você", "R$ 0"]],
     pix: {
       amount: "Valor", otherName: "Pagamentos JP Ltda", bankApp: "App do seu banco", bankTo: "Pix para",
       mismatch: "Este não é o nome do cartão. Não pague.", match: "O nome é o mesmo do cartão.",
@@ -137,6 +140,9 @@ export const chrome = {
     automated: "Automated message",
     levelsLabel: "Pick a situation",
     sceneCaption: "Simulation with sample people and messages.",
+    figureStatus: (ios: string, android: string) => `iPhone: ${ios}. Android: ${android}.`,
+    figuresTitle: "In practice",
+    noAdsRows: [["Servers", "in Brazil"], ["Ads", "0"], ["Data sold", "none"], ["Price for you", "R$ 0"]],
     pix: {
       amount: "Amount", otherName: "Pagamentos JP Ltda", bankApp: "Your bank app", bankTo: "Pix to",
       mismatch: "This is not the name on the card. Do not pay.", match: "The name matches the card.",

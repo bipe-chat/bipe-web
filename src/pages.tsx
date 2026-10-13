@@ -5,40 +5,17 @@ import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
 import { BusinessFigure } from "./sim/BusinessFigure";
-import { GroupsFigure } from "./sim/GroupsFigure";
+import { Figure } from "./sim/Figure";
+import { NoAdsFigure } from "./sim/NoAdsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
-import { SCAM_REEL, scenes, type SceneId } from "./sim/scenes";
+import { scenes, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
-import { compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type DemoId, type Feature, type Lang, type Tentpole } from "./shared";
+import { compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
-  const caption = tp[lang].demos[index]?.caption ?? "";
-  if (id === "scam") return <Island name="SceneReel" props={{ lang, ids: SCAM_REEL, caption }} />;
-  if (id === "identity") return <Island name="IdentitySim" props={{ lang, caption }} />;
-  if (id === "handle") return <Island name="HandleSim" props={{ lang, caption }} />;
-  if (id === "groups") return <GroupsFigure lang={lang} caption={caption} />;
-  if (id === "levels") return <Island name="TrustLevels" props={{ lang, caption }} />;
-  if (id === "pix") return <Island name="PixDemo" props={{ lang, caption }} />;
-  return <NoAdsFigure lang={lang} />;
-}
-
-/** Static figure for the no-ads tentpole: the promise as a short ledger, no fake UI. */
-function NoAdsFigure({ lang }: { lang: Lang }) {
-  const rows = lang === "pt"
-    ? [["Anúncios", "0"], ["Dados vendidos", "nenhum"], ["Preço para você", "R$ 0"], ["Servidores", "no Brasil"]]
-    : [["Ads", "0"], ["Data sold", "none"], ["Price for you", "R$ 0"], ["Servers", "in Brazil"]];
-  return (
-    <div className="stage">
-      <div className="card" style={{ width: "100%", maxWidth: 380, background: "var(--bg)" }}>
-        {rows.map(([k, v]) => (
-          <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "14px 4px", borderBottom: "1px solid var(--line)" }}>
-            <span>{k}</span><strong className="display" style={{ fontSize: 22, color: "var(--acai)" }}>{v}</strong>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  if (!id) return <NoAdsFigure lang={lang} />;
+  return <Figure lang={lang} id={id} caption={tp[lang].demos[index]?.caption ?? ""} />;
 }
 
 function Points({ items }: { items: string[] }) {
@@ -188,29 +165,51 @@ function FeatureCard({ lang, f, anchor }: { lang: Lang; f: Feature; anchor?: boo
   );
 }
 
-/** One building block on its own page: what it does, how it works, its status, and where it belongs. */
+/** Caption under a feature figure: the status per platform first, so a planned feature never looks shipped. */
+function figureCaption(lang: Lang, f: Feature): string {
+  const c = chrome[lang];
+  if (f.status.ios === "policy" && f.status.android === "policy") return c.sceneCaption;
+  return `${c.figureStatus(c.status[f.status.ios], c.status[f.status.android])} ${c.sceneCaption}`;
+}
+
+/** One building block on its own page: what it does, how it works in practice, its status, and where it belongs. */
 export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
   const c = chrome[lang];
   const area = product.areas.find((a) => a.id === f.area)!;
   const tentpoles = product.tentpoles.filter((t) => t.features.includes(f.id));
   const related = product.features.filter((x) => x.area === f.area && x.id !== f.id);
   const audiences = product.audiences.filter((a) => a.sections.some((s) => s.features.includes(f.id)));
+  const [lead, ...more] = f.figures ?? [];
+  const caption = figureCaption(lang, f);
+  const text = (
+    <div>
+      <p className="small"><a href={`${paths.features(lang)}#${f.id}`}>{c.allFeatures}</a> · {area[lang]}</p>
+      <h1>{f[lang].name}</h1>
+      <p className="lede">{f[lang].body}</p>
+      <PlatformStatus lang={lang} f={f} />
+      <h2 style={{ marginTop: 40 }}>{c.howItWorks}</h2>
+      <ul>{f[lang].points.map((x) => <li key={x}>{x}</li>)}</ul>
+      {audiences.length > 0 && (
+        <p style={{ marginTop: 24 }}>{c.usedFor} {audiences.map((a, i) => <span key={a.id}>{i > 0 && ", "}<a href={paths.audience(lang, a)}>{a[lang].name.toLowerCase()}</a></span>)}</p>
+      )}
+      {tentpoles.length > 0 && (
+        <p style={{ marginTop: 24 }}>{c.partOf} {tentpoles.map((t, i) => <span key={t.id}>{i > 0 && ", "}<a href={paths.tentpole(lang, t)}>{t[lang].name}</a></span>)}</p>
+      )}
+    </div>
+  );
   return (
     <>
-      <section className="wrap narrow section">
-        <p className="small"><a href={`${paths.features(lang)}#${f.id}`}>{c.allFeatures}</a> · {area[lang]}</p>
-        <h1>{f[lang].name}</h1>
-        <p className="lede">{f[lang].body}</p>
-        <PlatformStatus lang={lang} f={f} />
-        <h2 style={{ marginTop: 40 }}>{c.howItWorks}</h2>
-        <ul>{f[lang].points.map((x) => <li key={x}>{x}</li>)}</ul>
-        {audiences.length > 0 && (
-          <p style={{ marginTop: 24 }}>{c.usedFor} {audiences.map((a, i) => <span key={a.id}>{i > 0 && ", "}<a href={paths.audience(lang, a)}>{a[lang].name.toLowerCase()}</a></span>)}</p>
-        )}
-        {tentpoles.length > 0 && (
-          <p style={{ marginTop: 24 }}>{c.partOf} {tentpoles.map((t, i) => <span key={t.id}>{i > 0 && ", "}<a href={paths.tentpole(lang, t)}>{t[lang].name}</a></span>)}</p>
-        )}
-      </section>
+      {lead ? (
+        <section className="wrap section"><div className="split">{text}<Figure lang={lang} id={lead} caption={caption} /></div></section>
+      ) : (
+        <section className="wrap narrow section">{text}</section>
+      )}
+      {more.length > 0 && (
+        <section className="wrap section">
+          <h2>{c.figuresTitle}</h2>
+          <div className="figure-grid">{more.map((id) => <Figure lang={lang} id={id} caption={caption} key={id} />)}</div>
+        </section>
+      )}
       {related.length > 0 && (
         <section className="wrap section">
           <h2>{c.alsoIn(area[lang])}</h2>

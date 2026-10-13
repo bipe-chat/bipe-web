@@ -28,6 +28,7 @@ export function ogFamily(route: Route): string | undefined {
 import inviteCodes from "@shared/test-vectors/invite-codes.json";
 import { extractInviteCode } from "./sim/LinkPages";
 import { scams, scamsMarkdown, scamTypeMarkdown } from "./pages/ScamsPage";
+import { isFigureId } from "./sim/scenes";
 
 /** Fails the build when the invite page disagrees with the shared invite-code vectors. */
 export function selfTest(): void {
@@ -35,6 +36,13 @@ export function selfTest(): void {
     const got = extractInviteCode(v.input);
     if (got !== v.code) throw new Error(`invite-codes vector failed: ${JSON.stringify(v.input)} gave ${got}, want ${v.code}`);
   }
+  // Figure ids in product.json are typed only by a cast: check them against the scenes and sims (bipe#176).
+  const figures: [string, string][] = [
+    ...product.tentpoles.flatMap((tp) => tp.demos.map((id): [string, string] => [`tentpole ${tp.id}`, id])),
+    ...product.features.flatMap((f) => (f.figures ?? []).map((id): [string, string] => [`feature ${f.id}`, id])),
+    ...product.audiences.flatMap((a) => a.sections.flatMap((s) => (s.scene ? [[`audience ${a.id}`, s.scene] as [string, string]] : []))),
+  ];
+  for (const [where, id] of figures) if (!isFigureId(id)) throw new Error(`${where}: unknown figure ${id}`);
 }
 
 export function renderBody(route: Route): string {
