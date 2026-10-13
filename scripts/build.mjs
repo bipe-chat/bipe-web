@@ -111,7 +111,7 @@ for (const [from, to] of Object.entries(ssr.redirects)) {
 
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
 writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
-writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /marca/\nDisallow: /elenco/\nDisallow: /convite/\nSitemap: ${site}/sitemap.xml\n`);
+writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /marca/\nDisallow: /elenco/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
 rmSync(join(dist, ".vite"), { recursive: true, force: true });
 rmSync(ssrOut, { recursive: true, force: true });
 console.log(`built ${ssr.routes.length} pages into dist/`);

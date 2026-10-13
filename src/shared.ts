@@ -4,6 +4,7 @@ import familyTerms from "@shared/registries/family-terms.json";
 import handles from "@shared/registries/handles.json";
 import homoglyphs from "@shared/registries/homoglyphs.json";
 import inviteCodes from "@shared/registries/invite-codes.json";
+import accountsJson from "@shared/registries/accounts.json";
 import reservedNames from "@shared/registries/reserved-names.json";
 import scamPatterns from "@shared/registries/scam-patterns.json";
 import stringsEn from "@shared/strings/en.json";
@@ -47,6 +48,9 @@ export const reg = {
   strings: stringsPt,
   stringsEn,
 } as unknown as Registries;
+
+/** Device-first account rules (ADR 0057, 0059): link lives and recovery delays. */
+export const accountRules = accountsJson as { recoveryLinkMinutes: number; emailVerifyLinkHours: number; recoveryDelayHours: { email: number } };
 
 export type Lang = "pt" | "en";
 export type Status = "testing" | "built" | "planned" | "policy";

@@ -6,7 +6,7 @@ import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
 import { Icon } from "../components/ui";
 import { API_URL } from "../config";
-import { distribution, extractInviteCodeRef, reg, t } from "../shared";
+import { distribution, extractInviteCodeRef, reg, t, type Lang } from "../shared";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
 export function extractInviteCode(text: string): string | null {
@@ -26,9 +26,9 @@ async function copyText(text: string): Promise<boolean> {
   return ok;
 }
 
-function InstallButton() {
+export function InstallButton({ lang = "pt" }: { lang?: Lang }) {
   const { ios } = distribution;
-  return ios.url ? <a className="button primary" href={ios.url}><Icon name="apple" />{ios.pt.label}</a> : null;
+  return ios.url ? <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a> : null;
 }
 
 type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string };
