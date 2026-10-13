@@ -5,7 +5,7 @@ import { chrome } from "../copy";
 import { Icon, ScamWarningCard, TrustCard } from "../components/ui";
 import { Bubble, Phone, runs, TabBar } from "../components/phone";
 import { reg, scamWarningKind, t, type Lang } from "../shared";
-import { ME, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type Line, type Scene, type SceneId } from "./scenes";
+import { ME, REAL_VS_FAKE, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type Line, type Scene, type SceneId } from "./scenes";
 import { PixCard } from "./PixCard";
 import { ChargeCard, Contacts, JoinCard, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, StickerPicker, VerifyPix } from "./SceneParts";
 import { Stage } from "./Stage";
@@ -269,6 +269,26 @@ export function TrustLevels({ lang, caption }: { lang: Lang; caption: string }) 
         ))}
       </div>
       <SceneSim key={id} lang={lang} id={id} caption={caption} />
+    </div>
+  );
+}
+
+/** Real vs fake: pick an institution, the fake and the real chat play side by side. */
+export function RealVsFake({ lang }: { lang: Lang }) {
+  const [i, setI] = useState(0);
+  const c = chrome[lang].realFake;
+  const pair = REAL_VS_FAKE[i];
+  return (
+    <div className="real-fake">
+      <div className="level-picker real-fake-picker" role="group" aria-label={c.label}>
+        {REAL_VS_FAKE.map((p, n) => (
+          <button type="button" key={p.tab} aria-pressed={n === i} onClick={() => setI(n)}>{c.tabs[p.tab]}</button>
+        ))}
+      </div>
+      <div className="real-fake-phones">
+        <div className="real-fake-col fake"><p className="real-fake-tag">{c.fake}</p><SceneSim key={pair.fake} lang={lang} id={pair.fake} caption={c.fakeCaption} /></div>
+        <div className="real-fake-col real"><p className="real-fake-tag">{c.real}</p><SceneSim key={pair.real} lang={lang} id={pair.real} caption={c.realCaption} /></div>
+      </div>
     </div>
   );
 }

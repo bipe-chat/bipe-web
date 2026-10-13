@@ -527,12 +527,21 @@ export const scenes = {
 
 export type SceneId = keyof typeof scenes;
 
+/** Real vs fake: the homepage picker (RealVsFake). Each tab is a fake scene and the verified institution it copies. */
+export const REAL_VS_FAKE: { tab: "bank" | "school" | "shop" | "delivery" | "church" | "loan" | "lawyer" | "charity" | "rental" | "internet"; fake: SceneId; real: SceneId }[] = [
+  { tab: "bank", fake: "falso-suporte", real: "banco-real" }, { tab: "school", fake: "boleto", real: "escola-real" },
+  { tab: "shop", fake: "loja-falsa", real: "loja-real" }, { tab: "delivery", fake: "taxa-correios", real: "entrega-real" },
+  { tab: "church", fake: "falso-pastor", real: "igreja-real" }, { tab: "loan", fake: "emprestimo", real: "credito-real" },
+  { tab: "lawyer", fake: "falso-advogado", real: "advogado-real" }, { tab: "charity", fake: "vaquinha", real: "doacao-real" },
+  { tab: "rental", fake: "aluguel", real: "pousada-real" }, { tab: "internet", fake: "boleto-internet", real: "internet-real" },
+];
+
 /**
  * Figures that are not a phone scene: sims and static figures, drawn by src/sim/Figure.tsx.
  * A figure id in product.json (tentpole `demos`, feature `figures`) is a scene id above or one of these.
  * bipe-shared/tools/gen-product-doc.mjs reads this line and the scene keys to validate those ids: keep it on one line.
  */
-export const SIMS = ["scam", "identity", "handle", "groups", "levels", "pix", "business", "noAds", "noSms", "handoff", "e2ee", "brazil", "openSource", "bizInbox", "bizApi", "bizContinue"] as const;
+export const SIMS = ["scam", "identity", "handle", "groups", "levels", "pix", "business", "noAds", "noSms", "handoff", "e2ee", "brazil", "openSource", "bizInbox", "bizApi", "bizArrive"] as const;
 export type SimId = (typeof SIMS)[number];
 export type FigureId = SceneId | SimId;
 export const isFigureId = (id: string): id is FigureId => id in scenes || (SIMS as readonly string[]).includes(id);
@@ -561,30 +570,29 @@ export const SCAM_REEL: SceneId[] = ["numero-novo", "falso-suporte", "renda-extr
 export const TRUST_LEVEL_SCENES: SceneId[] = ["verificado", "pessoalmente", "numero-novo", "falso-suporte", "renda-extra", "nome-diferente", "aparelho-novo", "de-fora", "instituicao", "mae", "conversas", "perfil"];
 
 /**
- * /empresas/ minis (src/sim/BusinessMinis.tsx): sample data for the company inbox, the API request and the
- * move from WhatsApp to Bipe. The company is "clinica"; customers are cast ids. On WhatsApp a customer
- * shows by name only: the inbox never shows a phone number (ADR 0015).
+ * /empresas/ minis (src/sim/BusinessMinis.tsx): sample data for the company inbox, the API request and how a
+ * customer finds the company on Bipe. The company is "clinica"; customers are cast ids. The inbox never
+ * shows a phone number (ADR 0015).
  */
-export type Channel = "bipe" | "whatsapp";
-export type DeskChat = { with: string; channel: Channel; time: string; unread?: number; lines: { from: "customer" | "agent"; text: Text }[]; note: Text };
+export type DeskChat = { with: string; time: string; unread?: number; lines: { from: "customer" | "agent"; text: Text }[]; note: Text };
 
 export const deskChats: DeskChat[] = [
-  { with: "caio", channel: "bipe", time: "09:41", unread: 2, note: { pt: "Prefere horário depois das 17h.", en: "Prefers times after 5pm." },
+  { with: "caio", time: "09:41", unread: 2, note: { pt: "Prefere horário depois das 17h.", en: "Prefers times after 5pm." },
     lines: [
       { from: "customer", text: { pt: "Oi, bom dia!", en: "Oi, bom dia! (Hi, good morning!)" } },
       { from: "customer", text: { pt: "Dá pra remarcar minha consulta de quinta?", en: "Dá pra remarcar minha consulta de quinta? (Can I move my Thursday appointment?)" } },
     ] },
-  { with: "lucia", channel: "whatsapp", time: "09:32", unread: 1, note: { pt: "Vem às consultas com a filha.", en: "Comes to appointments with her daughter." },
+  { with: "lucia", time: "09:32", unread: 1, note: { pt: "Vem às consultas com a filha.", en: "Comes to appointments with her daughter." },
     lines: [
       { from: "customer", text: { pt: "Bom dia, minha filha. O exame de sangue precisa de jejum?", en: "Bom dia, minha filha. O exame de sangue precisa de jejum? (Do I need to fast for the blood test?)" } },
     ] },
-  { with: "duda", channel: "bipe", time: "09:15", note: { pt: "Primeira consulta.", en: "First appointment." },
+  { with: "duda", time: "09:15", note: { pt: "Primeira consulta.", en: "First appointment." },
     lines: [
       { from: "customer", text: { pt: "Vocês atendem sábado?", en: "Vocês atendem sábado? (Are you open on Saturday?)" } },
       { from: "agent", text: { pt: "Atendemos sim, das 8h às 12h.", en: "Atendemos sim, das 8h às 12h. (Yes, from 8am to noon.)" } },
       { from: "customer", text: { pt: "Perfeito, obrigada!", en: "Perfeito, obrigada! (Perfect, thanks!)" } },
     ] },
-  { with: "thiago", channel: "whatsapp", time: "08:58", note: { pt: "Pediu recibo para o plano de saúde.", en: "Asked for a receipt for his health plan." },
+  { with: "thiago", time: "08:58", note: { pt: "Pediu recibo para o plano de saúde.", en: "Asked for a receipt for his health plan." },
     lines: [
       { from: "customer", text: { pt: "Vou chegar uns 10 min atrasado, tudo bem?", en: "Vou chegar uns 10 min atrasado, tudo bem? (I will be about 10 min late, is that OK?)" } },
     ] },
@@ -604,20 +612,19 @@ export const deskQuestion = {
   pick: 1,
 } satisfies { question: Text; options: Text[]; pick: number };
 
-/** The API mini: one Cloud API button question (ADR 0081) to customer `to`. */
+/** The API mini: one question with options (ADR 0081) through Bipe's API, to customer `to`. */
 export const apiDemo = {
-  from: "clinica", to: "caio",
+  from: "clinica", to: "caio", conversation: "c_8f2k1", message: "m_3xq7a", event: "e_91bd4",
   question: "Confirma a consulta de amanhã às 14h?",
-  buttons: [{ id: "confirmar", title: "Confirmo" }, { id: "remarcar", title: "Quero remarcar" }],
+  options: [{ id: "confirmar", label: "Confirmo" }, { id: "remarcar", label: "Quero remarcar" }],
   pick: 0,
 };
 
-/** The continue mini: a WhatsApp chat moves to Bipe with a single-use link code (bipe/docs/business-track.md). */
-export const continueDemo = {
-  company: "clinica", customer: "caio", code: "7KQ2-M9XA",
+/** The arrive mini: the customer finds the company's QR code, opens the verified profile and writes first. */
+export const arriveDemo = {
+  company: "clinica", customer: "caio",
   ask: { pt: "Oi! Preciso remarcar a consulta de quinta", en: "Oi! Preciso remarcar a consulta de quinta (I need to move Thursday's appointment)" },
-  offer: (link: string) => ({ pt: `Para continuar no Bipe, toque aqui: ${link}`, en: `Para continuar no Bipe, toque aqui: ${link} (To continue on Bipe, tap here)` }),
-  reply: { pt: "Oi, Caio! Seguimos por aqui. Quinta às 17h fica bom pra você?", en: "Oi, Caio! Seguimos por aqui. Quinta às 17h fica bom pra você? (Let us carry on here. Does Thursday at 5pm work?)" },
+  reply: { pt: "Oi, Caio! Claro. Quinta às 17h fica bom pra você?", en: "Oi, Caio! Claro. Quinta às 17h fica bom pra você? (Sure. Does Thursday at 5pm work?)" },
 };
 
 export const text = (t: Text, lang: "pt" | "en") => (typeof t === "string" ? t : t[lang]);

@@ -66,6 +66,13 @@ export function HomePage({ lang }: { lang: Lang }) {
         <Demo lang={lang} tp={lead} index={0} />
       </section>
 
+      <section className="wrap section" id="golpe-ou-verdade">
+        <h2>{product.realFake[lang].title}</h2>
+        <p className="lede" style={{ maxWidth: "40em" }}>{product.realFake[lang].lede}</p>
+        <Island name="RealVsFake" props={{ lang }} />
+        <p className="small muted" style={{ marginTop: 16 }}>{product.realFake[lang].caption}</p>
+      </section>
+
       <section className="wrap section">
         <h2 style={{ marginBottom: 24 }}>{chrome[lang].tentpolesTitle}</h2>
         <div className="grid tentpole-grid">{product.tentpoles.map((tp) => <TentpoleCard lang={lang} tp={tp} key={tp.id} />)}</div>
@@ -331,8 +338,8 @@ export function DownloadPage({ lang }: { lang: Lang }) {
 export function BusinessPage({ lang }: { lang: Lang }) {
   const b = product.business[lang];
   const c = chrome[lang].biz;
-  // Sections 2 and 3 (the team inbox, and moving from WhatsApp) each get their mini (src/sim/BusinessMinis.tsx).
-  const [why, inbox, move, ...rest] = b.sections;
+  // Sections 2 and 3 (the team inbox, and the API and how customers arrive) each get their mini (src/sim/BusinessMinis.tsx).
+  const [why, inbox, connect, ...rest] = b.sections;
   return (
     <>
       <section className="wrap section">
@@ -355,10 +362,10 @@ export function BusinessPage({ lang }: { lang: Lang }) {
       <section className="wrap section">
         <div className="split">
           <div>
-            <h2 style={{ fontSize: 28 }}>{move.heading}</h2>
-            <ul className="points biz-points">{move.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
+            <h2 style={{ fontSize: 28 }}>{connect.heading}</h2>
+            <ul className="points biz-points">{connect.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
           </div>
-          <Figure lang={lang} id="bizContinue" caption={c.continueCaption} />
+          <Figure lang={lang} id="bizArrive" caption={c.arriveCaption} />
         </div>
         <div style={{ marginTop: 28 }}><Figure lang={lang} id="bizApi" caption={c.apiCaption} /></div>
       </section>

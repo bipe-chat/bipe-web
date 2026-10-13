@@ -323,6 +323,20 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
   .level-picker button { font-size: 13px; padding: 6px 12px; border-radius: 999px; }
 }
 
+/* Homepage: real vs fake */
+.real-fake { margin-top: 24px; }
+.real-fake-picker { flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; }
+.real-fake-picker button { padding: 8px 14px; border-radius: 999px; }
+.real-fake-phones { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+.real-fake-col { display: flex; flex-direction: column; align-items: center; }
+.real-fake-tag { margin: 0 0 10px; font-weight: 700; font-size: 15px; padding: 4px 14px; border-radius: 999px; border: 1px solid; }
+.real-fake-col.fake .real-fake-tag { color: var(--cpd-color-text-trust-danger); border-color: var(--cpd-color-border-trust-danger); }
+.real-fake-col.real .real-fake-tag { color: var(--cpd-color-text-trust-verified); border-color: var(--cpd-color-border-trust-verified); background: var(--cpd-color-bg-trust-verified-subtle); }
+@media (max-width: 720px) {
+  .real-fake-phones { grid-template-columns: 1fr; }
+  .real-fake-picker button { font-size: 13px; padding: 6px 12px; }
+}
+
 /* /elenco/ board */
 .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 32px; }
 .cast-card { display: flex; flex-direction: column; gap: 6px; }

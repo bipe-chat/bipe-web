@@ -30,6 +30,6 @@ export function Figure({ lang, id, caption }: { lang: Lang; id: FigureId; captio
     case "openSource": return <OpenSourceFigure lang={lang} caption={caption} />;
     case "bizInbox": return <Island name="InboxMini" props={{ lang, caption }} />;
     case "bizApi": return <Island name="ApiMini" props={{ lang, caption }} />;
-    case "bizContinue": return <Island name="ContinueMini" props={{ lang, caption }} />;
+    case "bizArrive": return <Island name="ArriveMini" props={{ lang, caption }} />;
   }
 }
