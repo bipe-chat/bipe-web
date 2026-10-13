@@ -91,6 +91,31 @@
       "photo": { "style": "logo", "look": "a health clinic, a simple rounded leaf merged with a heart, teal on white" }
     },
     {
+      "id": "banco", "kind": "institution", "name": "Banco Seriema", "short": "Banco Seriema", "handle": "bancoseriema",
+      "about": "Fictional bank. Verified institution (CNPJ). The real card desk that 'suporte' poses as.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a bank, a stylised long-legged bird in profile inside a rounded square, deep blue and gold on white" }
+    },
+    {
+      "id": "horizonte", "kind": "institution", "name": "Colégio Horizonte", "short": "Colégio Horizonte", "handle": "colegiohorizonte",
+      "about": "Fictional private school, Belo Horizonte. Verified institution (CNPJ). The real school that 'colegio' poses as with a changed boleto.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a school, an open book with a rising sun above it, orange and navy on white" }
+    },
+    {
+      "id": "jatoba", "kind": "institution", "name": "Lojas Jatobá", "short": "Lojas Jatobá", "handle": "lojasjatoba",
+      "about": "Fictional national retail chain (home goods and electronics). Verified institution (CNPJ). The business track: orders, delivery notices, Pix charges with its CNPJ. The real shop next to the fake 'outlet'.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a home goods and electronics store, a rounded shopping bag with a single seed pod shape on it, coral and dark grey on white" }
+    },
+    {
+      "id": "sabia", "kind": "institution", "name": "Sabiá Entregas", "short": "Sabiá Entregas", "handle": "sabiaentregas",
+      "about": "Fictional parcel delivery company. Verified institution (CNPJ). Real tracking notices next to the fake 'rastreio' fee.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a parcel delivery company, a small round bird carrying a box, brown and orange on white" }
+    },
+    {
+      "id": "vidanova", "kind": "institution", "name": "Comunidade Vida Nova", "short": "Comunidade Vida Nova", "handle": "comunidadevidanova",
+      "about": "The church behind the 'igreja' group, Recife. Verified institution (CNPJ). Offerings go only to its CNPJ, never to the fake 'falsapastora'.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a church community, a simple dove above a small sprouting plant, soft purple on white" }
+    },
+    {
       "id": "lucia", "kind": "person", "name": "Lúcia Barbosa", "short": "Dona Lúcia", "handle": null,
       "about": "79, retired seamstress, Belém. Lives in the Bela Vista building. Front camera too close.", "trust": "none",
       "photo": { "style": "selfie", "look": "a 79-year-old Brazilian woman with brown skin, white hair in a bun and reading glasses, holding the phone too close and slightly below her face, in her living room with a crocheted doily on the sofa, dim indoor light, a little blurry" }
