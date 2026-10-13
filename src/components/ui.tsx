@@ -42,13 +42,13 @@ export function PlatformStatus({ lang, f }: { lang: Lang; f: Feature }) {
   return <p className="small muted">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>;
 }
 
-/** Mirrors ProseioScamWarningView (proseio-ios): caution card under the message. */
+/** Mirrors BipeScamWarningView (proseio-ios): caution card under the message. */
 export function ScamWarningCard({ lang, kind }: { lang: Lang; kind: ScamKind }) {
   return (
     <div className="trust caution" role="note">
       <Icon name="warning" size={16} />
       <div>
-        <strong>{t(lang, "proseio_scam_warning_title")}</strong>
+        <strong>{t(lang, "bipe_scam_warning_title")}</strong>
         {t(lang, scamStringKey[kind])}
       </div>
     </div>

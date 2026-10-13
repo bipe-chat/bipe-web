@@ -4,7 +4,7 @@ import { API_URL } from "./config";
 import { product } from "./shared";
 
 export const HEADLINE = product.headlineTest;
-const KEY = `proseio.${HEADLINE.experiment}`;
+const KEY = `bipe.${HEADLINE.experiment}`;
 
 export function currentArm(): string | null {
   try {

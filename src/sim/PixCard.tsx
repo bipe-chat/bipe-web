@@ -20,24 +20,24 @@ export function PixCard({ lang, from, amount, description, status = "issued", co
   return (
     <div className={`pixreq ${status}`}>
       <div className="pixreq-head">
-        <span><Icon name="pix" size={14} /> {t(lang, "proseio_pix_card_title")}</span>
+        <span><Icon name="pix" size={14} /> {t(lang, "bipe_pix_card_title")}</span>
         {status === "received"
-          ? <span className="pixreq-chip paid">{t(lang, "proseio_pix_card_status_paid")}</span>
-          : status === "issued" && <span className="pixreq-chip">{t(lang, "proseio_pix_card_status_issued")}</span>}
+          ? <span className="pixreq-chip paid">{t(lang, "bipe_pix_card_status_paid")}</span>
+          : status === "issued" && <span className="pixreq-chip">{t(lang, "bipe_pix_card_status_issued")}</span>}
       </div>
       <div className="pixreq-main">
         <div>
           <strong className="pixreq-amount">{amount}</strong>
           {description && <div className="pixreq-desc">{description}</div>}
-          <div className="pixreq-to">{name} <Seal size={13} label={t(lang, "proseio_badge_verified")} /></div>
+          <div className="pixreq-to">{name} <Seal size={13} label={t(lang, "bipe_badge_verified")} /></div>
         </div>
         <FakeQr seed={`${from}${amount}`} />
       </div>
-      <p className="pixreq-bank">{t(lang, "proseio_pix_card_bank_name", name)}</p>
+      <p className="pixreq-bank">{t(lang, "bipe_pix_card_bank_name", name)}</p>
       {status === "issued" && (pause
-        ? <div className="pixreq-action wait">{t(lang, "proseio_pause_countdown", "5")}</div>
-        : <div className={`pixreq-action${copied ? " done" : ""}`}>{t(lang, copied ? "proseio_pix_card_copied" : "proseio_pix_card_copy")}</div>)}
-      {status === "sent" && <p className="pixreq-status">{t(lang, "proseio_pix_card_status_sent", e.short ?? name)}</p>}
+        ? <div className="pixreq-action wait">{t(lang, "bipe_pause_countdown", "5")}</div>
+        : <div className={`pixreq-action${copied ? " done" : ""}`}>{t(lang, copied ? "bipe_pix_card_copied" : "bipe_pix_card_copy")}</div>)}
+      {status === "sent" && <p className="pixreq-status">{t(lang, "bipe_pix_card_status_sent", e.short ?? name)}</p>}
     </div>
   );
 }

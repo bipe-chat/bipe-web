@@ -21,19 +21,19 @@ export function GroupsFigure({ lang, caption }: { lang: Lang; caption: string })
       >
         <div className="card-item">
           <div className="missed">
-            <div className="missed-head">{t(lang, "proseio_group_missed_title")}</div>
+            <div className="missed-head">{t(lang, "bipe_group_missed_title")}</div>
             <div className="missed-row">
-              <strong>{t(lang, "proseio_group_missed_mention", "Bia")}</strong>
+              <strong>{t(lang, "bipe_group_missed_mention", "Bia")}</strong>
               <span>@gabi você leva o carvão?</span>
             </div>
             <div className="missed-row">
-              <strong>{t(lang, "proseio_group_missed_reply", "Léo")}</strong>
+              <strong>{t(lang, "bipe_group_missed_reply", "Léo")}</strong>
               <span>Fechado, 13h lá em casa</span>
             </div>
             <div className="missed-row">
-              <strong>{t(lang, "proseio_group_missed_poll", "Sábado ou domingo?")}</strong>
+              <strong>{t(lang, "bipe_group_missed_poll", "Sábado ou domingo?")}</strong>
             </div>
-            <div className="missed-more">{t(lang, "proseio_group_missed_more", "142")}</div>
+            <div className="missed-more">{t(lang, "bipe_group_missed_more", "142")}</div>
           </div>
         </div>
         <div className="msg"><Bubble lang={lang} sender="caio">Alguém viu o jogo ontem?</Bubble></div>

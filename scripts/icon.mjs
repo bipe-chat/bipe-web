@@ -17,7 +17,7 @@ export function writeIcons(publicDir, path) {
   writeFileSync(join(brand, "app-icon.svg"), iconSvg(path, 14));
   if (process.platform !== "darwin") return console.warn("icon.mjs: not macOS, PNG icons not rendered");
   // Square source: iOS masks the corners itself.
-  const tmp = mkdtempSync(join(tmpdir(), "proseio-icon-"));
+  const tmp = mkdtempSync(join(tmpdir(), "bipe-icon-"));
   const src = join(tmp, "app-icon.svg");
   writeFileSync(src, iconSvg(path, 0));
   execFileSync("qlmanage", ["-t", "-s", "512", "-o", tmp, src], { stdio: "ignore" });

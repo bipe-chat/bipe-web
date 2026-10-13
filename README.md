@@ -1,6 +1,6 @@
-# proseio-web
+# bipe-web
 
-The public website for Bipe, proseio.com.br. pt-BR first, English under `/en/`.
+The public website for Bipe, bipe.chat. pt-BR first, English under `/en/`.
 
 ```bash
 pnpm install

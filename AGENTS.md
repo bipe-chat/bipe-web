@@ -1,6 +1,6 @@
-# proseio-web: agent notes
+# bipe-web: agent notes
 
-Static site for proseio.com.br. Vite + React 19 + TypeScript, prerendered to HTML; only `data-island` elements hydrate. Plain CSS on proseio-tokens (no Tailwind). See `../proseio/docs/website.md`.
+Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; only `data-island` elements hydrate. Plain CSS on proseio-tokens (no Tailwind). See `../proseio/docs/website.md`.
 
 ## Commands
 

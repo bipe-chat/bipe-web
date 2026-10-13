@@ -44,7 +44,7 @@ export const label = (e: CastEntry, savedAs?: string) => savedAs ?? e.short ?? e
 /** The Matrix user ID the app would use as the avatar's content ID. */
 export function matrixId(e: CastEntry) {
   const local = e.handle ?? e.id;
-  return local.includes(":") ? `@${local}` : `@${local}:proseio.com.br`;
+  return local.includes(":") ? `@${local}` : `@${local}:bipe.net.br`;
 }
 
 /** Compound decorative colour 1 to 6, the same hash as the apps: sum of character codes mod 6. */

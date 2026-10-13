@@ -67,7 +67,7 @@ export function ProfileLanding(_: Record<string, never>) {
         {profile.photo_url && <img className="profile-photo" src={profile.photo_url} alt="" width={112} height={112} referrerPolicy="no-referrer" />}
         <h1 style={{ overflowWrap: "anywhere" }}>{profile.name}</h1>
         <p className="profile-handle">@{profile.handle}</p>
-        <p><span className="chip policy">{t("pt", "proseio_public_profile_not_verified")}</span></p>
+        <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
         <p className="lede">{c.lead}</p>
         <p>{c.noApp}</p>
@@ -98,7 +98,7 @@ export function InviteLanding(_: Record<string, never>) {
     const found = extractInviteCode(decodeURIComponent(location.pathname));
     setCode(found);
     if (!found) return setValid(false);
-    // The code is a secret the inviter shared. The page sends it only to api.proseio.com.br.
+    // The code is a secret the inviter shared. The page sends it only to api.bipe.net.br.
     fetch(`${API_URL}/v1/invites/${encodeURIComponent(found)}`, { referrerPolicy: "no-referrer" })
       .then((r) => (r.ok ? r.json() : null))
       .then((p) => {

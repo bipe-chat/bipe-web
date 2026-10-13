@@ -11,10 +11,10 @@ import { Stage } from "./Stage";
 
 /** The mark next to a name. The same state looks the same everywhere (design/trust-ui.md). */
 export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust; size?: number }) {
-  if (trust === "pix" || trust === "govbr") return <Seal size={size} label={t(lang, "proseio_badge_verified")} />;
-  if (trust === "contact") return <span className="seal-qr"><Seal size={size} label={t(lang, "proseio_badge_verified_contact")} /></span>;
-  if (trust === "institution") return <Seal size={size} label={t(lang, "proseio_badge_institution")} />;
-  if (trust === "suspended") return <span className="seal off" title={t(lang, "proseio_badge_suspended")}><Mark size={size} /></span>;
+  if (trust === "pix" || trust === "govbr") return <Seal size={size} label={t(lang, "bipe_badge_verified")} />;
+  if (trust === "contact") return <span className="seal-qr"><Seal size={size} label={t(lang, "bipe_badge_verified_contact")} /></span>;
+  if (trust === "institution") return <Seal size={size} label={t(lang, "bipe_badge_institution")} />;
+  if (trust === "suspended") return <span className="seal off" title={t(lang, "bipe_badge_suspended")}><Mark size={size} /></span>;
   if (trust === "external") return <span className="globe"><Icon name="globe" size={size} /></span>;
   return null;
 }
@@ -22,10 +22,10 @@ export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust
 function subline(lang: Lang, e: CastEntry, trust: Trust) {
   const c = chrome[lang];
   if (e.kind === "group") return c.people(e.members ?? 0);
-  if (trust === "pix" || trust === "govbr") return t(lang, "proseio_badge_verified_name", e.name ?? "");
-  if (trust === "contact") return t(lang, "proseio_badge_verified_contact");
-  if (trust === "institution") return `${t(lang, "proseio_badge_institution")} · CNPJ ${e.cnpj}`;
-  if (trust === "suspended") return <span className="caution-text">{t(lang, "proseio_badge_suspended")}</span>;
+  if (trust === "pix" || trust === "govbr") return t(lang, "bipe_badge_verified_name", e.name ?? "");
+  if (trust === "contact") return t(lang, "bipe_badge_verified_contact");
+  if (trust === "institution") return `${t(lang, "bipe_badge_institution")} · CNPJ ${e.cnpj}`;
+  if (trust === "suspended") return <span className="caution-text">{t(lang, "bipe_badge_suspended")}</span>;
   return e.handle ? `@${e.handle}` : "";
 }
 
@@ -46,22 +46,22 @@ function Card({ lang, line, partner, savedAs }: { lang: Lang; line: Exclude<Line
   const name = partner.name ?? "";
   switch (line.card) {
     case "unverified":
-      return <TrustCard level="neutral" title={t(lang, "proseio_banner_unverified_title")}>{t(lang, "proseio_banner_unverified_body", text(line.age, lang))}</TrustCard>;
+      return <TrustCard level="neutral" title={t(lang, "bipe_banner_unverified_title")}>{t(lang, "bipe_banner_unverified_body", text(line.age, lang))}</TrustCard>;
     case "external":
-      return <TrustCard level="neutral" icon="globe">{t(lang, "proseio_banner_external")}</TrustCard>;
+      return <TrustCard level="neutral" icon="globe">{t(lang, "bipe_banner_external")}</TrustCard>;
     case "securityChange":
-      return <TrustCard level="caution" icon="shield">{t(lang, "proseio_banner_security_change")}</TrustCard>;
+      return <TrustCard level="caution" icon="shield">{t(lang, "bipe_banner_security_change")}</TrustCard>;
     case "suspended":
-      return <TrustCard level="caution" icon="shield" title={t(lang, "proseio_badge_suspended")}>{t(lang, "proseio_badge_suspended_body")}</TrustCard>;
+      return <TrustCard level="caution" icon="shield" title={t(lang, "bipe_badge_suspended")}>{t(lang, "bipe_badge_suspended_body")}</TrustCard>;
     case "mismatch":
-      return <TrustCard level="danger" icon="warning" title={t(lang, "proseio_warning_name_mismatch", name)} />;
+      return <TrustCard level="danger" icon="warning" title={t(lang, "bipe_warning_name_mismatch", name)} />;
     case "nickname":
       return (
-        <TrustCard level="caution" title={t(lang, "proseio_warning_nickname_confirm_title")}>
-          {t(lang, "proseio_warning_nickname_confirm_body", savedAs ?? "", name)}
+        <TrustCard level="caution" title={t(lang, "bipe_warning_nickname_confirm_title")}>
+          {t(lang, "bipe_warning_nickname_confirm_body", savedAs ?? "", name)}
           <div className="buttons">
-            <span>{t(lang, "proseio_action_nickname_confirm_yes")}</span>
-            <span>{t(lang, "proseio_action_nickname_confirm_unsure")}</span>
+            <span>{t(lang, "bipe_action_nickname_confirm_yes")}</span>
+            <span>{t(lang, "bipe_action_nickname_confirm_unsure")}</span>
           </div>
         </TrustCard>
       );
@@ -70,7 +70,7 @@ function Card({ lang, line, partner, savedAs }: { lang: Lang; line: Exclude<Line
     case "notice":
       return (
         <div className="notice">
-          <div className="notice-band"><Seal size={12} label={t(lang, "proseio_badge_institution")} /> {chrome[lang].automated}</div>
+          <div className="notice-band"><Seal size={12} label={t(lang, "bipe_badge_institution")} /> {chrome[lang].automated}</div>
           <p>{text(line.text, lang)}</p>
         </div>
       );
@@ -122,11 +122,11 @@ function InboxItem({ lang, row }: { lang: Lang; row: InboxRow }) {
 }
 
 const LADDER = [
-  ["proseio_trust_step_account", "proseio_trust_step_account_body"],
-  ["proseio_trust_step_profile", "proseio_trust_step_profile_body"],
-  ["proseio_trust_step_email", "proseio_trust_step_email_body"],
-  ["proseio_trust_step_pix", "proseio_trust_step_pix_body"],
-  ["proseio_trust_step_govbr", "proseio_trust_step_govbr_body"],
+  ["bipe_trust_step_account", "bipe_trust_step_account_body"],
+  ["bipe_trust_step_profile", "bipe_trust_step_profile_body"],
+  ["bipe_trust_step_email", "bipe_trust_step_email_body"],
+  ["bipe_trust_step_pix", "bipe_trust_step_pix_body"],
+  ["bipe_trust_step_govbr", "bipe_trust_step_govbr_body"],
 ] as const;
 
 function TrustProfile({ lang, me, done, beat }: { lang: Lang; me: string; done: number; beat: number }) {
@@ -139,7 +139,7 @@ function TrustProfile({ lang, me, done, beat }: { lang: Lang; me: string; done: 
         <div><strong>{e.name}</strong><div className="sub">@{e.handle}</div></div>
       </div>
       <div className="ladder-progress">
-        <span>{t(lang, "proseio_trust_progress", String(shown), String(LADDER.length))}</span>
+        <span>{t(lang, "bipe_trust_progress", String(shown), String(LADDER.length))}</span>
         <div className="bar"><div style={{ width: `${(shown / LADDER.length) * 100}%` }} /></div>
       </div>
       {LADDER.map(([title, body], i) => (
@@ -149,10 +149,10 @@ function TrustProfile({ lang, me, done, beat }: { lang: Lang; me: string; done: 
             <strong>{t(lang, title)}</strong>
             <div className="sub">{t(lang, body)}</div>
           </div>
-          {i >= done && <span className="soon">{t(lang, "proseio_trust_coming_soon")}</span>}
+          {i >= done && <span className="soon">{t(lang, "bipe_trust_coming_soon")}</span>}
         </div>
       ))}
-      <p className="sub">{t(lang, "proseio_trust_footer")}</p>
+      <p className="sub">{t(lang, "bipe_trust_footer")}</p>
     </div>
   );
 }
@@ -164,14 +164,14 @@ export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: Scen
   const scene: Scene = scenes[id];
   if (scene.kind === "inbox") {
     return (
-      <Phone lang={lang} layout="list" head={t(lang, "proseio_tab_chats")} footer={<TabBar lang={lang} active="chats" />}>
+      <Phone lang={lang} layout="list" head={t(lang, "bipe_tab_chats")} footer={<TabBar lang={lang} active="chats" />}>
         {scene.rows.slice(0, beat).map((row) => <InboxItem lang={lang} row={row} key={row.with} />)}
       </Phone>
     );
   }
   if (scene.kind === "trustProfile") {
     return (
-      <Phone lang={lang} layout="list" head={t(lang, "proseio_trust_title")} footer={<TabBar lang={lang} active="you" />}>
+      <Phone lang={lang} layout="list" head={t(lang, "bipe_trust_title")} footer={<TabBar lang={lang} active="you" />}>
         <TrustProfile lang={lang} me={scene.me} done={scene.done} beat={beat} />
       </Phone>
     );

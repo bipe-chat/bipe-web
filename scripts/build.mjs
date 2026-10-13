@@ -37,7 +37,7 @@ const preload = fonts.map((f) => `<link rel="preload" href="/${f}" as="font" typ
 const ssr = await import(pathToFileURL(join(ssrOut, "entry-server.js")).href);
 ssr.selfTest();
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
-const site = "https://proseio.com.br";
+const site = "https://bipe.chat";
 const nunito = join(root, "node_modules/@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2");
 mkdirSync(join(dist, "og"), { recursive: true });
 

@@ -1,4 +1,4 @@
-// The simulated Proseio iOS app. Sizes inside the phone are iOS points (1px = 1pt) and the
+// The simulated Bipe iOS app. Sizes inside the phone are iOS points (1px = 1pt) and the
 // whole phone is scaled with CSS zoom, so every value can be copied 1:1 from the SwiftUI source
 // (proseio-ios: TimelineItemBubbledStylerView, RoomHeaderView, MessageComposer, HomeScreenRoomCell).
 import type { CSSProperties, ReactNode } from "react";
@@ -108,7 +108,7 @@ function Composer({ lang }: { lang: Lang }) {
 
 /** Floating iOS 26 tab bar (ADR 0053): Conversas, Grupos, Você, and search on its own. */
 export function TabBar({ lang, active }: { lang: Lang; active: "chats" | "you" }) {
-  const tabs = [["chats", "chat", "proseio_tab_chats"], ["groups", "group", "proseio_tab_groups"], ["you", "person", "proseio_tab_you"]] as const;
+  const tabs = [["chats", "chat", "bipe_tab_chats"], ["groups", "group", "bipe_tab_groups"], ["you", "person", "bipe_tab_you"]] as const;
   return (
     <div className="tabbar">
       <div className="glass tabs">

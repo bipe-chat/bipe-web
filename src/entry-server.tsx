@@ -26,7 +26,7 @@ export function renderBody(route: Route): string {
   return renderToString(<Layout route={route} />);
 }
 
-const site = "https://proseio.com.br";
+const site = "https://bipe.chat";
 const abs = (p: string) => site + p;
 
 /** Plain-Markdown twin of a page, for people and agents that read text. */

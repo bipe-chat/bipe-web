@@ -56,7 +56,7 @@ export function IdentitySim({ lang, caption }: { lang: Lang; caption: string }) 
             )}
             {at.b >= 2 && reserved && (
               <div className="msg card-item">
-                <TrustCard level="danger" icon="warning" title={t(lang, "proseio_warning_reserved_name")} />
+                <TrustCard level="danger" icon="warning" title={t(lang, "bipe_warning_reserved_name")} />
               </div>
             )}
           </Phone>

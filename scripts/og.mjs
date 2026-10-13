@@ -60,7 +60,7 @@ export function writeOgCard({ outPath, markPath, title, description, fontPath })
     console.warn("og.mjs: not macOS, link-preview card not rendered");
     return false;
   }
-  const tmp = mkdtempSync(join(tmpdir(), "proseio-og-"));
+  const tmp = mkdtempSync(join(tmpdir(), "bipe-og-"));
   const src = join(tmp, "card.svg");
   writeFileSync(src, cardSvg({ markPath, title, description, fontBase64: readFileSync(fontPath).toString("base64") }));
   execFileSync("qlmanage", ["-t", "-s", String(W), "-o", tmp, src], { stdio: "ignore" });

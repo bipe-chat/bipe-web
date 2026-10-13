@@ -139,7 +139,7 @@ export const publicRepos = distribution.source.repos.filter((r) => r.public);
 /** A repo by id, only when it is public. */
 export const publicRepo = (id?: string) => publicRepos.find((r) => r.id === id);
 
-/** A Proseio UI string from proseio-shared, with %1$s placeholders filled. */
+/** A Bipe UI string from proseio-shared, with %1$s placeholders filled. */
 export function t(lang: Lang, key: string, ...args: string[]): string {
   const table = (lang === "pt" ? stringsPt : stringsEn).strings as Record<string, string>;
   const value = table[key];
@@ -148,13 +148,13 @@ export function t(lang: Lang, key: string, ...args: string[]): string {
 }
 
 export const scamStringKey: Record<string, string> = {
-  pixCode: "proseio_scam_warning_pix_code",
-  boleto: "proseio_scam_warning_boleto",
-  pixKey: "proseio_scam_warning_pix_key",
-  deliveryFee: "proseio_scam_warning_delivery_fee",
-  lookalikeLink: "proseio_scam_warning_lookalike_link",
-  bankAlert: "proseio_scam_warning_bank_alert",
-  receipt: "proseio_scam_warning_receipt",
-  newNumber: "proseio_scam_warning_new_number",
-  urgency: "proseio_scam_warning_urgency",
+  pixCode: "bipe_scam_warning_pix_code",
+  boleto: "bipe_scam_warning_boleto",
+  pixKey: "bipe_scam_warning_pix_key",
+  deliveryFee: "bipe_scam_warning_delivery_fee",
+  lookalikeLink: "bipe_scam_warning_lookalike_link",
+  bankAlert: "bipe_scam_warning_bank_alert",
+  receipt: "bipe_scam_warning_receipt",
+  newNumber: "bipe_scam_warning_new_number",
+  urgency: "bipe_scam_warning_urgency",
 };

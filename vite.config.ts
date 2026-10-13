@@ -9,7 +9,7 @@ const shared = join(root, "../proseio-shared");
 
 // Fail the build when a registry is invalid, the same check the app generators run.
 function validateRegistries(): Plugin {
-  return { name: "proseio-validate-registries", buildStart() { loadRegistries(shared); } };
+  return { name: "bipe-validate-registries", buildStart() { loadRegistries(shared); } };
 }
 
 export default defineConfig({
