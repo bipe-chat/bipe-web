@@ -5,6 +5,7 @@ import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle } from "./pages/LegalPage";
+import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { AboutPage, BusinessPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -112,6 +113,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     title: `${legalTitle(legal[doc][lang])} · Bipe`, description: legal[doc][lang].split("\n\n")[1],
     markdown: legal[doc][lang],
     body: () => <LegalPage md={legal[doc][lang]} />,
+  })),
+  ...docs.map((d): Route => ({
+    path: paths.docs(lang, d.slug[lang]), alt: paths.docs(other(lang), d.slug[other(lang)]), lang,
+    title: `${docTitle(d.md[lang])} · Bipe`, description: docLede(d.md[lang]),
+    markdown: d.md[lang],
+    body: () => <DocsPage md={d.md[lang]} />,
   })),
   {
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",

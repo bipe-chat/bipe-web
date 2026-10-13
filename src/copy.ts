@@ -4,7 +4,7 @@ import type { SceneId } from "./sim/scenes";
 
 export const chrome = {
   pt: {
-    features: "Recursos", download: "Baixar", about: "Sobre", privacy: "Privacidade", terms: "Termos", contact: "Contato",
+    features: "Recursos", download: "Baixar", about: "Sobre", privacy: "Privacidade", terms: "Termos", contact: "Contato", docs: "Documentação",
     other: { lang: "en" as Lang, label: "English" },
     skip: "Pular para o conteúdo",
     status: { testing: "No app de testes", built: "Em desenvolvimento", planned: "Em breve", policy: "Sempre" } satisfies Record<Status, string>,
@@ -171,7 +171,7 @@ export const chrome = {
     },
   },
   en: {
-    features: "Features", download: "Download", about: "About", privacy: "Privacy", terms: "Terms", contact: "Contact",
+    features: "Features", download: "Download", about: "About", privacy: "Privacy", terms: "Terms", contact: "Contact", docs: "Docs",
     other: { lang: "pt" as Lang, label: "Português" },
     skip: "Skip to content",
     status: { testing: "In the test app", built: "In development", planned: "Coming soon", policy: "Always" } satisfies Record<Status, string>,

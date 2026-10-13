@@ -456,6 +456,7 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
           </div>
         </div>
       ))}
+      <p style={{ marginTop: 32 }}><a href={paths.docs(lang)}>{c.docs} →</a></p>
       {publicRepos.length > 0 && (
         <div className="side" id="source">
           <h2>{c.sourceTitle}</h2>

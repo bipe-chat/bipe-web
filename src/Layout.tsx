@@ -25,6 +25,7 @@ export function Layout({ route }: { route: Route }) {
       { href: paths.features(lang), label: c.features },
       { href: paths.compare(lang), label: compare[lang].nav },
       { href: paths.technology(lang), label: product.technical[lang].nav },
+      { href: paths.docs(lang), label: c.docs },
       { href: paths.download(lang), label: c.download },
     ] },
     { heading: c.footerGroups.for, links: [

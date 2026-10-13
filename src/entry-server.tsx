@@ -166,9 +166,14 @@ export function renderJsonLd(route: Route): string {
 
 export function llmsTxt(): string {
   const lines = ["# Bipe", "", `> ${product.promise.en.lede}`, "", `${chrome.en.steward} ${distribution.steward.name}: ${distribution.steward.url}`, ""];
+  // Docs first: how Bipe works (domains, architecture, links), for agents.
+  const isDoc = (r: Route) => r.path.startsWith(paths.docs(r.lang));
+  lines.push("## Docs", "");
+  for (const r of routes.filter((x) => isDoc(x) && !x.noindex)) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
+  lines.push("");
   for (const lang of ["pt", "en"] as Lang[]) {
     lines.push(`## ${lang === "pt" ? "Português" : "English"}`, "");
-    for (const r of routes.filter((x) => x.lang === lang && !x.noindex)) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
+    for (const r of routes.filter((x) => x.lang === lang && !x.noindex && !isDoc(x))) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
     lines.push("");
   }
   return lines.join("\n");

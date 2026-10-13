@@ -1,0 +1,66 @@
+# Links e API pública
+
+Os links que as pessoas compartilham abrem o app do Bipe quando ele está instalado. Sem o app, uma página no bipe.chat explica o próximo passo. Esta página mostra o formato de cada link e as chamadas da API que não pedem login.
+
+_Atualizado em 13 de outubro de 2026._
+
+## Link de perfil
+
+```
+https://bipe.chat/@arroba
+```
+
+O @ tem de 2 a 30 caracteres: `a-z`, `0-9`, `.` e `_`.
+
+- Com o app instalado, o link abre a conversa no app (universal link no iPhone, app link no Android).
+- Sem o app, a página mostra o @ e o botão para instalar. Quando a pessoa publicou um perfil público, a página mostra também nome, foto e bio, com o aviso "não verificado".
+- O número de telefone nunca aparece.
+
+## Link de convite
+
+```
+https://bipe.chat/convite/<código>
+```
+
+O código tem de 12 a 20 caracteres: `A-Z`, `a-z`, `0-9` e `-`. O código é um segredo que quem convida compartilha.
+
+- A página confere o código em `api.bipe.net.br` e mostra os passos para cada plataforma.
+- A página não envia referrer.
+- A prévia do link nunca mostra o código.
+
+## Links de e-mail
+
+A API do Bipe manda dois tipos de link por e-mail. O token vem depois do `#`, então o navegador nunca manda ele para o servidor.
+
+| Link | Função |
+|---|---|
+| `https://bipe.chat/confirmar-email/#<token>` | Confirma o e-mail de recuperação |
+| `https://bipe.chat/recuperar/#<token>` | Abre a recuperação no app. A recuperação nunca roda no navegador |
+
+## Arquivos de link do app
+
+| Arquivo | Plataforma |
+|---|---|
+| `https://bipe.chat/.well-known/apple-app-site-association` | iPhone. ID do app `chat.bipe.app`. Caminhos `/@*`, `/convite/*`, `/recuperar/*` |
+| `https://bipe.chat/.well-known/assetlinks.json` | Android. Pacote `chat.bipe.app` |
+
+## API pública
+
+Endereço base: `https://api.bipe.net.br`. Estas chamadas não pedem login. Cada uma tem limite de pedidos por endereço IP. Todas as outras pedem um token de acesso Matrix de uma conta do Bipe com login.
+
+| Chamada | Resposta |
+|---|---|
+| `GET /v1/profiles/{arroba}` | O perfil público publicado: nome, bio, endereço da foto. Nada quando o perfil está desligado |
+| `GET /v1/profiles/{arroba}/photo` | A foto do perfil (JPEG) |
+| `GET /v1/invites/{código}` | Se um código de convite ainda vale, e o @ de quem convidou |
+| `GET /v1/handles/{arroba}/availability` | Se um @ está livre. Nunca diz quem tem o @ |
+| `POST /v1/waitlist` | Entra na lista de espera de uma plataforma que ainda não tem app |
+| `POST /v1/partners` | Envia um pedido de parceria de uma organização |
+
+No navegador, só o `https://bipe.chat` pode chamar a API.
+
+## O que a API não faz
+
+- Não tem busca de @ nem lista de usuários.
+- A busca por número de telefone só acha uma pessoa quando a configuração dela permite.
+- Nenhuma chamada devolve um número de telefone.
