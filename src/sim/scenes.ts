@@ -265,6 +265,171 @@ export const scenes = {
       { from: ME, sticker: "Valeu" },
     ],
   },
+  // One scene per golpe page (bipe#175): the golpe as it arrives on Bipe. The warning, when there is one, comes from the detector.
+  "falso-chefe": {
+    kind: "chat", with: "falsochefe",
+    lines: [
+      { card: "unverified", age: { pt: "1 dia", en: "1 day" } },
+      { from: "falsochefe", text: "Oi, é o Carlos. Tô numa reunião e não consigo falar agora. Preciso que você faça um Pix urgente pra um fornecedor" },
+      { from: ME, text: { pt: "Carlos? Esse número é seu?", en: "Carlos? Esse número é seu? (Carlos? Is this your number?)" } },
+    ],
+  },
+  "codigo-engano": {
+    kind: "chat", with: "lucas",
+    lines: [
+      { card: "unverified", age: { pt: "2 horas", en: "2 hours" } },
+      { from: "lucas", text: "Oi, desculpa, mandei um código pro seu número sem querer. Me passa o código que chegou?" },
+    ],
+  },
+  "golpe-amor": {
+    kind: "chat", with: "daniel",
+    lines: [
+      { from: "daniel", text: { pt: "Bom dia, meu amor. Sonhei com você de novo", en: "Bom dia, meu amor. Sonhei com você de novo (Good morning, my love. I dreamt of you again)" } },
+      { from: ME, text: { pt: "Bom dia. Quando a gente faz aquela chamada de vídeo?", en: "Bom dia. Quando a gente faz aquela chamada de vídeo? (When do we do that video call?)" } },
+      { from: "daniel", text: "Meu amor, o presente que te mandei ficou preso na alfândega. Preciso de R$ 1.800 da taxa. Faz um Pix pra chave daniel.ferraz@example.com" },
+    ],
+  },
+  "falso-advogado": {
+    kind: "chat", with: "advogado",
+    lines: [
+      { card: "unverified", age: { pt: "3 dias", en: "3 days" } },
+      { from: "advogado", text: "Boa tarde, aqui é do escritório do seu advogado." },
+      { from: "advogado", text: "Seu processo foi ganho e o valor de R$ 18.400 está liberado. Pra receber, precisa pagar as custas de R$ 1.250 hoje. Chave Pix: custas.processo@example.com" },
+    ],
+  },
+  "orgao-publico": {
+    kind: "chat", with: "valores",
+    lines: [
+      { card: "unverified", age: { pt: "4 horas", en: "4 hours" } },
+      { from: "valores", text: "Você tem R$ 1.240 em valores a receber. Consulte e resgate hoje em valoresareceber-bcb.site" },
+    ],
+  },
+  "taxa-correios": {
+    kind: "chat", with: "rastreio",
+    lines: [
+      { card: "unverified", age: { pt: "1 hora", en: "1 hour" } },
+      { from: "rastreio", text: "Seu pacote está retido na alfândega. Pague a taxa de R$ 9,90 para liberar: rastreio-correios.online" },
+    ],
+  },
+  "falso-suporte-bipe": {
+    kind: "chat", with: "falsobipe",
+    lines: [
+      { card: "unverified", age: { pt: "5 horas", en: "5 hours" } },
+      { from: "falsobipe", text: "Olá, aqui é do suporte do Bipe. Sua conta vai ser desativada hoje. Me passa sua senha de 8 números pra confirmar que é você" },
+    ],
+  },
+  "venda-falsa": {
+    kind: "chat", with: "andre",
+    lines: [
+      { from: ME, text: { pt: "Oi, o celular do anúncio ainda está à venda?", en: "Oi, o celular do anúncio ainda está à venda? (Is the phone in the ad still for sale?)" } },
+      { from: "andre", text: "Celular seminovo, R$ 1.200. Tenho mais 3 interessados, se fizer o pix agora é seu. Chave andre.usados@example.com" },
+      { from: ME, text: { pt: "Posso ver antes de pagar?", en: "Posso ver antes de pagar? (Can I see it before I pay?)" } },
+    ],
+  },
+  "comprovante-falso": {
+    kind: "chat", with: "bruno",
+    lines: [
+      { from: "bruno", text: { pt: "Fechado, fico com o sofá", en: "Fechado, fico com o sofá (Deal, I will take the sofa)" } },
+      { from: "bruno", text: "Pronto, paguei. Segue o comprovante do Pix. Pode mandar o produto hoje?" },
+      { from: ME, text: { pt: "Vou conferir no app do banco antes", en: "Vou conferir no app do banco antes (I will check in my bank app first)" } },
+    ],
+  },
+  aluguel: {
+    kind: "chat", with: "silvia",
+    lines: [
+      { from: ME, text: { pt: "Oi, a casa está livre no feriado?", en: "Oi, a casa está livre no feriado? (Is the house free on the holiday?)" } },
+      { from: "silvia", text: "Casa pé na areia, R$ 250 a diária. Pra garantir o feriado preciso de 50% no pix hoje ainda. Chave silvia.temporada@example.com" },
+    ],
+  },
+  "pix-errado": {
+    kind: "chat", with: "marcelo",
+    lines: [
+      { card: "unverified", age: { pt: "20 minutos", en: "20 minutes" } },
+      { from: "marcelo", text: "Oi, fiz um Pix errado pra você de R$ 380. Pode devolver pra essa chave? 4f1c2b9e-7a3d-4c55-9e21-0b8d6f3a2c71" },
+      { from: ME, text: { pt: "Vou devolver pelo botão do banco", en: "Vou devolver pelo botão do banco (I will return it with the bank's button)" } },
+    ],
+  },
+  boleto: {
+    kind: "chat", with: "colegio",
+    lines: [
+      { card: "unverified", age: { pt: "1 dia", en: "1 day" } },
+      { from: "colegio", text: "Mensalidade de outubro com novo banco. Pague por este boleto: 23793.38128 60000.000003 00000.000400 1 84340000012000" },
+    ],
+  },
+  emprestimo: {
+    kind: "chat", with: "credito",
+    lines: [
+      { card: "unverified", age: { pt: "2 dias", en: "2 days" } },
+      { from: "credito", text: "Seu empréstimo de R$ 15.000 foi aprovado. Para liberar hoje ainda, faça o pix do seguro de R$ 390 para a chave creditoja@example.com" },
+    ],
+  },
+  investimento: {
+    kind: "chat", with: "vip",
+    lines: [
+      { from: "jessica", text: "Saquei R$ 2.300 hoje, obrigada Rodrigo" },
+      { from: "rodrigo", text: "Entra agora, o robô rendeu 5% hoje de novo. Quem depositar até as 20h dobra o valor. Pix pra chave lucrocerto@example.com" },
+    ],
+  },
+  aposta: {
+    kind: "chat", with: "sinais",
+    lines: [
+      { card: "unverified", age: { pt: "6 horas", en: "6 hours" } },
+      { from: "sinais", text: "Seu saldo da bet fechada está retido. Para receber a devolução, pague a taxa de R$ 59 pelo pix taxa.devolucao@example.com" },
+    ],
+  },
+  "link-falso": {
+    kind: "chat", with: "suporte",
+    lines: [
+      { card: "unverified", age: { pt: "3 horas", en: "3 hours" } },
+      { from: "suporte", text: "Seu cartão foi bloqueado por segurança. Desbloqueie agora em itau-desbloqueio.top" },
+    ],
+  },
+  "acesso-remoto": {
+    kind: "chat", with: "suporte",
+    lines: [
+      { card: "unverified", age: { pt: "5 horas", en: "5 hours" } },
+      { from: "suporte", text: "Identificamos uma compra de R$ 2.399 no seu cartão. Foi você?" },
+      { from: ME, text: { pt: "Não fui eu", en: "Não fui eu (It was not me)" } },
+      { from: "suporte", text: "Pra cancelar a compra, instala o app de proteção pelo link protecao-cartao.app e me fala o código que aparecer" },
+    ],
+  },
+  ameaca: {
+    kind: "inbox",
+    requests: [{ with: "desconhecido", preview: "Sei onde você mora e o nome da sua mãe. Faz um pix de 3 mil hoje ainda e fica tudo bem", age: { pt: "10 minutos", en: "10 minutes" } }],
+    rows: [
+      { with: "joana", savedAs: "Mãe", preview: "Chego sábado de manhã. Me busca?", time: "10:24" },
+      { with: "familia", preview: "Vô Antônio: Domingo tem almoço aqui em casa", time: "09:58" },
+    ],
+  },
+  sequestro: {
+    kind: "chat", with: "desconhecido",
+    lines: [
+      { card: "unverified", age: { pt: "5 minutos", en: "5 minutes" } },
+      { from: "desconhecido", text: "Estamos com a sua filha. Não desliga e não fala com ninguém. Faz o pix agora mesmo ou ela não volta" },
+      { from: ME, text: { pt: "Vou ligar pra ela", en: "Vou ligar pra ela (I am calling her)" } },
+    ],
+  },
+  sextorsao: {
+    kind: "chat", with: "larissa",
+    lines: [
+      { card: "unverified", age: { pt: "4 dias", en: "4 days" } },
+      { from: "larissa", text: "Tenho o print da nossa chamada. Se não pagar R$ 2.000 hoje ainda, mando pra todos os seus contatos" },
+    ],
+  },
+  vaquinha: {
+    kind: "chat", with: "vaquinha",
+    lines: [
+      { card: "unverified", age: { pt: "2 dias", en: "2 days" } },
+      { from: "vaquinha", text: "Ajude a Maria, 6 anos, cirurgia urgente. Qualquer valor salva. Chave Pix: ajudeamaria@example.com" },
+    ],
+  },
+  "loja-falsa": {
+    kind: "chat", with: "outlet",
+    lines: [
+      { from: ME, text: { pt: "Oi, vi o anúncio do tênis", en: "Oi, vi o anúncio do tênis (I saw the ad for the trainers)" } },
+      { from: "outlet", text: "Tênis de corrida de R$ 899 por R$ 199, só hoje. Pague no pix e enviamos amanhã. Chave outletpromo@example.com" },
+    ],
+  },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;

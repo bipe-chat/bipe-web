@@ -161,6 +161,106 @@
       "photo": { "copyOf": "joana" }
     },
     {
+      "id": "falsochefe", "kind": "person", "name": "Carlos Mendes", "short": "Carlos Mendes", "handle": "carlos.mendes.dir",
+      "about": "Unverified account that copies the name of the viewer's boss and asks for an urgent Pix to a supplier (falso conhecido). No photo.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "lucas", "kind": "person", "name": "Lucas Andrade", "short": "Lucas Andrade", "handle": "lucas.andrade.vendas",
+      "about": "Unverified account that says it sent a code to the viewer's number by mistake and asks for it.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "daniel", "kind": "person", "name": "Daniel Ferraz", "short": "Daniel Ferraz", "handle": "daniel.ferraz.eng",
+      "about": "Romance scammer: weeks of chat, then a customs fee for a gift. Never takes a video call. No photo.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "advogado", "kind": "person", "name": "Dr. Henrique Prado", "short": "Dr. Henrique Prado", "handle": "henrique.prado.adv",
+      "about": "Unverified account that poses as the viewer's lawyer and asks for court costs before a payout (falso advogado).", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "valores", "kind": "person", "name": "Valores a Receber", "short": "Valores a Receber", "handle": "valores.receber.br",
+      "about": "Unverified account that poses as the Central Bank's money-to-claim service and sends a fake link.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "rastreio", "kind": "person", "name": "Rastreio de Encomendas", "short": "Rastreio de Encomendas", "handle": "rastreio.encomendas",
+      "about": "Unverified account with a fake parcel fee and a link (falsa taxa de entrega).", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "falsobipe", "kind": "person", "name": "Suporte Bipe", "short": "Suporte Bipe", "handle": "ajuda.suporte.app",
+      "about": "Unverified account that poses as Bipe support and asks for the 8-digit PIN. The handle cannot contain Bipe, so it picks another.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "andre", "kind": "person", "name": "André Souza", "short": "André Souza", "handle": "andre.usados",
+      "about": "Fake seller of a second-hand phone: Pix up front, then gone.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "bruno", "kind": "person", "name": "Bruno Teixeira", "short": "Bruno Teixeira", "handle": "brunoteix",
+      "about": "Fake buyer who sends a receipt screenshot of a scheduled Pix.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "silvia", "kind": "person", "name": "Sílvia Rocha", "short": "Sílvia Rocha", "handle": "silvia.temporada",
+      "about": "Fake holiday rental: a deposit to hold the dates.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "marcelo", "kind": "person", "name": "Marcelo Antunes", "short": "Marcelo Antunes", "handle": "marceloantunes",
+      "about": "Sends a Pix 'by mistake' and asks for it back to another key (Pix errado).", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "colegio", "kind": "person", "name": "Colégio Horizonte Financeiro", "short": "Colégio Horizonte Financeiro", "handle": "colegiohorizonte.fin",
+      "about": "Unverified account that poses as a school's billing desk and sends a changed boleto. Fictional school.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "credito", "kind": "person", "name": "Crédito Já Consignado", "short": "Crédito Já Consignado", "handle": "creditoja.consig",
+      "about": "Fake lender that asks for an insurance fee before the loan.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "rodrigo", "kind": "person", "name": "Rodrigo Trader", "short": "Rodrigo Trader", "handle": "rodrigo.trader",
+      "about": "Runs the fake investment group: guaranteed returns from a 'robot'.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "jessica", "kind": "person", "name": "Jéssica M.", "short": "Jéssica M.", "handle": "jessica.lucros",
+      "about": "Fake winner in the investment group, posts profits on cue.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "sinais", "kind": "person", "name": "Sinais VIP", "short": "Sinais VIP", "handle": "sinais.vip",
+      "about": "Sells betting tips and now a fake refund of betting balances for a fee.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "desconhecido", "kind": "person", "name": "Sem nome", "short": "Sem nome", "handle": "k.9921",
+      "about": "Unknown unverified account used for threats and the fake kidnapping. Bipe shows no phone number.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "larissa", "kind": "person", "name": "Larissa", "short": "Larissa", "handle": "larissa.22x",
+      "about": "Fake profile behind a sextortion threat. The scene shows only the threat, nothing explicit.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "vaquinha", "kind": "person", "name": "Ajude a Maria", "short": "Ajude a Maria", "handle": "ajudeamaria.campanha",
+      "about": "Fake fundraiser with a personal Pix key.", "trust": "none",
+      "photo": null
+    },
+    {
+      "id": "outlet", "kind": "person", "name": "Outlet Promo", "short": "Outlet Promo", "handle": "outletpromo.oficial",
+      "about": "Fake shop: prices far below the market, Pix only.", "trust": "none",
+      "photo": null
+    },
+    {
       "id": "familia", "kind": "group", "name": "Família Lima", "short": "Família Lima", "handle": null, "members": 12,
       "about": "Family group: Joana, Gabi, Seu Antônio and others.", "trust": "none",
       "photo": { "style": "group", "look": "a Brazilian family of about ten people of three generations around a long table at Sunday lunch in a backyard, plates of food, plastic chairs" }
@@ -189,6 +289,11 @@
       "id": "avisos", "kind": "group", "name": "Avisos do Bela Vista", "short": "Avisos do Bela Vista", "handle": null, "members": 48,
       "about": "Announcements room of the Bela Vista community. Only Seu Valdir and the other admins post.", "trust": "none",
       "photo": { "copyOf": "condominio" }
+    },
+    {
+      "id": "vip", "kind": "group", "name": "Lucro Certo VIP", "short": "Lucro Certo VIP", "handle": null, "members": 312,
+      "about": "Fake investment group: Rodrigo Trader and planted winners.", "trust": "none",
+      "photo": null
     }
   ]
 }

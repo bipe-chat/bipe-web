@@ -6,14 +6,22 @@ import scamsJson from "@shared/product/scams.json";
 import { chrome } from "../copy";
 import { paths } from "../paths";
 import { product, type Lang } from "../shared";
+import { Figure } from "../sim/Figure";
+import type { FigureId } from "../sim/scenes";
 
 type Copy<T> = { pt: T; en: T };
 export type ScamSource = { id: string; name: string; publisher: string; url: string; date: string; kind: "primary" | "secondary" | "press" };
 export type ScamStat = { id: string; source: string } & Copy<{ value: string; label: string; period: string }>;
 type Row = { id: string; value: number; highlight?: boolean } & Copy<{ label: string; value: string }>;
 export type ScamChart = { id: string; form: "columns" | "bars"; sources: string[]; rows: Row[] } & Copy<{ title: string; note: string }>;
-type TypeCopy = { heading: string; body: string; title: string; headline: string; lede: string; how: string[]; signs: string[]; todo: string[] };
-export type ScamType = { id: string; slug: Copy<string>; stats: string[]; protect: string[] } & Copy<TypeCopy>;
+type TypeCopy = { heading: string; body: string; title: string; headline: string; lede: string; how: string[]; signs: string[]; todo: string[]; limit?: string };
+/** A golpe in the library (bipe#175). stats may be empty: a golpe with no measured figure shows no number. */
+export type ScamType = {
+  id: string; slug: Copy<string>; stats: string[]; protect: string[];
+  group?: string; channels?: string[]; aliases?: Copy<string[]>; scene?: FigureId; describedBy?: string[];
+} & Copy<TypeCopy>;
+/** A golpe that starts outside a chat (a call, in person): listed on the hub with its official page, no Bipe card. */
+export type ScamOutside = { id: string; source: string } & Copy<{ name: string; body: string }>;
 type PageCopy = {
   title: string; headline: string; lede: string; numbersTitle: string; chartsTitle: string;
   channelsTitle: string; channelsBody: string;
@@ -24,6 +32,9 @@ type PageCopy = {
   bipeTitle: string; bipeLede: string; limit: string;
   sourcesTitle: string; sourcesNote: string;
   source: string; table: string; kinds: Record<ScamSource["kind"], string>;
+  typeAliases?: string; typeChannels?: string; typeDescribedBy?: string; typeDescribedByNote?: string; typeLimitTitle?: string; typeScene?: string;
+  outsideTitle?: string; outsideLede?: string; outsideMore?: string;
+  groups?: Record<string, string>; channels?: Record<string, string>;
 };
 
 export const scams = scamsJson as unknown as {
@@ -35,6 +46,7 @@ export const scams = scamsJson as unknown as {
   charts: ScamChart[];
   channelCharts: string[];
   types: ScamType[];
+  outside?: ScamOutside[];
   protect: ({ feature: string } & Copy<string>)[];
 } & Copy<PageCopy>;
 
@@ -43,8 +55,14 @@ const statOf = (id: string) => scams.stats.find((s) => s.id === id)!;
 const chartOf = (id: string) => scams.charts.find((c) => c.id === id)!;
 /** Sources in the order the page uses them. */
 const usedSources = () => scams.sources.filter((s) => scams.stats.some((x) => x.source === s.id) || scams.charts.some((c) => c.sources.includes(s.id)));
-/** Sources of one type page: only those its numbers cite. */
-const typeSources = (t: ScamType) => scams.sources.filter((s) => t.stats.some((id) => statOf(id).source === s.id));
+/** Sources of one type page: those its numbers cite, then the official pages that describe it. */
+const typeSources = (t: ScamType) => scams.sources.filter((s) => t.stats.some((id) => statOf(id).source === s.id) || t.describedBy?.includes(s.id));
+/** Types in hub order: by group when the register has groups, else as listed. */
+function typeGroups(): { id: string | null; types: ScamType[] }[] {
+  const groups = Object.keys(scams.pt.groups ?? {});
+  if (!groups.length) return [{ id: null, types: scams.types }];
+  return groups.map((id) => ({ id, types: scams.types.filter((t) => t.group === id) })).filter((g) => g.types.length);
+}
 
 /** "Fonte: Publisher" with a link, and the kind when it is not a primary source. */
 function SourceLine({ lang, ids, extra }: { lang: Lang; ids: string[]; extra?: string }) {
@@ -180,11 +198,11 @@ function Chart({ lang, chart }: { lang: Lang; chart: ScamChart }) {
 function ProtectCard({ lang, feature }: { lang: Lang; feature: string }) {
   const st = chrome[lang].status;
   const f = product.features.find((x) => x.id === feature)!;
-  const p = scams.protect.find((x) => x.feature === feature)!;
+  const p = scams.protect.find((x) => x.feature === feature);
   return (
     <a className="card feature" href={paths.feature(lang, f)}>
       <h3>{f[lang].name}</h3>
-      <p>{p[lang]}</p>
+      <p>{p ? p[lang] : f[lang].body}</p>
       <p className="small">iPhone: {st[f.status.ios]} · Android: {st[f.status.android]}</p>
     </a>
   );
@@ -215,19 +233,37 @@ export function ScamsPage({ lang }: { lang: Lang }) {
 
       <div className="side narrow">
         <h2>{c.typesTitle}</h2>
-        {scams.types.map((t) => {
-          const s = statOf(t.stats[0]);
-          return (
-            <div className="scam-type" key={t.id} id={t.id}>
-              <h3><a href={paths.scamType(lang, t)}>{t[lang].heading}</a></h3>
-              <p>{t[lang].body}</p>
-              <p className="scam-type-stat"><strong>{s[lang].value}</strong> {s[lang].label}</p>
-              <SourceLine lang={lang} ids={[s.source]} extra={s[lang].period} />
-              <p className="scam-type-more"><a href={paths.scamType(lang, t)}>{c.typeMore}</a></p>
-            </div>
-          );
-        })}
+        {typeGroups().map((g) => (
+          <div key={g.id ?? "all"}>
+            {g.id && <h3 className="scam-group">{c.groups?.[g.id]}</h3>}
+            {g.types.map((t) => {
+              const s = t.stats[0] ? statOf(t.stats[0]) : null;
+              return (
+                <div className="scam-type" key={t.id} id={t.id}>
+                  <h3><a href={paths.scamType(lang, t)}>{t[lang].heading}</a></h3>
+                  <p>{t[lang].body}</p>
+                  {s && <p className="scam-type-stat"><strong>{s[lang].value}</strong> {s[lang].label}</p>}
+                  {s && <SourceLine lang={lang} ids={[s.source]} extra={s[lang].period} />}
+                  <p className="scam-type-more"><a href={paths.scamType(lang, t)}>{c.typeMore}</a></p>
+                </div>
+              );
+            })}
+          </div>
+        ))}
       </div>
+
+      {scams.outside?.length ? (
+        <div className="side narrow" id="fora">
+          <h2>{c.outsideTitle}</h2>
+          <p>{c.outsideLede}</p>
+          <ul className="scam-outside">
+            {scams.outside.map((o) => {
+              const src = sourceOf(o.source);
+              return <li key={o.id}><strong>{o[lang].name}.</strong> {o[lang].body} <a href={src.url}>{c.outsideMore} ({src.publisher})</a></li>;
+            })}
+          </ul>
+        </div>
+      ) : null}
 
       <div className="side narrow">
         <h2>{c.moreTitle}</h2>
@@ -275,21 +311,38 @@ export function ScamsPage({ lang }: { lang: Lang }) {
 export function ScamTypePage({ lang, t }: { lang: Lang; t: ScamType }) {
   const c = scams[lang];
   const x = t[lang];
+  const described = (t.describedBy ?? []).map(sourceOf);
+  const steps = (
+    <div>
+      <h2>{c.typeHow}</h2>
+      <ol className="scam-advice">{x.how.map((a) => <li key={a}>{a}</li>)}</ol>
+      {t.channels?.length ? <p className="small muted">{c.typeChannels}: {t.channels.map((id) => c.channels?.[id] ?? id).join(", ")}.</p> : null}
+    </div>
+  );
   return (
     <section className="wrap section scams">
       <div className="narrow">
         <p className="small"><a href={paths.scams(lang)}>{c.title}</a> · {x.heading}</p>
         <h1>{x.headline}</h1>
         <p className="lede">{x.lede}</p>
+        {t.aliases?.[lang]?.length ? <p className="small muted">{c.typeAliases}: {t.aliases[lang].join(", ")}.</p> : null}
       </div>
 
-      <h2 className="visually-hidden">{c.typeNumbers}</h2>
-      <div className="scam-stats">{t.stats.map((id) => <BigNumber lang={lang} id={id} key={id} />)}</div>
+      {t.stats.length > 0 && (
+        <>
+          <h2 className="visually-hidden">{c.typeNumbers}</h2>
+          <div className="scam-stats">{t.stats.map((id) => <BigNumber lang={lang} id={id} key={id} />)}</div>
+        </>
+      )}
 
-      <div className="side narrow">
-        <h2>{c.typeHow}</h2>
-        <ol className="scam-advice">{x.how.map((a) => <li key={a}>{a}</li>)}</ol>
-      </div>
+      {t.scene ? (
+        <div className="side split">
+          {steps}
+          <Figure lang={lang} id={t.scene} caption={`${c.typeScene}. ${chrome[lang].sceneCaption}`} />
+        </div>
+      ) : (
+        <div className="side narrow">{steps}</div>
+      )}
 
       <div className="side narrow">
         <h2>{c.typeSigns}</h2>
@@ -305,8 +358,22 @@ export function ScamTypePage({ lang, t }: { lang: Lang; t: ScamType }) {
         <h2>{c.bipeTitle}</h2>
         <p className="side-line">{c.bipeLede}</p>
         <div className="grid">{t.protect.map((id) => <ProtectCard lang={lang} feature={id} key={id} />)}</div>
+        {x.limit && (
+          <div className="narrow scam-limit-box">
+            <h3>{c.typeLimitTitle}</h3>
+            <p>{x.limit}</p>
+          </div>
+        )}
         <p className="small muted scam-limit">{c.limit}</p>
       </div>
+
+      {described.length > 0 && (
+        <div className="side narrow">
+          <h2>{c.typeDescribedBy}</h2>
+          <p className="small muted">{c.typeDescribedByNote}</p>
+          <ul className="small">{described.map((s) => <li key={s.id}><a href={s.url}>{s.name}</a> ({s.publisher})</li>)}</ul>
+        </div>
+      )}
 
       <div className="side narrow">
         <h2>{c.typeOthers}</h2>
@@ -362,8 +429,8 @@ const mdSourceList = (lang: Lang, list: ScamSource[]) =>
 function protectLine(lang: Lang, feature: string, abs: (p: string) => string): string {
   const st = chrome[lang].status;
   const f = product.features.find((x) => x.id === feature)!;
-  const p = scams.protect.find((x) => x.feature === feature)!;
-  return `- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${st[f.status.ios]}; Android: ${st[f.status.android]}): ${p[lang]}`;
+  const p = scams.protect.find((x) => x.feature === feature);
+  return `- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${st[f.status.ios]}; Android: ${st[f.status.android]}): ${p ? p[lang] : f[lang].body}`;
 }
 
 export function scamsMarkdown(lang: Lang, abs: (p: string) => string): string[] {
@@ -377,7 +444,15 @@ export function scamsMarkdown(lang: Lang, abs: (p: string) => string): string[] 
   out.push(`## ${c.chartsTitle}`, "");
   for (const ch of scams.charts.filter((x) => !scams.channelCharts.includes(x.id))) out.push(...chartMd(ch));
   out.push(`## ${c.typesTitle}`, "");
-  scams.types.forEach((t) => out.push(`### [${t[lang].heading}](${abs(paths.scamType(lang, t))})`, "", t[lang].body, "", statLine(t.stats[0]), ""));
+  for (const g of typeGroups()) {
+    if (g.id) out.push(`### ${c.groups?.[g.id]}`, "");
+    g.types.forEach((t) => out.push(`#### [${t[lang].heading}](${abs(paths.scamType(lang, t))})`, "", t[lang].body, "", ...(t.stats[0] ? [statLine(t.stats[0]), ""] : [])));
+  }
+  if (scams.outside?.length) {
+    out.push(`## ${c.outsideTitle}`, "", c.outsideLede ?? "", "");
+    for (const o of scams.outside) { const src = sourceOf(o.source); out.push(`- **${o[lang].name}.** ${o[lang].body} [${c.outsideMore} (${src.publisher})](${src.url})`); }
+    out.push("");
+  }
   out.push(`## ${c.moreTitle}`, "", c.moreBody, "", ...scams.more.map((id) => `- ${statLine(id)}`), "");
   out.push(`## ${c.protectTitle}`, "", c.protectLede, "", ...c.advice.map((a) => `- ${a}`), "");
   out.push(`## ${c.bipeTitle}`, "", c.bipeLede, "");
@@ -391,11 +466,13 @@ export function scamsMarkdown(lang: Lang, abs: (p: string) => string): string[] 
 export function scamTypeMarkdown(lang: Lang, t: ScamType, abs: (p: string) => string): string[] {
   const c = scams[lang];
   const x = t[lang];
-  const out: string[] = [`**${x.headline}**`, "", `## ${c.typeNumbers}`, "", ...t.stats.map((id) => `- ${mdStat(lang, id)}`), ""];
+  const out: string[] = [`**${x.headline}**`, "", ...(t.aliases?.[lang]?.length ? [`${c.typeAliases}: ${t.aliases[lang].join(", ")}.`, ""] : [])];
+  if (t.stats.length) out.push(`## ${c.typeNumbers}`, "", ...t.stats.map((id) => `- ${mdStat(lang, id)}`), "");
   out.push(`## ${c.typeHow}`, "", ...x.how.map((a, i) => `${i + 1}. ${a}`), "");
   out.push(`## ${c.typeSigns}`, "", ...x.signs.map((a) => `- ${a}`), "");
   out.push(`## ${c.typeTodo}`, "", ...x.todo.map((a) => `- ${a}`), "");
-  out.push(`## ${c.bipeTitle}`, "", c.bipeLede, "", ...t.protect.map((id) => protectLine(lang, id, abs)), "", c.limit, "");
+  out.push(`## ${c.bipeTitle}`, "", c.bipeLede, "", ...t.protect.map((id) => protectLine(lang, id, abs)), "", ...(x.limit ? [`**${c.typeLimitTitle}:** ${x.limit}`, ""] : []), c.limit, "");
+  if (t.describedBy?.length) out.push(`## ${c.typeDescribedBy}`, "", ...t.describedBy.map(sourceOf).map((s) => `- [${s.name}](${s.url}) (${s.publisher})`), "");
   out.push(`## ${c.typeOthers}`, "", ...scams.types.filter((o) => o.id !== t.id).map((o) => `- [${o[lang].heading}](${abs(paths.scamType(lang, o))})`), `- [${c.title}](${abs(paths.scams(lang))})`, "");
   out.push(`## ${c.sourcesTitle}`, "", c.sourcesNote, "", ...mdSourceList(lang, typeSources(t)), "");
   return out;

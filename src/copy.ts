@@ -55,6 +55,11 @@ export const chrome = {
       pedidos: "Pedidos", "pausa-pix": "Pausa antes do Pix", "mae-outro-nome": "Mãe com outro nome", "nome-reservado": "Nome reservado",
       "letra-disfarcada": "Letra disfarçada", "qr-conversa": "QR code", "verificacao-pix": "Verificação pelo Pix", cobranca: "Cobrança",
       avisos: "Avisos da comunidade", "grupo-verificados": "Só verificados", convite: "Convite", contatos: "Contatos", stickers: "Stickers",
+      "falso-chefe": "Falso chefe", "codigo-engano": "Código por engano", "golpe-amor": "Golpe do amor", "falso-advogado": "Falso advogado",
+      "orgao-publico": "Falso órgão público", "taxa-correios": "Falsa taxa de entrega", "falso-suporte-bipe": "Falso suporte do Bipe",
+      "venda-falsa": "Falsa venda", "comprovante-falso": "Comprovante falso", aluguel: "Falso aluguel", "pix-errado": "Pix errado", boleto: "Boleto falso",
+      emprestimo: "Falso empréstimo", investimento: "Falso investimento", aposta: "Apostas", "link-falso": "Link falso", "acesso-remoto": "Mão fantasma",
+      ameaca: "Ameaça", sequestro: "Falso sequestro", sextorsao: "Sextorsão", vaquinha: "Falsa vaquinha", "loja-falsa": "Loja falsa",
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
@@ -186,6 +191,11 @@ export const chrome = {
       pedidos: "Requests", "pausa-pix": "Pause before a Pix", "mae-outro-nome": "Mum with another name", "nome-reservado": "Reserved name",
       "letra-disfarcada": "Disguised letter", "qr-conversa": "QR code", "verificacao-pix": "Verification by Pix", cobranca: "Charge",
       avisos: "Community announcements", "grupo-verificados": "Verified only", convite: "Invite", contatos: "Contacts", stickers: "Stickers",
+      "falso-chefe": "Fake boss", "codigo-engano": "Code by mistake", "golpe-amor": "Romance scam", "falso-advogado": "Fake lawyer",
+      "orgao-publico": "Fake government body", "taxa-correios": "Fake delivery fee", "falso-suporte-bipe": "Fake Bipe support",
+      "venda-falsa": "Fake seller", "comprovante-falso": "Fake receipt", aluguel: "Fake rental", "pix-errado": "Wrong Pix", boleto: "Fake boleto",
+      emprestimo: "Fake loan", investimento: "Fake investment", aposta: "Betting", "link-falso": "Fake link", "acesso-remoto": "Phantom hand",
+      ameaca: "Threat", sequestro: "Fake kidnapping", sextorsao: "Sextortion", vaquinha: "Fake fundraiser", "loja-falsa": "Fake shop",
     } satisfies Record<SceneId, string>,
     sim: {
       accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll",
