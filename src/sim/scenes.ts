@@ -393,12 +393,12 @@ export const scenes = {
       { from: "suporte", text: "Pra cancelar a compra, instala o app de proteção pelo link protecao-cartao.app e me fala o código que aparecer" },
     ],
   },
+  // A chat, not the inbox: ScenePhone runs the reference detector on chat messages only (bipe#181).
   ameaca: {
-    kind: "inbox",
-    requests: [{ with: "desconhecido", preview: "Sei onde você mora e o nome da sua mãe. Faz um pix de 3 mil hoje ainda e fica tudo bem", age: { pt: "10 minutos", en: "10 minutes" } }],
-    rows: [
-      { with: "joana", savedAs: "Mãe", preview: "Chego sábado de manhã. Me busca?", time: "10:24" },
-      { with: "familia", preview: "Vô Antônio: Domingo tem almoço aqui em casa", time: "09:58" },
+    kind: "chat", with: "desconhecido",
+    lines: [
+      { card: "unverified", age: { pt: "10 minutos", en: "10 minutes" } },
+      { from: "desconhecido", text: "Sei onde você mora e o nome da sua mãe. Faz um pix de 3 mil hoje ainda e fica tudo bem" },
     ],
   },
   sequestro: {

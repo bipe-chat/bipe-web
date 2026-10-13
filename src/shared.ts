@@ -16,7 +16,7 @@ import compareJson from "@shared/product/compare.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import type { FigureId, SceneId } from "./sim/scenes";
 
-export type ScamKind = "pixCode" | "boleto" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
+export type ScamKind = "extortion" | "pixCode" | "boleto" | "remoteApp" | "pinRequest" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
 export type Registries = {
   reserved: { categories: Record<string, string[]> };
   family: { terms: string[] };
@@ -160,9 +160,12 @@ export function t(lang: Lang, key: string, ...args: string[]): string {
   return value.replace(/%(\d+)\$s/g, (_, i) => args[Number(i) - 1] ?? "");
 }
 
-export const scamStringKey: Record<string, string> = {
+export const scamStringKey: Record<ScamKind, string> = {
+  extortion: "bipe_scam_warning_extortion",
   pixCode: "bipe_scam_warning_pix_code",
   boleto: "bipe_scam_warning_boleto",
+  remoteApp: "bipe_scam_warning_remote_app",
+  pinRequest: "bipe_scam_warning_pin_request",
   pixKey: "bipe_scam_warning_pix_key",
   deliveryFee: "bipe_scam_warning_delivery_fee",
   lookalikeLink: "bipe_scam_warning_lookalike_link",
