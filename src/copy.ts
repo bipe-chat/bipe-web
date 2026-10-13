@@ -25,7 +25,7 @@ export const chrome = {
     needs: "Precisa de",
     testflightSteps: ["Abra o link no iPhone.", "Instale o TestFlight, se pedir.", "Toque em Aceitar e depois em Instalar."],
     footerNote: "Bipe, um app de mensagens brasileiro.",
-    steward: "Um projeto da",
+    steward: "Um experimento da",
     source: "Código", sourceTitle: "Código-fonte", sourceLede: "O código do Bipe é aberto. Qualquer pessoa pode ler, conferir e ajudar.",
     tech: { code: "Ver o código", basedOn: "Base:" },
     waitlist: {
@@ -122,7 +122,7 @@ export const chrome = {
     needs: "Needs",
     testflightSteps: ["Open the link on your iPhone.", "Install TestFlight if it asks.", "Tap Accept, then Install."],
     footerNote: "Bipe, a Brazilian messenger.",
-    steward: "A project by",
+    steward: "An experiment by",
     source: "Code", sourceTitle: "Source code", sourceLede: "Bipe's code is open. Anyone can read it, check it and help.",
     tech: { code: "See the code", basedOn: "Based on:" },
     waitlist: {
