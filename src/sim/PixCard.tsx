@@ -50,7 +50,7 @@ export const brl = (value: number) => new Intl.NumberFormat("pt-BR", { style: "c
  * with no format or error-correction data. Never draw a real BR Code on the site: a sample key
  * could belong to a real person.
  */
-function FakeQr({ seed, size = 56 }: { seed: string; size?: number }) {
+export function FakeQr({ seed, size = 56 }: { seed: string; size?: number }) {
   const N = 21;
   let h = [...seed].reduce((acc, ch) => (acc * 31 + (ch.codePointAt(0) ?? 0)) >>> 0, 2166136261);
   const rand = () => ((h = (Math.imul(h, 1664525) + 1013904223) >>> 0) / 2 ** 32);

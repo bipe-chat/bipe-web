@@ -3,6 +3,7 @@ import type { Lang } from "../shared";
 import { BusinessFigure } from "./BusinessFigure";
 import { GroupsFigure } from "./GroupsFigure";
 import { NoAdsFigure } from "./NoAdsFigure";
+import { BrazilFigure, E2eeFigure, HandoffFigure, NoSmsFigure, OpenSourceFigure } from "./StaticFigures";
 import { SCAM_REEL, SIMS, type FigureId, type SimId } from "./scenes";
 
 const isSim = (id: FigureId): id is SimId => (SIMS as readonly string[]).includes(id);
@@ -22,5 +23,10 @@ export function Figure({ lang, id, caption }: { lang: Lang; id: FigureId; captio
     case "pix": return <Island name="PixDemo" props={{ lang, caption }} />;
     case "business": return <BusinessFigure lang={lang} caption={caption} />;
     case "noAds": return <NoAdsFigure lang={lang} caption={caption} />;
+    case "noSms": return <NoSmsFigure lang={lang} caption={caption} />;
+    case "handoff": return <HandoffFigure lang={lang} caption={caption} />;
+    case "e2ee": return <E2eeFigure lang={lang} caption={caption} />;
+    case "brazil": return <BrazilFigure lang={lang} caption={caption} />;
+    case "openSource": return <OpenSourceFigure lang={lang} caption={caption} />;
   }
 }

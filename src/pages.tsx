@@ -8,7 +8,7 @@ import { BusinessFigure } from "./sim/BusinessFigure";
 import { Figure } from "./sim/Figure";
 import { NoAdsFigure } from "./sim/NoAdsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
-import { scenes, type SceneId } from "./sim/scenes";
+import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
 import { compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
@@ -617,6 +617,11 @@ export function CastPage() {
             <figcaption><strong>{chrome[lang].scenes[id]}</strong> <span className="mono small muted">{id}</span></figcaption>
           </figure>
         ))}
+      </div>
+      <h2 style={{ marginTop: 64 }}>Figuras</h2>
+      <p className="muted">Simulações e figuras sem cena de celular. Ids em <span className="mono">SIMS</span>, em <span className="mono">src/sim/scenes.ts</span>.</p>
+      <div className="figure-grid">
+        {SIMS.map((id) => <Figure lang={lang} id={id} caption={id} key={id} />)}
       </div>
     </section>
   );

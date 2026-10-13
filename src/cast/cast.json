@@ -156,6 +156,11 @@
       "photo": null
     },
     {
+      "id": "patricia", "kind": "person", "name": "Patrícia Gomes", "short": "Patrícia Gomes", "handle": "patriciagomes.77",
+      "about": "Verified account (Pix) that the viewer saved as 'Mãe' after a 'troquei de número' message. The verified name is not Joana, so the family check asks. A seal proves who it is, not that the person is honest.", "trust": "pix",
+      "photo": { "copyOf": "joana" }
+    },
+    {
       "id": "familia", "kind": "group", "name": "Família Lima", "short": "Família Lima", "handle": null, "members": 12,
       "about": "Family group: Joana, Gabi, Seu Antônio and others.", "trust": "none",
       "photo": { "style": "group", "look": "a Brazilian family of about ten people of three generations around a long table at Sunday lunch in a backyard, plates of food, plastic chairs" }
@@ -179,6 +184,11 @@
       "id": "escola", "kind": "group", "name": "Pais do 3º B", "short": "Pais do 3º B", "handle": null, "members": 31,
       "about": "School parents' group: Tia Sandra, Juliana, Marcos, and an unknown number.", "trust": "none",
       "photo": { "style": "object", "look": "colourful children's drawings and paintings of houses, suns and families pinned to a classroom wall" }
+    },
+    {
+      "id": "avisos", "kind": "group", "name": "Avisos do Bela Vista", "short": "Avisos do Bela Vista", "handle": null, "members": 48,
+      "about": "Announcements room of the Bela Vista community. Only Seu Valdir and the other admins post.", "trust": "none",
+      "photo": { "copyOf": "condominio" }
     }
   ]
 }

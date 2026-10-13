@@ -1,26 +1,47 @@
-// Phone scenes for the site: one per trust state, plus the chat list and the trust profile.
-// People come from the cast (src/cast/cast.json). Card text comes from the app strings through t().
+// Phone scenes for the site: one per trust state, the chat list, the trust profile, and one or more per
+// feature page (bipe#176). People come from the cast (src/cast/cast.json). Card text comes from the app
+// strings through t(); labels the app has no string for yet are site copy in chrome[lang].sim.
 // Scam warnings are never written here: ScenePhone runs every incoming message through the
 // reference detector, the same as the app. Messages are sample data in pt-BR; the English page
 // shows a gloss in brackets.
 import type { Trust } from "../cast";
 
-type Text = string | { pt: string; en: string };
+export type Text = string | { pt: string; en: string };
 
 export type Line =
   | { from: string; text: Text }
+  | { from: string; sticker: string }
   | { card: "unverified"; age: Text }
   | { card: "external" | "securityChange" | "suspended" | "mismatch" }
   | { card: "nickname" }
   | { card: "pix"; amount: string; description?: string; pause?: boolean }
-  | { card: "notice"; text: Text };
+  | { card: "notice"; text: Text }
+  /** Money pause (money-pause): the copy button stays locked and counts down. */
+  | { card: "pause"; seconds: number }
+  /** A note from the app, from the app strings. */
+  | { card: "app"; key: string; args?: string[] }
+  /** A charge from a CNPJ-verified institution (pix-charges). Shows "pago" from line number `paidAt` (1-based). */
+  | { card: "charge"; amount: string; description: Text; paidAt?: number }
+  | { card: "poll"; question: Text; options: { label: Text; votes: number }[]; mine?: number }
+  /** A request to join a group that takes only verified accounts (verified-groups). The result follows the person's trust. */
+  | { card: "join"; person: string };
 
 export type InboxRow = { with: string; savedAs?: string; trust?: Trust; preview: string; time: string; unread?: number };
+/** A message request (requests): apart from the chats, with accept and ignore. */
+export type RequestRow = { with: string; preview: string; age: Text };
 
 export type Scene =
-  | { kind: "chat"; with: string; savedAs?: string; trust?: Trust; names?: Record<string, string>; lines: Line[] }
-  | { kind: "inbox"; rows: InboxRow[] }
-  | { kind: "trustProfile"; me: string; done: number };
+  | { kind: "chat"; with: string; savedAs?: string; trust?: Trust; names?: Record<string, string>; lines: Line[]; footer?: "readOnly" | "stickers" }
+  | { kind: "inbox"; rows: InboxRow[]; requests?: RequestRow[] }
+  | { kind: "trustProfile"; me: string; done: number }
+  /** New chat by @: each typed handle checked by the reference logic (reserved-names, lookalikes). */
+  | { kind: "lookup"; typed: string[] }
+  /** Scan a profile QR code, then the chat opens (profile-links). */
+  | { kind: "scan"; with: string; first: Text }
+  /** The Pix R$ 0,01 verification step (verified-badge). */
+  | { kind: "verifyPix"; me: string }
+  /** Contacts already on Bipe, found only by people who have the number saved (phone-discovery). */
+  | { kind: "contacts"; found: string[] };
 
 export const ME = "me";
 
@@ -170,6 +191,79 @@ export const scenes = {
     ],
   },
   perfil: { kind: "trustProfile", me: "gabi", done: 2 },
+  pedidos: {
+    kind: "inbox",
+    requests: [{ with: "golpista", preview: "Oi filha, troquei de número. Essa é minha conta nova aqui", age: { pt: "2 dias", en: "2 days" } }],
+    rows: [
+      { with: "joana", savedAs: "Mãe", preview: "Chego sábado de manhã. Me busca?", time: "10:24", unread: 2 },
+      { with: "familia", preview: "Vô Antônio: Domingo tem almoço aqui em casa", time: "09:58", unread: 5 },
+      { with: "rafa", preview: "Pix recebido, valeu", time: "ontem" },
+      { with: "clinica", preview: "Consulta confirmada. Até amanhã.", time: "ontem" },
+    ],
+  },
+  "pausa-pix": {
+    kind: "chat", with: "golpista",
+    lines: [
+      { card: "unverified", age: { pt: "2 dias", en: "2 days" } },
+      { from: "golpista", text: "Oi filha, essa é minha conta nova. Salva aí" },
+      { from: ME, text: { pt: "Oi mãe, salvei", en: "Oi mãe, salvei (Hi mom, saved it)" } },
+      { from: "golpista", text: "Preciso pagar um boleto hoje ainda. Faz um Pix pra essa chave: joana.lima.2@example.com" },
+      { card: "pause", seconds: 5 },
+    ],
+  },
+  "mae-outro-nome": {
+    kind: "chat", with: "patricia", savedAs: "Mãe",
+    lines: [
+      { card: "nickname" },
+      { from: "patricia", text: "Filha, me faz um Pix hoje ainda? Te devolvo amanhã" },
+    ],
+  },
+  "nome-reservado": { kind: "lookup", typed: ["itau", "correios", "inss"] },
+  "letra-disfarcada": { kind: "lookup", typed: ["1tau", "c0rreios", "bradesc0"] },
+  "qr-conversa": { kind: "scan", with: "rafa", first: { pt: "Oi Rafa, aqui é a Gabi da feira de bikes", en: "Oi Rafa, aqui é a Gabi da feira de bikes (Hi Rafa, it is Gabi from the bike fair)" } },
+  "verificacao-pix": { kind: "verifyPix", me: "gabi" },
+  cobranca: {
+    kind: "chat", with: "clinica",
+    lines: [
+      { card: "notice", text: "Sua consulta com a Dra. Ana foi ontem. Segue a cobrança." },
+      { card: "charge", amount: "R$ 180,00", description: { pt: "Consulta de 14/10", en: "Consulta de 14/10 (Appointment on 14 Oct)" }, paidAt: 4 },
+      { from: ME, text: { pt: "Paguei pelo app do banco", en: "Paguei pelo app do banco (Paid in my bank app)" } },
+      { card: "notice", text: "Pagamento recebido. Obrigada." },
+    ],
+  },
+  avisos: {
+    kind: "chat", with: "avisos", names: { valdir: "Seu Valdir (síndico)" }, footer: "readOnly",
+    lines: [
+      { from: "valdir", text: { pt: "Assembleia na quinta, às 20h, no salão de festas. Pauta: pintura da fachada", en: "Assembleia na quinta, às 20h, no salão de festas. Pauta: pintura da fachada (Meeting Thursday 8 pm about painting the front)" } },
+      { from: "valdir", text: { pt: "Vote abaixo na cor da fachada", en: "Vote abaixo na cor da fachada (Vote for the colour below)" } },
+      { card: "poll", question: { pt: "Cor da fachada", en: "Cor da fachada (Colour of the front)" }, options: [{ label: { pt: "Amarelo claro", en: "Amarelo claro (Pale yellow)" }, votes: 21 }, { label: { pt: "Branco", en: "Branco (White)" }, votes: 12 }, { label: { pt: "Cinza", en: "Cinza (Grey)" }, votes: 5 }], mine: 0 },
+    ],
+  },
+  "grupo-verificados": {
+    kind: "chat", with: "igreja", names: { antonio: "Vô Antônio" },
+    lines: [
+      { from: "debora", text: { pt: "Irmãos, agora o grupo aceita só quem tem selo verificado", en: "Irmãos, agora o grupo aceita só quem tem selo verificado (The group now takes only verified accounts)" } },
+      { card: "join", person: "antonio" },
+      { card: "join", person: "falsapastora" },
+    ],
+  },
+  convite: {
+    kind: "chat", with: "kaua",
+    lines: [
+      { from: ME, text: { pt: "Kauã, baixa o Bipe. Te mandei um convite", en: "Kauã, baixa o Bipe. Te mandei um convite (Get Bipe, I sent you an invite)" } },
+      { card: "app", key: "bipe_invites_joined", args: ["Kauã"] },
+      { from: "kaua", text: { pt: "Entrei. Caí direto aqui na nossa conversa", en: "Entrei. Caí direto aqui na nossa conversa (I am in, landed right in our chat)" } },
+    ],
+  },
+  contatos: { kind: "contacts", found: ["antonio", "cida", "thiago", "leo"] },
+  stickers: {
+    kind: "chat", with: "faculdade", footer: "stickers",
+    lines: [
+      { from: "bia", text: { pt: "Sexta tem churrasco lá em casa", en: "Sexta tem churrasco lá em casa (BBQ at my place on Friday)" } },
+      { from: "leo", sticker: "🔥" },
+      { from: ME, sticker: "🥳" },
+    ],
+  },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;
@@ -179,7 +273,7 @@ export type SceneId = keyof typeof scenes;
  * A figure id in product.json (tentpole `demos`, feature `figures`) is a scene id above or one of these.
  * bipe-shared/tools/gen-product-doc.mjs reads this line and the scene keys to validate those ids: keep it on one line.
  */
-export const SIMS = ["scam", "identity", "handle", "groups", "levels", "pix", "business", "noAds"] as const;
+export const SIMS = ["scam", "identity", "handle", "groups", "levels", "pix", "business", "noAds", "noSms", "handoff", "e2ee", "brazil", "openSource"] as const;
 export type SimId = (typeof SIMS)[number];
 export type FigureId = SceneId | SimId;
 export const isFigureId = (id: string): id is FigureId => id in scenes || (SIMS as readonly string[]).includes(id);
