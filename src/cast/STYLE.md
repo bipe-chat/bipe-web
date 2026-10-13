@@ -5,7 +5,7 @@ The cast is the set of fictional people, groups and institutions in the site's p
 ## What the cast must do
 
 - Look like a real Brazilian chat list: different ages, regions, skin tones, jobs and photo habits. Nobody looks like a model, except the scammer who copies a stock photo.
-- Show every trust state from `../../../proseio/docs/design/trust-ui.md`. Each entry has one default `trust` value. A scene can override it (for example `fernanda` is `pix`, and the "aparelho-novo" scene shows her as `suspended`).
+- Show every trust state from `../../../bipe/docs/design/trust-ui.md`. Each entry has one default `trust` value. A scene can override it (for example `fernanda` is `pix`, and the "aparelho-novo" scene shows her as `suspended`).
 - Never show a phone number. Bipe hides every number: people appear by name and @handle. A scammer is a new unverified account with a copied name and photo and a handle close to the real one, never a "+55" number.
 - Stay fictional. Never a real person, a celebrity, a team member or MZ (no name, handle or initials, AGENTS.md rule). Never a real company, bank, club or brand. Institutions use invented names and an all-zero CNPJ.
 

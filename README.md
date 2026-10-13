@@ -8,7 +8,7 @@ pnpm build
 pnpm preview
 ```
 
-Content comes from `../proseio-shared/product/`. See `AGENTS.md` and `../proseio/docs/website.md`.
+Content comes from `../bipe-shared/product/`. See `AGENTS.md` and `../bipe/docs/website.md`.
 
 ## Licence and contributing
 

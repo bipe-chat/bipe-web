@@ -1,4 +1,4 @@
-// The site's only door into proseio-shared. Registries, strings and product copy come from there;
+// The site's only door into bipe-shared. Registries, strings and product copy come from there;
 // the scam, handle and name logic is the reference implementation every app must match.
 import familyTerms from "@shared/registries/family-terms.json";
 import handles from "@shared/registries/handles.json";
@@ -26,7 +26,7 @@ export type Registries = {
   stringsEn: { strings: Record<string, string> };
 };
 
-// Typed views of the reference implementation (plain JS in proseio-shared).
+// Typed views of the reference implementation (plain JS in bipe-shared).
 export const normalize = lib.normalize as (input: string, homoglyphMap: Record<string, string>) => string;
 export const scamWarningKind = lib.scamWarningKind as (text: string, reg: Registries) => ScamKind | null;
 export const handleProblem = lib.handleProblem as (handle: string, reg: Registries) => "too_short" | "too_long" | "invalid_characters" | "reserved" | null;
@@ -114,7 +114,7 @@ export const product = productJson as unknown as {
   redirects: Record<string, string>;
 };
 
-/** Comparison register (proseio-shared/product/compare.json): the hub and one page per app. */
+/** Comparison register (bipe-shared/product/compare.json): the hub and one page per app. */
 export const compare = compareJson as unknown as {
   date: string;
   threats: CompareThreat[];
@@ -139,7 +139,7 @@ export const publicRepos = distribution.source.repos.filter((r) => r.public);
 /** A repo by id, only when it is public. */
 export const publicRepo = (id?: string) => publicRepos.find((r) => r.id === id);
 
-/** A Bipe UI string from proseio-shared, with %1$s placeholders filled. */
+/** A Bipe UI string from bipe-shared, with %1$s placeholders filled. */
 export function t(lang: Lang, key: string, ...args: string[]): string {
   const table = (lang === "pt" ? stringsPt : stringsEn).strings as Record<string, string>;
   const value = table[key];

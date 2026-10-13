@@ -1,4 +1,4 @@
-// Staff page /admin/convites/ (ADR 0056 in proseio/docs/adr): inviters ranked by joins, to find hypergrowers.
+// Staff page /admin/convites/ (ADR 0056 in bipe/docs/adr): inviters ranked by joins, to find hypergrowers.
 // Sign-in is OAuth 2.0 code + PKCE against MAS as a self-registered public client, like Element Admin.
 // The API lets only MAS admins through; everyone else gets 404. The token lives in this tab only.
 import { useEffect, useMemo, useState } from "react";

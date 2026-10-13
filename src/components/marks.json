@@ -1,5 +1,5 @@
 {
-  "$comment": "Draft seal-tail marks (proseio/docs/design/artwork-brief.md), 64x64 paths. a: round bubble, soft drop tail. b: round bubble, separate seal dot as the tail. c: soft square bubble, tight upper-left corner as the tail, so it reads as a 'b' (rotated 90 degrees clockwise from the first draft, 12 Oct 2026). chosen: the one the site, favicon and app icons use. Replace with the designer's artwork when it exists.",
+  "$comment": "Draft seal-tail marks (bipe/docs/design/artwork-brief.md), 64x64 paths. a: round bubble, soft drop tail. b: round bubble, separate seal dot as the tail. c: soft square bubble, tight upper-left corner as the tail, so it reads as a 'b' (rotated 90 degrees clockwise from the first draft, 12 Oct 2026). chosen: the one the site, favicon and app icons use. Replace with the designer's artwork when it exists.",
   "chosen": "c",
   "paths": {
     "a": "M32 6C46.4 6 58 16.7 58 30S46.4 54 32 54c-3.4 0-6.6-.6-9.5-1.6C19.5 55.6 15 58 9.5 58c-.9 0-1.4-1-.8-1.7 2.6-3 3.9-6.3 4.2-9.7C8.6 42.4 6 36.5 6 30 6 16.7 17.6 6 32 6Z",

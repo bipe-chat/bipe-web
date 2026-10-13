@@ -8,7 +8,7 @@ import { Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { distribution, extractInviteCodeRef, reg, t } from "../shared";
 
-/** Same rule as the apps and the API: proseio-shared/registries/invite-codes.json. */
+/** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
 export function extractInviteCode(text: string): string | null {
   return extractInviteCodeRef(text, reg);
 }

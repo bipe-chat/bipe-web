@@ -5,7 +5,7 @@ import { t, type Lang } from "../shared";
 import "./PixCard.css";
 
 /**
- * Pix request card as the payer sees it (proseio/docs/payments.md item 1, ADRs 0046 and 0048).
+ * Pix request card as the payer sees it (bipe/docs/payments.md item 1, ADRs 0046 and 0048).
  * DRAFT look: the design system has no artwork for it yet. The rules are decided:
  * only a verified requester sends one, the card names who the bank must show,
  * and "pago" appears only after the requester marks "recebi".

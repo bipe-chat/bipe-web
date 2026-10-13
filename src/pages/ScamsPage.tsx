@@ -1,5 +1,5 @@
 // /golpes-no-brasil/ and /en/scams-in-brazil/: digital scams in Brazil, from the sourced register
-// proseio-shared/product/scams.json (research: proseio/docs/scams-brazil.md). Every number on the page
+// bipe-shared/product/scams.json (research: bipe/docs/scams-brazil.md). Every number on the page
 // comes from that file with its source; this file only lays it out. Each scam type also has its own page
 // (ScamTypePage, /golpes-no-brasil/<slug>/). Charts are static: HTML labels and values, SVG marks, no script. Styles: ./scams.css (loaded by src/islands.tsx).
 import scamsJson from "@shared/product/scams.json";

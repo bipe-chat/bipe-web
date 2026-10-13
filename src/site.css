@@ -1,4 +1,4 @@
-/* Colours come only from the proseio-tokens fork of Compound (light, dark and high contrast follow the system).
+/* Colours come only from the bipe-tokens fork of Compound (light, dark and high contrast follow the system).
    UI text uses the system font stack; Nunito is for the wordmark and page titles (identity.md, round 3). */
 @import "@tokens/compound-design-tokens.css";
 @import "@fontsource-variable/nunito/wght.css";
@@ -322,7 +322,7 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 32px 16px; margin-top: 24px; }
 .scene-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
-/* Staff page /admin/convites/ (ADR 0056 in proseio/docs/adr). */
+/* Staff page /admin/convites/ (ADR 0056 in bipe/docs/adr). */
 .staff-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 28px 0; }
 .staff-tiles .card { display: flex; flex-direction: column; gap: 4px; padding: 16px; }
 .staff-tiles strong { font-size: 28px; font-variant-numeric: tabular-nums; }

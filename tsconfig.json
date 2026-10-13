@@ -12,7 +12,7 @@
     "skipLibCheck": true,
     "types": ["node", "vite/client"],
     "paths": {
-      "@shared/*": ["../proseio-shared/*"]
+      "@shared/*": ["../bipe-shared/*"]
     }
   },
   "include": ["src"]

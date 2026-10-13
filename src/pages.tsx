@@ -476,7 +476,7 @@ function CompareTable({ lang }: { lang: Lang }) {
   );
 }
 
-/** Hub: every threat, Bipe first, then each app that has a sourced fact for it (proseio/docs/vs-whatsapp.md). */
+/** Hub: every threat, Bipe first, then each app that has a sourced fact for it (bipe/docs/vs-whatsapp.md). */
 export function ComparePage({ lang }: { lang: Lang }) {
   const c = compare[lang];
   return (
@@ -575,7 +575,7 @@ export function BrandPage() {
   return (
     <section className="wrap section">
       <h1>Marca: rascunhos</h1>
-      <p className="lede">Três direções do símbolo "balão com selo". A escolhida hoje é a <strong>{MARK.toUpperCase()}</strong>. Para trocar, mude <span className="mono">chosen</span> em <span className="mono">proseio-web/src/components/marks.json</span>.</p>
+      <p className="lede">Três direções do símbolo "balão com selo". A escolhida hoje é a <strong>{MARK.toUpperCase()}</strong>. Para trocar, mude <span className="mono">chosen</span> em <span className="mono">bipe-web/src/components/marks.json</span>.</p>
       <div className="marks" style={{ marginTop: 32 }}>
         {(Object.keys(MARKS) as MarkId[]).map((id) => (
           <div className="card mark-board" key={id} style={id === MARK ? { outline: "2px solid var(--acai)" } : undefined}>
@@ -598,7 +598,7 @@ export function CastPage() {
   return (
     <section className="wrap section">
       <h1>Elenco e cenas</h1>
-      <p className="lede">Pessoas de exemplo para as simulações do site. Todas são fictícias. Dados em <span className="mono">proseio-web/src/cast/cast.json</span>, regras de estilo em <span className="mono">STYLE.md</span>, fotos com <span className="mono">node scripts/cast.mjs</span>.</p>
+      <p className="lede">Pessoas de exemplo para as simulações do site. Todas são fictícias. Dados em <span className="mono">bipe-web/src/cast/cast.json</span>, regras de estilo em <span className="mono">STYLE.md</span>, fotos com <span className="mono">node scripts/cast.mjs</span>.</p>
       <div className="cast-grid">
         {cast.map((e) => (
           <div className="card cast-card" key={e.id}>

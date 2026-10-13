@@ -1,7 +1,7 @@
 // Builds the static site into dist/: client bundle for the islands, server bundle, then one
 // prerendered index.html and index.md per route, plus llms.txt, sitemap.xml and robots.txt.
 // dist/ is copied over the Caddy site directory by scripts/deploy.sh; pages it does not own
-// (.well-known, icone.png) stay in proseio-infra.
+// (.well-known, icone.png) stay in bipe-infra.
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";

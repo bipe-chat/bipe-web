@@ -2,7 +2,7 @@
 // Data and photo prompts: cast.json. Style rules: STYLE.md. Photos: scripts/cast.mjs.
 import data from "./cast.json";
 
-/** What the app would show about this account (proseio/docs/trust-levels.md, design/trust-ui.md). */
+/** What the app would show about this account (bipe/docs/trust-levels.md, design/trust-ui.md). */
 /** `contact`: confirmed by QR in person (the seal with a QR corner). */
 export type Trust = "none" | "profile" | "pix" | "govbr" | "contact" | "institution" | "external" | "suspended";
 
@@ -50,7 +50,7 @@ export function matrixId(e: CastEntry) {
 /** Compound decorative colour 1 to 6, the same hash as the apps: sum of character codes mod 6. */
 export const decor = (e: CastEntry) => 1 + ([...matrixId(e)].reduce((sum, ch) => sum + (ch.codePointAt(0) ?? 0), 0) % 6);
 
-/** Mirrors PlaceholderAvatarImage (proseio-ios): photo, else the first letter on the decorative colour. */
+/** Mirrors PlaceholderAvatarImage (bipe-ios): photo, else the first letter on the decorative colour. */
 export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; savedAs?: string }) {
   const e = who(id);
   const src = photoUrl(e);

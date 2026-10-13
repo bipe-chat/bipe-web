@@ -1,4 +1,4 @@
-// Site chrome copy only (navigation, labels). Product copy lives in proseio-shared/product.
+// Site chrome copy only (navigation, labels). Product copy lives in bipe-shared/product.
 import type { Lang, Status } from "./shared";
 import type { SceneId } from "./sim/scenes";
 
