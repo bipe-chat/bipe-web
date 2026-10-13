@@ -7,7 +7,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { build } from "vite";
 import { writeIcons } from "./icon.mjs";
-import { writeOgCard } from "./og.mjs";
+import { ogName, writeOgCard } from "./og.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -38,16 +38,16 @@ const ssr = await import(pathToFileURL(join(ssrOut, "entry-server.js")).href);
 ssr.selfTest();
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const site = "https://bipe.chat";
-const nunito = join(root, "node_modules/@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2");
 mkdirSync(join(dist, "og"), { recursive: true });
 
-// Link-preview image: the route's own card when it has one and it rendered, else the app icon.
-function ogImageTags(route) {
-  const card = route.ogCard
-    && writeOgCard({ outPath: join(dist, "og", `${route.ogCard}.png`), markPath: marks.paths[marks.chosen], title: route.title, description: route.description, fontPath: nunito });
-  if (!card) return `<meta property="og:image" content="${site}/brand/app-icon.png">`;
+// Link-preview image: every route gets its own 1200x630 card (scripts/og.mjs).
+// The card shows the title without the " · Bipe" suffix: the wordmark is on the card.
+const cardTitle = (title) => title.replace(/^Bipe · /, "").replace(/ · Bipe$/, "");
+async function ogImageTags(route) {
+  const name = route.ogCard ?? ogName(route.path);
+  await writeOgCard({ outPath: join(dist, "og", `${name}.png`), markPath: marks.paths[marks.chosen], title: cardTitle(route.title), description: route.description, family: ssr.ogFamily(route) });
   return [
-    `<meta property="og:image" content="${site}/og/${route.ogCard}.png">`,
+    `<meta property="og:image" content="${site}/og/${name}.png">`,
     '<meta property="og:image:type" content="image/png">',
     '<meta property="og:image:width" content="1200">',
     '<meta property="og:image:height" content="630">',
@@ -80,7 +80,7 @@ ${route.noindex ? "" : `<link rel="alternate" type="text/markdown" href="${route
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bipe">
 <meta property="og:locale" content="${route.lang === "pt" ? "pt_BR" : "en_US"}">
-${ogImageTags(route)}
+${await ogImageTags(route)}
 ${ssr.renderJsonLd(route)}
 <meta name="theme-color" content="#80307B" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#101317" media="(prefers-color-scheme: dark)">

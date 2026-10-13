@@ -17,7 +17,7 @@ export type Route = {
   noindex?: boolean;
   /** Never send this URL as a referrer (invite links carry a secret code). */
   noReferrer?: boolean;
-  /** Render a 1200x630 link-preview card from title and description (scripts/og.mjs). Name of the PNG under /og/. */
+  /** Name of the link-preview PNG under /og/ (scripts/og.mjs). Default: from the path. Every route gets a card. */
   ogCard?: string;
   /** The page's own Markdown source. The .md twin is this text as is. */
   markdown?: string;

@@ -10,6 +10,21 @@ import { bipeOn } from "./pages";
 export { routes };
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
 
+/** The section label for a route's share card footer: the same words as the site nav (Layout.tsx). */
+export function ogFamily(route: Route): string | undefined {
+  const lang: Lang = route.lang;
+  const trustId = product.sides.find((s) => s.id === "other")!.tentpoles[0];
+  const labels: Record<NonNullable<Route["section"]>, string> = {
+    trust: product.tentpoles.find((tp) => tp.id === trustId)![lang].name,
+    features: chrome[lang].features,
+    compare: compare[lang].nav,
+    download: chrome[lang].download,
+    business: product.business[lang].nav,
+    about: chrome[lang].about,
+  };
+  return route.section ? labels[route.section] : undefined;
+}
+
 import inviteCodes from "@shared/test-vectors/invite-codes.json";
 import { extractInviteCode } from "./sim/LinkPages";
 import { scams, scamsMarkdown, scamTypeMarkdown } from "./pages/ScamsPage";
