@@ -21,13 +21,13 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 var(--ui); }
 a { color: var(--acai); }
 img, svg { display: block; }
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
 .narrow { max-width: 720px; }
-.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; border: 0 !important; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Chrome */
 .site-head { border-bottom: 1px solid var(--line); }
@@ -364,6 +364,15 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .legal p, .legal ul { margin: 0 0 12px; }
 .legal ul { padding-left: 1.2em; }
 .legal li { margin-bottom: 6px; }
+/* Docs pages (src/docs/<lang>/*.md): code, tables and third-level headings. */
+.legal h3 { font-size: 18px; margin: 24px 0 6px; }
+.docs code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; background: var(--surface); border-radius: 4px; padding: 1px 4px; overflow-wrap: anywhere; }
+.docs pre { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin: 0 0 16px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+.docs pre code { background: none; padding: 0; font-size: inherit; overflow-wrap: normal; }
+.docs .table-scroll { overflow-x: auto; margin: 0 0 16px; }
+.docs table { border-collapse: collapse; width: 100%; font-size: 15px; }
+.docs th, .docs td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.docs th { font-weight: 700; }
 
 /* Scene parts for the feature pages (bipe#176, src/sim/SceneParts.tsx). Sizes are iOS points, like the rest of the phone. */
 .screen .sub { font-size: 13px; line-height: 18px; color: var(--muted); margin: 0; }
