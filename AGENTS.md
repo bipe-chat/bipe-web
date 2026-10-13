@@ -15,7 +15,7 @@ Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; on
 - Product copy, feature status and download links come only from `../bipe-shared/product/`. Do not write feature copy in a page. Chrome copy (nav, labels) is in `src/copy.ts`.
 - UI strings in simulations come from `../bipe-shared/strings/` through `t()`. Scam, handle and name results come from the reference logic in `../bipe-shared/tools/lib/registries.mjs`, never from hand-written results.
 - Colours only from bipe-tokens CSS variables. Nunito only for the wordmark and titles.
-- pt-BR copy follows `../bipe/docs/design/language.md` (ADR 0039).
+- pt-BR copy follows `../bipe/docs/design/linguagem.md` (ADR 0039).
 - Rendered copy: no em or en dashes; run the humanizer rubric before it ships.
 - Public pages never refer to MZ: no name, handle, initials or first-person founder voice, also not in sample data.
 - Source links come from `source` in `../bipe-shared/product/distribution.json`. The site links a repo only when its `public` flag is true. Set the flag when the GitHub repo goes public (ADR 0024).
