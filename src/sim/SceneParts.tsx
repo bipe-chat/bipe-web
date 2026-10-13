@@ -54,7 +54,7 @@ export function ChargeCard({ lang, from, amount, description, paid }: { lang: La
 export function PollCard({ lang, line }: { lang: Lang; line: Extract<Line, { card: "poll" }> }) {
   const c = chrome[lang].sim;
   const total = line.options.reduce((n, o) => n + o.votes, 0);
-  // A company's structured question (ADR 0079): options to tap, no vote counts.
+  // A company's structured question (ADR 0081): options to tap, no vote counts.
   if (line.ask) {
     return (
       <div className="poll">

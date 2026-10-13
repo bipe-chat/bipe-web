@@ -98,7 +98,7 @@ export const scenes = {
       { from: "clinica", text: "Consulta confirmada. Até amanhã." },
     ],
   },
-  // /empresas/: a structured question instead of "reply 1 or 2" (ADR 0079).
+  // /empresas/: a structured question instead of "reply 1 or 2" (ADR 0081).
   "empresa-pergunta": {
     kind: "chat", with: "clinica",
     lines: [
