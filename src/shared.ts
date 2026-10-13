@@ -1,3 +1,4 @@
+import type { PartnerFormCopy } from "./sim/PartnerForm";
 // The site's only door into bipe-shared. Registries, strings and product copy come from there;
 // the scam, handle and name logic is the reference implementation every app must match.
 import familyTerms from "@shared/registries/family-terms.json";
@@ -121,7 +122,7 @@ export const product = productJson as unknown as {
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
-  partners: Copy<{ nav: string; label: string; title: string; lede: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; aboutLink: string; card: { title: string; line: string } }>;
+  partners: Copy<{ nav: string; label: string; title: string; lede: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; aboutLink: string; card: { title: string; line: string }; form: PartnerFormCopy }>;
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
   redirects: Record<string, string>;
 };
@@ -131,7 +132,7 @@ export const compare = compareJson as unknown as {
   date: string;
   threats: CompareThreat[];
   apps: CompareApp[];
-} & Copy<{ nav: string; title: string; lede: string; bipe: string; appsTitle: string; more: string; aheadTitle: string; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string; tableTitle: string; threatCol: string; levels: Record<CompareLevel, string> }>;
+} & Copy<{ nav: string; title: string; description: string; bipe: string; appsTitle: string; more: string; aheadTitle: string; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string; tableTitle: string; threatCol: string; levels: Record<CompareLevel, string> }>;
 
 type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;
 type SourceRepo = { id: string; url: string; public: boolean } & Copy<string>;

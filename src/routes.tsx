@@ -87,7 +87,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   },
   {
     path: paths.compare(lang), alt: paths.compare(other(lang)), lang, section: "compare",
-    title: `${compare[lang].title} · Bipe`, description: compare[lang].lede,
+    title: `${compare[lang].title} · Bipe`, description: compare[lang].description,
     body: () => <ComparePage lang={lang} />,
   },
   ...compare.apps.map((app): Route => ({

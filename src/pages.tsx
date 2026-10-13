@@ -395,7 +395,12 @@ export function PartnersPage({ lang }: { lang: Lang }) {
           ))}
         </div>
       </section>
-      <MailCta cta={p.cta} subject={p.ctaSubject} />
+      <section className="wrap narrow section" id="form">
+        <div className="card" style={{ padding: 32 }}>
+          <h2 style={{ fontSize: 26, marginBottom: 16 }}>{p.cta}</h2>
+          <Island name="PartnerForm" props={{ lang, copy: p.form, contact: distribution.contact, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
+        </div>
+      </section>
     </>
   );
 }
@@ -516,7 +521,6 @@ export function ComparePage({ lang }: { lang: Lang }) {
   return (
     <section className="wrap section">
       <h1>{c.title}</h1>
-      <p className="lede">{c.lede}</p>
       <CompareTable lang={lang} />
       <div className="side">
         <h2>{c.appsTitle}</h2>

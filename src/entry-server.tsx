@@ -149,7 +149,7 @@ export function renderMarkdown(route: Route): string {
   } else if (route.path === paths.partners(lang)) {
     out.push(`(${product.partners[lang].label})`, "");
     for (const sec of product.partners[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
-    out.push(`${product.partners[lang].cta} ${distribution.contact}`, "");
+    out.push(`${product.partners[lang].cta} ${abs(paths.partners(lang))}#form ${distribution.contact}`, "");
   }
   out.push("", `## ${c.download}`, "");
   if (distribution.ios.url) out.push(`- ${distribution.ios[lang].label}: ${distribution.ios.url} (${distribution.ios[lang].note})`);
