@@ -18,7 +18,7 @@ type TypeCopy = { heading: string; body: string; title: string; headline: string
 /** A golpe in the library (bipe#175). stats may be empty: a golpe with no measured figure shows no number. */
 export type ScamType = {
   id: string; slug: Copy<string>; stats: string[]; protect: string[];
-  group?: string; channels?: string[]; aliases?: Copy<string[]>; scene?: FigureId; describedBy?: string[];
+  group?: string; channels?: string[]; aliases?: Copy<string[]>; scene?: FigureId; realScene?: FigureId; describedBy?: string[];
 } & Copy<TypeCopy>;
 /** A golpe that starts outside a chat (a call, in person): listed on the hub with its official page, no Bipe card. */
 export type ScamOutside = { id: string; source: string } & Copy<{ name: string; body: string }>;
@@ -32,7 +32,7 @@ type PageCopy = {
   bipeTitle: string; bipeLede: string; limit: string;
   sourcesTitle: string; sourcesNote: string;
   source: string; table: string; kinds: Record<ScamSource["kind"], string>;
-  typeAliases?: string; typeChannels?: string; typeDescribedBy?: string; typeDescribedByNote?: string; typeLimitTitle?: string; typeScene?: string;
+  typeAliases?: string; typeChannels?: string; typeDescribedBy?: string; typeDescribedByNote?: string; typeLimitTitle?: string; typeScene?: string; typeReal?: string; typeRealLede?: string;
   outsideTitle?: string; outsideLede?: string; outsideMore?: string;
   groups?: Record<string, string>; channels?: Record<string, string>;
 };
@@ -342,6 +342,16 @@ export function ScamTypePage({ lang, t }: { lang: Lang; t: ScamType }) {
         </div>
       ) : (
         <div className="side narrow">{steps}</div>
+      )}
+
+      {t.realScene && (
+        <div className="side split">
+          <div>
+            <h2>{c.typeReal}</h2>
+            <p>{c.typeRealLede}</p>
+          </div>
+          <Figure lang={lang} id={t.realScene} caption={`${c.typeReal}. ${chrome[lang].sceneCaption}`} />
+        </div>
       )}
 
       <div className="side narrow">

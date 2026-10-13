@@ -141,6 +141,11 @@
       "photo": { "style": "logo", "look": "an internet provider, a cashew fruit with three small signal arcs above it, orange-red and green on white" }
     },
     {
+      "id": "falsacaju", "kind": "person", "name": "CajuNet Segunda Via", "short": "CajuNet Segunda Via", "handle": "cajunet.2via",
+      "about": "Unverified account that copies CajuNet's name and logo and sends a 'segunda via' with a personal Pix key.", "trust": "none",
+      "photo": { "copyOf": "caju" }
+    },
+    {
       "id": "lucia", "kind": "person", "name": "Lúcia Barbosa", "short": "Dona Lúcia", "handle": null,
       "about": "79, retired seamstress, Belém. Lives in the Bela Vista building. Front camera too close.", "trust": "none",
       "photo": { "style": "selfie", "look": "a 79-year-old Brazilian woman with brown skin, white hair in a bun and reading glasses, holding the phone too close and slightly below her face, in her living room with a crocheted doily on the sofa, dim indoor light, a little blurry" }

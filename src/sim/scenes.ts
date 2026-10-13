@@ -439,6 +439,90 @@ export const scenes = {
       { from: "outlet", text: "Tênis de corrida de R$ 899 por R$ 199, só hoje. Pague no pix e enviamos amanhã. Chave outletpromo@example.com" },
     ],
   },
+  "boleto-internet": {
+    kind: "chat", with: "falsacaju",
+    lines: [
+      { card: "unverified", age: { pt: "3 horas", en: "3 hours" } },
+      { from: "falsacaju", text: "CajuNet: sua internet vai ser cortada hoje. Pague a segunda via com desconto pelo pix cajunet.2via@example.com" },
+    ],
+  },
+  // Real vs fake: the verified institution that each impersonator copies. Shown under the fake scene on the
+  // golpe page (`realScene` in bipe-shared/product/scams.json). No warning fires: check new lines with the detector.
+  "banco-real": {
+    kind: "chat", with: "banco",
+    lines: [
+      { card: "notice", text: "Compra de R$ 2.399 no cartão final 4821. Se não foi você, bloqueie o cartão no app do Banco Seriema. Nunca pedimos código, senha ou Pix por mensagem." },
+      { from: ME, text: { pt: "Não fui eu, vou bloquear no app", en: "Não fui eu, vou bloquear no app (It was not me, I will block it in the app)" } },
+    ],
+  },
+  "escola-real": {
+    kind: "chat", with: "horizonte",
+    lines: [
+      { card: "notice", text: "Mensalidade de outubro. A cobrança vem só por aqui, no nome e CNPJ do Colégio Horizonte." },
+      { card: "charge", amount: "R$ 1.200,00", description: { pt: "Mensalidade de outubro", en: "Mensalidade de outubro (October fee)" }, paidAt: 3 },
+      { card: "notice", text: "Pagamento recebido. Obrigado." },
+    ],
+  },
+  "loja-real": {
+    kind: "chat", with: "jatoba",
+    lines: [
+      { from: ME, text: { pt: "Oi, o tênis de corrida ainda tem no 39?", en: "Oi, o tênis de corrida ainda tem no 39? (Do you still have the running shoes in size 39?)" } },
+      { from: "jatoba", text: "Tem sim! R$ 899 em até 10x no cartão ou no Pix pela cobrança da loja." },
+      { card: "charge", amount: "R$ 899,00", description: { pt: "Tênis de corrida, 39", en: "Tênis de corrida, 39 (Running shoes, size 39)" }, paidAt: 4 },
+      { card: "notice", text: "Seu pedido saiu para entrega. Chega amanhã até as 18h." },
+    ],
+  },
+  "entrega-real": {
+    kind: "chat", with: "sabia",
+    lines: [
+      { card: "notice", text: "Seu pacote chega hoje entre 13h e 18h. A Sabiá Entregas não cobra taxa por mensagem." },
+      { from: ME, text: { pt: "Valeu!", en: "Valeu! (Thanks!)" } },
+    ],
+  },
+  "igreja-real": {
+    kind: "chat", with: "vidanova",
+    lines: [
+      { card: "notice", text: "Campanha da reforma do telhado: quem puder contribuir, use só a cobrança da Comunidade Vida Nova." },
+      { card: "charge", amount: "R$ 50,00", description: { pt: "Oferta: reforma do telhado", en: "Oferta: reforma do telhado (Offering: roof repair)" }, paidAt: 3 },
+      { card: "notice", text: "Oferta recebida. Deus abençoe." },
+    ],
+  },
+  "credito-real": {
+    kind: "chat", with: "cooperativa",
+    lines: [
+      { card: "notice", text: "Sua proposta de crédito de R$ 15.000 foi aprovada. Assine o contrato no app da cooperativa. A Coop Cerrado não cobra nenhuma taxa antes de liberar o dinheiro." },
+    ],
+  },
+  "advogado-real": {
+    kind: "chat", with: "prado",
+    lines: [
+      { from: "prado", text: "Boa tarde. O alvará do seu processo saiu. O valor cai direto na sua conta, você não paga nada para receber. Quer marcar uma conversa?" },
+      { from: ME, text: { pt: "Quero sim", en: "Quero sim (Yes, please)" } },
+    ],
+  },
+  "doacao-real": {
+    kind: "chat", with: "ciranda",
+    lines: [
+      { card: "notice", text: "Campanha de Natal: 300 cestas básicas para famílias de Salvador. Toda doação vai para o CNPJ do instituto." },
+      { card: "charge", amount: "R$ 30,00", description: { pt: "Doação: Campanha de Natal", en: "Doação: Campanha de Natal (Donation: Christmas campaign)" }, paidAt: 3 },
+      { card: "notice", text: "Doação recebida. Obrigado!" },
+    ],
+  },
+  "pousada-real": {
+    kind: "chat", with: "mare",
+    lines: [
+      { from: ME, text: { pt: "Oi, tem quarto livre no feriado?", en: "Oi, tem quarto livre no feriado? (Is a room free on the holiday?)" } },
+      { from: "mare", text: "Temos sim! Diária de R$ 280 com café. Te mando a cobrança do sinal pelo app" },
+      { card: "charge", amount: "R$ 140,00", description: { pt: "Sinal: feriado de 15/11", en: "Sinal: feriado de 15/11 (Deposit: 15 Nov holiday)" } },
+    ],
+  },
+  "internet-real": {
+    kind: "chat", with: "caju",
+    lines: [
+      { card: "notice", text: "Sua fatura de outubro chegou: R$ 99,90, vence dia 10." },
+      { card: "charge", amount: "R$ 99,90", description: { pt: "Fatura de outubro", en: "Fatura de outubro (October bill)" } },
+    ],
+  },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;

@@ -60,6 +60,9 @@ export const chrome = {
       "venda-falsa": "Falsa venda", "comprovante-falso": "Comprovante falso", aluguel: "Falso aluguel", "pix-errado": "Pix errado", boleto: "Boleto falso",
       emprestimo: "Falso empréstimo", investimento: "Falso investimento", aposta: "Apostas", "link-falso": "Link falso", "acesso-remoto": "Mão fantasma",
       ameaca: "Ameaça", sequestro: "Falso sequestro", sextorsao: "Sextorsão", vaquinha: "Falsa vaquinha", "loja-falsa": "Loja falsa",
+      "boleto-internet": "Falsa segunda via", "banco-real": "Banco de verdade", "escola-real": "Escola de verdade", "loja-real": "Loja de verdade",
+      "entrega-real": "Entrega de verdade", "igreja-real": "Igreja de verdade", "credito-real": "Crédito de verdade", "advogado-real": "Advogado de verdade",
+      "doacao-real": "Doação de verdade", "pousada-real": "Pousada de verdade", "internet-real": "Fatura de verdade",
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
@@ -226,6 +229,9 @@ export const chrome = {
       "venda-falsa": "Fake seller", "comprovante-falso": "Fake receipt", aluguel: "Fake rental", "pix-errado": "Wrong Pix", boleto: "Fake boleto",
       emprestimo: "Fake loan", investimento: "Fake investment", aposta: "Betting", "link-falso": "Fake link", "acesso-remoto": "Phantom hand",
       ameaca: "Threat", sequestro: "Fake kidnapping", sextorsao: "Sextortion", vaquinha: "Fake fundraiser", "loja-falsa": "Fake shop",
+      "boleto-internet": "Fake duplicate bill", "banco-real": "Real bank", "escola-real": "Real school", "loja-real": "Real shop",
+      "entrega-real": "Real delivery", "igreja-real": "Real church", "credito-real": "Real loan", "advogado-real": "Real lawyer",
+      "doacao-real": "Real donation", "pousada-real": "Real guesthouse", "internet-real": "Real bill",
     } satisfies Record<SceneId, string>,
     sim: {
       accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll", ask: "Question",
