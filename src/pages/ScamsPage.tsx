@@ -11,7 +11,8 @@ import type { FigureId } from "../sim/scenes";
 
 type Copy<T> = { pt: T; en: T };
 export type ScamSource = { id: string; name: string; publisher: string; url: string; date: string; kind: "primary" | "secondary" | "press" };
-export type ScamStat = { id: string; source: string } & Copy<{ value: string; label: string; period: string }>;
+/** also: more sources the label relies on (for example GDP for a share of GDP). */
+export type ScamStat = { id: string; source: string; also?: string[] } & Copy<{ value: string; label: string; period: string }>;
 type Row = { id: string; value: number; highlight?: boolean } & Copy<{ label: string; value: string }>;
 export type ScamChart = { id: string; form: "columns" | "bars"; sources: string[]; rows: Row[] } & Copy<{ title: string; note: string }>;
 type TypeCopy = { heading: string; body: string; title: string; headline: string; lede: string; how: string[]; signs: string[]; todo: string[]; limit?: string };
@@ -52,11 +53,13 @@ export const scams = scamsJson as unknown as {
 
 const sourceOf = (id: string) => scams.sources.find((s) => s.id === id)!;
 const statOf = (id: string) => scams.stats.find((s) => s.id === id)!;
+/** Every source of a stat: the main one, then the ones its label also relies on. */
+const statSources = (s: ScamStat) => [s.source, ...(s.also ?? [])];
 const chartOf = (id: string) => scams.charts.find((c) => c.id === id)!;
 /** Sources in the order the page uses them. */
-const usedSources = () => scams.sources.filter((s) => scams.stats.some((x) => x.source === s.id) || scams.charts.some((c) => c.sources.includes(s.id)));
+const usedSources = () => scams.sources.filter((s) => scams.stats.some((x) => statSources(x).includes(s.id)) || scams.charts.some((c) => c.sources.includes(s.id)));
 /** Sources of one type page: those its numbers cite, then the official pages that describe it. */
-const typeSources = (t: ScamType) => scams.sources.filter((s) => t.stats.some((id) => statOf(id).source === s.id) || t.describedBy?.includes(s.id));
+const typeSources = (t: ScamType) => scams.sources.filter((s) => t.stats.some((id) => statSources(statOf(id)).includes(s.id)) || t.describedBy?.includes(s.id));
 /** Types in hub order: by group when the register has groups, else as listed. */
 function typeGroups(): { id: string | null; types: ScamType[] }[] {
   const groups = Object.keys(scams.pt.groups ?? {});
@@ -87,7 +90,7 @@ function BigNumber({ lang, id }: { lang: Lang; id: string }) {
     <div className="scam-stat">
       <p className="scam-value">{s[lang].value}</p>
       <p className="scam-label">{s[lang].label}</p>
-      <SourceLine lang={lang} ids={[s.source]} extra={s[lang].period} />
+      <SourceLine lang={lang} ids={statSources(s)} extra={s[lang].period} />
     </div>
   );
 }
@@ -243,7 +246,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
                   <h3><a href={paths.scamType(lang, t)}>{t[lang].heading}</a></h3>
                   <p>{t[lang].body}</p>
                   {s && <p className="scam-type-stat"><strong>{s[lang].value}</strong> {s[lang].label}</p>}
-                  {s && <SourceLine lang={lang} ids={[s.source]} extra={s[lang].period} />}
+                  {s && <SourceLine lang={lang} ids={statSources(s)} extra={s[lang].period} />}
                   <p className="scam-type-more"><a href={paths.scamType(lang, t)}>{c.typeMore}</a></p>
                 </div>
               );
@@ -272,7 +275,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
           {scams.more.map(statOf).map((s) => (
             <li key={s.id}>
               <strong>{s[lang].value}</strong> {s[lang].label}
-              <SourceLine lang={lang} ids={[s.source]} extra={s[lang].period} />
+              <SourceLine lang={lang} ids={statSources(s)} extra={s[lang].period} />
             </li>
           ))}
         </ul>
@@ -432,7 +435,7 @@ const mdSources = (lang: Lang, ids: string[]) =>
   ids.map(sourceOf).map((s) => `[${s.publisher}](${s.url})${s.kind !== "primary" ? ` (${scams[lang].kinds[s.kind]})` : ""}`).join("; ");
 const mdStat = (lang: Lang, id: string) => {
   const s = statOf(id);
-  return `**${s[lang].value}** ${s[lang].label} (${s[lang].period}. ${scams[lang].source}: ${mdSources(lang, [s.source])})`;
+  return `**${s[lang].value}** ${s[lang].label} (${s[lang].period}. ${scams[lang].source}: ${mdSources(lang, statSources(s))})`;
 };
 const mdSourceList = (lang: Lang, list: ScamSource[]) =>
   list.map((s) => `- [${s.name}](${s.url}) (${s.publisher}, ${s.date})${s.kind !== "primary" ? `, ${scams[lang].kinds[s.kind]}` : ""}`);

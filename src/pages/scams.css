@@ -6,7 +6,8 @@
 
 .scam-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 16px; margin-top: 40px; }
 .scam-stat { border-top: 2px solid var(--mark); padding-top: 14px; }
-.scam-value { font: 600 clamp(32px, 4vw, 44px)/1.05 var(--ui); letter-spacing: -.02em; margin: 0; color: var(--text); text-wrap: balance; }
+/* Hero numbers are display text, so they take the title face (AGENTS.md). Chart labels and values keep --ui. */
+.scam-value { font: 850 clamp(32px, 4vw, 44px)/1.05 var(--brand); letter-spacing: -.02em; margin: 0; color: var(--text); text-wrap: balance; }
 .scam-label { margin: 8px 0 0; font-size: 16px; }
 .scam-source { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
 .scam-source a { color: inherit; }

@@ -15,7 +15,7 @@ Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; on
 - `/docs/` (`/en/docs/`) explains how Bipe works, for people and agents: domains (ADR 0062), architecture, links and the public API. `llms.txt` lists the docs first. When a host, a link format, a public API call or a stack part changes, change the docs page in the same commit. Docs state only what runs today: no roadmap, no hosting provider names, no IP addresses, no internal paths.
 - Product copy, feature status and download links come only from `../bipe-shared/product/`. Do not write feature copy in a page. Chrome copy (nav, labels) is in `src/copy.ts`.
 - UI strings in simulations come from `../bipe-shared/strings/` through `t()`. Scam, handle and name results come from the reference logic in `../bipe-shared/tools/lib/registries.mjs`, never from hand-written results.
-- Colours only from bipe-tokens CSS variables. Nunito only for the wordmark and titles.
+- Colours only from bipe-tokens CSS variables. Nunito only for the wordmark, titles and the big hero numbers on `/golpes-no-brasil/` (`.scam-value`). Chart labels, axes and values use `--ui` with tabular figures.
 - pt-BR copy follows `../bipe/docs/design/linguagem.md` (ADR 0039).
 - Rendered copy: no em or en dashes; run the humanizer rubric before it ships.
 - Public pages never refer to MZ: no name, handle, initials or first-person founder voice, also not in sample data.
