@@ -49,6 +49,26 @@ function TentpoleCard({ lang, tp }: { lang: Lang; tp: Tentpole }) {
   );
 }
 
+/** The Pix request card on the home page: feature copy from product.json, figure caption leads with the planned status. */
+function PixSection({ lang }: { lang: Lang }) {
+  const f = product.features.find((x) => x.id === "pix-cards");
+  const tp = product.tentpoles.find((t) => t.demos.includes("pix"));
+  if (!f || !tp) return null;
+  return (
+    <section className="wrap section">
+      <div className="split flip">
+        <div>
+          <h2>{tp[lang].demos[tp.demos.indexOf("pix")]?.title ?? f[lang].name}</h2>
+          <p className="lede">{f[lang].body}</p>
+          <Points items={f[lang].points} />
+          <p style={{ marginTop: 24 }}><a href={paths.feature(lang, f)}>{chrome[lang].more} →</a></p>
+        </div>
+        <Figure lang={lang} id="pix" caption={figureCaption(lang, f)} />
+      </div>
+    </section>
+  );
+}
+
 export function HomePage({ lang }: { lang: Lang }) {
   const [lead, ...rest] = product.tentpoles;
   return (
@@ -72,6 +92,8 @@ export function HomePage({ lang }: { lang: Lang }) {
         <Island name="RealVsFake" props={{ lang }} />
         <p className="small muted" style={{ marginTop: 16 }}>{product.realFake[lang].caption}</p>
       </section>
+
+      <PixSection lang={lang} />
 
       <section className="wrap section">
         <h2 style={{ marginBottom: 24 }}>{chrome[lang].tentpolesTitle}</h2>
