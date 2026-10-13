@@ -5,12 +5,13 @@
 import scamsJson from "@shared/product/scams.json";
 import { chrome } from "../copy";
 import { paths } from "../paths";
+import { Icon, type IconName } from "../components/ui";
 import { product, type Lang } from "../shared";
 import { Figure } from "../sim/Figure";
 import type { FigureId } from "../sim/scenes";
 
 type Copy<T> = { pt: T; en: T };
-export type ScamSource = { id: string; name: string; publisher: string; url: string; date: string; kind: "primary" | "secondary" | "press" };
+export type ScamSource = { id: string; name: string; publisher: string; url: string; date: string; kind: "primary" | "secondary" | "company" | "press" };
 /** also: more sources the label relies on (for example GDP for a share of GDP). */
 export type ScamStat = { id: string; source: string; also?: string[] } & Copy<{ value: string; label: string; period: string }>;
 type Row = { id: string; value: number; highlight?: boolean } & Copy<{ label: string; value: string }>;
@@ -67,6 +68,16 @@ function typeGroups(): { id: string | null; types: ScamType[] }[] {
   return groups.map((id) => ({ id, types: scams.types.filter((t) => t.group === id) })).filter((g) => g.types.length);
 }
 
+/** Icon per scam type on the hub cards. Presentation only, so it lives here and not in scams.json. */
+const scamIcon: Record<string, IconName> = {
+  falsoParente: "person", numberTaken: "phone", fakeAcquaintance: "chat", wrongCode: "key", romance: "heart",
+  fakeCall: "call", fakeLawyer: "scales", fakeAgency: "bank", fakeDelivery: "box", fakeJob: "briefcase", fakeSupport: "headset",
+  fakeShop: "bag", fakeSale: "tag", fakeReceipt: "receipt", fakeRental: "house",
+  pix: "pix", wrongPix: "swap", fakeBoleto: "barcode", fakeLoan: "cash", investment: "trend", fakeBet: "dice",
+  phishing: "link", remoteAccess: "cursor", simSwap: "sim",
+  threats: "warning", fakeKidnap: "lock", sextortion: "eye", groupScam: "group", fakeCharity: "gift",
+};
+
 /** "Fonte: Publisher" with a link, and the kind when it is not a primary source. */
 function SourceLine({ lang, ids, extra }: { lang: Lang; ids: string[]; extra?: string }) {
   const c = scams[lang];
@@ -121,9 +132,10 @@ function ticks(max: number): number[] {
   return out;
 }
 
-/** Axis tick label: 1,5 mi / 1.5M, 500 mil / 500k. */
+/** Axis tick label: 2 bi / 2B, 1,5 mi / 1.5M, 500 mil / 500k. */
 function tickLabel(lang: Lang, v: number): string {
   const fmt = (n: number) => n.toLocaleString(lang === "pt" ? "pt-BR" : "en-US", { maximumFractionDigits: 1 });
+  if (v >= 1e9) return lang === "pt" ? `${fmt(v / 1e9)} bi` : `${fmt(v / 1e9)}B`;
   if (v >= 1e6) return lang === "pt" ? `${fmt(v / 1e6)} mi` : `${fmt(v / 1e6)}M`;
   if (v >= 1e3) return lang === "pt" ? `${fmt(v / 1e3)} mil` : `${fmt(v / 1e3)}k`;
   return fmt(v);
@@ -234,23 +246,30 @@ export function ScamsPage({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <div className="side narrow">
+      <div className="side">
         <h2>{c.typesTitle}</h2>
         {typeGroups().map((g) => (
           <div key={g.id ?? "all"}>
             {g.id && <h3 className="scam-group">{c.groups?.[g.id]}</h3>}
-            {g.types.map((t) => {
-              const s = t.stats[0] ? statOf(t.stats[0]) : null;
-              return (
-                <div className="scam-type" key={t.id} id={t.id}>
-                  <h3><a href={paths.scamType(lang, t)}>{t[lang].heading}</a></h3>
-                  <p>{t[lang].body}</p>
-                  {s && <p className="scam-type-stat"><strong>{s[lang].value}</strong> {s[lang].label}</p>}
-                  {s && <SourceLine lang={lang} ids={statSources(s)} extra={s[lang].period} />}
-                  <p className="scam-type-more"><a href={paths.scamType(lang, t)}>{c.typeMore}</a></p>
-                </div>
-              );
-            })}
+            <div className="scam-types">
+              {g.types.map((t) => {
+                const s = t.stats[0] ? statOf(t.stats[0]) : null;
+                return (
+                  <article className="card scam-type" key={t.id} id={t.id}>
+                    <span className="scam-type-icon"><Icon name={scamIcon[t.id] ?? "warning"} size={22} /></span>
+                    <h4><a href={paths.scamType(lang, t)}>{t[lang].heading}</a></h4>
+                    <p>{t[lang].body}</p>
+                    {s && (
+                      <div className="scam-type-stat">
+                        <p><strong>{s[lang].value}</strong> {s[lang].label}</p>
+                        <SourceLine lang={lang} ids={statSources(s)} extra={s[lang].period} />
+                      </div>
+                    )}
+                    <p className="scam-type-more" aria-hidden="true">{c.typeMore} →</p>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         ))}
       </div>
