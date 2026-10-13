@@ -3,7 +3,9 @@ import { chrome } from "../copy";
 import { paths } from "../paths";
 import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind } from "../shared";
 
-export type IconName = "warning" | "check" | "person" | "send" | "apple" | "android" | "mail" | "globe" | "shield" | "pix" | "circle" | "back" | "plus" | "mic" | "search" | "chat" | "group";
+export type IconName = "warning" | "check" | "person" | "send" | "apple" | "android" | "mail" | "globe" | "shield" | "pix" | "circle" | "back" | "plus" | "mic" | "search" | "chat" | "group"
+  | "phone" | "call" | "bag" | "key" | "heart" | "scales" | "bank" | "box" | "briefcase" | "headset" | "tag" | "receipt"
+  | "house" | "swap" | "barcode" | "cash" | "trend" | "dice" | "link" | "cursor" | "sim" | "lock" | "eye" | "gift";
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const p = {
@@ -26,6 +28,31 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
     search: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4-4",
     chat: "M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 3.5V17A2.5 2.5 0 0 1 4 14.5v-8Z",
     group: "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 9c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5m1-9a3 3 0 1 0 0-6m2.5 15H21c0-2.6-1.7-4.6-4-5.2",
+    // Scam types on /golpes-no-brasil/ (ScamsPage.tsx scamIcon).
+    phone: "M8 3h8a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 16 21H8a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 8 3Zm3 15h2",
+    call: "M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z",
+    bag: "M5 8h14l-1 12H6L5 8Zm4 0V6.5a3 3 0 0 1 6 0V8",
+    key: "M8 11a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm2.8 1.2L20 3m-4 4 2.5 2.5M14 9l1.5 1.5",
+    heart: "M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z",
+    scales: "M12 4v16m-4 0h8M5 7h14M7 7l-3 6a3 3 0 0 0 6 0L7 7Zm10 0-3 6a3 3 0 0 0 6 0l-3-6Z",
+    bank: "M3 9l9-5 9 5M5.5 10.5v6.5m4.3-6.5v6.5m4.4-6.5v6.5m4.3-6.5v6.5M3 20h18",
+    box: "M4 7.5 12 4l8 3.5v9L12 20l-8-3.5v-9Zm0 0 8 3.5 8-3.5M12 11v9",
+    briefcase: "M4 8h16v11H4V8Zm5 0V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-11 5h16",
+    headset: "M5 14v-2a7 7 0 0 1 14 0v2M5 14h2.5v4.5H5V14Zm11.5 0H19v4.5h-2.5V14Zm2.5 4.5c0 1.5-1.5 2.5-4 2.5h-2",
+    tag: "M3.6 12.4 11 5h8v8l-7.4 7.4a1.4 1.4 0 0 1-2 0l-6-6a1.4 1.4 0 0 1 0-2ZM15.5 8.5v.01",
+    receipt: "M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21V3Zm3 5h6m-6 4h6m-6 4h3",
+    house: "M4 11l8-7 8 7v9H4v-9Zm6 9v-5h4v5",
+    swap: "M4 9h15l-3.5-3.5M20 15H5l3.5 3.5",
+    barcode: "M4 6v12m3-12v12m3-12v12m4-12v12m3-12v12m3-12v12",
+    cash: "M3 7h18v10H3V7Zm9 2.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM6 10v.01M18 14v.01",
+    trend: "M3 17l6-6 4 4 8-8m-5 0h5v5",
+    dice: "M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm4 5v.01M15 9v.01M12 12v.01M9 15v.01M15 15v.01",
+    link: "M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1",
+    cursor: "M5 3l14 7-6.2 1.8L11 18 5 3Zm8 9 6 6",
+    sim: "M7 3h7l4 4v14H7V3Zm3 9h5v5h-5v-5Z",
+    lock: "M6 11h12v9H6v-9Zm2.5 0V8a3.5 3.5 0 0 1 7 0v3m-3.5 3.5v2",
+    eye: "M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Zm9.5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z",
+    gift: "M4 10h16v10H4V10Zm-1-3h18v3H3V7Zm9 0v13m0-13c-1.5-3-5-3-5-1s3 1 5 1Zm0 0c1.5-3 5-3 5-1s-3 1-5 1Z",
   }[name];
   const filled = name === "apple" || name === "android";
   return (
