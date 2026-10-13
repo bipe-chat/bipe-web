@@ -21,7 +21,8 @@ export type Registries = {
   scam: { warningKindPriority: string[] } & Record<string, unknown>;
   homoglyphs: { map: Record<string, string> };
   inviteCodes: { pattern: string; alphabet: string; maxInputLength: number };
-  handles: { minLength: number; maxLength: number; pattern: string; skeletonStrip: string; changeCooldownDays: number; releaseHoldDays: number };
+  handles: { minLength: number; ownerMinLength: number; maxLength: number; pattern: string; skeletonStrip: string; changeCooldownDays: number; releaseHoldDays: number };
+  owners: { owners: Record<string, string[]>; handles: Record<string, string> };
   strings: { strings: Record<string, string> };
   stringsEn: { strings: Record<string, string> };
 };
@@ -39,6 +40,9 @@ export const reg = {
   scam: scamPatterns,
   homoglyphs,
   handles,
+  // Public pages never name MZ (AGENTS.md), so the site leaves out the owned handles of
+  // reserved-name-owners.json (ADR 0065). A short handle is then too_short, as for every new account.
+  owners: { owners: {}, handles: {} },
   inviteCodes,
   strings: stringsPt,
   stringsEn,
