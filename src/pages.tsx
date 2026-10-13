@@ -330,7 +330,9 @@ export function DownloadPage({ lang }: { lang: Lang }) {
 
 export function BusinessPage({ lang }: { lang: Lang }) {
   const b = product.business[lang];
-  const [why, ...rest] = b.sections;
+  const c = chrome[lang].biz;
+  // Sections 2 and 3 (the team inbox, and moving from WhatsApp) each get their mini (src/sim/BusinessMinis.tsx).
+  const [why, inbox, move, ...rest] = b.sections;
   return (
     <>
       <section className="wrap section">
@@ -344,6 +346,21 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           </div>
           <BusinessFigure lang={lang} caption={b.figureCaption} />
         </div>
+      </section>
+      <section className="wrap section">
+        <h2 style={{ fontSize: 28 }}>{inbox.heading}</h2>
+        <ul className="points biz-points">{inbox.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
+        <div style={{ marginTop: 28 }}><Figure lang={lang} id="bizInbox" caption={c.caption} /></div>
+      </section>
+      <section className="wrap section">
+        <div className="split">
+          <div>
+            <h2 style={{ fontSize: 28 }}>{move.heading}</h2>
+            <ul className="points biz-points">{move.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
+          </div>
+          <Figure lang={lang} id="bizContinue" caption={c.continueCaption} />
+        </div>
+        <div style={{ marginTop: 28 }}><Figure lang={lang} id="bizApi" caption={c.apiCaption} /></div>
       </section>
       <section className="wrap section">
         <div className="grid">

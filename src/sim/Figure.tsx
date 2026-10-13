@@ -28,5 +28,8 @@ export function Figure({ lang, id, caption }: { lang: Lang; id: FigureId; captio
     case "e2ee": return <E2eeFigure lang={lang} caption={caption} />;
     case "brazil": return <BrazilFigure lang={lang} caption={caption} />;
     case "openSource": return <OpenSourceFigure lang={lang} caption={caption} />;
+    case "bizInbox": return <Island name="InboxMini" props={{ lang, caption }} />;
+    case "bizApi": return <Island name="ApiMini" props={{ lang, caption }} />;
+    case "bizContinue": return <Island name="ContinueMini" props={{ lang, caption }} />;
   }
 }

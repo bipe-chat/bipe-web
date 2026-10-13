@@ -448,7 +448,7 @@ export type SceneId = keyof typeof scenes;
  * A figure id in product.json (tentpole `demos`, feature `figures`) is a scene id above or one of these.
  * bipe-shared/tools/gen-product-doc.mjs reads this line and the scene keys to validate those ids: keep it on one line.
  */
-export const SIMS = ["scam", "identity", "handle", "groups", "levels", "pix", "business", "noAds", "noSms", "handoff", "e2ee", "brazil", "openSource"] as const;
+export const SIMS = ["scam", "identity", "handle", "groups", "levels", "pix", "business", "noAds", "noSms", "handoff", "e2ee", "brazil", "openSource", "bizInbox", "bizApi", "bizContinue"] as const;
 export type SimId = (typeof SIMS)[number];
 export type FigureId = SceneId | SimId;
 export const isFigureId = (id: string): id is FigureId => id in scenes || (SIMS as readonly string[]).includes(id);
@@ -475,5 +475,65 @@ export const SCAM_REEL: SceneId[] = ["numero-novo", "falso-suporte", "renda-extr
 
 /** Scenes in the trust-levels picker, in order. Labels are chrome copy: chrome[lang].scenes. */
 export const TRUST_LEVEL_SCENES: SceneId[] = ["verificado", "pessoalmente", "numero-novo", "falso-suporte", "renda-extra", "nome-diferente", "aparelho-novo", "de-fora", "instituicao", "mae", "conversas", "perfil"];
+
+/**
+ * /empresas/ minis (src/sim/BusinessMinis.tsx): sample data for the company inbox, the API request and the
+ * move from WhatsApp to Bipe. The company is "clinica"; customers are cast ids. On WhatsApp a customer
+ * shows by name only: the inbox never shows a phone number (ADR 0015).
+ */
+export type Channel = "bipe" | "whatsapp";
+export type DeskChat = { with: string; channel: Channel; time: string; unread?: number; lines: { from: "customer" | "agent"; text: Text }[]; note: Text };
+
+export const deskChats: DeskChat[] = [
+  { with: "caio", channel: "bipe", time: "09:41", unread: 2, note: { pt: "Prefere horário depois das 17h.", en: "Prefers times after 5pm." },
+    lines: [
+      { from: "customer", text: { pt: "Oi, bom dia!", en: "Oi, bom dia! (Hi, good morning!)" } },
+      { from: "customer", text: { pt: "Dá pra remarcar minha consulta de quinta?", en: "Dá pra remarcar minha consulta de quinta? (Can I move my Thursday appointment?)" } },
+    ] },
+  { with: "lucia", channel: "whatsapp", time: "09:32", unread: 1, note: { pt: "Vem às consultas com a filha.", en: "Comes to appointments with her daughter." },
+    lines: [
+      { from: "customer", text: { pt: "Bom dia, minha filha. O exame de sangue precisa de jejum?", en: "Bom dia, minha filha. O exame de sangue precisa de jejum? (Do I need to fast for the blood test?)" } },
+    ] },
+  { with: "duda", channel: "bipe", time: "09:15", note: { pt: "Primeira consulta.", en: "First appointment." },
+    lines: [
+      { from: "customer", text: { pt: "Vocês atendem sábado?", en: "Vocês atendem sábado? (Are you open on Saturday?)" } },
+      { from: "agent", text: { pt: "Atendemos sim, das 8h às 12h.", en: "Atendemos sim, das 8h às 12h. (Yes, from 8am to noon.)" } },
+      { from: "customer", text: { pt: "Perfeito, obrigada!", en: "Perfeito, obrigada! (Perfect, thanks!)" } },
+    ] },
+  { with: "thiago", channel: "whatsapp", time: "08:58", note: { pt: "Pediu recibo para o plano de saúde.", en: "Asked for a receipt for his health plan." },
+    lines: [
+      { from: "customer", text: { pt: "Vou chegar uns 10 min atrasado, tudo bem?", en: "Vou chegar uns 10 min atrasado, tudo bem? (I will be about 10 min late, is that OK?)" } },
+    ] },
+];
+
+/** Saved replies in the inbox: the agent types "/" or taps a chip. */
+export const savedReplies: { name: string; text: Text }[] = [
+  { name: "bom-dia", text: { pt: "Bom dia! Já vou te ajudar.", en: "Bom dia! Já vou te ajudar. (Good morning! I will help you now.)" } },
+  { name: "remarcar", text: { pt: "Claro! Me diz o melhor dia e horário pra você.", en: "Claro! Me diz o melhor dia e horário pra você. (Sure! Tell me the best day and time for you.)" } },
+  { name: "jejum", text: { pt: "Pro exame de sangue, são 8 horas de jejum. Água pode.", en: "Pro exame de sangue, são 8 horas de jejum. Água pode. (8 hours of fasting for the blood test. Water is fine.)" } },
+];
+
+/** The question an agent sends from the inbox (ADR 0081). The customer taps option `pick`. */
+export const deskQuestion = {
+  question: { pt: "Qual horário fica melhor?", en: "Qual horário fica melhor? (Which time works best?)" },
+  options: [{ pt: "Quinta, 17h", en: "Quinta, 17h (Thursday, 5pm)" }, { pt: "Sexta, 18h", en: "Sexta, 18h (Friday, 6pm)" }],
+  pick: 1,
+} satisfies { question: Text; options: Text[]; pick: number };
+
+/** The API mini: one Cloud API button question (ADR 0081) to customer `to`. */
+export const apiDemo = {
+  from: "clinica", to: "caio",
+  question: "Confirma a consulta de amanhã às 14h?",
+  buttons: [{ id: "confirmar", title: "Confirmo" }, { id: "remarcar", title: "Quero remarcar" }],
+  pick: 0,
+};
+
+/** The continue mini: a WhatsApp chat moves to Bipe with a single-use link code (bipe/docs/business-track.md). */
+export const continueDemo = {
+  company: "clinica", customer: "caio", code: "7KQ2-M9XA",
+  ask: { pt: "Oi! Preciso remarcar a consulta de quinta", en: "Oi! Preciso remarcar a consulta de quinta (I need to move Thursday's appointment)" },
+  offer: (link: string) => ({ pt: `Para continuar no Bipe, toque aqui: ${link}`, en: `Para continuar no Bipe, toque aqui: ${link} (To continue on Bipe, tap here)` }),
+  reply: { pt: "Oi, Caio! Seguimos por aqui. Quinta às 17h fica bom pra você?", en: "Oi, Caio! Seguimos por aqui. Quinta às 17h fica bom pra você? (Let us carry on here. Does Thursday at 5pm work?)" },
+};
 
 export const text = (t: Text, lang: "pt" | "en") => (typeof t === "string" ? t : t[lang]);
