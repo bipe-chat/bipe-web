@@ -116,6 +116,31 @@
       "photo": { "style": "logo", "look": "a church community, a simple dove above a small sprouting plant, soft purple on white" }
     },
     {
+      "id": "cooperativa", "kind": "institution", "name": "Cooperativa de Crédito Cerrado", "short": "Coop Cerrado", "handle": "coopcerrado",
+      "about": "Fictional credit union, Goiânia. Verified institution (CNPJ). Real loan offers never ask for a fee up front, unlike the fake 'credito'.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a credit union, a twisted cerrado tree with a round canopy, ochre and dark green on white" }
+    },
+    {
+      "id": "prado", "kind": "institution", "name": "Prado Advocacia", "short": "Prado Advocacia", "handle": "pradoadvocacia",
+      "about": "Fictional law office, Rio de Janeiro. Verified institution (CNPJ). The real office of the lawyer that 'advogado' poses as.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a law office, a simple balance scale inside a circle, burgundy and grey on white" }
+    },
+    {
+      "id": "ciranda", "kind": "institution", "name": "Instituto Ciranda", "short": "Instituto Ciranda", "handle": "institutociranda",
+      "about": "Fictional charity for children, Salvador. Verified institution (CNPJ). Donations go to its CNPJ, not to a personal Pix key like the fake 'vaquinha'.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a children's charity, a ring of small abstract figures holding hands, warm yellow and teal on white" }
+    },
+    {
+      "id": "mare", "kind": "institution", "name": "Pousada Maré Mansa", "short": "Pousada Maré Mansa", "handle": "pousadamaremansa",
+      "about": "Fictional small guesthouse, Florianópolis. Verified institution (CNPJ). The real booking next to the fake holiday rental 'silvia'. A small company on the business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a beach guesthouse, a small house shape above two gentle waves, sea blue and sand on white" }
+    },
+    {
+      "id": "caju", "kind": "institution", "name": "CajuNet Internet", "short": "CajuNet", "handle": "cajunet",
+      "about": "Fictional regional internet provider, Fortaleza. Verified institution (CNPJ). Bills, outage notices and a 'segunda via' that only comes from its CNPJ. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "an internet provider, a cashew fruit with three small signal arcs above it, orange-red and green on white" }
+    },
+    {
       "id": "lucia", "kind": "person", "name": "Lúcia Barbosa", "short": "Dona Lúcia", "handle": null,
       "about": "79, retired seamstress, Belém. Lives in the Bela Vista building. Front camera too close.", "trust": "none",
       "photo": { "style": "selfie", "look": "a 79-year-old Brazilian woman with brown skin, white hair in a bun and reading glasses, holding the phone too close and slightly below her face, in her living room with a crocheted doily on the sofa, dim indoor light, a little blurry" }
