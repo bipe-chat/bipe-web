@@ -6,7 +6,7 @@ import type { Lang } from "../shared";
 export function BusinessFigure({ lang, caption }: { lang: Lang; caption: string }) {
   return (
     <div className="stage">
-      <ScenePhone lang={lang} id="instituicao" />
+      <ScenePhone lang={lang} id="empresa-pergunta" />
       <p className="caption">{caption}</p>
     </div>
   );

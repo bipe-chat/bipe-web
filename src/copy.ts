@@ -49,7 +49,7 @@ export const chrome = {
     },
     scenes: {
       verificado: "Verificado", "numero-novo": "Conta nova", "nome-diferente": "Nome diferente", "aparelho-novo": "Celular novo",
-      "de-fora": "Conta de fora", instituicao: "Instituição", mae: "Apelido", grupo: "Grupo", conversas: "Conversas", perfil: "Seu perfil",
+      "de-fora": "Conta de fora", instituicao: "Instituição", "empresa-pergunta": "Pergunta da empresa", mae: "Apelido", grupo: "Grupo", conversas: "Conversas", perfil: "Seu perfil",
       pessoalmente: "Conheci pessoalmente", "falso-suporte": "Falso suporte do banco", "renda-extra": "Renda extra", condominio: "Condomínio",
       igreja: "Grupo da igreja", "falso-pastor": "Falsa pastora", escola: "Grupo da escola",
       pedidos: "Pedidos", "pausa-pix": "Pausa antes do Pix", "mae-outro-nome": "Mãe com outro nome", "nome-reservado": "Nome reservado",
@@ -63,8 +63,8 @@ export const chrome = {
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
-      accept: "Aceitar", ignore: "Ignorar", copyKey: "Copiar chave Pix", charge: "Cobrança", poll: "Enquete",
-      votes: (n: number) => `${n} votos`,
+      accept: "Aceitar", ignore: "Ignorar", copyKey: "Copiar chave Pix", charge: "Cobrança", poll: "Enquete", ask: "Pergunta",
+      votes: (n: number) => (n === 1 ? "1 voto" : `${n} votos`),
       readOnly: "Só quem cuida da comunidade posta nos avisos.",
       joinTitle: "Pediu para entrar no grupo", approve: "Aprovar", decline: "Recusar",
       joinNoSealTitle: "Conta sem selo verificado",
@@ -92,6 +92,15 @@ export const chrome = {
     profile: {
       lead: "Esse é um link de perfil do Bipe. Com o app instalado, abre direto na conversa.",
       noApp: "Ainda não tem o Bipe? A gente está em fase de testes no iPhone.",
+      continueTitle: (handle: string) => `Continue a conversa com @${handle} no Bipe`,
+      continueLead: "A empresa te mandou este link para continuar o atendimento no Bipe, com a mesma pessoa.",
+      continueSteps: (handle: string) => [
+        "Instale o Bipe e crie sua conta, se ainda não tem.",
+        `Abra uma conversa com @${handle}.`,
+        "Mande a mensagem abaixo. Ela liga o atendimento do WhatsApp a esta conversa.",
+      ],
+      continueMessage: "Mensagem para mandar:",
+      continueOneUse: "O código vale uma vez, por 7 dias. Só você liga as duas conversas: a empresa não descobre sozinha que você usa o Bipe.",
     },
     invite: {
       title: "Você recebeu um convite para o Bipe",
@@ -185,7 +194,7 @@ export const chrome = {
     },
     scenes: {
       verificado: "Verified", "numero-novo": "New account", "nome-diferente": "Different name", "aparelho-novo": "New phone",
-      "de-fora": "Outside account", instituicao: "Institution", mae: "Nickname", grupo: "Group", conversas: "Chats", perfil: "Your profile",
+      "de-fora": "Outside account", instituicao: "Institution", "empresa-pergunta": "Company question", mae: "Nickname", grupo: "Group", conversas: "Chats", perfil: "Your profile",
       pessoalmente: "Met in person", "falso-suporte": "Fake bank support", "renda-extra": "Side income", condominio: "Building group",
       igreja: "Church group", "falso-pastor": "Fake pastor", escola: "School group",
       pedidos: "Requests", "pausa-pix": "Pause before a Pix", "mae-outro-nome": "Mum with another name", "nome-reservado": "Reserved name",
@@ -198,7 +207,7 @@ export const chrome = {
       ameaca: "Threat", sequestro: "Fake kidnapping", sextorsao: "Sextortion", vaquinha: "Fake fundraiser", "loja-falsa": "Fake shop",
     } satisfies Record<SceneId, string>,
     sim: {
-      accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll",
+      accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll", ask: "Question",
       votes: (n: number) => `${n} votes`,
       readOnly: "Only the community's admins post in announcements.",
       joinTitle: "Asked to join the group", approve: "Approve", decline: "Decline",
