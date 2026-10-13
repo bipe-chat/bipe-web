@@ -129,7 +129,7 @@ export function InviterReport(_: Record<string, never>) {
   return (
     <section className="wrap section staff">
       <h1>Quem mais convida</h1>
-      <p className="lede">Pessoas que trazem mais gente pro Bipe. Só convites pessoais; convites criados pela equipe ficam de fora.</p>
+      <p className="lede">Pessoas que trazem mais gente para o Bipe. Só convites pessoais; convites criados pela equipe ficam de fora.</p>
       {state.kind === "loading" && <p className="muted">Carregando…</p>}
       {state.kind === "signedOut" && (
         <>
