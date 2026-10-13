@@ -5,7 +5,8 @@ import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind 
 
 export type IconName = "warning" | "check" | "person" | "send" | "apple" | "android" | "mail" | "globe" | "shield" | "pix" | "circle" | "back" | "plus" | "mic" | "search" | "chat" | "group"
   | "phone" | "call" | "bag" | "key" | "heart" | "scales" | "bank" | "box" | "briefcase" | "headset" | "tag" | "receipt"
-  | "house" | "swap" | "barcode" | "cash" | "trend" | "dice" | "link" | "cursor" | "sim" | "lock" | "eye" | "gift";
+  | "house" | "swap" | "barcode" | "cash" | "trend" | "dice" | "link" | "cursor" | "sim" | "lock" | "eye" | "gift"
+  | "card" | "terminal" | "scooter";
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const p = {
@@ -53,6 +54,9 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
     lock: "M6 11h12v9H6v-9Zm2.5 0V8a3.5 3.5 0 0 1 7 0v3m-3.5 3.5v2",
     eye: "M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Zm9.5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z",
     gift: "M4 10h16v10H4V10Zm-1-3h18v3H3V7Zm9 0v13m0-13c-1.5-3-5-3-5-1s3 1 5 1Zm0 0c1.5-3 5-3 5-1s-3 1-5 1Z",
+    card: "M3 6h18v12H3V6Zm0 4h18M6.5 14.5h4",
+    terminal: "M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm1.5 3h7v4h-7V6Zm0 7.5v.01m3.5-.01v.01m3.5-.01v.01M8.5 17v.01m3.5-.01v.01m3.5-.01v.01",
+    scooter: "M6 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm12 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM8.5 15.5h6l3-8.5H15m-6.5 8.5L7 10H3.5M14 5h3",
   }[name];
   const filled = name === "apple" || name === "android";
   return (

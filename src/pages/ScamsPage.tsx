@@ -76,6 +76,8 @@ const scamIcon: Record<string, IconName> = {
   pix: "pix", wrongPix: "swap", fakeBoleto: "barcode", fakeLoan: "cash", investment: "trend", fakeBet: "dice",
   phishing: "link", remoteAccess: "cursor", simSwap: "sim",
   threats: "warning", fakeKidnap: "lock", sextortion: "eye", groupScam: "group", fakeCharity: "gift",
+  // outside: golpes that start outside a chat
+  motoboy: "scooter", maquininha: "terminal", trocaCartao: "card", ligacao: "call",
 };
 
 /** "Fonte: Publisher" with a link, and the kind when it is not a primary source. */
@@ -257,7 +259,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
                 return (
                   <article className="card scam-type" key={t.id} id={t.id}>
                     <span className="scam-type-icon"><Icon name={scamIcon[t.id] ?? "warning"} size={22} /></span>
-                    <h4><a href={paths.scamType(lang, t)}>{t[lang].heading}</a></h4>
+                    <h4><a className="stretch" href={paths.scamType(lang, t)}>{t[lang].heading}</a></h4>
                     <p>{t[lang].body}</p>
                     {s && (
                       <div className="scam-type-stat">
@@ -275,15 +277,22 @@ export function ScamsPage({ lang }: { lang: Lang }) {
       </div>
 
       {scams.outside?.length ? (
-        <div className="side narrow" id="fora">
+        <div className="side" id="fora">
           <h2>{c.outsideTitle}</h2>
-          <p>{c.outsideLede}</p>
-          <ul className="scam-outside">
+          <p className="side-line">{c.outsideLede}</p>
+          <div className="scam-types">
             {scams.outside.map((o) => {
               const src = sourceOf(o.source);
-              return <li key={o.id}><strong>{o[lang].name}.</strong> {o[lang].body} <a href={src.url}>{c.outsideMore} ({src.publisher})</a></li>;
+              return (
+                <article className="card scam-type" key={o.id} id={o.id}>
+                  <span className="scam-type-icon"><Icon name={scamIcon[o.id] ?? "warning"} size={22} /></span>
+                  <h4>{o[lang].name}</h4>
+                  <p>{o[lang].body}</p>
+                  <p className="scam-type-more"><a className="stretch" href={src.url}>{c.outsideMore} ({src.publisher}) ↗</a></p>
+                </article>
+              );
             })}
-          </ul>
+          </div>
         </div>
       ) : null}
 

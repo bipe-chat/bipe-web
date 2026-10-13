@@ -58,23 +58,23 @@
 .scam-others { padding-left: 20px; display: grid; gap: 8px; }
 /* Library of golpes (bipe#175): group headings on the hub, the outside-Bipe list, the limit box on a type page. */
 .scam-group { font-size: 15px; text-transform: none; color: var(--muted); margin: 36px 0 4px; font-family: var(--ui); font-weight: 600; }
-.scam-outside { display: grid; gap: 12px; padding-left: 1.2em; }
 .scam-limit-box { margin-top: 24px; border-left: 3px solid var(--line); padding-left: 16px; }
 .scam-limit-box h3 { font-size: 18px; margin: 0 0 6px; }
 .scam-limit-box p { margin: 0; }
-/* Hub type cards: the whole card opens the type page (stretched heading link); source links sit above it. */
+/* Hub type cards and outside cards: the whole card follows its .stretch link (type page, or the official page for outside golpes); source links sit above it. */
 .scam-types { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
 .scam-type { position: relative; display: flex; flex-direction: column; gap: 10px; border: 1px solid transparent; transition: border-color .15s; }
 .scam-type:hover, .scam-type:focus-within { border-color: var(--acai); }
 .scam-type-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--acai-wash); color: var(--acai); }
 .scam-type h4 { margin: 4px 0 0; font: 850 21px/1.2 var(--brand); letter-spacing: -.01em; }
 .scam-type h4 a { color: var(--text); text-decoration: none; }
-.scam-type h4 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
-.scam-type h4 a:focus-visible { outline: none; }
-.scam-type:has(h4 a:focus-visible) { outline: 2px solid var(--acai); outline-offset: 2px; }
+.scam-type a.stretch::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.scam-type a.stretch:focus-visible { outline: none; }
+.scam-type:has(a.stretch:focus-visible) { outline: 2px solid var(--acai); outline-offset: 2px; }
 .scam-type > p { margin: 0; font-size: 15px; }
 .scam-type-stat { border-top: 1px solid var(--line); padding-top: 10px; }
 .scam-type .scam-type-stat p { margin: 0; font-size: 14px; color: var(--text); }
 .scam-type-stat strong { font-size: 17px; color: var(--acai); font-variant-numeric: tabular-nums; }
 .scam-type-stat .scam-source { position: relative; z-index: 1; margin-top: 4px; font-size: 12px; }
 .scam-type .scam-type-more { margin-top: auto; padding-top: 4px; color: var(--acai); font-weight: 600; font-size: 14px; }
+.scam-type-more a { color: inherit; text-decoration: none; }
