@@ -10,6 +10,7 @@ export type Text = string | { pt: string; en: string };
 
 export type Line =
   | { from: string; text: Text }
+  /** A text sticker from STICKERS in SceneParts.tsx. */
   | { from: string; sticker: string }
   | { card: "unverified"; age: Text }
   | { card: "external" | "securityChange" | "suspended" | "mismatch" }
@@ -260,8 +261,8 @@ export const scenes = {
     kind: "chat", with: "faculdade", footer: "stickers",
     lines: [
       { from: "bia", text: { pt: "Sexta tem churrasco lá em casa", en: "Sexta tem churrasco lá em casa (BBQ at my place on Friday)" } },
-      { from: "leo", sticker: "🔥" },
-      { from: ME, sticker: "🥳" },
+      { from: "leo", sticker: "Fechou" },
+      { from: ME, sticker: "Valeu" },
     ],
   },
 } satisfies Record<string, Scene>;

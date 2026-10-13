@@ -97,7 +97,7 @@ function ChatBody({ lang, scene, beat }: { lang: Lang; scene: Extract<Scene, { k
     <>
       {lines.map((line, i) => {
         if (!("from" in line)) return <div className="msg card-item" key={i}><Card lang={lang} line={line} partner={partner} savedAs={scene.savedAs} beat={beat} /></div>;
-        if ("sticker" in line) return <div className="msg" key={i}><div className={`bubble-row ${line.from === ME ? "out" : "in"} single`}><span className="sticker">{line.sticker}</span></div></div>;
+        if ("sticker" in line) return <div className="msg" key={i}><div className={`bubble-row ${line.from === ME ? "out" : "in"} single`}><span className="sticker-art big s1">{line.sticker}</span></div></div>;
         const body = text(line.text, lang);
         if (line.from === ME) return <div className="msg" key={i}><Bubble lang={lang} out run={run[i]}>{body}</Bubble></div>;
         // Incoming messages go through the reference detector, the same as in the app.

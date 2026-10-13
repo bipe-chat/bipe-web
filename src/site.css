@@ -350,13 +350,15 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .screen .pill { flex: none; border-radius: 999px; padding: 6px 14px; background: var(--cpd-color-icon-accent-primary); color: var(--on-acai); font-size: 14px; font-weight: 600; }
 .screen .pill.wide { display: block; text-align: center; padding: 12px 16px; }
 .trust .buttons span.locked { opacity: .6; border-style: dashed; }
-.sticker { font-size: 64px; line-height: 1; padding: 4px 16px; }
+.sticker-art { display: inline-grid; place-items: center; aspect-ratio: 1; border-radius: 18px; font-family: var(--brand); font-weight: 900; font-size: 15px; line-height: 1.05; text-align: center; padding: 6px; transform: rotate(-4deg); color: #fff; -webkit-text-stroke: .5px rgba(0,0,0,.2); }
+.sticker-art.big { width: 110px; font-size: 24px; margin: 4px 16px; }
+.sticker-art.s0 { background: #f2a33a; } .sticker-art.s1 { background: #7a3e9d; } .sticker-art.s2 { background: #2e9b6a; } .sticker-art.s3 { background: #d9485f; }
 .composer.readonly { justify-content: center; text-align: center; font-size: 13px; color: var(--muted); padding: 10px 24px 4px; }
 .stickers-panel { flex: none; border-top: .5px solid var(--line); padding: 8px 12px 0; }
 .stickers-tabs { display: flex; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
 .stickers-tabs span { padding: 4px 10px; border-radius: 999px; }
 .stickers-tabs .on { background: var(--acai-wash); color: var(--acai-deep); }
-.stickers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; font-size: 40px; text-align: center; padding: 8px 0; }
+.stickers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 10px 0; }
 .poll { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; background: var(--bg); }
 .poll-head { display: flex; gap: 6px; align-items: center; color: var(--acai); font-weight: 600; font-size: 12px; }
 .poll-row { display: flex; justify-content: space-between; gap: 8px; }

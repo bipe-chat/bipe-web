@@ -214,14 +214,15 @@ export function Contacts({ lang, found, beat }: { lang: Lang; found: string[]; b
   );
 }
 
-const STICKERS = ["🔥", "🥳", "😂", "🙏", "❤️", "👏", "😎", "🤝"];
+// Text stickers, the kind people trade in Brazil. No emoji: they look different on every phone (linguagem.md).
+export const STICKERS = ["Bom dia", "Valeu", "Kkkkk", "Amém", "Saudade", "Bora", "Fechou", "Boa noite"];
 
 /** The sticker picker in place of the composer: your packs and the room's packs. */
 export function StickerPicker({ lang }: { lang: Lang }) {
   return (
     <div className="stickers-panel">
       <div className="stickers-tabs"><span className="on">{t(lang, "bipe_stickers_pack_personal")}</span><span>{t(lang, "bipe_stickers_pack_room")}</span></div>
-      <div className="stickers-grid">{STICKERS.map((s) => <span key={s}>{s}</span>)}</div>
+      <div className="stickers-grid">{STICKERS.map((s, i) => <span className={`sticker-art s${i % 4}`} key={s}>{s}</span>)}</div>
     </div>
   );
 }

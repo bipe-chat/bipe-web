@@ -78,11 +78,11 @@ export const chrome = {
         { icon: "person", title: "Celular da pessoa", sub: "só ele destranca" },
       ],
       openSource: [
-        { icon: "globe", title: "Código público", sub: "dos apps, do servidor e das regras de golpe" },
+        { icon: "globe", title: "Código público, em breve", sub: "dos apps, do servidor e das regras de golpe" },
         { icon: "check", title: "Qualquer pessoa confere", sub: "que o app faz o que diz" },
         { icon: "shield", title: "Licença livre", sub: "dá pra estudar, mudar e rodar o seu" },
       ],
-      brazil: [["Seus dados", "no Brasil"], ["Servidores", "de empresa brasileira"], ["Lei", "brasileira, com a LGPD"], ["Atendimento", "em português"]],
+      brazil: [["Seus dados", "no Brasil"], ["Servidores", "de empresas brasileiras"], ["Lei", "brasileira, com a LGPD"], ["Atendimento", "em português"]],
     },
     profile: {
       lead: "Esse é um link de perfil do Bipe. Com o app instalado, abre direto na conversa.",
@@ -207,11 +207,11 @@ export const chrome = {
         { icon: "person", title: "Their phone", sub: "only it can unlock it" },
       ],
       openSource: [
-        { icon: "globe", title: "Public code", sub: "for the apps, the server and the scam rules" },
+        { icon: "globe", title: "Public code, coming soon", sub: "for the apps, the server and the scam rules" },
         { icon: "check", title: "Anyone can check", sub: "that the app does what it says" },
         { icon: "shield", title: "Free licence", sub: "study it, change it, run your own" },
       ],
-      brazil: [["Your data", "in Brazil"], ["Servers", "from a Brazilian company"], ["Law", "Brazilian, with the LGPD"], ["Support", "in Portuguese"]],
+      brazil: [["Your data", "in Brazil"], ["Servers", "from Brazilian companies"], ["Law", "Brazilian, with the LGPD"], ["Support", "in Portuguese"]],
     },
     readOther: "Ler em português",
     confirmEmail: {
