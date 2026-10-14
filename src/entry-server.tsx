@@ -4,7 +4,7 @@ import { Layout } from "./Layout";
 import { paths } from "./paths";
 import { ogImageName, routes, type Route } from "./routes";
 import { chrome } from "./copy";
-import { compare, distribution, product, publicRepos, type Lang } from "./shared";
+import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn } from "./pages";
 
 export { routes, ogImageName };
@@ -171,6 +171,14 @@ export function llmsTxt(): string {
   lines.push("## Docs", "");
   for (const r of routes.filter((x) => isDoc(x) && !x.noindex)) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
   lines.push("");
+  // The code (ADR 0028): repos, then deep links to the files behind each feature. Only public repos.
+  if (publicRepos.length > 0) {
+    lines.push(`## ${chrome.en.sourceTitle}`, "", `${chrome.en.sourceNote} ${distribution.source.org}`, "");
+    for (const r of publicRepos) lines.push(`- [${r.url.split("/").pop()}](${r.url}): ${r.en}`);
+    const files = codeLinks(distribution.source.code?.map((x) => x.id));
+    if (files.length > 0) lines.push("", "### Code map", "", ...files.map((f) => `- [${f.en}](${f.url})`));
+    lines.push("");
+  }
   for (const lang of ["pt", "en"] as Lang[]) {
     lines.push(`## ${lang === "pt" ? "Português" : "English"}`, "");
     for (const r of routes.filter((x) => x.lang === lang && !x.noindex && !isDoc(x))) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
