@@ -162,7 +162,7 @@ type CodeLink = { id: string; repo: string; path: string } & Copy<string>;
 export const distribution = distributionJson as unknown as {
   ios: Channel;
   android: Channel;
-  source: { org: string; repos: SourceRepo[]; code: CodeLink[] };
+  source: { org: string; repos: SourceRepo[]; code?: CodeLink[] };
   contact: string;
   steward: { name: string; url: string };
 };
@@ -178,8 +178,8 @@ export const publicRepo = (id?: string) => publicRepos.find((r) => r.id === id);
 /** Deep links by id, with their GitHub URL, only for public repos. scripts/check-code-links.mjs checks every path at build. */
 export function codeLinks(ids: string[] = []) {
   return ids.flatMap((id) => {
-    const c = distribution.source.code.find((x) => x.id === id)!;
-    const repo = publicRepo(c.repo);
+    const c = distribution.source.code?.find((x) => x.id === id);
+    const repo = c && publicRepo(c.repo);
     if (!repo) return [];
     const url = c.path ? `${repo.url}/${c.path.endsWith("/") ? "tree" : "blob"}/main/${c.path.replace(/\/$/, "")}` : repo.url;
     return [{ ...c, url }];
