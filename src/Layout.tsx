@@ -66,7 +66,7 @@ export function Layout({ route }: { route: Route }) {
               </div>
             ))}
           </nav>
-          <p className="foot-note">{c.footerNote} {c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a>.</p>
+          <p className="foot-note">{c.footerNote} {c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a>.{publicRepos.length > 0 && <> {c.sourceNote} <a href={distribution.source.org}>github.com/bipe-chat</a>.</>}</p>
         </div>
       </footer>
     </>

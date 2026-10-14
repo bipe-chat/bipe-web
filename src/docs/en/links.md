@@ -59,6 +59,8 @@ Base URL: `https://api.bipe.net.br`. These calls need no sign-in. Each one has a
 
 Browsers can call the API only from `https://bipe.chat`.
 
+The full API contract is in [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml). The server code is in [bipe-api](https://github.com/bipe-chat/bipe-api).
+
 ## What the API does not do
 
 - No handle search and no user directory.

@@ -4,6 +4,7 @@
 // (ScamTypePage, /golpes-no-brasil/<slug>/). Charts are static: HTML labels and values, SVG marks, no script. Styles: ./scams.css (loaded by src/islands.tsx).
 import scamsJson from "@shared/product/scams.json";
 import { chrome } from "../copy";
+import { CodeList } from "../components/code";
 import { paths } from "../paths";
 import { Icon, type IconName } from "../components/ui";
 import { product, type Lang } from "../shared";
@@ -339,6 +340,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
             <li key={s.id}><a href={s.url}>{s.name}</a> ({s.publisher}, {s.date}){s.kind !== "primary" && `, ${c.kinds[s.kind]}`}</li>
           ))}
         </ul>
+        <CodeList lang={lang} ids={["scams-data", "scam-patterns"]} />
       </div>
     </section>
   );

@@ -21,6 +21,7 @@ Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; on
 - Rendered copy: no em or en dashes; run the humanizer rubric before it ships.
 - Public pages never refer to MZ: no name, handle, initials or first-person founder voice, also not in sample data.
 - Source links come from `source` in `../bipe-shared/product/distribution.json`. The site links a repo only when its `public` flag is true. Set the flag when the GitHub repo goes public (ADR 0024).
+- Deep links into the code: add the file to `source.code` in `distribution.json` and name its id in `code` on a feature or technical part in `product.json`; pages render them with `CodeList` (`src/components/code.tsx`). Docs Markdown may link `github.com/bipe-chat/<repo>/blob/main/<path>` directly. `scripts/check-code-links.mjs` runs at the end of `pnpm build` and fails when a linked repo is not public or a path is not on `origin/main` of the sibling clone. A rename or move in an app repo breaks the site build until the link follows it.
 - A feature is "No app de testes" only when it is in a TestFlight build.
 - Headline test (issue #77, ADR 0032): `src/experiment.ts` holds the inline script that sets `#hero-title` before paint and the `sendBeacon` events. Arms live in `headlineTest` in `product.json`; h0 is `promise.pt.title`. Change a headline only there. Stop the test with `headlineTest.active: false`.
 - Waitlist forms post to `POST /v1/waitlist` (ADR 0025) through `src/sim/WaitlistForm.tsx`; the arm travels in `source`. `API_URL` is in `src/config.ts`.

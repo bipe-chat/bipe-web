@@ -70,6 +70,18 @@ The servers run in Brazil, with Brazilian companies. Conversations and accounts 
 
 `bipe.chat` is static HTML, prerendered with React and Vite. It has no third-party trackers. Every page has a Markdown twin at `index.md`, and [/llms.txt](/llms.txt) lists them.
 
+## Bipe's code
+
+The code is open, under AGPL-3.0, at [github.com/bipe-chat](https://github.com/bipe-chat).
+
+- [bipe-ios](https://github.com/bipe-chat/bipe-ios) and [bipe-android](https://github.com/bipe-chat/bipe-android): the apps
+- [bipe-shared](https://github.com/bipe-chat/bipe-shared): rules, app text, the [API contract](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml) and test cases
+- [bipe-api](https://github.com/bipe-chat/bipe-api): the Bipe API
+- [bipe-web](https://github.com/bipe-chat/bipe-web): this site
+- [bipe-ml](https://github.com/bipe-chat/bipe-ml): the scam model that runs on the phone
+- [bipe-business](https://github.com/bipe-chat/bipe-business): bridge and inbox for companies
+- [compound-design-tokens](https://github.com/bipe-chat/compound-design-tokens): colours and styles
+
 ## Upstream
 
 - [Element X iOS](https://github.com/element-hq/element-x-ios) and [Element X Android](https://github.com/element-hq/element-x-android)

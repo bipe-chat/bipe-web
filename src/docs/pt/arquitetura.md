@@ -70,6 +70,18 @@ Os servidores ficam no Brasil, em empresas brasileiras. As conversas e as contas
 
 O `bipe.chat` é HTML estático, gerado com React e Vite antes de ir para o ar. Não tem rastreador de terceiros. Toda página tem uma versão em Markdown em `index.md`, e o [/llms.txt](/llms.txt) lista todas.
 
+## Código do Bipe
+
+O código é aberto, com licença AGPL-3.0, em [github.com/bipe-chat](https://github.com/bipe-chat).
+
+- [bipe-ios](https://github.com/bipe-chat/bipe-ios) e [bipe-android](https://github.com/bipe-chat/bipe-android): os apps
+- [bipe-shared](https://github.com/bipe-chat/bipe-shared): regras, textos dos apps, [contrato da API](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml) e casos de teste
+- [bipe-api](https://github.com/bipe-chat/bipe-api): a API do Bipe
+- [bipe-web](https://github.com/bipe-chat/bipe-web): este site
+- [bipe-ml](https://github.com/bipe-chat/bipe-ml): o modelo de golpes que roda no celular
+- [bipe-business](https://github.com/bipe-chat/bipe-business): ponte e caixa de entrada para empresas
+- [compound-design-tokens](https://github.com/bipe-chat/compound-design-tokens): cores e estilos
+
 ## Projetos de origem
 
 - [Element X iOS](https://github.com/element-hq/element-x-ios) e [Element X Android](https://github.com/element-hq/element-x-android)

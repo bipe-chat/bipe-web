@@ -59,6 +59,8 @@ Endereço base: `https://api.bipe.net.br`. Estas chamadas não pedem login. Cada
 
 No navegador, só o `https://bipe.chat` pode chamar a API.
 
+O contrato completo da API está em [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml). O código do servidor está em [bipe-api](https://github.com/bipe-chat/bipe-api).
+
 ## O que a API não faz
 
 - Não tem busca de @ nem lista de usuários.

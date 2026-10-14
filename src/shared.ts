@@ -68,7 +68,7 @@ export type Tentpole = {
 } & Copy<{ name: string; title: string; summary: string; points: string[]; demos: { title: string; caption: string }[] }>;
 
 /** A part of the stack on the technology page. repo is an id in distribution.json source.repos. */
-export type TechPart = { id: string; repo?: string; upstream?: { name: string; url: string }[] } & Copy<{ name: string; body: string }>;
+export type TechPart = { id: string; repo?: string; code?: string[]; upstream?: { name: string; url: string }[] } & Copy<{ name: string; body: string }>;
 export type TechGroup = { id: string; parts: TechPart[] } & Copy<{ heading: string; line: string }>;
 
 /** A tentpole demo or a feature figure: a scene id or a sim id (src/sim/scenes.ts SIMS). */
@@ -96,6 +96,8 @@ export type Feature = {
   slug: Copy<string>;
   /** Phone scenes and sims that show the feature in practice; the first sits beside the text (bipe#176). */
   figures?: FigureId[];
+  /** Deep links into the code: ids in distribution.json source.code. */
+  code?: string[];
 } & Copy<{ name: string; body: string; points: string[] }>;
 
 /** A step of the ICP ladder (ADR 0060). Internal: never rendered. */
@@ -155,10 +157,12 @@ export const dataRegister = dataJson as unknown as {
 
 type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;
 type SourceRepo = { id: string; url: string; public: boolean } & Copy<string>;
+/** A file or folder in a repo. A path ending in / is a folder; an empty path is the repo itself. */
+type CodeLink = { id: string; repo: string; path: string } & Copy<string>;
 export const distribution = distributionJson as unknown as {
   ios: Channel;
   android: Channel;
-  source: { org: string; repos: SourceRepo[] };
+  source: { org: string; repos: SourceRepo[]; code: CodeLink[] };
   contact: string;
   steward: { name: string; url: string };
 };
@@ -170,6 +174,17 @@ export const publicRepos = distribution.source.repos.filter((r) => r.public);
 
 /** A repo by id, only when it is public. */
 export const publicRepo = (id?: string) => publicRepos.find((r) => r.id === id);
+
+/** Deep links by id, with their GitHub URL, only for public repos. scripts/check-code-links.mjs checks every path at build. */
+export function codeLinks(ids: string[] = []) {
+  return ids.flatMap((id) => {
+    const c = distribution.source.code.find((x) => x.id === id)!;
+    const repo = publicRepo(c.repo);
+    if (!repo) return [];
+    const url = c.path ? `${repo.url}/${c.path.endsWith("/") ? "tree" : "blob"}/main/${c.path.replace(/\/$/, "")}` : repo.url;
+    return [{ ...c, url }];
+  });
+}
 
 /** A Bipe UI string from bipe-shared, with %1$s placeholders filled. */
 export function t(lang: Lang, key: string, ...args: string[]): string {
