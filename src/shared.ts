@@ -13,6 +13,7 @@ import stringsPt from "@shared/strings/pt-BR.json";
 import distributionJson from "@shared/product/distribution.json";
 import productJson from "@shared/product/product.json";
 import compareJson from "@shared/product/compare.json";
+import dataJson from "@shared/product/data.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import type { FigureId, SceneId } from "./sim/scenes";
 
@@ -134,6 +135,23 @@ export const compare = compareJson as unknown as {
   threats: CompareThreat[];
   apps: CompareApp[];
 } & Copy<{ nav: string; title: string; description: string; bipe: string; appsTitle: string; more: string; aheadTitle: string; limitTitle: string; limit: string; sourcesTitle: string; sourcesNote: string; tableTitle: string; threatCol: string; levels: Record<CompareLevel, string> }>;
+
+type DataText = { name: string; what: string; why: string; retention: string };
+/** Data register (bipe-shared/product/data.json): the LGPD record of processing and the /lgpd/ page. */
+export const dataRegister = dataJson as unknown as {
+  date: string;
+  encarregado: { name: string; contact: string } | null;
+  bases: ({ id: string; article: string } & Copy<string>)[];
+  places: ({ id: string; brazil: boolean | null } & Copy<string>)[];
+  items: ({ id: string; basis: string; places: string[] } & Copy<DataText>)[];
+  device: ({ id: string } & Copy<string>)[];
+} & Copy<{
+  nav: string; title: string; meta: string; lede: string; policy: string; itemsTitle: string;
+  labels: { what: string; why: string; basis: string; retention: string; where: string };
+  brazil: { yes: string; no: string; unknown: string };
+  outsideTitle: string; outsideLede: string; deviceTitle: string; deviceLede: string; notPersonal: string;
+  rightsTitle: string; rights: string[]; rightsHow: string; controllerTitle: string; controller: string; encarregadoMissing: string;
+}>;
 
 type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;
 type SourceRepo = { id: string; url: string; public: boolean } & Copy<string>;

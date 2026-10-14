@@ -2,7 +2,7 @@ import { chrome } from "./copy";
 import { Wordmark } from "./components/brand";
 import { paths } from "./paths";
 import type { Route } from "./routes";
-import { distribution, product, publicRepos, compare } from "./shared";
+import { distribution, product, publicRepos, compare, dataRegister } from "./shared";
 
 /** The nav leads with the identity side (ADR 0047): its first tentpole page. */
 const trustId = product.sides.find((s) => s.id === "other")!.tentpoles[0];
@@ -37,6 +37,7 @@ export function Layout({ route }: { route: Route }) {
       { href: paths.partners(lang), label: product.partners[lang].nav },
       { href: `${paths.partners(lang)}#form`, label: c.contact },
       { href: paths.privacy(lang), label: c.privacy },
+      { href: paths.lgpd(lang), label: dataRegister[lang].nav },
       { href: paths.terms(lang), label: c.terms },
       ...(publicRepos.length > 0 ? [{ href: distribution.source.org, label: c.source }] : []),
       ...(route.alt ? [{ href: route.alt, label: c.other.label, lang: c.other.lang === "pt" ? "pt-BR" : "en" }] : []),

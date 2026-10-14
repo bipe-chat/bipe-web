@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { chrome } from "./copy";
-import { compare, product, type Lang } from "./shared";
+import { compare, dataRegister, product, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
-import { LegalPage, legal, legalTitle } from "./pages/LegalPage";
+import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { AboutPage, BusinessPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
@@ -114,6 +114,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     markdown: legal[doc][lang],
     body: () => <LegalPage md={legal[doc][lang]} />,
   })),
+  {
+    path: paths.lgpd(lang), alt: paths.lgpd(other(lang)), lang,
+    title: `${dataRegister[lang].title} · Bipe`, description: dataRegister[lang].lede,
+    markdown: lgpdMarkdown(lang),
+    body: () => <LegalPage md={lgpdMarkdown(lang)} />,
+  },
   ...docs.map((d): Route => ({
     path: paths.docs(lang, d.slug[lang]), alt: paths.docs(other(lang), d.slug[other(lang)]), lang,
     title: `${docTitle(d.md[lang])} · Bipe`, description: docLede(d.md[lang]),

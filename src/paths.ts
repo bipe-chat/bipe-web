@@ -18,6 +18,7 @@ export const paths = {
   partners: (lang: Lang) => `${base(lang)}${lang === "pt" ? "parceiros" : "partners"}/`,
   about: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre" : "about"}/`,
   privacy: (lang: Lang) => (lang === "pt" ? "/privacidade/" : "/en/privacy/"),
+  lgpd: (lang: Lang) => `${base(lang)}lgpd/`,
   terms: (lang: Lang) => (lang === "pt" ? "/termos/" : "/en/terms/"),
   docs: (lang: Lang, slug = "") => `${base(lang)}docs/${slug ? `${slug}/` : ""}`,
 };

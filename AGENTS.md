@@ -11,6 +11,7 @@ Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; on
 ## Rules
 
 - pt-BR is the default at `/`. English is secondary under `/en/`. Never redirect by browser language.
+- `/lgpd/` (`/en/lgpd/`) is Markdown built from `../bipe-shared/product/data.json` by `lgpdMarkdown` in `src/pages/LegalPage.tsx` (ADR 0090). Change the data there, never in the page. When the privacy policy changes a fact, change the register in the same commit.
 - Privacy and terms text is `src/legal/*.md` (pt is the reference text). Docs text is `src/docs/<lang>/*.md`, listed in `src/pages/DocsPage.tsx`. Both render through `src/components/markdown.tsx`, which knows only `#` to `###`, `_meta_` lines, `- ` lists, `|` tables, ``` blocks, paragraphs, bold, `code` and links. The `.md` file is the page's Markdown twin as is.
 - `/docs/` (`/en/docs/`) explains how Bipe works, for people and agents: domains (ADR 0062), architecture, links and the public API. `llms.txt` lists the docs first. When a host, a link format, a public API call or a stack part changes, change the docs page in the same commit. Docs state only what runs today: no roadmap, no hosting provider names, no IP addresses, no internal paths.
 - Product copy, feature status and download links come only from `../bipe-shared/product/`. Do not write feature copy in a page. Chrome copy (nav, labels) is in `src/copy.ts`.
