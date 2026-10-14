@@ -1,0 +1,62 @@
+# Deploys bipe.chat from main without a laptop on the path. Use it when the local network cannot reach
+# the SaveinCloud gate (14 October 2026: the Cirion AS11415 route dropped it). Run: gh workflow run deploy.yml
+# Ships only what is committed on main. No --delete, same as scripts/deploy.sh. PNG icons need macOS
+# qlmanage, so this build skips them and the icons already on the node stay.
+# Secrets: BIPE_DEPLOY_TARGET (user@host), BIPE_DEPLOY_PORT, BIPE_DEPLOY_KEY (private key of a key that
+# can write only the site directory), BIPE_DEPLOY_KNOWN_HOSTS (ssh-keyscan line of the gate).
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: bipe-web
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-shared
+          path: bipe-shared
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/compound-design-tokens
+          path: bipe-tokens
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: bipe-web/package.json
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: bipe-web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: bipe-web
+      - run: pnpm build
+        working-directory: bipe-web
+      - name: Upload to the node
+        working-directory: bipe-web
+        env:
+          TARGET: ${{ secrets.BIPE_DEPLOY_TARGET }}
+          PORT: ${{ secrets.BIPE_DEPLOY_PORT }}
+          KEY: ${{ secrets.BIPE_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.BIPE_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          test -n "$TARGET" && test -n "$PORT" && test -n "$KEY" && test -n "$KNOWN_HOSTS"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          rsync -az -e "ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -p $PORT" \
+            dist/ "$TARGET:/opt/bipe-infra/compose/site/"
+      - name: Check the live site
+        run: curl -fsS -o /dev/null https://bipe.chat/
