@@ -153,7 +153,8 @@ export function renderMarkdown(route: Route): string {
   }
   out.push("", `## ${c.download}`, "");
   if (distribution.ios.url) out.push(`- ${distribution.ios[lang].label}: ${distribution.ios.url} (${distribution.ios[lang].note})`);
-  out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${abs(paths.partners(lang))}#form`);
+  if (distribution.android.status === "available" && distribution.android.url) out.push(`- ${distribution.android[lang].label}: ${distribution.android.url} (${distribution.android[lang].note})`);
+  else out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${abs(paths.partners(lang))}#form`);
   out.push("", `${c.steward} ${distribution.steward.name}: ${distribution.steward.url}`);
   if (publicRepos.length > 0) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
   return out.join("\n") + "\n";
