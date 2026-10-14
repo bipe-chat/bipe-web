@@ -255,6 +255,9 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .profile-handle { color: var(--muted); margin-top: 0; overflow-wrap: anywhere; }
 .profile-bio { white-space: pre-line; overflow-wrap: anywhere; font-size: 18px; }
 .steps li { margin-bottom: 14px; }
+.not-found-head { font-size: 18px; margin: 36px 0 8px; }
+.not-found-list { padding-left: 22px; }
+.not-found-list li { margin-bottom: 8px; overflow-wrap: anywhere; }
 .button:disabled { opacity: .5; cursor: default; }
 button.button { font: inherit; font-weight: 600; cursor: pointer; }
 

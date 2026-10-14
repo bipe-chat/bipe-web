@@ -188,6 +188,16 @@ export const chrome = {
       linkLife: (minutes: number) => `O link vale por ${minutes} minutos. Se venceu, peça outro no app.`,
       safety: "Ninguém do Bipe pede este link nem sua senha. Se você não pediu isso, ignore o e-mail.",
     },
+    // 404 page (/404/), served by Caddy for every missing path outside /en/.
+    notFound: {
+      title: "Página não encontrada",
+      lead: "Esse endereço não existe no site do Bipe. A página pode ter mudado de lugar, ou o link tem um erro de digitação.",
+      moving: "Achamos a página. Abrindo…",
+      didYouMean: "Você quis dizer:",
+      profile: "Endereços de perfil têm só letras minúsculas, números, ponto e sublinhado, como bipe.chat/@ana.silva.",
+      startHere: "Ou comece por aqui:",
+      home: "Página inicial",
+    },
   },
   en: {
     features: "Features", download: "Download", about: "About", privacy: "Privacy", terms: "Terms", contact: "Contact", docs: "Docs",
@@ -348,6 +358,15 @@ export const chrome = {
       after: (hours: number) => `After the link, the app asks for your 8-digit PIN and there is a ${hours}-hour wait. Your other devices get a notice and can cancel.`,
       linkLife: (minutes: number) => `The link works for ${minutes} minutes. If it has expired, ask for a new one in the app.`,
       safety: "Nobody from Bipe asks for this link or your PIN. If you did not ask for this, ignore the email.",
+    },
+    notFound: {
+      title: "Page not found",
+      lead: "This address does not exist on the Bipe site. The page may have moved, or the link has a typo.",
+      moving: "Found the page. Opening…",
+      didYouMean: "Did you mean:",
+      profile: "Profile addresses have only lowercase letters, numbers, dots and underscores, like bipe.chat/@ana.silva.",
+      startHere: "Or start here:",
+      home: "Home",
     },
   },
 };

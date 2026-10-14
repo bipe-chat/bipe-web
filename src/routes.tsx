@@ -173,7 +173,23 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true,
   title: "Quem mais convida (equipe) · Bipe", description: "Relatório interno de convites.",
   body: () => <Island name="InviterReport" props={{}} />,
-});
+}, ...(["pt", "en"] as Lang[]).map((lang): Route => ({
+  // Caddy serves this page with status 404 for every missing path (handle_errors in bipe-infra/compose/Caddyfile).
+  path: `${paths.home(lang)}404/`, alt: null, lang, noindex: true,
+  title: `${chrome[lang].notFound.title} · Bipe`, description: chrome[lang].notFound.lead,
+  body: () => (
+    <Island name="NotFound" props={{
+      lang,
+      pages: routes.filter((r) => !r.noindex).map((r) => ({ path: r.path, title: r.title.replace(/^Bipe · /, "").replace(/ · Bipe$/, "") })),
+      start: [
+        { path: paths.home(lang), title: chrome[lang].notFound.home },
+        { path: paths.features(lang), title: chrome[lang].allFeatures },
+        { path: paths.download(lang), title: chrome[lang].downloadTitle },
+        { path: paths.docs(lang), title: chrome[lang].docs },
+      ],
+    }} />
+  ),
+})));
 
 /** Where a route's link-preview card is served: `/og/home.png` for `/`, else `/og/<path with dashes>.png`. */
 export function ogImageName(route: Route): string {
