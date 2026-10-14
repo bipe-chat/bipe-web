@@ -79,6 +79,12 @@ const scamIcon: Record<string, IconName> = {
   // outside: golpes that start outside a chat
   motoboy: "scooter", maquininha: "terminal", trocaCartao: "card", ligacao: "call",
 };
+/** Icon per Bipe feature on the protect cards. */
+const featureIcon: Record<string, IconName> = {
+  "scam-alerts": "warning", requests: "chat", "no-sms": "key", "money-pause": "hourglass", "verified-badge": "badge",
+  "family-check": "person", "new-phone": "phone", "reserved-names": "at", lookalikes: "search", "cnpj-badge": "bank",
+  "pix-cards": "pix", "pix-charges": "receipt", "verified-groups": "group", communities: "globe",
+};
 
 /** "Fonte: Publisher" with a link, and the kind when it is not a primary source. */
 function SourceLine({ lang, ids, extra }: { lang: Lang; ids: string[]; extra?: string }) {
@@ -217,10 +223,11 @@ function ProtectCard({ lang, feature }: { lang: Lang; feature: string }) {
   const f = product.features.find((x) => x.id === feature)!;
   const p = scams.protect.find((x) => x.feature === feature);
   return (
-    <a className="card feature" href={paths.feature(lang, f)}>
+    <a className="card scam-type" href={paths.feature(lang, f)}>
+      <span className="scam-type-icon"><Icon name={featureIcon[feature] ?? "shield"} size={22} /></span>
       <h3>{f[lang].name}</h3>
       <p>{p ? p[lang] : f[lang].body}</p>
-      <p className="small">iPhone: {st[f.status.ios]} · Android: {st[f.status.android]}</p>
+      <p className="scam-type-status">iPhone: {st[f.status.ios]} · Android: {st[f.status.android]}</p>
     </a>
   );
 }
@@ -318,7 +325,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
       <div className="side">
         <h2>{c.bipeTitle}</h2>
         <p className="side-line">{c.bipeLede}</p>
-        <div className="grid">
+        <div className="scam-types">
           {scams.protect.map((p) => <ProtectCard lang={lang} feature={p.feature} key={p.feature} />)}
         </div>
         <p className="small muted scam-limit">{c.limit}</p>
@@ -398,7 +405,7 @@ export function ScamTypePage({ lang, t }: { lang: Lang; t: ScamType }) {
       <div className="side">
         <h2>{c.bipeTitle}</h2>
         <p className="side-line">{c.bipeLede}</p>
-        <div className="grid">{t.protect.map((id) => <ProtectCard lang={lang} feature={id} key={id} />)}</div>
+        <div className="scam-types">{t.protect.map((id) => <ProtectCard lang={lang} feature={id} key={id} />)}</div>
         {x.limit && (
           <div className="narrow scam-limit-box">
             <h3>{c.typeLimitTitle}</h3>
