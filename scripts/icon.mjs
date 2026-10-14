@@ -6,8 +6,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const PLUM = "#80307B";
-const iconSvg = (path, rx) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="${rx}" fill="${PLUM}"/><g transform="translate(10 10) scale(.6875)"><path d="${path}" fill="#fff"/></g></svg>`;
+/** The mark on a square: rx 14 is the app icon, rx 0 the avatar. */
+export const iconSvg = (path, rx, bg = PLUM, fg = "#fff") =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="${rx}" fill="${bg}"/><g transform="translate(10 10) scale(.6875)"><path d="${path}" fill="${fg}"/></g></svg>`;
 
 export function writeIcons(publicDir, path) {
   const brand = join(publicDir, "brand");

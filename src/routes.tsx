@@ -6,7 +6,7 @@ import { paths } from "./paths";
 import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
-import { AboutPage, BusinessPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BrandKitPage, BusinessPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -130,6 +130,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",
     title: `${chrome[lang].about} · Bipe`, description: product.about[lang].lede,
     body: () => <AboutPage lang={lang} />,
+  },
+  {
+    path: paths.brand(lang), alt: paths.brand(other(lang)), lang, section: "about",
+    title: `${chrome[lang].brand.title} · Bipe`, description: chrome[lang].brand.lede,
+    body: () => <BrandKitPage lang={lang} />,
   },
 ]).concat({
   path: "/marca/", alt: null, lang: "pt", noindex: true,

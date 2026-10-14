@@ -8,6 +8,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { build } from "vite";
 import { writeIcons } from "./icon.mjs";
 import { writeOgCard } from "./og.mjs";
+import { checkCodeLinks } from "./check-code-links.mjs";
+import { writeBrandAssets } from "./brand.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -39,6 +41,8 @@ ssr.selfTest();
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const site = "https://bipe.chat";
 mkdirSync(join(dist, "og"), { recursive: true });
+// Logo downloads for /sobre/marca/ (scripts/brand.mjs).
+await writeBrandAssets(join(dist, "brand"), marks.paths[marks.chosen], JSON.parse(readFileSync(join(root, "src/components/brand-assets.json"), "utf8")).assets);
 
 // Link-preview image: every route gets its own 1200x630 card (scripts/og.mjs).
 // The card shows the title without the " · Bipe" suffix: the wordmark is on the card.
@@ -114,4 +118,5 @@ writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
 writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /marca/\nDisallow: /elenco/\nDisallow: /cartoes/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
 rmSync(join(dist, ".vite"), { recursive: true, force: true });
 rmSync(ssrOut, { recursive: true, force: true });
+checkCodeLinks(dist, JSON.parse(readFileSync(join(root, "../bipe-shared/product/distribution.json"), "utf8")));
 console.log(`built ${ssr.routes.length} pages into dist/`);

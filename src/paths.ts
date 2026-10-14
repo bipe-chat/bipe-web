@@ -17,6 +17,7 @@ export const paths = {
   scamType: (lang: Lang, t: { slug: { pt: string; en: string } }) => `${lang === "pt" ? "/golpes-no-brasil/" : "/en/scams-in-brazil/"}${t.slug[lang]}/`,
   partners: (lang: Lang) => `${base(lang)}${lang === "pt" ? "parceiros" : "partners"}/`,
   about: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre" : "about"}/`,
+  brand: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre/marca" : "about/brand"}/`,
   privacy: (lang: Lang) => (lang === "pt" ? "/privacidade/" : "/en/privacy/"),
   lgpd: (lang: Lang) => `${base(lang)}lgpd/`,
   terms: (lang: Lang) => (lang === "pt" ? "/termos/" : "/en/terms/"),

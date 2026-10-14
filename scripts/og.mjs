@@ -20,7 +20,7 @@ const RULE = "rgba(255,255,255,0.22)";
 
 const require = createRequire(import.meta.url);
 const fontDir = join(dirname(require.resolve("@fontsource/nunito/package.json")), "files");
-const fonts = [600, 800].map((weight) => ({
+export const fonts = [600, 800, 900].map((weight) => ({
   name: "Nunito",
   data: readFileSync(join(fontDir, `nunito-latin-${weight}-normal.woff`)),
   weight,
@@ -68,6 +68,8 @@ function card({ markPath, title, description, family }) {
     ),
   );
 }
+
+export { h };
 
 /** Writes the card PNG to outPath. */
 export async function writeOgCard({ outPath, markPath, title, description, family }) {

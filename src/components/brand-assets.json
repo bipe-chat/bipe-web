@@ -1,0 +1,11 @@
+{
+  "$comment": "Downloads on /sobre/marca/ (/en/about/brand/). scripts/brand.mjs renders each entry to dist/brand/<file>.svg and .png with the chosen mark. kind: wordmark (mark and 'bipe' lockup, transparent), mark (transparent), avatar (square, no corners, for GitHub and social avatars that crop it), icon (rounded square). png is the PNG width in pixels.",
+  "assets": [
+    { "file": "bipe-logo", "kind": "wordmark", "fg": "#80307B", "png": 1200 },
+    { "file": "bipe-logo-white", "kind": "wordmark", "fg": "#FFFFFF", "png": 1200 },
+    { "file": "bipe-mark", "kind": "mark", "fg": "#80307B", "png": 1024 },
+    { "file": "bipe-mark-white", "kind": "mark", "fg": "#FFFFFF", "png": 1024 },
+    { "file": "bipe-avatar", "kind": "avatar", "fg": "#FFFFFF", "bg": "#80307B", "png": 1024 },
+    { "file": "bipe-app-icon", "kind": "icon", "fg": "#FFFFFF", "bg": "#80307B", "png": 1024 }
+  ]
+}

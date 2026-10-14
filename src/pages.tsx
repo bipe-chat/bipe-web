@@ -1,5 +1,7 @@
 import { chrome } from "./copy";
+import { CodeList } from "./components/code";
 import { AppIcon, Mark, MARK, MARKS, Seal, Wordmark, type MarkId } from "./components/brand";
+import brandAssets from "./components/brand-assets.json";
 import { DownloadButtons, Icon, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
@@ -10,7 +12,7 @@ import { NoAdsFigure } from "./sim/NoAdsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
 import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
-import { compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
+import { codeLinks, compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -224,6 +226,7 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
       {tentpoles.length > 0 && (
         <p style={{ marginTop: 24 }}>{c.partOf} {tentpoles.map((t, i) => <span key={t.id}>{i > 0 && ", "}<a href={paths.tentpole(lang, t)}>{t[lang].name}</a></span>)}</p>
       )}
+      <CodeList lang={lang} ids={f.code} />
     </div>
   );
   return (
@@ -401,10 +404,12 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           ))}
         </div>
       </section>
+      <section className="wrap section"><CodeList lang={lang} ids={["business-bridge", "business-inbox"]} /></section>
       <MailCta lang={lang} cta={b.cta} />
     </>
   );
 }
+
 
 /** Closing call to action on /empresas/ and /parceiros/: a link to the contact form. */
 function MailCta({ lang, cta }: { lang: Lang; cta: string }) {
@@ -466,12 +471,15 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
           <div className="grid">
             {g.parts.map((p) => {
               const repo = publicRepo(p.repo);
+              const code = codeLinks(p.code);
               return (
                 <div className="card feature" key={p.id} id={p.id}>
                   <h3>{p[lang].name}</h3>
                   <p>{p[lang].body}</p>
                   {p.upstream && <p className="small muted">{c.tech.basedOn} {p.upstream.map((u, i) => <span key={u.url}>{i > 0 && ", "}<a href={u.url}>{u.name}</a></span>)}</p>}
-                  {repo && <p className="small"><a href={repo.url}>{c.tech.code} →</a></p>}
+                  {code.length > 0
+                    ? <p className="small">{code.map((l, i) => <span key={l.id}>{i > 0 && " · "}<a href={l.url}>{l[lang]}</a></span>)}</p>
+                    : repo && <p className="small"><a href={repo.url}>{c.tech.code} →</a></p>}
                 </div>
               );
             })}
@@ -651,7 +659,45 @@ export function AboutPage({ lang }: { lang: Lang }) {
         </div>
       ))}
       <p style={{ marginTop: 40 }}><a href={paths.partners(lang)}>{product.partners[lang].aboutLink} →</a></p>
+      <p style={{ marginTop: 16 }}><a href={paths.brand(lang)}>{chrome[lang].brand.link} →</a></p>
       <p style={{ marginTop: 16 }}><a href={`${paths.partners(lang)}#form`}>{chrome[lang].contact}</a></p>
+    </section>
+  );
+}
+
+/** Logo downloads (/sobre/marca/). The files are rendered at build time by scripts/brand.mjs from brand-assets.json. */
+export function BrandKitPage({ lang }: { lang: Lang }) {
+  const b = chrome[lang].brand;
+  return (
+    <section className="wrap section">
+      <h1>{b.title}</h1>
+      <p className="lede">{b.lede}</p>
+      <div className="brand-kit">
+        {brandAssets.assets.map((a) => (
+          <figure className="card brand-asset" key={a.file}>
+            <div className={a.fg === "#FFFFFF" && !("bg" in a) ? "brand-preview on-plum" : "brand-preview"}>
+              <img src={`/brand/${a.file}.svg`} alt={b.assets[a.file]} loading="lazy" />
+            </div>
+            <figcaption>
+              <strong>{b.assets[a.file]}</strong>
+              {a.kind === "avatar" && <span className="small muted">{b.avatarNote}</span>}
+              <span className="small"><a href={`/brand/${a.file}.png`} download>PNG</a> · <a href={`/brand/${a.file}.svg`} download>SVG</a></span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <h2 style={{ marginTop: 56 }}>{b.colours}</h2>
+      <div className="brand-colours">
+        {([[b.plum, "#80307B"], [b.plumDark, "#D993D2"]] as const).map(([name, hex]) => (
+          <div className="card" key={hex}>
+            <span className="swatch" style={{ background: hex }} />
+            <strong>{name}</strong>
+            <span className="small mono">{hex}</span>
+          </div>
+        ))}
+      </div>
+      <h2 style={{ marginTop: 56 }}>{b.useTitle}</h2>
+      <ul>{b.use.map((u) => <li key={u}>{u}</li>)}</ul>
     </section>
   );
 }
