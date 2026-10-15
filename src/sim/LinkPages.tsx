@@ -145,12 +145,17 @@ export function InviteLanding(_: Record<string, never>) {
     <section className="wrap narrow section">
       <h1>{inviter ? c.titleFrom(inviter) : c.title}</h1>
       <p className="lede">{c.lead}</p>
-      <p style={{ marginTop: 32 }}>{c.yourCode}</p>
-      <div className="actions" style={{ marginTop: 8 }}>
-        <output className="mono invite-code">{code ?? "····-····-····"}</output>
-        <button type="button" className="button secondary" disabled={!code} onClick={async () => setCopyLabel((await copyText(code!)) ? c.copied : c.copyFailed)}>{copyLabel}</button>
+      <div className="invite-key">
+        <div>
+          <p>{c.yourCode}</p>
+          <div className="actions" style={{ marginTop: 8 }}>
+            <output className="mono invite-code">{code ?? "····-····-····"}</output>
+            <button type="button" className="button secondary" disabled={!code} onClick={async () => setCopyLabel((await copyText(code!)) ? c.copied : c.copyFailed)}>{copyLabel}</button>
+          </div>
+          <p className="small muted">{c.oneUse}</p>
+        </div>
+        {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
       </div>
-      <p className="small muted">{c.oneUse}</p>
       {platform === "ios" && (
         <ol className="steps">
           <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton /></div></li>
@@ -160,7 +165,6 @@ export function InviteLanding(_: Record<string, never>) {
       )}
       {platform === "android" && <p>{c.android}</p>}
       {platform === "other" && <p>{c.other}</p>}
-      {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
     </section>
   );
 }

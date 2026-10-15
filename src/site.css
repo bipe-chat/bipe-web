@@ -283,6 +283,11 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .link-qr svg { border-radius: 12px; }
 .link-qr-bg { fill: var(--bg); }
 .link-qr-fg { fill: var(--text); }
+/* Invite page: the QR sits next to the code and wraps under it when the row is too narrow. */
+.invite-key { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px var(--gutter); }
+.invite-key > div { flex: 1 1 280px; min-width: 0; }
+.invite-key > div > p:first-child { margin-top: 0; }
+.invite-key .link-qr { margin: 0; }
 @media (prefers-color-scheme: dark) {
   .link-qr-bg { fill: var(--text); }
   .link-qr-fg { fill: var(--bg); }
