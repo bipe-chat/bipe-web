@@ -19,6 +19,8 @@ export type Route = {
   noindex?: boolean;
   /** Never send this URL as a referrer (invite and email links carry a secret). */
   noReferrer?: boolean;
+  /** Load no Umami tracker on this page (ADR 0098): email tokens and staff pages. */
+  noAnalytics?: boolean;
   /** Name of the link-preview PNG under /og/ (scripts/og.mjs). Default: from the path. Every route gets a card. */
   ogCard?: string;
   /** Card text when it differs from the page title and description, and the label in the card's footer. */
@@ -166,17 +168,17 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   body: () => <Island name="InviteLanding" props={{}} />,
 }, {
   // Email links from the API (ADR 0057). The token is in the fragment, so no Caddy rewrite.
-  path: "/confirmar-email/", alt: null, lang: "pt", noindex: true, noReferrer: true,
+  path: "/confirmar-email/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: `${chrome.pt.confirmEmail.title} · Bipe`, description: chrome.pt.confirmEmail.lead,
   body: () => <Island name="ConfirmEmailLanding" props={{}} />,
 }, {
   // The app opens this link (universal link); the page only explains. Recovery never runs in the browser.
-  path: "/recuperar/", alt: null, lang: "pt", noindex: true, noReferrer: true,
+  path: "/recuperar/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: `${chrome.pt.recover.title} · Bipe`, description: chrome.pt.recover.lead,
   body: () => <Island name="RecoverLanding" props={{}} />,
 }, {
   // Staff only (ADR 0056 in bipe/docs/adr). The HTML holds no data; the island signs in and asks the API.
-  path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true,
+  path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: "Quem mais convida (equipe) · Bipe", description: "Relatório interno de convites.",
   body: () => <Island name="InviterReport" props={{}} />,
 }, ...(["pt", "en"] as Lang[]).map((lang): Route => ({

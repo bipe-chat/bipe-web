@@ -18,7 +18,9 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 ## O que a gente não faz
 - Não mostra anúncio.
 - Não vende nem repassa seus dados para anunciantes.
-- Não usa ferramenta de análise ou de relatório de erros de terceiros. No site, a gente testa qual título da página inicial funciona melhor: o navegador guarda qual versão você viu, e o servidor só soma quantas visitas e cliques cada versão teve, sem saber quem visitou.
+- Não usa ferramenta de análise ou de relatório de erros de terceiros. O app não manda estatística de uso.
+- No site, a gente conta as visitas com o Umami, um programa de estatística que roda no servidor do Bipe, no Brasil. Ele não usa cookie, não guarda seu IP e não sabe quem você é. Guarda só a página, o site de onde você veio, o tipo de aparelho e de navegador, o idioma e a cidade aproximada, por 13 meses. Códigos de convite e nomes de usuário saem do endereço antes de chegar ao servidor. Se o seu navegador pede para não ser rastreado, nada é contado.
+- No site, a gente também testa qual título da página inicial funciona melhor: o navegador guarda qual versão você viu, e o servidor só soma quantas visitas e cliques cada versão teve, sem saber quem visitou.
 - Não pede seu número de telefone.
 
 ## Onde seus dados ficam

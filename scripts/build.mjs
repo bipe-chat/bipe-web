@@ -95,6 +95,7 @@ ${ssr.renderJsonLd(route)}
 <link rel="apple-touch-icon" href="/brand/app-icon.png">
 ${preload}
 ${css}
+${ssr.analyticsTags(route)}
 </head>
 <body>
 ${body}

@@ -18,7 +18,9 @@ During testing, Bipe is run by Envisioning. Questions or requests about your dat
 ## What we don't do
 - No ads.
 - We don't sell or pass your data to advertisers.
-- No third-party analytics or crash reporting. On the site we test which home page title works best: your browser keeps which version you saw, and the server only adds up visits and clicks per version, without knowing who visited.
+- No third-party analytics or crash reporting. The app sends no usage statistics.
+- On the site, we count visits with Umami, a statistics program that runs on Bipe's own server in Brazil. It uses no cookies, keeps no IP address and does not know who you are. It keeps only the page, the site you came from, the device and browser type, the language and the approximate city, for 13 months. Invite codes and usernames are removed from the address before it reaches the server. If your browser asks not to be tracked, nothing is counted.
+- On the site we also test which home page title works best: your browser keeps which version you saw, and the server only adds up visits and clicks per version, without knowing who visited.
 - We don't ask for your phone number.
 
 ## Where your data lives
