@@ -150,6 +150,8 @@ export const chrome = {
       ],
       brazil: [["Seus dados", "no Brasil"], ["Servidores", "de empresas brasileiras"], ["Lei", "brasileira, com a LGPD"], ["Atendimento", "em português"]],
     },
+    // Under the QR on /@handle and /convite/<code>, desktop only.
+    scanToOpen: "Aponte a câmera do celular para o QR code. O link abre lá.",
     profile: {
       lead: "Esse é um link de perfil do Bipe. Com o app instalado, abre direto na conversa.",
       noApp: "Ainda não tem o Bipe? A gente está em fase de testes no iPhone.",

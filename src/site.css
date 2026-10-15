@@ -278,6 +278,15 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .profile-handle { color: var(--muted); margin-top: 0; overflow-wrap: anywhere; }
 .profile-bio { white-space: pre-line; overflow-wrap: anywhere; font-size: 18px; }
 .steps li { margin-bottom: 14px; }
+/* Link QR (desktop only): always dark modules on a light ground, so every phone camera reads it. */
+.link-qr { margin: 32px 0 0; display: grid; justify-items: start; gap: 8px; }
+.link-qr svg { border-radius: 12px; }
+.link-qr-bg { fill: var(--bg); }
+.link-qr-fg { fill: var(--text); }
+@media (prefers-color-scheme: dark) {
+  .link-qr-bg { fill: var(--text); }
+  .link-qr-fg { fill: var(--bg); }
+}
 .not-found-head { font-size: 18px; margin: 36px 0 8px; }
 .not-found-list { padding-left: 22px; }
 .not-found-list li { margin-bottom: 8px; overflow-wrap: anywhere; }

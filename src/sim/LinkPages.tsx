@@ -2,6 +2,7 @@
 // /convite/<code> to /convite/, so both read the real path in the browser. With the app installed,
 // universal links (.well-known/apple-app-site-association) open the app before these pages load.
 import { useEffect, useState } from "react";
+import { encode } from "uqr";
 import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
 import { Icon } from "../components/ui";
@@ -31,7 +32,24 @@ export function InstallButton({ lang = "pt" }: { lang?: Lang }) {
   return ios.url ? <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a> : null;
 }
 
-type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string };
+/** Desktop only: the visitor points a phone camera at it and the link opens the app there.
+ *  Encoded in the browser, so the link (an invite code is a secret) goes to no QR service. */
+function LinkQr({ url }: { url: string }) {
+  const { size, data } = encode(url, { ecc: "M", border: 0 });
+  let d = "";
+  data.forEach((row, y) => row.forEach((on, x) => { if (on) d += `M${x} ${y}h1v1h-1z`; }));
+  return (
+    <figure className="link-qr">
+      <svg viewBox={`-4 -4 ${size + 8} ${size + 8}`} width={176} height={176} role="img" aria-label={url} shapeRendering="crispEdges">
+        <rect className="link-qr-bg" x={-4} y={-4} width={size + 8} height={size + 8} />
+        <path className="link-qr-fg" d={d} />
+      </svg>
+      <figcaption className="small muted">{chrome.pt.scanToOpen}</figcaption>
+    </figure>
+  );
+}
+
+type PublicProfile ={ handle: string; name: string; bio?: string; photo_url?: string };
 
 /** Accepts only the fields the page renders, and photos only from the API host (ADR 0041). */
 function readProfile(p: unknown, handle: string): PublicProfile | null {
@@ -50,7 +68,9 @@ export function ProfileLanding(_: Record<string, never>) {
   const c = chrome.pt.profile;
   const [handle, setHandle] = useState<string | null>(null);
   const [profile, setProfile] = useState<PublicProfile | null>(null);
+  const [platform, setPlatform] = useState<Platform>("ios");
   useEffect(() => {
+    setPlatform(detectPlatform());
     // /@handle: a public profile link.
     const m = location.pathname.match(/^\/@([^/]+)\/?$/);
     const h = m?.[1]?.toLowerCase();
@@ -73,6 +93,7 @@ export function ProfileLanding(_: Record<string, never>) {
         <p className="lede">{c.lead}</p>
         <p>{c.noApp}</p>
         <div className="actions"><InstallButton /></div>
+        {platform === "other" && <LinkQr url={`${location.origin}/@${profile.handle}`} />}
       </section>
     );
   }
@@ -82,6 +103,7 @@ export function ProfileLanding(_: Record<string, never>) {
       <p className="lede">{c.lead}</p>
       <p>{c.noApp}</p>
       <div className="actions"><InstallButton /></div>
+      {platform === "other" && handle && <LinkQr url={`${location.origin}/@${handle}`} />}
     </section>
   );
 }
@@ -138,6 +160,7 @@ export function InviteLanding(_: Record<string, never>) {
       )}
       {platform === "android" && <p>{c.android}</p>}
       {platform === "other" && <p>{c.other}</p>}
+      {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
     </section>
   );
 }
