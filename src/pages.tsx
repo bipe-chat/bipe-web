@@ -157,7 +157,7 @@ export function FeaturesPage({ lang }: { lang: Lang }) {
   return (
     <section className="wrap section">
       <h1>{c.allFeatures}</h1>
-      <p className="lede">{product.promise[lang].lede}</p>
+      <p className="lede">{product.featuresHub[lang].lede}</p>
       {product.sides.map((side) => (
         <div className="side" id={side.id} key={side.id}>
           <h2>{side[lang].name}</h2>
@@ -214,7 +214,6 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
   const caption = figureCaption(lang, f);
   const text = (
     <div>
-      <p className="small"><a href={`${paths.features(lang)}#${f.id}`}>{c.allFeatures}</a> · {area[lang]}</p>
       <h1>{f[lang].name}</h1>
       <p className="lede">{f[lang].body}</p>
       <PlatformStatus lang={lang} f={f} />
@@ -281,7 +280,6 @@ export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
   return (
     <>
       <section className="wrap narrow section">
-        <p className="small"><a href={paths.audiences(lang)}>{product.audiencesHub[lang].title}</a> · {copy.name}</p>
         <h1>{copy.headline}</h1>
         <p className="lede">{copy.lede}</p>
         <p className="small muted">{copy.note}</p>
@@ -618,7 +616,6 @@ export function CompareAppPage({ lang, app }: { lang: Lang; app: CompareApp }) {
   const a = app[lang];
   return (
     <section className="wrap section">
-      <p className="small"><a href={paths.compare(lang)}>← {c.title}</a></p>
       <h1>{a.title}</h1>
       <p className="lede">{a.lede}</p>
       <div className="compare">
@@ -641,6 +638,11 @@ export function CompareAppPage({ lang, app }: { lang: Lang; app: CompareApp }) {
           <ul>{a.ahead.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
       )}
+      <div className="side narrow">
+        <h2>{c.appsTitle}</h2>
+        <ul>{compare.apps.filter((o) => o.id !== app.id).map((o) => <li key={o.id}><a href={paths.compareApp(lang, o)}>{o[lang].title}</a></li>)}</ul>
+        <p><a href={paths.compare(lang)}>{c.title} →</a></p>
+      </div>
       <CompareFoot lang={lang} apps={[app]} />
     </section>
   );

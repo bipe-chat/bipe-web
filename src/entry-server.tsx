@@ -4,7 +4,7 @@ import { Layout } from "./Layout";
 import { paths } from "./paths";
 import { ogImageName, routes, type Route } from "./routes";
 import { chrome } from "./copy";
-import { footerGroups, links } from "./nav";
+import { breadcrumbs, footerGroups, links } from "./nav";
 import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn } from "./pages";
 
@@ -24,6 +24,17 @@ import { isFigureId } from "./sim/scenes";
 
 /** Fails the build when the invite page disagrees with the shared invite-code vectors. */
 export function selfTest(): void {
+  // Two indexed pages in one language never share a title or a description: search engines would treat them as one.
+  const dupes: string[] = [];
+  for (const key of ["title", "description"] as const) {
+    const seen = new Map<string, string>();
+    for (const r of routes.filter((x) => !x.noindex)) {
+      const other = seen.get(`${r.lang} ${r[key]}`);
+      if (other) dupes.push(`${key} of ${r.path} is the same as ${other}: ${r[key]}`);
+      else seen.set(`${r.lang} ${r[key]}`, r.path);
+    }
+  }
+  if (dupes.length) throw new Error(`duplicate titles or descriptions:\n${dupes.join("\n")}`);
   // Every indexed top-level page (one path segment under / or /en/) is in the footer of its language (src/nav.ts).
   for (const r of routes) {
     if (r.noindex || r.path === paths.home(r.lang) || !/^\/(en\/)?[^/]+\/$/.test(r.path)) continue;
@@ -158,7 +169,12 @@ export function renderMarkdown(route: Route): string {
 
 /** <script type="application/ld+json"> tags for the head. "<" is escaped so the JSON cannot close the tag. */
 export function renderJsonLd(route: Route): string {
-  return (route.jsonLd?.(abs) ?? []).map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
+  const trail = breadcrumbs(route);
+  const crumbs = trail.length === 0 ? [] : [{
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: [{ href: paths.home(route.lang), label: "Bipe" }, ...trail].map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.label, item: abs(t.href) })),
+  }];
+  return [...(route.jsonLd?.(abs) ?? []), ...crumbs].map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
 }
 
 export function llmsTxt(): string {

@@ -2,6 +2,7 @@
 // the share-card footer label (entry-server.tsx ogFamily) all read from here.
 import { chrome } from "./copy";
 import { paths } from "./paths";
+import type { Route } from "./routes";
 import { compare, dataRegister, distribution, product, publicRepos, type Lang } from "./shared";
 
 /** Tentpoles of the identity side. Their pages belong to the "trust" section. */
@@ -26,6 +27,7 @@ export function links(lang: Lang) {
     audiences: { href: paths.audiences(lang), label: product.audiencesHub[lang].nav },
     business: { href: paths.business(lang), label: product.business[lang].nav },
     about: { href: paths.about(lang), label: c.about },
+    brand: { href: paths.brand(lang), label: c.brand.link },
     partners: { href: paths.partners(lang), label: product.partners[lang].nav },
     contact: { href: `${paths.partners(lang)}#form`, label: c.contact },
     privacy: { href: paths.privacy(lang), label: c.privacy },
@@ -37,8 +39,9 @@ export function links(lang: Lang) {
 
 export type LinkId = keyof ReturnType<typeof links>;
 
-/** Header items in order. The last one renders as the call-to-action button. */
-export const header = ["trust", "features", "compare", "about", "download"] as const satisfies readonly LinkId[];
+/** Header links in order, then the call-to-action button. On a phone the button sits beside the wordmark. */
+export const header = ["trust", "features", "compare", "about"] as const satisfies readonly LinkId[];
+export const headerCta = "download" satisfies LinkId;
 
 /**
  * Footer: one group per question a reader has at the bottom of a page. Every top-level page is in it
@@ -49,7 +52,7 @@ export const footer = [
   { group: "product", links: ["tentpoles", "features", "compare", "download"] }, // What does it do, and how do I get it?
   { group: "for", links: ["audiences", "business"] }, // Is it for me?
   { group: "learn", links: ["scams", "technology", "docs", "source"] }, // How does it work, can I check it?
-  { group: "bipe", links: ["about", "partners", "contact"] }, // Who is behind it?
+  { group: "bipe", links: ["about", "brand", "partners", "contact"] }, // Who is behind it?
   { group: "legal", links: ["privacy", "lgpd", "terms"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];
 
@@ -68,3 +71,15 @@ export function footerGroups(lang: Lang): { heading: string; links: Link[] }[] {
 
 /** The nav item a page belongs to. A section is a link id, so its label is the link's label. */
 export type Section = Extract<LinkId, "trust" | "features" | "compare" | "download" | "business" | "about">;
+
+/**
+ * Breadcrumb trail of a subpage: the hub pages whose path contains it, then the page itself.
+ * Empty on a top-level page. Layout.tsx renders it; entry-server.tsx renderJsonLd sends it as a BreadcrumbList.
+ */
+export function breadcrumbs(route: Route): Link[] {
+  const above = Object.values(links(route.lang))
+    .filter((l) => l.href !== paths.home(route.lang) && l.href !== route.path && route.path.startsWith(l.href))
+    .sort((a, b) => a.href.length - b.href.length);
+  if (above.length === 0) return [];
+  return [...above, { href: route.path, label: route.crumb ?? route.title.replace(/ · Bipe$/, "") }];
+}

@@ -362,7 +362,6 @@ export function ScamTypePage({ lang, t }: { lang: Lang; t: ScamType }) {
   return (
     <section className="wrap section scams">
       <div className="narrow">
-        <p className="small"><a href={paths.scams(lang)}>{c.title}</a> · {x.heading}</p>
         <h1>{x.headline}</h1>
         <p className="lede">{x.lede}</p>
         {t.aliases?.[lang]?.length ? <p className="small muted">{c.typeAliases}: {t.aliases[lang].join(", ")}.</p> : null}
@@ -446,11 +445,10 @@ export function ScamTypePage({ lang, t }: { lang: Lang; t: ScamType }) {
   );
 }
 
-/** schema.org data for the hub and the type pages: an Article that cites its sources, and the breadcrumb. */
+/** schema.org data for the hub and the type pages: an Article that cites its sources. The breadcrumb comes from src/nav.ts. */
 export function scamsJsonLd(lang: Lang, t: ScamType | null, abs: (p: string) => string): object[] {
   const c = scams[lang];
   const url = abs(t ? paths.scamType(lang, t) : paths.scams(lang));
-  const crumbs = [{ name: c.title, url: abs(paths.scams(lang)) }, ...(t ? [{ name: t[lang].heading, url }] : [])];
   return [
     {
       "@context": "https://schema.org", "@type": "Article", mainEntityOfPage: url, url,
@@ -459,10 +457,6 @@ export function scamsJsonLd(lang: Lang, t: ScamType | null, abs: (p: string) => 
       author: { "@type": "Organization", name: "Bipe", url: abs(paths.home(lang)) },
       publisher: { "@type": "Organization", name: "Bipe", url: abs(paths.home(lang)) },
       citation: (t ? typeSources(t) : usedSources()).map((s) => s.url),
-    },
-    {
-      "@context": "https://schema.org", "@type": "BreadcrumbList",
-      itemListElement: crumbs.map((x, i) => ({ "@type": "ListItem", position: i + 1, name: x.name, item: x.url })),
     },
   ];
 }

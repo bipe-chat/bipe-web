@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { chrome } from "./copy";
-import { compare, dataRegister, product, type Lang } from "./shared";
+import { compare, dataRegister, distribution, product, publicRepos, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { identityTentpoles, type Section } from "./nav";
 import { paths } from "./paths";
@@ -27,6 +27,8 @@ export type Route = {
   markdown?: string;
   /** schema.org objects for the head, built from absolute URLs (entry-server.tsx renderJsonLd). */
   jsonLd?: (abs: (p: string) => string) => object[];
+  /** This page's name in the breadcrumb trail (src/nav.ts breadcrumbs). Default: the title without " · Bipe". */
+  crumb?: string;
   /** The nav item this page belongs to. */
   section?: Section;
   body: () => ReactNode;
@@ -38,6 +40,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   {
     path: paths.home(lang), alt: paths.home(other(lang)), lang,
     title: `Bipe · ${product.promise[lang].title}`, description: product.promise[lang].lede,
+    jsonLd: (abs) => homeJsonLd(lang, abs),
     body: () => <HomePage lang={lang} />,
   },
   ...product.tentpoles.map((tp): Route => ({
@@ -48,12 +51,14 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   })),
   {
     path: paths.features(lang), alt: paths.features(other(lang)), lang, section: "features",
-    title: `${chrome[lang].allFeatures} · Bipe`, description: product.promise[lang].lede,
+    title: `${chrome[lang].allFeatures} · Bipe`, description: product.featuresHub[lang].lede,
     body: () => <FeaturesPage lang={lang} />,
   },
   ...product.features.map((f): Route => ({
     path: paths.feature(lang, f), alt: paths.feature(other(lang), f), lang, section: "features",
-    title: `${f[lang].name} · Bipe`, description: f[lang].body,
+    // The hub name in the title keeps a feature apart from a tentpole of the same name (Sem anúncio).
+    title: `${f[lang].name} · ${chrome[lang].features} · Bipe`, description: f[lang].body,
+    crumb: f[lang].name, og: { title: f[lang].name },
     body: () => <FeaturePage lang={lang} f={f} />,
   })),
   {
@@ -63,7 +68,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   },
   ...product.audiences.map((a): Route => ({
     path: paths.audience(lang, a), alt: paths.audience(other(lang), a), lang,
-    title: a[lang].title, description: a[lang].lede,
+    title: a[lang].title, description: a[lang].lede, crumb: a[lang].name,
     body: () => <AudiencePage lang={lang} a={a} />,
   })),
   {
@@ -93,7 +98,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     body: () => <ComparePage lang={lang} />,
   },
   ...compare.apps.map((app): Route => ({
-    path: paths.compareApp(lang, app), alt: paths.compareApp(other(lang), app), lang, section: "compare",
+    path: paths.compareApp(lang, app), alt: paths.compareApp(other(lang), app), lang, section: "compare", crumb: app.name,
     title: `${app[lang].title} · Bipe`, description: app[lang].lede,
     body: () => <CompareAppPage lang={lang} app={app} />,
   })),
@@ -104,7 +109,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     body: () => <ScamsPage lang={lang} />,
   },
   ...scams.types.map((t): Route => ({
-    path: paths.scamType(lang, t), alt: paths.scamType(other(lang), t), lang, section: "trust",
+    path: paths.scamType(lang, t), alt: paths.scamType(other(lang), t), lang, section: "trust", crumb: t[lang].heading,
     title: `${t[lang].title} · Bipe`, description: t[lang].lede,
     jsonLd: (abs) => scamsJsonLd(lang, t, abs),
     body: () => <ScamTypePage lang={lang} t={t} />,
@@ -125,7 +130,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     path: paths.docs(lang, d.slug[lang]), alt: paths.docs(other(lang), d.slug[other(lang)]), lang,
     title: `${docTitle(d.md[lang])} · Bipe`, description: docLede(d.md[lang]),
     markdown: d.md[lang],
-    body: () => <DocsPage md={d.md[lang]} />,
+    body: () => <DocsPage lang={lang} doc={d} />,
   })),
   {
     path: paths.about(lang), alt: paths.about(other(lang)), lang, section: "about",
@@ -191,6 +196,21 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     }} />
   ),
 })));
+
+/** schema.org data for the home page: the organisation, the site and the app, so a search result can show Bipe as an app. */
+function homeJsonLd(lang: Lang, abs: (p: string) => string): object[] {
+  const org = { "@type": "Organization", name: "Bipe", url: abs(paths.home(lang)), logo: abs("/brand/app-icon.png"),
+    parentOrganization: { "@type": "Organization", name: distribution.steward.name, url: distribution.steward.url },
+    ...(publicRepos.length > 0 ? { sameAs: [distribution.source.org] } : {}) };
+  const os = [distribution.ios.status === "available" && "iOS", distribution.android.status === "available" && "Android"].filter(Boolean).join(", ");
+  return [
+    { "@context": "https://schema.org", ...org },
+    { "@context": "https://schema.org", "@type": "WebSite", name: "Bipe", url: abs(paths.home(lang)), inLanguage: lang === "pt" ? "pt-BR" : "en" },
+    { "@context": "https://schema.org", "@type": "MobileApplication", name: "Bipe", description: product.promise[lang].lede,
+      applicationCategory: "CommunicationApplication", operatingSystem: os, url: abs(paths.download(lang)),
+      offers: { "@type": "Offer", price: "0", priceCurrency: "BRL" }, publisher: org },
+  ];
+}
 
 /** Where a route's link-preview card is served: `/og/home.png` for `/`, else `/og/<path with dashes>.png`. */
 export function ogImageName(route: Route): string {

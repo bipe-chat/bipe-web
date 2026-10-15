@@ -122,6 +122,7 @@ export const product = productJson as unknown as {
   features: Feature[];
   icps: Icp[];
   audiences: Audience[];
+  featuresHub: Copy<{ lede: string }>;
   audiencesHub: Copy<{ nav: string; title: string; lede: string }>;
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;

@@ -36,8 +36,18 @@ img, svg { display: block; }
 .site-head nav { margin-left: auto; display: flex; gap: 18px; align-items: center; font-size: 15px; flex-wrap: wrap; }
 .site-head nav a { color: var(--text); text-decoration: none; }
 .site-head nav a[aria-current="page"] { color: var(--acai); font-weight: 600; }
-.site-head nav a.nav-cta { background: var(--acai); color: var(--on-acai); font-weight: 600; padding: 7px 16px; border-radius: 999px; }
-.site-head nav a.nav-cta:hover { background: var(--acai-deep); }
+.site-head .nav-cta { flex: none; text-decoration: none; background: var(--acai); color: var(--on-acai); font-weight: 600; padding: 7px 16px; border-radius: 999px; }
+.site-head .nav-cta:hover { background: var(--acai-deep); }
+/* Phone: wordmark and the download button on the first row, the four links on the second. */
+@media (max-width: 640px) {
+  .site-head .wrap { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; padding-top: 12px; padding-bottom: 10px; }
+  .site-head nav { grid-row: 2; grid-column: 1 / -1; margin-left: 0; justify-content: space-between; flex-wrap: nowrap; gap: 12px; font-size: 14px; white-space: nowrap; }
+}
+.crumbs { padding-top: 32px; color: var(--muted); }
+.crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.crumbs li + li::before { content: "›"; margin-right: 8px; }
+.crumbs a { color: var(--muted); }
+.crumbs + .section { padding-top: 16px; }
 .site-foot { border-top: 1px solid var(--line); margin-top: 96px; padding: 32px 0 48px; color: var(--muted); font-size: 15px; }
 .site-foot a { color: var(--muted); }
 .foot-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px 32px; }

@@ -60,8 +60,11 @@ async function ogImageTags(route) {
   ].join("\n");
 }
 
+// Internal links per page, for the orphan check below.
+const linkedFrom = new Map();
 for (const route of ssr.routes) {
   const body = ssr.renderBody(route);
+  for (const [, href] of body.matchAll(/href="(\/[^"#?]*)/g)) if (href !== route.path && !route.noindex) linkedFrom.set(href, route.path);
   const htmlLang = route.lang === "pt" ? "pt-BR" : "en";
   const alternates = route.alt
     ? [[route.lang, route.path], [route.lang === "pt" ? "en" : "pt", route.alt]]
@@ -104,6 +107,10 @@ ${js}
   writeFileSync(join(dir, "index.html"), html.replace(/\n{2,}/g, "\n"));
   if (!route.noindex) writeFileSync(join(dir, "index.md"), ssr.renderMarkdown(route));
 }
+
+// Every indexed page is linked from another indexed page, not only listed in the sitemap.
+const orphans = ssr.routes.filter((r) => !r.noindex && r.path !== "/" && !linkedFrom.has(r.path)).map((r) => r.path);
+if (orphans.length) throw new Error(`orphan pages (no link from another page): ${orphans.join(", ")}`);
 
 // Old paths keep working: a static page that sends the browser on (Caddy needs no change).
 for (const [from, to] of Object.entries(ssr.redirects)) {

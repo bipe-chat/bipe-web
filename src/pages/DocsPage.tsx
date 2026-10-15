@@ -1,6 +1,8 @@
 // Docs pages (/docs/, /en/docs/). The text lives in src/docs/<lang>/*.md and is shown as written: the
 // .md file is also the page's Markdown twin, for agents. pt is the reference text. Facts follow the
 // ADRs in ../bipe/docs/adr (domains: ADR 0062) and bipe-infra/compose/Caddyfile.
+import { chrome } from "../copy";
+import { paths } from "../paths";
 import type { Lang } from "../shared";
 import { Markdown, mdTitle } from "../components/markdown";
 import ptIndex from "../docs/pt/index.md?raw";
@@ -26,6 +28,20 @@ export const docTitle = mdTitle;
 /** The paragraph under the title. */
 export const docLede = (md: string): string => md.split("\n\n")[1].replace(/`/g, "");
 
-export function DocsPage({ md }: { md: string }) {
-  return <Markdown md={md} className="legal docs" />;
+/** A docs page. A subpage ends with the other docs pages. */
+export function DocsPage({ lang, doc }: { lang: Lang; doc: Doc }) {
+  const c = chrome[lang];
+  const others = docs.filter((d) => d.id !== "index" && d.id !== doc.id);
+  return (
+    <>
+      <Markdown md={doc.md[lang]} className="legal docs" />
+      {doc.id !== "index" && (
+        <section className="wrap narrow section">
+          <h2>{c.alsoIn(c.docs)}</h2>
+          <ul>{others.map((d) => <li key={d.id}><a href={paths.docs(lang, d.slug[lang])}>{docTitle(d.md[lang])}</a></li>)}</ul>
+          <p><a href={paths.docs(lang)}>{c.docs} →</a></p>
+        </section>
+      )}
+    </>
+  );
 }
