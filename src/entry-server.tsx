@@ -4,26 +4,17 @@ import { Layout } from "./Layout";
 import { paths } from "./paths";
 import { ogImageName, routes, type Route } from "./routes";
 import { chrome } from "./copy";
+import { links } from "./nav";
 import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn } from "./pages";
 
 export { routes, ogImageName };
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
 
-/** The section label for a route's share card footer: the same words as the site nav (Layout.tsx). */
+/** The section label for a route's share card footer: the same words as the site nav (src/nav.ts). */
 export function ogFamily(route: Route): string | undefined {
   if (route.og?.family) return route.og.family;
-  const lang: Lang = route.lang;
-  const trustId = product.sides.find((s) => s.id === "other")!.tentpoles[0];
-  const labels: Record<NonNullable<Route["section"]>, string> = {
-    trust: product.tentpoles.find((tp) => tp.id === trustId)![lang].name,
-    features: chrome[lang].features,
-    compare: compare[lang].nav,
-    download: chrome[lang].download,
-    business: product.business[lang].nav,
-    about: chrome[lang].about,
-  };
-  return route.section ? labels[route.section] : undefined;
+  return route.section ? links(route.lang)[route.section].label : undefined;
 }
 
 import inviteCodes from "@shared/test-vectors/invite-codes.json";

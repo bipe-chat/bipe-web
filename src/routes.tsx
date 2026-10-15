@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { chrome } from "./copy";
 import { compare, dataRegister, product, type Lang } from "./shared";
 import { Island } from "./island-registry";
+import { identityTentpoles, type Section } from "./nav";
 import { paths } from "./paths";
 import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
@@ -27,7 +28,7 @@ export type Route = {
   /** schema.org objects for the head, built from absolute URLs (entry-server.tsx renderJsonLd). */
   jsonLd?: (abs: (p: string) => string) => object[];
   /** The nav item this page belongs to. */
-  section?: "trust" | "features" | "compare" | "download" | "business" | "about";
+  section?: Section;
   body: () => ReactNode;
 };
 
@@ -41,7 +42,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   },
   ...product.tentpoles.map((tp): Route => ({
     path: paths.tentpole(lang, tp), alt: paths.tentpole(other(lang), tp), lang,
-    section: product.sides.find((s) => s.id === "other")!.tentpoles.includes(tp.id) ? "trust" : "features",
+    section: identityTentpoles.includes(tp.id) ? "trust" : "features",
     title: `${tp[lang].name} · Bipe`, description: tp[lang].summary,
     body: () => <TentpolePage lang={lang} tp={tp} />,
   })),
