@@ -170,9 +170,19 @@ export function AgendaDay({ lang, beat }: { lang: Lang; beat: number }) {
   );
 }
 
+/** A Bipe push: the business name and a text from the app strings, never free text from the business (ADR 0102). */
+export function Push({ lang, id, body }: { lang: Lang; id: string; body: string }) {
+  return (
+    <div className="push msg">
+      <div className="push-head"><span className="push-icon"><Mark size={14} /></span> Bipe <span className="sub">{chrome[lang].sim.agenda.now}</span></div>
+      <strong>{label(who(id))}</strong>
+      <p>{body}</p>
+    </div>
+  );
+}
+
 /** The 24-hour reminder: a push from bipe-api with the business name, the service and the time only (ADR 0102). */
 export function AgendaReminder({ lang, id, beat }: { lang: Lang; id: string; beat: number }) {
-  const biz = who(id);
   const a = chrome[lang].sim.agenda;
   const service = text(picked.service.name, lang);
   const body = t(lang, "bipe_agenda_reminder_body", a.hour(picked.time), lang === "pt" ? service.toLowerCase() : service, picked.agenda);
@@ -183,13 +193,7 @@ export function AgendaReminder({ lang, id, beat }: { lang: Lang; id: string; bea
         <span className="lock-day">{a.lockDay}</span>
         <time className="lock-time" data-clock={lang}>{useClock(lang)}</time>
       </div>
-      {beat >= 1 && (
-        <div className="push msg">
-          <div className="push-head"><span className="push-icon"><Mark size={14} /></span> Bipe <span className="sub">{a.now}</span></div>
-          <strong>{label(biz)}</strong>
-          <p>{body}</p>
-        </div>
-      )}
+      {beat >= 1 && <Push lang={lang} id={id} body={body} />}
       {beat >= 2 && (
         <div className="push-actions msg">
           {actions.map((k, i) => <span key={k} className={beat >= 3 && i === 0 ? "on" : ""}>{t(lang, k)}{beat >= 3 && i === 0 && <Icon name="check" size={16} />}</span>)}

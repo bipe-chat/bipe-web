@@ -146,6 +146,16 @@
       "photo": { "style": "logo", "look": "a pet grooming shop, a simple round dog head with floppy ears next to two soap bubbles, caramel brown and teal on cream" }
     },
     {
+      "id": "padaria", "kind": "institution", "name": "Padaria Trigo Bom", "short": "Padaria Trigo Bom", "handle": "padariatrigobom",
+      "about": "Fictional neighbourhood bakery, Belo Horizonte. Verified institution (CNPJ). The sample business of the catálogo and pedidos scenes. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a neighbourhood bakery, a simple round bread roll with a wheat ear beside it, warm golden brown and deep red on cream" }
+    },
+    {
+      "id": "oficina", "kind": "institution", "name": "Auto Mecânica Ipê", "short": "Auto Mecânica Ipê", "handle": "automecanicaipe",
+      "about": "Fictional car repair shop, Goiânia. Verified institution (CNPJ). The sample business of the orçamento scene. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a car repair shop, a simple wrench crossed with a small yellow ipê flower, dark grey and yellow on white" }
+    },
+    {
       "id": "falsacaju", "kind": "person", "name": "CajuNet Segunda Via", "short": "CajuNet Segunda Via", "handle": "cajunet.2via",
       "about": "Unverified account that copies CajuNet's name and logo and sends a 'segunda via' with a personal Pix key.", "trust": "none",
       "photo": { "copyOf": "caju" }

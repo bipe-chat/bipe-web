@@ -10,6 +10,7 @@ import { PixCard } from "./PixCard";
 import { ChargeCard, Contacts, JoinCard, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, StickerPicker, VerifyPix } from "./SceneParts";
 import { Stage } from "./Stage";
 import { AgendaDay, AgendaReminder, BookFlow } from "./AgendaParts";
+import { CatalogView, OrderFlow, QueueView, QuoteChat } from "./BusinessToolParts";
 
 /** The mark next to a name. The same state looks the same everywhere (design/trust-ui.md). */
 export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust; size?: number }) {
@@ -179,7 +180,9 @@ export function sceneSteps(s: Scene): number {
     case "contacts": return s.found.length + 1;
     case "trustProfile": return 1;
     case "book": return 6;
-    case "agendaDay": case "agendaReminder": return 3;
+    case "agendaDay": case "agendaReminder": case "queue": return 3;
+    case "catalog": return 2;
+    case "order": case "quote": return 4;
   }
 }
 
@@ -225,6 +228,14 @@ export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: Scen
       return <AgendaDay lang={lang} beat={beat} />;
     case "agendaReminder":
       return <AgendaReminder lang={lang} id={scene.with} beat={beat} />;
+    case "catalog":
+      return <CatalogView lang={lang} id={scene.with} beat={beat} />;
+    case "order":
+      return <OrderFlow lang={lang} id={scene.with} beat={beat} />;
+    case "quote":
+      return <QuoteChat lang={lang} id={scene.with} beat={beat} />;
+    case "queue":
+      return <QueueView lang={lang} id={scene.with} beat={beat} />;
     case "chat": {
       const trust = scene.trust ?? who(scene.with).trust;
       const footer = scene.footer === "readOnly" ? <ReadOnlyBar lang={lang} /> : scene.footer === "stickers" ? <StickerPicker lang={lang} /> : undefined;

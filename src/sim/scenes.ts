@@ -48,7 +48,12 @@ export type Scene =
   /** Agenda, owner side in company mode: the day view, one column per agenda (agendaDemo). */
   | { kind: "agendaDay"; with: string }
   /** Agenda: the 24-hour reminder push with its actions (ADR 0102). */
-  | { kind: "agendaReminder"; with: string };
+  | { kind: "agendaReminder"; with: string }
+  /** Business tools (bipe/docs/business-tools.md, ADRs 0104 to 0107; planned). Sample data in toolsDemo. */
+  | { kind: "catalog"; with: string }
+  | { kind: "order"; with: string }
+  | { kind: "quote"; with: string }
+  | { kind: "queue"; with: string };
 
 export const ME = "me";
 
@@ -533,6 +538,11 @@ export const scenes = {
   "agenda-marcar": { kind: "book", with: "caramelo" },
   "agenda-dono": { kind: "agendaDay", with: "caramelo" },
   "agenda-lembrete": { kind: "agendaReminder", with: "caramelo" },
+  // Business tools (catalogo, pedidos, orcamento, fila-virtual; planned). Sample data in toolsDemo.
+  catalogo: { kind: "catalog", with: "padaria" },
+  pedido: { kind: "order", with: "padaria" },
+  orcamento: { kind: "quote", with: "oficina" },
+  "fila-virtual": { kind: "queue", with: "clinica" },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;
@@ -679,6 +689,42 @@ export const agendaDemo = {
   ] satisfies AgendaBooking[],
   /** A block the owner adds with a long press (an override on one agenda). */
   block: { agenda: 1, start: 12, minutes: 60, label: { pt: "Almoço", en: "Almoço (Lunch)" } },
+};
+
+/**
+ * Business tool scenes (bipe/docs/business-tools.md, ADRs 0104 to 0107). Same pattern as the Agenda: the app draws
+ * each card from the API, pinned above the chat; free text (address, photos, notes) stays in the encrypted chat.
+ */
+export type CatalogItem = { name: Text; price: string; from?: boolean; onRequest?: boolean; soldOut?: boolean };
+
+export const toolsDemo = {
+  catalog: [
+    { category: { pt: "Pães", en: "Pães (Bread)" }, items: [
+      { name: { pt: "Pão francês (kg)", en: "Pão francês (kg) (French roll)" }, price: "R$ 18,90" },
+      { name: { pt: "Pão de queijo (dúzia)", en: "Pão de queijo (dúzia) (Cheese bread, dozen)" }, price: "R$ 15,00" },
+      { name: { pt: "Pão de fermentação natural", en: "Pão de fermentação natural (Sourdough)" }, price: "R$ 22,00", soldOut: true },
+    ] as CatalogItem[] },
+    { category: { pt: "Bolos", en: "Bolos (Cakes)" }, items: [
+      { name: { pt: "Bolo de fubá", en: "Bolo de fubá (Cornmeal cake)" }, price: "R$ 25,00" },
+      { name: { pt: "Bolo de aniversário", en: "Bolo de aniversário (Birthday cake)" }, price: "R$ 90,00", from: true },
+      { name: { pt: "Encomenda para festa", en: "Encomenda para festa (Party order)" }, price: "", onRequest: true },
+    ] as CatalogItem[] },
+  ],
+  /** The order: catalog items by [category, item] and quantity. */
+  order: {
+    lines: [{ item: [0, 1], qty: 2, total: "R$ 30,00" }, { item: [1, 0], qty: 1, total: "R$ 25,00" }],
+    total: "R$ 55,00",
+    note: { pt: "Passo aí às 17h pra buscar", en: "Passo aí às 17h pra buscar (I will pick it up at 5pm)" },
+  },
+  quote: {
+    ask: { pt: "Oi! O carro tá fazendo um barulho na roda da frente quando eu freio", en: "Oi! O carro tá fazendo um barulho na roda da frente quando eu freio (The car makes a noise in the front wheel when I brake)" },
+    reply: { pt: "Pela descrição, é a pastilha de freio. Segue o orçamento", en: "Pela descrição, é a pastilha de freio. Segue o orçamento (Sounds like the brake pads. Here is the quote)" },
+    lines: [{ name: "Pastilha de freio dianteira", price: "R$ 180,00" }, { name: "Mão de obra", price: "R$ 120,00" }],
+    total: "R$ 300,00",
+    valid: "30/10",
+    version: 1,
+  },
+  queue: { positions: ["4º", "3º"], wait: { pt: "15 a 25 min", en: "15 to 25 min" }, service: { pt: "Vacina da gripe", en: "Vacina da gripe (Flu shot)" } },
 };
 
 export const text = (t: Text, lang: "pt" | "en") => (typeof t === "string" ? t : t[lang]);

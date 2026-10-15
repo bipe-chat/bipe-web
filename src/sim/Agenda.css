@@ -67,3 +67,25 @@
 .push-actions span { padding: 12px 16px; border-bottom: .5px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 16px; }
 .push-actions span:last-child { border-bottom: 0; color: var(--cpd-color-text-critical-primary); }
 .push-actions span.on { color: var(--cpd-color-text-action-accent); font-weight: 600; }
+
+/* Business tools (src/sim/BusinessToolParts.tsx): catálogo, pedidos, orçamento, fila virtual. */
+.tool-biz { display: flex; gap: 10px; align-items: center; }
+.tool-biz > div { display: flex; flex-direction: column; min-width: 0; }
+.tool-biz strong { display: inline-flex; gap: 4px; align-items: center; }
+.tool-group h4 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.agenda-row.off .agenda-row-main { opacity: .45; }
+.tool-chip { flex: none; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+.tool-qty { display: inline-flex; gap: 10px; align-items: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tool-qty span { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); }
+.tool-toggle { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; border-radius: 999px; background: var(--surface); }
+.tool-toggle span { text-align: center; padding: 8px 0; border-radius: 999px; font-weight: 600; font-size: 14px; color: var(--muted); }
+.tool-toggle .on { background: var(--bg); color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
+.tool-line { display: flex; justify-content: space-between; gap: 8px; font-variant-numeric: tabular-nums; }
+.tool-line.total { font-weight: 700; border-top: .5px solid var(--line); padding-top: 4px; margin-top: 2px; }
+.booking-chip.wait { background: var(--surface); color: var(--muted); }
+.booking-actions span.primary { background: var(--acai); color: var(--on-acai); }
+.tool-queue { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 24px 16px; border-radius: 20px; background: var(--surface); text-align: center; }
+.tool-queue-big { font-size: 64px; line-height: 1; letter-spacing: -1px; }
+.tool-queue.called { background: var(--cpd-color-icon-accent-primary); color: var(--on-acai); }
+.tool-queue.called .tool-queue-big { font-size: 32px; letter-spacing: 0; }
+.tool-leave { align-self: center; color: var(--cpd-color-text-critical-primary); font-weight: 600; padding: 8px; }
