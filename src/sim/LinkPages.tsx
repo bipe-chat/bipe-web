@@ -40,7 +40,7 @@ function LinkQr({ url }: { url: string }) {
   data.forEach((row, y) => row.forEach((on, x) => { if (on) d += `M${x} ${y}h1v1h-1z`; }));
   return (
     <figure className="link-qr">
-      <svg viewBox={`-4 -4 ${size + 8} ${size + 8}`} width={176} height={176} role="img" aria-label={url} shapeRendering="crispEdges">
+      <svg viewBox={`-4 -4 ${size + 8} ${size + 8}`} width={152} height={152} role="img" aria-label={url} shapeRendering="crispEdges">
         <rect className="link-qr-bg" x={-4} y={-4} width={size + 8} height={size + 8} />
         <path className="link-qr-fg" d={d} />
       </svg>
@@ -148,7 +148,7 @@ export function InviteLanding(_: Record<string, never>) {
       <div className="invite-key">
         <div>
           <p>{c.yourCode}</p>
-          <div className="actions" style={{ marginTop: 8 }}>
+          <div className="actions">
             <output className="mono invite-code">{code ?? "····-····-····"}</output>
             <button type="button" className="button secondary" disabled={!code} onClick={async () => setCopyLabel((await copyText(code!)) ? c.copied : c.copyFailed)}>{copyLabel}</button>
           </div>
