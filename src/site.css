@@ -18,7 +18,7 @@
   --brand: "Nunito Variable", var(--ui);
   --app: -apple-system, BlinkMacSystemFont, var(--ui);
   --radius: 20px;
-  --gutter: 32px; /* one gap for split columns, figure grids and stacked figures, so their edges line up */
+  --gutter: 32px; /* one gap for every two-column layout (hero, splits, figure grids, compare, real vs fake) and stacked figures, so column edges line up page-wide. Small card grids keep 16px. */
   color-scheme: light dark;
 }
 
@@ -69,7 +69,7 @@ h3 { font-size: 19px; margin: 0 0 6px; }
 .small { font-size: 14px; }
 
 /* Layout blocks */
-.hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding-top: 64px; padding-bottom: 32px; }
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); align-items: center; padding-top: 64px; padding-bottom: 32px; }
 .section { padding-top: 72px; }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); align-items: center; }
 .split.flip > :first-child { order: 2; }
@@ -114,7 +114,7 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .tentpole-card .more { margin-top: auto; align-self: flex-start; }
 .tentpole-card:hover .more, .scam-type:hover .scam-type-more .button { border-color: var(--acai); }
 .more-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-.tentpole-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tentpole-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
 @media (max-width: 640px) { .tentpole-grid { grid-template-columns: 1fr; } }
 
 .chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; vertical-align: middle; }
@@ -130,7 +130,7 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .compare { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
 .compare-row h2 { font-size: 24px; margin: 0 0 16px; }
 .compare-row h3 { font-size: 15px; margin: 0 0 6px; }
-.compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
 .compare-status { margin-top: 12px; }
 .compare-status p { margin: 2px 0 0; }
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -364,7 +364,7 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .real-fake { margin-top: 24px; }
 .real-fake-picker { flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; }
 .real-fake-picker button { padding: 8px 14px; border-radius: 999px; }
-.real-fake-phones { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+.real-fake-phones { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); align-items: start; }
 .real-fake-col { display: flex; flex-direction: column; align-items: center; }
 .real-fake-tag { margin: 0 0 10px; font-weight: 700; font-size: 15px; padding: 4px 14px; border-radius: 999px; border: 1px solid; }
 .real-fake-col.fake .real-fake-tag { color: var(--cpd-color-text-trust-danger); border-color: var(--cpd-color-border-trust-danger); }
@@ -378,7 +378,7 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 32px; }
 .cast-card { display: flex; flex-direction: column; gap: 6px; }
 .cast-card strong { display: flex; gap: 4px; align-items: center; }
-.scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 32px 16px; margin-top: 24px; }
+.scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: var(--gutter); margin-top: var(--gutter); }
 .scene-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
 /* Staff page /admin/convites/ (ADR 0056 in bipe/docs/adr). */

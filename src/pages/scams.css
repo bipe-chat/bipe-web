@@ -12,7 +12,7 @@
 .scam-source { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
 .scam-source a { color: inherit; }
 
-.scam-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 16px; margin-top: 20px; }
+.scam-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: var(--gutter); margin-top: 20px; }
 /* An odd last chart takes the full row instead of leaving a half-empty one. */
 .scam-charts > :last-child:nth-child(odd) { grid-column: 1 / -1; }
 .scam-chart { margin: 0; display: flex; flex-direction: column; gap: 16px; }
