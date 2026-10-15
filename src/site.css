@@ -284,15 +284,15 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .link-qr figcaption { margin: 0; line-height: 1.4; }
 .link-qr-bg { fill: var(--bg); }
 .link-qr-fg { fill: var(--text); }
-/* Invite page: the QR sits next to the code and wraps under it when the row is too narrow. */
-.invite-key { margin-top: 32px; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: start; }
-.invite-key > div { display: grid; gap: 12px; justify-items: start; }
-.invite-key p { margin: 0; }
-.invite-key .actions { margin: 0; }
-.invite-key .link-qr { margin: 0; padding-left: 24px; border-left: 1px solid var(--line); box-sizing: content-box; }
+/* Profile and invite pages: the next step on the left, the QR (desktop only) on the right; stacked under 640px. */
+.link-card { margin-top: 32px; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: start; }
+.link-card > div { display: grid; gap: 12px; justify-items: start; }
+.link-card p { margin: 0; }
+.link-card .actions { margin: 0; }
+.link-card .link-qr { margin: 0; padding-left: 24px; border-left: 1px solid var(--line); box-sizing: content-box; }
 @media (max-width: 640px) {
-  .invite-key { grid-template-columns: minmax(0, 1fr); }
-  .invite-key .link-qr { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .link-card { grid-template-columns: minmax(0, 1fr); }
+  .link-card .link-qr { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--line); }
 }
 @media (prefers-color-scheme: dark) {
   .link-qr-bg { fill: var(--text); }

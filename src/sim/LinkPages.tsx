@@ -91,9 +91,13 @@ export function ProfileLanding(_: Record<string, never>) {
         <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
         <p className="lede">{c.lead}</p>
-        <p>{c.noApp}</p>
-        <div className="actions"><InstallButton /></div>
-        {platform === "other" && <LinkQr url={`${location.origin}/@${profile.handle}`} />}
+        <div className="link-card">
+          <div>
+            <p>{c.noApp}</p>
+            <div className="actions"><InstallButton /></div>
+          </div>
+          {platform === "other" && <LinkQr url={`${location.origin}/@${profile.handle}`} />}
+        </div>
       </section>
     );
   }
@@ -101,9 +105,13 @@ export function ProfileLanding(_: Record<string, never>) {
     <section className="wrap narrow section">
       <h1 style={{ overflowWrap: "anywhere" }}>{handle ? `@${handle}` : "Bipe"}</h1>
       <p className="lede">{c.lead}</p>
-      <p>{c.noApp}</p>
-      <div className="actions"><InstallButton /></div>
-      {platform === "other" && handle && <LinkQr url={`${location.origin}/@${handle}`} />}
+      <div className="link-card">
+        <div>
+          <p>{c.noApp}</p>
+          <div className="actions"><InstallButton /></div>
+        </div>
+        {platform === "other" && handle && <LinkQr url={`${location.origin}/@${handle}`} />}
+      </div>
     </section>
   );
 }
@@ -145,7 +153,7 @@ export function InviteLanding(_: Record<string, never>) {
     <section className="wrap narrow section">
       <h1>{inviter ? c.titleFrom(inviter) : c.title}</h1>
       <p className="lede">{c.lead}</p>
-      <div className="invite-key">
+      <div className="link-card">
         <div>
           <p>{c.yourCode}</p>
           <div className="actions">
