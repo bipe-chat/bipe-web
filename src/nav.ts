@@ -2,7 +2,7 @@
 // the share-card footer label (entry-server.tsx ogFamily) all read from here.
 import { chrome } from "./copy";
 import { paths } from "./paths";
-import { compare, dataRegister, product, type Lang } from "./shared";
+import { compare, dataRegister, distribution, product, publicRepos, type Lang } from "./shared";
 
 /** Tentpoles of the identity side. Their pages belong to the "trust" section. */
 export const identityTentpoles: readonly string[] = product.sides.find((s) => s.id === "other")!.tentpoles;
@@ -31,6 +31,7 @@ export function links(lang: Lang) {
     privacy: { href: paths.privacy(lang), label: c.privacy },
     lgpd: { href: paths.lgpd(lang), label: dataRegister[lang].nav },
     terms: { href: paths.terms(lang), label: c.terms },
+    source: { href: distribution.source.org, label: c.source },
   } satisfies Record<string, Link>;
 }
 
@@ -39,12 +40,31 @@ export type LinkId = keyof ReturnType<typeof links>;
 /** Header items in order. The last one renders as the call-to-action button. */
 export const header = ["trust", "features", "compare", "about", "download"] as const satisfies readonly LinkId[];
 
-/** Footer: three groups by what the reader looks for. Single audiences live on the hub, never here. */
+/**
+ * Footer: one group per question a reader has at the bottom of a page. Every top-level page is in it
+ * (entry-server.tsx selfTest fails the build otherwise); subpages live on their hub, never here.
+ * "tentpoles" expands to every tentpole page in product.json order.
+ */
 export const footer = [
-  { group: "product", links: ["trust", "scams", "features", "compare", "technology", "docs", "download"] },
-  { group: "for", links: ["audiences", "business"] },
-  { group: "bipe", links: ["about", "partners", "contact", "privacy", "lgpd", "terms"] },
-] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly LinkId[] }[];
+  { group: "product", links: ["tentpoles", "features", "compare", "download"] }, // What does it do, and how do I get it?
+  { group: "for", links: ["audiences", "business"] }, // Is it for me?
+  { group: "learn", links: ["scams", "technology", "docs", "source"] }, // How does it work, can I check it?
+  { group: "bipe", links: ["about", "partners", "contact"] }, // Who is behind it?
+  { group: "legal", links: ["privacy", "lgpd", "terms"] }, // What happens to my data?
+] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];
+
+/** The footer groups with their headings and links, ready to render. The source link shows only when a repo is public. */
+export function footerGroups(lang: Lang): { heading: string; links: Link[] }[] {
+  const l = links(lang);
+  return footer.map((g) => ({
+    heading: chrome[lang].footerGroups[g.group],
+    links: g.links.flatMap((id): Link[] => {
+      if (id === "tentpoles") return product.tentpoles.map((tp) => ({ href: paths.tentpole(lang, tp), label: tp[lang].name }));
+      if (id === "source" && publicRepos.length === 0) return [];
+      return [l[id]];
+    }),
+  }));
+}
 
 /** The nav item a page belongs to. A section is a link id, so its label is the link's label. */
 export type Section = Extract<LinkId, "trust" | "features" | "compare" | "download" | "business" | "about">;

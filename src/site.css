@@ -43,7 +43,8 @@ img, svg { display: block; }
 .foot-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px 32px; }
 .foot-groups h2 { font-family: inherit; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text); margin: 0 0 10px; }
 .foot-groups ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.foot-note { margin: 32px 0 0; font-size: 14px; }
+.foot-bottom { margin-top: 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; font-size: 14px; }
+.foot-note { margin: 0; }
 
 /* Type */
 h1, h2, .display { font-family: var(--brand); font-weight: 850; letter-spacing: -.02em; line-height: 1.08; margin: 0; }

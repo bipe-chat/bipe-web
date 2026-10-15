@@ -1,6 +1,6 @@
 import { chrome } from "./copy";
 import { Wordmark } from "./components/brand";
-import { footer, header, links } from "./nav";
+import { footerGroups, header, links } from "./nav";
 import { paths } from "./paths";
 import type { Route } from "./routes";
 import { distribution, publicRepos } from "./shared";
@@ -11,15 +11,7 @@ export function Layout({ route }: { route: Route }) {
   const l = links(lang);
   const cta = header[header.length - 1];
   const current = (id: string) => (route.section === id ? "page" : undefined);
-  // External and per-page links close the last footer group.
-  const extra: { href: string; label: string; lang?: string }[] = [
-    ...(publicRepos.length > 0 ? [{ href: distribution.source.org, label: c.source }] : []),
-    ...(route.alt ? [{ href: route.alt, label: c.other.label, lang: c.other.lang === "pt" ? "pt-BR" : "en" }] : []),
-  ];
-  const groups = footer.map((g, i) => ({
-    heading: c.footerGroups[g.group],
-    links: [...g.links.map((id): (typeof extra)[number] => l[id]), ...(i === footer.length - 1 ? extra : [])],
-  }));
+  const otherLang = c.other.lang === "pt" ? "pt-BR" : "en";
   return (
     <>
       <a className="visually-hidden" href="#main">{c.skip}</a>
@@ -35,14 +27,17 @@ export function Layout({ route }: { route: Route }) {
       <footer className="site-foot">
         <div className="wrap">
           <nav className="foot-groups" aria-label={c.navLabel.footer}>
-            {groups.map((g) => (
+            {footerGroups(lang).map((g) => (
               <div key={g.heading}>
                 <h2>{g.heading}</h2>
-                <ul>{g.links.map((l) => <li key={l.href}><a href={l.href} {...(l.lang ? { hrefLang: l.lang, lang: l.lang } : {})}>{l.label}</a></li>)}</ul>
+                <ul>{g.links.map((l) => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}</ul>
               </div>
             ))}
           </nav>
-          <p className="foot-note">{c.footerNote} {c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a>.{publicRepos.length > 0 && <> {c.sourceNote} <a href={distribution.source.org}>github.com/bipe-chat</a>.</>}</p>
+          <div className="foot-bottom">
+            <p className="foot-note">{c.footerNote} {c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a>.{publicRepos.length > 0 && <> {c.sourceNote} <a href={distribution.source.org}>github.com/bipe-chat</a>.</>}</p>
+            {route.alt && <a href={route.alt} hrefLang={otherLang} lang={otherLang}>{c.other.label}</a>}
+          </div>
         </div>
       </footer>
     </>

@@ -4,7 +4,7 @@ import { Layout } from "./Layout";
 import { paths } from "./paths";
 import { ogImageName, routes, type Route } from "./routes";
 import { chrome } from "./copy";
-import { links } from "./nav";
+import { footerGroups, links } from "./nav";
 import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn } from "./pages";
 
@@ -24,6 +24,11 @@ import { isFigureId } from "./sim/scenes";
 
 /** Fails the build when the invite page disagrees with the shared invite-code vectors. */
 export function selfTest(): void {
+  // Every indexed top-level page (one path segment under / or /en/) is in the footer of its language (src/nav.ts).
+  for (const r of routes) {
+    if (r.noindex || r.path === paths.home(r.lang) || !/^\/(en\/)?[^/]+\/$/.test(r.path)) continue;
+    if (!footerGroups(r.lang).some((g) => g.links.some((l) => l.href === r.path))) throw new Error(`footer: top-level page ${r.path} is missing (src/nav.ts footer)`);
+  }
   for (const v of inviteCodes.vectors as { input: string; code: string | null }[]) {
     const got = extractInviteCode(v.input);
     if (got !== v.code) throw new Error(`invite-codes vector failed: ${JSON.stringify(v.input)} gave ${got}, want ${v.code}`);
