@@ -101,24 +101,30 @@ export function TrustCard({ level, title, children, icon = "person" }: { level: 
   );
 }
 
+/**
+ * One badge per platform, laid out like the App Store and Google Play badges: same colour, same size,
+ * icon, label, then the channel. Not the official badges: those may link only to the stores.
+ */
 export function DownloadButtons({ lang }: { lang: Lang }) {
   const { ios, android } = distribution;
+  const androidLive = android.status === "available" && android.url;
   return (
-    <div className="actions">
+    <div className="actions store-badges">
       {ios.url && (
-        <a className="button primary" href={ios.url}>
-          <Icon name="apple" />
+        <a className="button store" href={ios.url}>
+          <Icon name="apple" size={24} />
           <span>{ios[lang].label}<span className="sub">TestFlight</span></span>
         </a>
       )}
-      {android.status === "available" && android.url ? (
-        <a className="button secondary" href={android.url}><Icon name="android" />{android[lang].label}</a>
-      ) : (
-        <a className="button secondary" href={`${paths.download(lang)}#android`}>
-          <Icon name="android" />
-          <span>{android[lang].label}<span className="sub">{chrome[lang].waitlist.submit}</span></span>
-        </a>
-      )}
+      <a className="button store" href={androidLive ? android.url! : `${paths.download(lang)}#android`}>
+        <Icon name="android" size={24} />
+        <span>{android[lang].label}<span className="sub">{androidLive ? "APK" : chrome[lang].waitlist.submit}</span></span>
+      </a>
     </div>
   );
+}
+
+/** A standalone "go on" link drawn as a small outlined button: "Ver como funciona →". */
+export function MoreLink({ href, children }: { href: string; children: ReactNode }) {
+  return <a className="button secondary compact" href={href}>{children} <span aria-hidden="true">→</span></a>;
 }

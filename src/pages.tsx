@@ -2,7 +2,7 @@ import { chrome } from "./copy";
 import { CodeList } from "./components/code";
 import { AppIcon, Mark, MARK, MARKS, Seal, Wordmark, type MarkId } from "./components/brand";
 import brandAssets from "./components/brand-assets.json";
-import { DownloadButtons, Icon, PlatformStatus } from "./components/ui";
+import { DownloadButtons, Icon, MoreLink, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
@@ -32,7 +32,7 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
         <H>{tp[lang].title}</H>
         <p className="lede">{tp[lang].summary}</p>
         <Points items={tp[lang].points} />
-        {headingLevel === 2 && <p style={{ marginTop: 24 }}><a href={paths.tentpole(lang, tp)}>{chrome[lang].more} →</a></p>}
+        {headingLevel === 2 && <p style={{ marginTop: 24 }}><MoreLink href={paths.tentpole(lang, tp)}>{chrome[lang].more}</MoreLink></p>}
       </div>
       <Demo lang={lang} tp={tp} index={0} />
     </div>
@@ -46,7 +46,7 @@ function TentpoleCard({ lang, tp }: { lang: Lang; tp: Tentpole }) {
       {tp.status === "planned" && <span className="small muted">{chrome[lang].status.planned}</span>}
       <span className="display">{tp[lang].title}</span>
       <p>{tp[lang].summary}</p>
-      <span className="more">{chrome[lang].more} →</span>
+      <span className="more button secondary compact">{chrome[lang].more} <span aria-hidden="true">→</span></span>
     </a>
   );
 }
@@ -63,7 +63,7 @@ function PixSection({ lang }: { lang: Lang }) {
           <h2>{tp[lang].demos[tp.demos.indexOf("pix")]?.title ?? f[lang].name}</h2>
           <p className="lede">{f[lang].body}</p>
           <Points items={f[lang].points} />
-          <p style={{ marginTop: 24 }}><a href={paths.feature(lang, f)}>{chrome[lang].more} →</a></p>
+          <p style={{ marginTop: 24 }}><MoreLink href={paths.feature(lang, f)}>{chrome[lang].more}</MoreLink></p>
         </div>
         <Figure lang={lang} id="pix" caption={figureCaption(lang, f)} />
       </div>
@@ -145,8 +145,10 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
         <div className="grid">
           {features.map((f) => <FeatureCard lang={lang} f={f} key={f.id} />)}
         </div>
-        <p style={{ marginTop: 24 }}><a href={paths.features(lang)}>{chrome[lang].allFeatures} →</a></p>
-        {tp.id === "trust" && <p><a href={paths.compare(lang)}>{compare[lang].title} →</a></p>}
+        <p className="more-links">
+          <MoreLink href={paths.features(lang)}>{chrome[lang].allFeatures}</MoreLink>
+          {tp.id === "trust" && <MoreLink href={paths.compare(lang)}>{compare[lang].title}</MoreLink>}
+        </p>
       </section>
     </>
   );
@@ -477,14 +479,14 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
                   {p.upstream && <p className="small muted">{c.tech.basedOn} {p.upstream.map((u, i) => <span key={u.url}>{i > 0 && ", "}<a href={u.url}>{u.name}</a></span>)}</p>}
                   {code.length > 0
                     ? <p className="small">{code.map((l, i) => <span key={l.id}>{i > 0 && " · "}<a href={l.url}>{l[lang]}</a></span>)}</p>
-                    : repo && <p className="small"><a href={repo.url}>{c.tech.code} →</a></p>}
+                    : repo && <p><MoreLink href={repo.url}>{c.tech.code}</MoreLink></p>}
                 </div>
               );
             })}
           </div>
         </div>
       ))}
-      <p style={{ marginTop: 32 }}><a href={paths.docs(lang)}>{c.docs} →</a></p>
+      <p style={{ marginTop: 32 }}><MoreLink href={paths.docs(lang)}>{c.docs}</MoreLink></p>
       {publicRepos.length > 0 && (
         <div className="side" id="source">
           <h2>{c.sourceTitle}</h2>
@@ -582,7 +584,7 @@ export function ComparePage({ lang }: { lang: Lang }) {
             <div className="card feature" key={a.id}>
               <h3>{a.name}</h3>
               <p>{a[lang].line}</p>
-              <p className="small"><a href={paths.compareApp(lang, a)}>{c.more} →</a></p>
+              <p><MoreLink href={paths.compareApp(lang, a)}>{c.more}</MoreLink></p>
             </div>
           ))}
         </div>
@@ -641,7 +643,7 @@ export function CompareAppPage({ lang, app }: { lang: Lang; app: CompareApp }) {
       <div className="side narrow">
         <h2>{c.appsTitle}</h2>
         <ul>{compare.apps.filter((o) => o.id !== app.id).map((o) => <li key={o.id}><a href={paths.compareApp(lang, o)}>{o[lang].title}</a></li>)}</ul>
-        <p><a href={paths.compare(lang)}>{c.title} →</a></p>
+        <p><MoreLink href={paths.compare(lang)}>{c.title}</MoreLink></p>
       </div>
       <CompareFoot lang={lang} apps={[app]} />
     </section>
@@ -660,8 +662,10 @@ export function AboutPage({ lang }: { lang: Lang }) {
           <p style={{ margin: 0 }}>{s.body}</p>
         </div>
       ))}
-      <p style={{ marginTop: 40 }}><a href={paths.partners(lang)}>{product.partners[lang].aboutLink} →</a></p>
-      <p style={{ marginTop: 16 }}><a href={paths.brand(lang)}>{chrome[lang].brand.link} →</a></p>
+      <p className="more-links" style={{ marginTop: 40 }}>
+        <MoreLink href={paths.partners(lang)}>{product.partners[lang].aboutLink}</MoreLink>
+        <MoreLink href={paths.brand(lang)}>{chrome[lang].brand.link}</MoreLink>
+      </p>
       <p style={{ marginTop: 16 }}><a href={`${paths.partners(lang)}#form`}>{chrome[lang].contact}</a></p>
     </section>
   );

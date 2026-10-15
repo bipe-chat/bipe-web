@@ -275,7 +275,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
                         <SourceLine lang={lang} ids={statSources(s)} extra={s[lang].period} />
                       </div>
                     )}
-                    <p className="scam-type-more" aria-hidden="true">{c.typeMore} →</p>
+                    <p className="scam-type-more" aria-hidden="true"><span className="button secondary compact">{c.typeMore} →</span></p>
                   </article>
                 );
               })}

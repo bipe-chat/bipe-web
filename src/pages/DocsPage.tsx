@@ -5,6 +5,7 @@ import { chrome } from "../copy";
 import { paths } from "../paths";
 import type { Lang } from "../shared";
 import { Markdown, mdTitle } from "../components/markdown";
+import { MoreLink } from "../components/ui";
 import ptIndex from "../docs/pt/index.md?raw";
 import ptDomains from "../docs/pt/dominios.md?raw";
 import ptArchitecture from "../docs/pt/arquitetura.md?raw";
@@ -39,7 +40,7 @@ export function DocsPage({ lang, doc }: { lang: Lang; doc: Doc }) {
         <section className="wrap narrow section">
           <h2>{c.alsoIn(c.docs)}</h2>
           <ul>{others.map((d) => <li key={d.id}><a href={paths.docs(lang, d.slug[lang])}>{docTitle(d.md[lang])}</a></li>)}</ul>
-          <p><a href={paths.docs(lang)}>{c.docs} →</a></p>
+          <p><MoreLink href={paths.docs(lang)}>{c.docs}</MoreLink></p>
         </section>
       )}
     </>

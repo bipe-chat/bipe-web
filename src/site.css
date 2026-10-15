@@ -93,6 +93,11 @@ h3 { font-size: 19px; margin: 0 0 6px; }
 .button.primary:hover { background: var(--acai-deep); }
 .button.secondary { border-color: var(--line); color: var(--text); background: transparent; }
 .button.secondary:hover { border-color: var(--acai); }
+.button.compact { padding: 8px 16px; font-size: 15px; gap: 6px; }
+/* Download badges: equal width, same dark fill in both themes, like the store badges. */
+.store-badges { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 480px; }
+.button.store { background: var(--text); color: var(--bg); justify-content: flex-start; padding: 10px 20px; }
+.button.store:hover { opacity: .88; }
 .button .sub { display: block; font-weight: 400; font-size: 13px; opacity: .85; }
 
 /* Cards */
@@ -103,7 +108,9 @@ a.card:hover { border-color: var(--acai); }
 a.card.feature { display: flex; }
 a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: column; gap: 10px; min-height: 200px; }
 .tentpole-card .display { font-size: 24px; }
-.tentpole-card .more { margin-top: auto; color: var(--acai); font-weight: 600; font-size: 15px; }
+.tentpole-card .more { margin-top: auto; align-self: flex-start; }
+.tentpole-card:hover .more, .scam-type:hover .scam-type-more .button { border-color: var(--acai); }
+.more-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .tentpole-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 640px) { .tentpole-grid { grid-template-columns: 1fr; } }
 
