@@ -4,7 +4,7 @@
   "license": "AGPL-3.0-only",
   "type": "module",
   "scripts": {
-    "build": "tsc --noEmit && node scripts/build.mjs",
+    "build": "tsc --noEmit && node scripts/build.mjs && node --test scripts/experiment.test.mjs",
     "preview": "vite preview --outDir dist --port 4321",
     "deploy": "pnpm build && sh scripts/deploy.sh"
   },
