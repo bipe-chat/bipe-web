@@ -1,7 +1,7 @@
 /* The /empresas/ minis (src/sim/BusinessMinis.tsx). Colours only from bipe-tokens variables (site.css :root). */
 .biz-points { max-width: 46em; }
 .biz-points li { color: var(--muted); font-size: 16px; }
-.biz-stage { width: 100%; min-width: 0; }
+.biz-stage { width: 100%; min-width: 0; font-family: var(--app); }
 .biz-stage button { font: inherit; }
 
 .desk-btn { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
