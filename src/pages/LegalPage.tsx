@@ -1,7 +1,8 @@
 // Legal pages (privacy, terms, LGPD). Privacy and terms live in src/legal/*.md and are shown as written:
 // the .md file is also the page's Markdown twin. The LGPD page is Markdown built from the data register
 // (bipe-shared/product/data.json). Renderer: src/components/markdown.tsx.
-import { dataRegister, type Lang } from "../shared";
+import { dataRegister, privacyRegister, type Lang } from "../shared";
+import { paths } from "../paths";
 import { Markdown, mdTitle } from "../components/markdown";
 import privacidade from "../legal/privacidade.md?raw";
 import termos from "../legal/termos.md?raw";
@@ -47,6 +48,7 @@ export function lgpdMarkdown(lang: Lang): string {
     `# ${c.title}\n_${c.meta}_`,
     c.lede,
     c.policy,
+    `[${privacyRegister[lang].title}](${paths.whoCanRead(lang)}).`,
     `## ${c.itemsTitle}`,
     ...items,
     `## ${c.outsideTitle}`,

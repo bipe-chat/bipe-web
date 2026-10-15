@@ -14,6 +14,7 @@ import distributionJson from "@shared/product/distribution.json";
 import productJson from "@shared/product/product.json";
 import compareJson from "@shared/product/compare.json";
 import dataJson from "@shared/product/data.json";
+import privacyJson from "@shared/product/privacy.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import * as pixLib from "@shared/tools/lib/pix.mjs";
 import type { FigureId, SceneId } from "./sim/scenes";
@@ -158,6 +159,22 @@ export const dataRegister = dataJson as unknown as {
   brazil: { yes: string; no: string; unknown: string };
   outsideTitle: string; outsideLede: string; deviceTitle: string; deviceLede: string; notPersonal: string;
   rightsTitle: string; rights: string[]; rightsHow: string; controllerTitle: string; controller: string; encarregadoMissing: string;
+}>;
+
+export type PrivacyLevel = "yes" | "partial" | "no";
+/** Who can read what (bipe-shared/product/privacy.json, ADR 0109): /quem-pode-ler/ and its summary on the e2ee pages. */
+export const privacyRegister = privacyJson as unknown as {
+  date: string;
+  feature: string;
+  tentpole: string;
+  slug: Copy<string>;
+  levels: PrivacyLevel[];
+  things: ({ id: string; register: string[] } & Copy<string>)[];
+  parties: ({ id: string; access: Record<string, PrivacyLevel> } & Copy<{ name: string; note: string }>)[];
+} & Copy<{
+  nav: string; title: string; lede: string; explainTitle: string; explain: { heading: string; body: string }[]; rule: string;
+  tableTitle: string; tableLede: string; levelLabels: Record<PrivacyLevel, string>; limitsTitle: string; limits: string[];
+  faqTitle: string; faq: { q: string; a: string }[]; more: string; summaryTitle: string; summaryLink: string;
 }>;
 
 type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;

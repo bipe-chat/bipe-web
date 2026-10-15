@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { chrome } from "./copy";
-import { compare, dataRegister, distribution, product, publicRepos, type Lang } from "./shared";
+import { compare, dataRegister, distribution, privacyRegister, product, publicRepos, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { identityTentpoles, type Section } from "./nav";
 import { paths } from "./paths";
 import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
+import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
 import { AboutPage, BrandKitPage, BusinessPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -122,6 +123,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     markdown: legal[doc][lang],
     body: () => <LegalPage md={legal[doc][lang]} />,
   })),
+  {
+    path: paths.whoCanRead(lang), alt: paths.whoCanRead(other(lang)), lang,
+    title: `${privacyRegister[lang].title} · Bipe`, description: privacyRegister[lang].lede,
+    markdown: whoCanReadMarkdown(lang),
+    body: () => <WhoCanReadPage lang={lang} />,
+  },
   {
     path: paths.lgpd(lang), alt: paths.lgpd(other(lang)), lang,
     title: `${dataRegister[lang].title} · Bipe`, description: dataRegister[lang].lede,

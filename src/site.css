@@ -471,3 +471,16 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .flow li { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; background: var(--bg); position: relative; }
 .flow li + li::before { content: "↓"; position: absolute; top: -26px; left: 50%; transform: translateX(-50%); color: var(--acai); font-size: 20px; }
 .flow-icon { color: var(--acai); }
+
+/* Who can read what (src/pages/PrivacyPage.tsx). */
+.who-steps { list-style: none; padding: 0; margin: 24px 0 0; counter-reset: who; }
+.who-steps li { counter-increment: who; }
+.who-steps h3::before { content: counter(who) ". "; color: var(--acai); }
+.who-card h3 { font-size: 18px; margin: 0 0 12px; }
+.who-list { list-style: none; padding: 0; margin: 0 0 14px; font-size: 15px; }
+.who-list li { margin-bottom: 6px; }
+.who-list strong { display: inline-block; min-width: 4.5em; }
+.who-yes strong { color: var(--cpd-color-text-trust-caution); }
+.who-partial strong { color: var(--cpd-color-text-trust-neutral); }
+.who-no strong { color: var(--cpd-color-text-trust-verified); }
+.who-more p { color: var(--muted); margin-top: 32px; }

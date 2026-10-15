@@ -3,7 +3,7 @@
 import { chrome } from "./copy";
 import { paths } from "./paths";
 import type { Route } from "./routes";
-import { compare, dataRegister, distribution, product, publicRepos, type Lang } from "./shared";
+import { compare, dataRegister, distribution, privacyRegister, product, publicRepos, type Lang } from "./shared";
 
 /** Tentpoles of the identity side. Their pages belong to the "trust" section. */
 export const identityTentpoles: readonly string[] = product.sides.find((s) => s.id === "other")!.tentpoles;
@@ -30,6 +30,7 @@ export function links(lang: Lang) {
     brand: { href: paths.brand(lang), label: c.brand.link },
     partners: { href: paths.partners(lang), label: product.partners[lang].nav },
     contact: { href: `${paths.partners(lang)}#form`, label: c.contact },
+    whoCanRead: { href: paths.whoCanRead(lang), label: privacyRegister[lang].nav },
     privacy: { href: paths.privacy(lang), label: c.privacy },
     lgpd: { href: paths.lgpd(lang), label: dataRegister[lang].nav },
     terms: { href: paths.terms(lang), label: c.terms },
@@ -53,7 +54,7 @@ export const footer = [
   { group: "for", links: ["audiences", "business"] }, // Is it for me?
   { group: "learn", links: ["scams", "technology", "docs", "source"] }, // How does it work, can I check it?
   { group: "bipe", links: ["about", "brand", "partners", "contact"] }, // Who is behind it?
-  { group: "legal", links: ["privacy", "lgpd", "terms"] }, // What happens to my data?
+  { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];
 
 /** The footer groups with their headings and links, ready to render. The source link shows only when a repo is public. */

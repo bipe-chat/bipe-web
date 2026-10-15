@@ -12,7 +12,8 @@ import { NoAdsFigure } from "./sim/NoAdsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
 import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
-import { codeLinks, compare, distribution, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
+import { WhoCanReadSummary } from "./pages/PrivacyPage";
+import { codeLinks, compare, distribution, privacyRegister, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -159,6 +160,7 @@ export function TentpolePage({ lang, tp }: { lang: Lang; tp: Tentpole }) {
   return (
     <>
       <section className="wrap section"><TentpoleSection lang={lang} tp={tp} headingLevel={1} /></section>
+      {tp.id === privacyRegister.tentpole && <WhoCanReadSummary lang={lang} />}
       {tp.demos.slice(1).map((id, i) => (
         <section className="wrap section" key={id}>
           <h2>{tp[lang].demos[i + 1]?.title}</h2>
@@ -261,6 +263,7 @@ export function FeaturePage({ lang, f }: { lang: Lang; f: Feature }) {
       ) : (
         <section className="wrap narrow section">{text}</section>
       )}
+      {f.id === privacyRegister.feature && <WhoCanReadSummary lang={lang} />}
       {more.length > 0 && (
         <section className="wrap section">
           <h2>{c.figuresTitle}</h2>
