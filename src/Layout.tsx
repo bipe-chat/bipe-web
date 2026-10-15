@@ -35,7 +35,7 @@ export function Layout({ route }: { route: Route }) {
             ))}
           </nav>
           <div className="foot-bottom">
-            <p className="foot-note">{c.footerNote} {c.steward} <a href={distribution.steward.url}>{distribution.steward.name}</a>.{publicRepos.length > 0 && <> {c.sourceNote} <a href={distribution.source.org}>github.com/bipe-chat</a>.</>}</p>
+            <p className="foot-note">{publicRepos.length > 0 ? c.footerNote.open : c.footerNote.closed} <a href={distribution.steward.url}>{distribution.steward.name}</a>{publicRepos.length > 0 && " (AGPL-3.0)"}.</p>
             {route.alt && <a href={route.alt} hrefLang={otherLang} lang={otherLang}>{c.other.label}</a>}
           </div>
         </div>
