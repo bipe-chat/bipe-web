@@ -6,7 +6,7 @@ import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind 
 export type IconName = "warning" | "check" | "person" | "send" | "apple" | "android" | "mail" | "globe" | "shield" | "pix" | "circle" | "back" | "plus" | "mic" | "search" | "chat" | "group"
   | "phone" | "call" | "bag" | "key" | "heart" | "scales" | "bank" | "box" | "briefcase" | "headset" | "tag" | "receipt"
   | "house" | "swap" | "barcode" | "cash" | "trend" | "dice" | "link" | "cursor" | "sim" | "lock" | "eye" | "gift"
-  | "card" | "terminal" | "scooter" | "hourglass" | "badge" | "at";
+  | "card" | "terminal" | "scooter" | "hourglass" | "badge" | "at" | "calendar" | "clock";
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const p = {
@@ -57,6 +57,8 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
     card: "M3 6h18v12H3V6Zm0 4h18M6.5 14.5h4",
     terminal: "M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm1.5 3h7v4h-7V6Zm0 7.5v.01m3.5-.01v.01m3.5-.01v.01M8.5 17v.01m3.5-.01v.01m3.5-.01v.01",
     scooter: "M6 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm12 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM8.5 15.5h6l3-8.5H15m-6.5 8.5L7 10H3.5M14 5h3",
+    calendar: "M5 5.5h14v14H5zM5 10h14M9 3.5v4M15 3.5v4",
+    clock: "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 4v4.5l3 2",
     hourglass: "M7 3h10M7 21h10M8 3v3.5a4 4 0 0 0 1.6 3.2L12 12l2.4-2.3A4 4 0 0 0 16 6.5V3M8 21v-3.5a4 4 0 0 1 1.6-3.2L12 12l2.4 2.3a4 4 0 0 1 1.6 3.2V21",
     badge: "M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6L12 3Zm-3.5 9 2.5 2.5 4.5-5",
     at: "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm3.5 3.5v1.5a2.5 2.5 0 0 0 5 0V12a8.5 8.5 0 1 0-3.3 6.7",

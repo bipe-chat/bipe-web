@@ -88,6 +88,7 @@ export const chrome = {
       "boleto-internet": "Falsa segunda via", "banco-real": "Banco de verdade", "escola-real": "Escola de verdade", "loja-real": "Loja de verdade",
       "entrega-real": "Entrega de verdade", "igreja-real": "Igreja de verdade", "credito-real": "Crédito de verdade", "advogado-real": "Advogado de verdade",
       "doacao-real": "Doação de verdade", "pousada-real": "Pousada de verdade", "internet-real": "Fatura de verdade",
+      "agenda-marcar": "Marcar horário", "agenda-dono": "Agenda da empresa", "agenda-lembrete": "Lembrete do horário",
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
@@ -99,10 +100,17 @@ export const chrome = {
       joinNoSeal: "Este grupo aceita só contas verificadas, então o pedido não entrou.",
       newChat: "Nova conversa", scanTitle: "Ler QR code", scanHint: "Aponte a câmera para o QR code da pessoa.",
       bankFrom: (name: string) => `Pix para o Bipe, da conta de ${name}`,
+      // Agenda scenes: sample values only. UI labels are bipe_agenda_* in bipe-shared/strings.
+      agenda: {
+        lockDay: "terça, 21 de outubro", now: "agora",
+        hours: (n: number) => `${n} horas`, minutes: (n: number) => `${n} minutos`,
+        hour: (time: string) => (time.endsWith(":00") ? `${Number(time.slice(0, 2))}h` : time.replace(":", "h")),
+      },
     },
     // The /empresas/ minis (src/sim/BusinessMinis.tsx). Labels of a product that is not live yet.
     biz: {
       caption: "Ilustração com dados de exemplo.",
+      agendaCaption: "Ilustração com dados de exemplo. A agenda está planejada.",
       window: "Caixa de entrada · Clínica Vida",
       queue: "Fila", back: "Voltar para a fila", you: "Você", nobody: "Sem responsável", owner: "Responsável",
       take: "Assumir", taken: "Com você",
@@ -285,6 +293,7 @@ export const chrome = {
       "boleto-internet": "Fake duplicate bill", "banco-real": "Real bank", "escola-real": "Real school", "loja-real": "Real shop",
       "entrega-real": "Real delivery", "igreja-real": "Real church", "credito-real": "Real loan", "advogado-real": "Real lawyer",
       "doacao-real": "Real donation", "pousada-real": "Real guesthouse", "internet-real": "Real bill",
+      "agenda-marcar": "Book a time", "agenda-dono": "The business agenda", "agenda-lembrete": "Booking reminder",
     } satisfies Record<SceneId, string>,
     sim: {
       accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll", ask: "Question",
@@ -295,9 +304,15 @@ export const chrome = {
       joinNoSeal: "This group takes only verified accounts, so the request did not go in.",
       newChat: "New chat", scanTitle: "Scan QR code", scanHint: "Point the camera at the person's QR code.",
       bankFrom: (name: string) => `Pix to Bipe, from ${name}'s account`,
+      agenda: {
+        lockDay: "Tuesday, 21 October", now: "now",
+        hours: (n: number) => `${n} hours`, minutes: (n: number) => `${n} minutes`,
+        hour: (time: string) => time,
+      },
     },
     biz: {
       caption: "Illustration with sample data.",
+      agendaCaption: "Illustration with sample data. The agenda is planned.",
       window: "Inbox · Clínica Vida",
       queue: "Queue", back: "Back to the queue", you: "You", nobody: "Unassigned", owner: "Owner",
       take: "Take", taken: "With you",

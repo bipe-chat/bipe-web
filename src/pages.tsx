@@ -364,7 +364,8 @@ export function BusinessPage({ lang }: { lang: Lang }) {
   const b = product.business[lang];
   const c = chrome[lang].biz;
   // Sections 2 and 3 (the team inbox, and the API and how customers arrive) each get their mini (src/sim/BusinessMinis.tsx).
-  const [why, inbox, connect, ...rest] = b.sections;
+  // Section 4 (the agenda) gets the owner's day view, the same scene as on its feature page.
+  const [why, inbox, connect, agenda, ...rest] = b.sections;
   return (
     <>
       <section className="wrap section">
@@ -393,6 +394,15 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           <Figure lang={lang} id="bizArrive" caption={c.arriveCaption} />
         </div>
         <div style={{ marginTop: 28 }}><Figure lang={lang} id="bizApi" caption={c.apiCaption} /></div>
+      </section>
+      <section className="wrap section">
+        <div className="split">
+          <div>
+            <h2 style={{ fontSize: 28 }}>{agenda.heading}</h2>
+            <ul className="points biz-points">{agenda.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
+          </div>
+          <Figure lang={lang} id="agenda-dono" caption={c.agendaCaption} />
+        </div>
       </section>
       <section className="wrap section">
         <div className="grid">

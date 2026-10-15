@@ -42,7 +42,13 @@ export type Scene =
   /** The Pix R$ 0,01 verification step (verified-badge). */
   | { kind: "verifyPix"; me: string }
   /** Contacts already on Bipe, found only by people who have the number saved (phone-discovery). */
-  | { kind: "contacts"; found: string[] };
+  | { kind: "contacts"; found: string[] }
+  /** Agenda, customer side: profile, service, person, time, confirm, then the booking card in the chat (agendaDemo). */
+  | { kind: "book"; with: string }
+  /** Agenda, owner side in company mode: the day view, one column per agenda (agendaDemo). */
+  | { kind: "agendaDay"; with: string }
+  /** Agenda: the 24-hour reminder push with its actions (ADR 0102). */
+  | { kind: "agendaReminder"; with: string };
 
 export const ME = "me";
 
@@ -523,6 +529,10 @@ export const scenes = {
       { card: "charge", amount: "R$ 99,90", description: { pt: "Fatura de outubro", en: "Fatura de outubro (October bill)" } },
     ],
   },
+  // Agenda (agenda, planned): a banho e tosa shop. Sample data in agendaDemo.
+  "agenda-marcar": { kind: "book", with: "caramelo" },
+  "agenda-dono": { kind: "agendaDay", with: "caramelo" },
+  "agenda-lembrete": { kind: "agendaReminder", with: "caramelo" },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;
@@ -625,6 +635,50 @@ export const arriveDemo = {
   company: "clinica", customer: "caio",
   ask: { pt: "Oi! Preciso remarcar a consulta de quinta", en: "Oi! Preciso remarcar a consulta de quinta (I need to move Thursday's appointment)" },
   reply: { pt: "Oi, Caio! Claro. Quinta às 17h fica bom pra você?", en: "Oi, Caio! Claro. Quinta às 17h fica bom pra você? (Sure. Does Thursday at 5pm work?)" },
+};
+
+/**
+ * Agenda scenes (bipe/docs/scheduling.md, ADRs 0099 to 0103). The shop is a cast institution. Ana and Bruno
+ * are agendas, not accounts: a person with an agenda needs no Bipe account (ADR 0099), so they are names here.
+ * The booking card is drawn by the app from the API and pinned above the chat, not posted in the room (ADR 0102).
+ * Free text about the pet goes in the encrypted chat, never in the booking.
+ */
+export type AgendaBooking = { agenda: number; start: number; minutes: number; service: number; who: string; fresh?: boolean };
+
+export const agendaDemo = {
+  services: [
+    { name: { pt: "Banho", en: "Banho (Bath)" }, minutes: 60, price: "R$ 60" },
+    { name: { pt: "Banho e tosa", en: "Banho e tosa (Bath and grooming)" }, minutes: 90, price: "R$ 95" },
+    { name: { pt: "Tosa higiênica", en: "Tosa higiênica (Hygienic trim)" }, minutes: 30, price: "R$ 40" },
+  ],
+  agendas: ["Ana", "Bruno"],
+  /** The week strip: Sunday is closed, Saturday is full. */
+  week: [
+    { day: { pt: "seg", en: "Mon" }, n: 20 }, { day: { pt: "ter", en: "Tue" }, n: 21 }, { day: { pt: "qua", en: "Wed" }, n: 22 },
+    { day: { pt: "qui", en: "Thu" }, n: 23 }, { day: { pt: "sex", en: "Fri" }, n: 24 }, { day: { pt: "sáb", en: "Sat" }, n: 25, full: true },
+    { day: { pt: "dom", en: "Sun" }, n: 26, full: true },
+  ],
+  times: ["09:00", "10:30", "14:00", "15:30", "17:00"],
+  pick: { service: 1, agenda: 0, day: 2, time: 2 },
+  date: { pt: "qua, 22 de outubro", en: "Wed, 22 October" },
+  address: "Rua das Paineiras, 120",
+  cancelHours: 2,
+  holdMinutes: 5,
+  /** After the booking, in the encrypted chat. */
+  note: { pt: "O Paçoca tem alergia a shampoo de coco", en: "O Paçoca tem alergia a shampoo de coco (Paçoca is allergic to coconut shampoo)" },
+  reply: { pt: "Anotado! A Ana usa o shampoo neutro nele", en: "Anotado! A Ana usa o shampoo neutro nele (Noted! Ana will use the plain shampoo)" },
+  /** The owner's day, 9h to 18h. `start` is the hour. The fresh booking is the customer's from the booking scene. */
+  hours: [9, 18],
+  now: 11.5,
+  bookings: [
+    { agenda: 0, start: 9, minutes: 60, service: 0, who: "bia" },
+    { agenda: 1, start: 9.5, minutes: 90, service: 1, who: "caio" },
+    { agenda: 0, start: 10.5, minutes: 30, service: 2, who: "thiago" },
+    { agenda: 1, start: 15, minutes: 60, service: 0, who: "duda" },
+    { agenda: 0, start: 14, minutes: 90, service: 1, who: "gabi", fresh: true },
+  ] satisfies AgendaBooking[],
+  /** A block the owner adds with a long press (an override on one agenda). */
+  block: { agenda: 1, start: 12, minutes: 60, label: { pt: "Almoço", en: "Almoço (Lunch)" } },
 };
 
 export const text = (t: Text, lang: "pt" | "en") => (typeof t === "string" ? t : t[lang]);

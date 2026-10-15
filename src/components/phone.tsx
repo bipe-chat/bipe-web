@@ -5,7 +5,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { Avatar, decor, label, who } from "../cast";
 import { t, type Lang } from "../shared";
 import { useClock } from "./clock";
-import { Icon } from "./ui";
+import { Icon, type IconName } from "./ui";
 
 // iPhone 16 Pro in points: 402x874 screen, 62pt display corners. The bezel is half the real one, so the screen reads larger.
 const SCREEN_W = 402, SCREEN_H = 874, SCREEN_R = 62, BEZEL = 7.5;
@@ -106,9 +106,16 @@ function Composer({ lang }: { lang: Lang }) {
   );
 }
 
-/** Floating iOS 26 tab bar (ADR 0053): Conversas, Grupos, Você, and search on its own. */
-export function TabBar({ lang, active }: { lang: Lang; active: "chats" | "you" }) {
-  const tabs = [["chats", "chat", "bipe_tab_chats"], ["groups", "group", "bipe_tab_groups"], ["you", "person", "bipe_tab_you"]] as const;
+/**
+ * Floating iOS 26 tab bar (ADR 0053): Conversas, Grupos, Você, and search on its own.
+ * `company`: company mode (ADR 0087) puts the Agenda tab next to the chats (bipe/docs/scheduling.md).
+ */
+export function TabBar({ lang, active, company = false }: { lang: Lang; active: "chats" | "agenda" | "you"; company?: boolean }) {
+  const tabs: [string, IconName, string][] = [
+    ["chats", "chat", "bipe_tab_chats"],
+    company ? ["agenda", "calendar", "bipe_tab_agenda"] : ["groups", "group", "bipe_tab_groups"],
+    ["you", "person", "bipe_tab_you"],
+  ];
   return (
     <div className="tabbar">
       <div className="glass tabs">

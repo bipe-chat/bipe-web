@@ -141,6 +141,11 @@
       "photo": { "style": "logo", "look": "an internet provider, a cashew fruit with three small signal arcs above it, orange-red and green on white" }
     },
     {
+      "id": "caramelo", "kind": "institution", "name": "Caramelo Banho e Tosa", "short": "Caramelo Banho e Tosa", "handle": "caramelobanhoetosa",
+      "about": "Fictional pet grooming shop (banho e tosa), Campinas. Verified institution (CNPJ). The sample business of the Agenda scenes: two agendas, Ana and Bruno, who have no Bipe account. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "photo": { "style": "logo", "look": "a pet grooming shop, a simple round dog head with floppy ears next to two soap bubbles, caramel brown and teal on cream" }
+    },
+    {
       "id": "falsacaju", "kind": "person", "name": "CajuNet Segunda Via", "short": "CajuNet Segunda Via", "handle": "cajunet.2via",
       "about": "Unverified account that copies CajuNet's name and logo and sends a 'segunda via' with a personal Pix key.", "trust": "none",
       "photo": { "copyOf": "caju" }

@@ -1,0 +1,69 @@
+/* Agenda scenes (src/sim/AgendaParts.tsx). Sizes are iOS points, like the rest of the phone. Draft look: planned feature. */
+.agenda-nav { font-weight: 600; }
+.agenda-title { margin: 4px 0 0; font-size: 22px; line-height: 28px; }
+.agenda-profile { align-items: center; text-align: center; margin-top: 24px; }
+.agenda-profile .pill.wide { display: inline-flex; gap: 6px; align-items: center; justify-content: center; width: 100%; box-sizing: border-box; }
+.agenda-rows { display: flex; flex-direction: column; border-radius: 16px; background: var(--surface); overflow: hidden; }
+.agenda-row { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-bottom: .5px solid var(--line); }
+.agenda-row:last-child { border-bottom: 0; }
+.agenda-row.on { background: color-mix(in srgb, var(--cpd-color-icon-accent-primary) 12%, transparent); color: var(--cpd-color-text-action-accent); }
+.agenda-row.on .sub { color: inherit; }
+.agenda-row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.agenda-row-main strong { color: var(--text); }
+.agenda-initial { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--acai-wash); color: var(--acai); font-weight: 600; }
+.agenda-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.agenda-week span { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 12px; font-weight: 600; font-size: 17px; }
+.agenda-week small { font-size: 11px; font-weight: 500; color: var(--muted); }
+.agenda-week .full { opacity: .35; }
+.agenda-week .on { background: var(--cpd-color-icon-accent-primary); color: var(--on-acai); }
+.agenda-week .on small { color: inherit; }
+.agenda-times { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.agenda-times span { text-align: center; padding: 10px 0; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; font-variant-numeric: tabular-nums; }
+.agenda-times .on { background: var(--cpd-color-icon-accent-primary); border-color: transparent; color: var(--on-acai); }
+.agenda-review { display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 16px; background: var(--surface); }
+.agenda-review strong { font-size: 19px; }
+.agenda-review span { display: inline-flex; gap: 6px; align-items: center; }
+.agenda-confirm { margin-top: auto; }
+
+/* The booking card: pinned at the top of the chat, drawn from the API (ADR 0102). */
+.screen-body.chat .booking-pin { margin: 8px 16px auto; }
+.booking { border: 1px solid var(--line); border-radius: 16px; padding: 12px; background: var(--bg); font-size: 14px; line-height: 1.3; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 2px 8px rgba(0, 0, 0, .06); }
+.booking-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; color: var(--cpd-color-text-action-accent); }
+.booking-head > span:first-child { display: inline-flex; gap: 4px; align-items: center; }
+.booking-chip { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--cpd-color-bg-trust-verified-solid); color: var(--on-acai); }
+.booking strong { font-size: 18px; }
+.booking-line.muted { color: var(--muted); font-size: 13px; }
+.booking-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.booking-actions span { border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 600; background: var(--surface); }
+
+/* Owner day view: one column per agenda, a now-line, bookings and a block. */
+.agenda-day-head { padding: 0 16px 8px; color: var(--muted); font-size: 15px; font-weight: 600; }
+.agenda-cols { display: grid; grid-template-columns: 44px 1fr 1fr; gap: 4px; padding: 0 16px 6px; font-size: 14px; }
+.agenda-grid { position: relative; margin: 0 16px 0 60px; }
+.agenda-hour { position: absolute; left: -44px; right: 0; border-top: .5px solid var(--line); }
+.agenda-hour span { position: absolute; left: 0; top: -8px; font-size: 11px; color: var(--muted); background: var(--bg); padding-right: 4px; font-variant-numeric: tabular-nums; }
+.agenda-now { position: absolute; left: -4px; right: 0; height: 2px; background: var(--cpd-color-icon-critical-primary); z-index: 2; }
+.agenda-now::before { content: ""; position: absolute; left: -4px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: inherit; }
+.agenda-slot { position: absolute; width: calc(50% - 4px); box-sizing: border-box; border-radius: 8px; padding: 4px 8px; font-size: 12px; line-height: 15px; display: flex; flex-direction: column; overflow: hidden; background: var(--acai-wash); border-left: 3px solid var(--acai); }
+.agenda-slot.col0 { left: 0; }
+.agenda-slot.col1 { left: calc(50% + 2px); }
+.agenda-slot strong { font-size: 13px; }
+.agenda-slot span { color: var(--muted); }
+.agenda-slot em { font-style: normal; font-weight: 600; font-size: 11px; color: var(--cpd-color-text-action-accent); }
+.agenda-slot.short { flex-direction: row; gap: 4px; align-items: baseline; white-space: nowrap; padding-top: 2px; }
+.agenda-slot.fresh { box-shadow: 0 0 0 2px var(--cpd-color-icon-accent-primary); }
+.agenda-slot.block { background: repeating-linear-gradient(-45deg, var(--surface), var(--surface) 6px, transparent 6px, transparent 12px); border-left-color: var(--muted); color: var(--muted); }
+
+/* The reminder on the lock screen, with its actions. */
+.lock { display: flex; flex-direction: column; align-items: center; margin: 8px 0 28px; }
+.lock-day { font-size: 18px; font-weight: 600; color: var(--muted); }
+.lock-time { font-size: 84px; line-height: 1; font-weight: 700; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+.push { margin: 0 12px; padding: 12px 14px; border-radius: 22px; background: var(--surface); display: flex; flex-direction: column; gap: 2px; font-size: 15px; line-height: 20px; }
+.push p { margin: 0; }
+.push-head { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
+.push-head .sub { margin-left: auto; }
+.push-icon { width: 20px; height: 20px; border-radius: 5px; display: grid; place-items: center; background: var(--acai); color: var(--on-acai); }
+.push-actions { margin: 8px 12px 0; border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; overflow: hidden; }
+.push-actions span { padding: 12px 16px; border-bottom: .5px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 16px; }
+.push-actions span:last-child { border-bottom: 0; color: var(--cpd-color-text-critical-primary); }
+.push-actions span.on { color: var(--cpd-color-text-action-accent); font-weight: 600; }

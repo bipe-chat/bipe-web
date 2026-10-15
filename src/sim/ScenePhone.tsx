@@ -9,6 +9,7 @@ import { ME, REAL_VS_FAKE, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type
 import { PixCard } from "./PixCard";
 import { ChargeCard, Contacts, JoinCard, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, StickerPicker, VerifyPix } from "./SceneParts";
 import { Stage } from "./Stage";
+import { AgendaDay, AgendaReminder, BookFlow } from "./AgendaParts";
 
 /** The mark next to a name. The same state looks the same everywhere (design/trust-ui.md). */
 export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust; size?: number }) {
@@ -177,6 +178,8 @@ export function sceneSteps(s: Scene): number {
     case "scan": case "verifyPix": return 3;
     case "contacts": return s.found.length + 1;
     case "trustProfile": return 1;
+    case "book": return 6;
+    case "agendaDay": case "agendaReminder": return 3;
   }
 }
 
@@ -216,6 +219,12 @@ export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: Scen
       return <Phone lang={lang} layout="form" head={t(lang, "bipe_trust_title")}><VerifyPix lang={lang} me={scene.me} beat={beat} /></Phone>;
     case "contacts":
       return <Phone lang={lang} layout="form" head={t(lang, "bipe_contacts_title")}><Contacts lang={lang} found={scene.found} beat={beat} /></Phone>;
+    case "book":
+      return <BookFlow lang={lang} id={scene.with} beat={beat} />;
+    case "agendaDay":
+      return <AgendaDay lang={lang} beat={beat} />;
+    case "agendaReminder":
+      return <AgendaReminder lang={lang} id={scene.with} beat={beat} />;
     case "chat": {
       const trust = scene.trust ?? who(scene.with).trust;
       const footer = scene.footer === "readOnly" ? <ReadOnlyBar lang={lang} /> : scene.footer === "stickers" ? <StickerPicker lang={lang} /> : undefined;
