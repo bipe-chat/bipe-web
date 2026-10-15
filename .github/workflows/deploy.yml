@@ -4,6 +4,8 @@
 # qlmanage, so this build skips them and the icons already on the node stay.
 # Secrets: BIPE_DEPLOY_TARGET (user@host), BIPE_DEPLOY_PORT, BIPE_DEPLOY_KEY (private key of a key that
 # can write only the site directory), BIPE_DEPLOY_KNOWN_HOSTS (ssh-keyscan line of the gate).
+# The key is ~/.ssh/bipe_site_deploy_ed25519 on MZ's Mac. On the node its authorized_keys line is
+# command="rrsync /opt/bipe-infra/compose/site",restrict, so rsync paths are relative to the site directory.
 name: Deploy
 
 on:
@@ -57,6 +59,6 @@ jobs:
           printf '%s\n' "$KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           rsync -az -e "ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -p $PORT" \
-            dist/ "$TARGET:/opt/bipe-infra/compose/site/"
+            dist/ "$TARGET:"
       - name: Check the live site
         run: curl -fsS -o /dev/null https://bipe.chat/
