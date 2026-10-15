@@ -89,7 +89,7 @@ export const chrome = {
       "entrega-real": "Entrega de verdade", "igreja-real": "Igreja de verdade", "credito-real": "Crédito de verdade", "advogado-real": "Advogado de verdade",
       "doacao-real": "Doação de verdade", "pousada-real": "Pousada de verdade", "internet-real": "Fatura de verdade",
       "agenda-marcar": "Marcar horário", "agenda-dono": "Agenda da empresa", "agenda-lembrete": "Lembrete do horário",
-      catalogo: "Catálogo", pedido: "Pedido", orcamento: "Orçamento", "fila-virtual": "Fila virtual",
+      catalogo: "Catálogo", pedido: "Pedido", orcamento: "Orçamento", "fila-virtual": "Fila virtual", "conferir-pix": "Conferir no Bipe",
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
@@ -112,6 +112,7 @@ export const chrome = {
     biz: {
       caption: "Ilustração com dados de exemplo.",
       agendaCaption: "Ilustração com dados de exemplo. A agenda está planejada.",
+      toolsCaption: "Ilustração com dados de exemplo. Planejado.",
       window: "Caixa de entrada · Clínica Vida",
       queue: "Fila", back: "Voltar para a fila", you: "Você", nobody: "Sem responsável", owner: "Responsável",
       take: "Assumir", taken: "Com você",
@@ -295,7 +296,7 @@ export const chrome = {
       "entrega-real": "Real delivery", "igreja-real": "Real church", "credito-real": "Real loan", "advogado-real": "Real lawyer",
       "doacao-real": "Real donation", "pousada-real": "Real guesthouse", "internet-real": "Real bill",
       "agenda-marcar": "Book a time", "agenda-dono": "The business agenda", "agenda-lembrete": "Booking reminder",
-      catalogo: "Catalog", pedido: "Order", orcamento: "Quote", "fila-virtual": "Virtual queue",
+      catalogo: "Catalog", pedido: "Order", orcamento: "Quote", "fila-virtual": "Virtual queue", "conferir-pix": "Check it in Bipe",
     } satisfies Record<SceneId, string>,
     sim: {
       accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll", ask: "Question",
@@ -315,6 +316,7 @@ export const chrome = {
     biz: {
       caption: "Illustration with sample data.",
       agendaCaption: "Illustration with sample data. The agenda is planned.",
+      toolsCaption: "Illustration with sample data. Planned.",
       window: "Inbox · Clínica Vida",
       queue: "Queue", back: "Back to the queue", you: "You", nobody: "Unassigned", owner: "Owner",
       take: "Take", taken: "With you",

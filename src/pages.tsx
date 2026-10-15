@@ -360,11 +360,14 @@ export function DownloadPage({ lang }: { lang: Lang }) {
   );
 }
 
+// The business tools on /empresas/, one scene each (bipe/docs/business-tools.md).
+const TOOL_SCENES = ["catalogo", "pedido", "orcamento", "fila-virtual"] as const;
+
 export function BusinessPage({ lang }: { lang: Lang }) {
   const b = product.business[lang];
   const c = chrome[lang].biz;
   // Sections 2 and 3 (the team inbox, and the API and how customers arrive) each get their mini (src/sim/BusinessMinis.tsx).
-  // Section 4 (the agenda) gets the owner's day view, the same scene as on its feature page.
+  // Section 4 (the agenda and the business tools) gets the owner's day view and one scene per tool.
   const [why, inbox, connect, agenda, ...rest] = b.sections;
   return (
     <>
@@ -402,6 +405,9 @@ export function BusinessPage({ lang }: { lang: Lang }) {
             <ul className="points biz-points">{agenda.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
           </div>
           <Figure lang={lang} id="agenda-dono" caption={c.agendaCaption} />
+        </div>
+        <div className="figure-grid" style={{ marginTop: 28 }}>
+          {TOOL_SCENES.map((id) => <Figure lang={lang} id={id} caption={c.toolsCaption} key={id} />)}
         </div>
       </section>
       <section className="wrap section">

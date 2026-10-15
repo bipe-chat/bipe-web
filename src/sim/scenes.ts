@@ -53,7 +53,9 @@ export type Scene =
   | { kind: "catalog"; with: string }
   | { kind: "order"; with: string }
   | { kind: "quote"; with: string }
-  | { kind: "queue"; with: string };
+  | { kind: "queue"; with: string }
+  /** Conferir no Bipe (pix-check): a Pix code shared from another app, then the check result. */
+  | { kind: "pixCheck"; from: string; text: Text; code: string };
 
 export const ME = "me";
 
@@ -543,6 +545,13 @@ export const scenes = {
   pedido: { kind: "order", with: "padaria" },
   orcamento: { kind: "quote", with: "oficina" },
   "fila-virtual": { kind: "queue", with: "clinica" },
+  // pix-check: the seller's code with one letter of the key changed, so the CRC no longer matches.
+  // The result comes from pixCheck() in bipe-shared, the same as the app.
+  "conferir-pix": {
+    kind: "pixCheck", from: "rafa",
+    text: { pt: "Segue o Pix da bike, copia e cola", en: "Segue o Pix da bike, copia e cola (Here is the Pix code for the bike, copy and paste)" },
+    code: "00020126440014br.gov.bcb.pix0122rafa.blkes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63044B2D",
+  },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;

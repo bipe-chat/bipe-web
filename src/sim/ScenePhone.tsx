@@ -11,6 +11,7 @@ import { ChargeCard, Contacts, JoinCard, Lookup, PauseCard, PollCard, ReadOnlyBa
 import { Stage } from "./Stage";
 import { AgendaDay, AgendaReminder, BookFlow } from "./AgendaParts";
 import { CatalogView, OrderFlow, QueueView, QuoteChat } from "./BusinessToolParts";
+import { PixCheckFlow } from "./PixCheckScene";
 
 /** The mark next to a name. The same state looks the same everywhere (design/trust-ui.md). */
 export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust; size?: number }) {
@@ -181,7 +182,7 @@ export function sceneSteps(s: Scene): number {
     case "trustProfile": return 1;
     case "book": return 6;
     case "agendaDay": case "agendaReminder": case "queue": return 3;
-    case "catalog": return 2;
+    case "catalog": case "pixCheck": return 2;
     case "order": case "quote": return 4;
   }
 }
@@ -228,6 +229,8 @@ export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: Scen
       return <AgendaDay lang={lang} beat={beat} />;
     case "agendaReminder":
       return <AgendaReminder lang={lang} id={scene.with} beat={beat} />;
+    case "pixCheck":
+      return <PixCheckFlow lang={lang} from={scene.from} message={scene.text} code={scene.code} beat={beat} />;
     case "catalog":
       return <CatalogView lang={lang} id={scene.with} beat={beat} />;
     case "order":

@@ -15,6 +15,7 @@ import productJson from "@shared/product/product.json";
 import compareJson from "@shared/product/compare.json";
 import dataJson from "@shared/product/data.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
+import * as pixLib from "@shared/tools/lib/pix.mjs";
 import type { FigureId, SceneId } from "./sim/scenes";
 
 export type ScamKind = "extortion" | "pixCode" | "boleto" | "remoteApp" | "pinRequest" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
@@ -36,6 +37,9 @@ export const scamWarningKind = lib.scamWarningKind as (text: string, reg: Regist
 export const handleProblem = lib.handleProblem as (handle: string, reg: Registries) => "too_short" | "too_long" | "invalid_characters" | "reserved" | null;
 export const handleSkeleton = lib.handleSkeleton as (handle: string, reg: Registries) => string;
 export const extractInviteCodeRef = lib.extractInviteCode as (text: string, reg: Registries) => string | null;
+export type PixCode = { status: "valid" | "badCrc" | "malformed"; dynamic: boolean; key: string | null; keyType: string | null; name: string | null; city: string | null; amount: string | null; info: string | null };
+/** The Conferir no Bipe check of shared text (pix-check, test-vectors/pix-check.json). */
+export const pixCheck = pixLib.pixCheck as (text: string, reg: Registries) => { code: PixCode | null; keys: { value: string; types: string[] }[]; warning: ScamKind | null };
 
 export const reg = {
   reserved: reservedNames,
