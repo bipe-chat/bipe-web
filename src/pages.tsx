@@ -106,6 +106,8 @@ export function HomePage({ lang }: { lang: Lang }) {
         <section className="wrap section" key={tp.id}><TentpoleSection lang={lang} tp={tp} flip={i % 2 === 0} /></section>
       ))}
 
+      <PixCheckSection lang={lang} />
+
       <section className="wrap section">
         <div className="origin">
           <span style={{ color: "var(--acai)" }}><Mark size={56} /></span>
@@ -127,6 +129,28 @@ export function HomePage({ lang }: { lang: Lang }) {
         </div>
       </section>
     </>
+  );
+}
+
+function PixCheckSection({ lang }: { lang: Lang }) {
+  const feature = product.features.find((item) => item.id === "pix-check");
+  const figure = feature?.figures?.[0];
+  if (!feature || !figure) return null;
+  const inTesterBuild = feature.status.ios === "testing" || feature.status.android === "testing";
+  return (
+    <section className="wrap section" id="conferir-pix">
+      <div className="split">
+        <div>
+          {!inTesterBuild && <p className="small muted">{chrome[lang].status.planned}</p>}
+          <h2>{feature[lang].name}</h2>
+          <p className="lede">{feature[lang].body}</p>
+          <PlatformStatus lang={lang} f={feature} />
+          <Points items={feature[lang].points} />
+          <p style={{ marginTop: 24 }}><MoreLink href={paths.feature(lang, feature)}>{chrome[lang].more}</MoreLink></p>
+        </div>
+        <Figure lang={lang} id={figure} caption={figureCaption(lang, feature)} />
+      </div>
+    </section>
   );
 }
 
