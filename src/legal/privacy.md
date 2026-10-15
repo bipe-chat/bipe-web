@@ -14,6 +14,7 @@ During testing, Bipe is run by Envisioning. Questions or requests about your dat
 - **Your messages:** private conversations are end-to-end encrypted. The server stores them scrambled and can't read them. In rooms without encryption, the server stores the text.
 - **Connection data:** when you connect, we log the IP address, date and time. Brazil's Marco Civil da Internet (article 15) requires us to keep these logs for 6 months.
 - **Photos and files:** what you send stays on the server so the people you send it to can download it.
+- **Milestones:** the app sends no statistics. From what the server already sees, it notes a few milestones per day: account created, first sign-in, first message, contact verified, invite sent or used, group created, call started and day of use. Each one is tied to a code derived from your account, not to your username, with no content and nothing about who you talk to. It tells us whether Bipe is useful and at which step people give up. It is kept for 13 months.
 
 ## What we don't do
 - No ads.

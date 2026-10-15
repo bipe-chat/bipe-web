@@ -14,6 +14,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - **Suas mensagens:** conversas privadas são criptografadas de ponta a ponta. O servidor guarda tudo embaralhado e não consegue ler. Em salas sem criptografia, o servidor guarda o texto.
 - **Dados de conexão:** quando você se conecta, registramos o endereço IP, a data e a hora. O Marco Civil da Internet (artigo 15) obriga a guardar esses registros por 6 meses.
 - **Fotos e arquivos:** o que você envia fica no servidor para quem recebe conseguir baixar.
+- **Marcos de uso:** o app não manda estatística. O servidor anota, a partir do que ele já vê, alguns marcos por dia: conta criada, primeira entrada, primeira mensagem, contato verificado, convite enviado ou usado, grupo criado, chamada iniciada e dia de uso. Cada marco fica ligado a um código derivado da sua conta, não ao seu nome de usuário, sem conteúdo e sem saber com quem você fala. Serve para saber se o Bipe é útil e em que passo as pessoas desistem. Fica guardado por 13 meses.
 
 ## O que a gente não faz
 - Não mostra anúncio.
