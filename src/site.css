@@ -18,6 +18,7 @@
   --brand: "Nunito Variable", var(--ui);
   --app: -apple-system, BlinkMacSystemFont, var(--ui);
   --radius: 20px;
+  --gutter: 32px; /* one gap for split columns, figure grids and stacked figures, so their edges line up */
   color-scheme: light dark;
 }
 
@@ -70,15 +71,16 @@ h3 { font-size: 19px; margin: 0 0 6px; }
 /* Layout blocks */
 .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding-top: 64px; padding-bottom: 32px; }
 .section { padding-top: 72px; }
-.split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); align-items: center; }
 .split.flip > :first-child { order: 2; }
-.figure-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; margin-top: 24px; }
+.figure-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--gutter); margin-top: var(--gutter); }
+.figure-row { margin-top: var(--gutter); }
 @media (max-width: 400px) { .figure-grid { grid-template-columns: 1fr; } }
 /* auto-fit: 1 to 4 cards fill the row, no empty tracks. 5 or 6 cards: at most 3 columns (3+2, 3+3), not 4+1 or 4+2. */
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .grid:has(> :nth-child(5)):not(:has(> :nth-child(7))) { grid-template-columns: repeat(auto-fit, minmax(max(240px, calc((100% - 32px) / 3)), 1fr)); }
 @media (max-width: 860px) {
-  .hero, .split { grid-template-columns: 1fr; gap: 32px; }
+  .hero, .split { grid-template-columns: 1fr; gap: var(--gutter); }
   .split.flip > :first-child { order: 0; }
   .hero { padding-top: 40px; }
 }

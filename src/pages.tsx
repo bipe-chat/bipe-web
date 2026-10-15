@@ -386,7 +386,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
       <section className="wrap section">
         <h2 style={{ fontSize: 28 }}>{inbox.heading}</h2>
         <ul className="points biz-points">{inbox.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
-        <div style={{ marginTop: 28 }}><Figure lang={lang} id="bizInbox" caption={c.caption} /></div>
+        <div className="figure-row"><Figure lang={lang} id="bizInbox" caption={c.caption} /></div>
       </section>
       <section className="wrap section">
         <div className="split">
@@ -396,7 +396,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           </div>
           <Figure lang={lang} id="bizArrive" caption={c.arriveCaption} />
         </div>
-        <div style={{ marginTop: 28 }}><Figure lang={lang} id="bizApi" caption={c.apiCaption} /></div>
+        <div className="figure-row"><Figure lang={lang} id="bizApi" caption={c.apiCaption} /></div>
       </section>
       <section className="wrap section">
         <div className="split">
@@ -406,7 +406,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           </div>
           <Figure lang={lang} id="agenda-dono" caption={c.agendaCaption} />
         </div>
-        <div className="figure-grid" style={{ marginTop: 28 }}>
+        <div className="figure-grid">
           {TOOL_SCENES.map((id) => <Figure lang={lang} id={id} caption={c.toolsCaption} key={id} />)}
         </div>
       </section>
