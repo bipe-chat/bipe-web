@@ -1,5 +1,5 @@
 /* Colours come only from the bipe-tokens fork of Compound (light, dark and high contrast follow the system).
-   UI text uses the system font stack; Nunito is for the wordmark and page titles (identity.md, round 3). */
+   All text uses Nunito, phone screens included; the system stack is only the fallback (ADR 0020). */
 @import "@tokens/compound-design-tokens.css";
 @import "@fontsource-variable/nunito/wght.css";
 
@@ -22,7 +22,7 @@
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 var(--ui); }
+body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 var(--brand); }
 a { color: var(--acai); }
 img, svg { display: block; }
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
@@ -163,7 +163,7 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .screen > :not(.statusbar, .home-indicator) { zoom: 1.15; }
 /* The phone is a picture: no selection, no image drag, no long-press menu. */
 .phone * { pointer-events: none; -webkit-user-drag: none; }
-.screen { --bubble-in: var(--cpd-color-gray-300); --bubble-out: var(--cpd-color-gray-400); flex: 1; min-width: 0; min-height: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, var(--ui); font-size: 17px; line-height: 22px; letter-spacing: -.41px; overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
+.screen { --bubble-in: var(--cpd-color-gray-300); --bubble-out: var(--cpd-color-gray-400); flex: 1; min-width: 0; min-height: 0; background: var(--bg); color: var(--text); font-family: var(--brand); font-size: 17px; line-height: 22px; letter-spacing: -.41px; overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
 @media (prefers-color-scheme: dark) { .screen { --bubble-in: var(--cpd-color-gray-400); --bubble-out: var(--cpd-color-gray-500); } }
 /* iPhone 16 Pro: 62pt top safe area, 125x37pt Dynamic Island 11pt from the top. */
 .statusbar { height: 62px; flex: none; display: grid; grid-template-columns: 1fr 125px 1fr; grid-template-rows: 37px; align-items: center; padding-top: 11px; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
