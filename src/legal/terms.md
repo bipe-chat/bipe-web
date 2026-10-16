@@ -1,7 +1,7 @@
 # Terms of use
-_Bipe, test version. Updated 12 October 2026._
+_Bipe, test version. Updated 16 October 2026._
 
-Bipe is in testing and, for now, invite only. By using the app you agree to these terms. The Portuguese version is the reference text.
+Bipe is in testing and, for now, invite only. To create an account, you tick a box to say that you have read and accept these terms and the [privacy policy](/en/privacy/). We keep which version you accepted, and when. The Portuguese version is the reference text.
 
 ## This is a test phase
 - The service may go down, change or stop without notice.

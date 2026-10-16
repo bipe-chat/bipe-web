@@ -1,7 +1,7 @@
 # Termos de uso
-_Bipe, versão de testes. Atualizados em 12 de outubro de 2026._
+_Bipe, versão de testes. Atualizados em 16 de outubro de 2026._
 
-O Bipe está em fase de testes e, por enquanto, só entra quem tem convite. Usando o app, você concorda com estes termos.
+O Bipe está em fase de testes e, por enquanto, só entra quem tem convite. Para criar uma conta, você marca que leu e aceita estes termos e a [política de privacidade](/privacidade/). A gente guarda qual versão você aceitou, e quando.
 
 ## É fase de testes
 - O serviço pode cair, mudar ou parar sem aviso.
