@@ -188,6 +188,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: "Quem mais convida (equipe) · Bipe", description: "Relatório interno de convites.",
   body: () => <Island name="InviterReport" props={{}} />,
+}, {
+  // Staff only (ADR 0098 in bipe/docs/adr): Umami visits in Brazil by state and city. The HTML holds no data.
+  path: "/admin/visitas/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  title: "Visitas por estado (equipe) · Bipe", description: "Relatório interno de visitas ao site.",
+  body: () => <Island name="VisitReport" props={{}} />,
 }, ...(["pt", "en"] as Lang[]).map((lang): Route => ({
   // Caddy serves this page with status 404 for every missing path (handle_errors in bipe-infra/compose/Caddyfile).
   path: `${paths.home(lang)}404/`, alt: null, lang, noindex: true,
