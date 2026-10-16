@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { encode } from "uqr";
 import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
-import { Icon } from "../components/ui";
+import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { distribution, extractInviteCodeRef, reg, t, type Lang } from "../shared";
 
@@ -36,6 +36,13 @@ function AndroidDownloadButton({ lang = "pt" }: { lang?: Lang }) {
 export function InstallButton({ lang = "pt" }: { lang?: Lang }) {
   const { ios } = distribution;
   return ios.url ? <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a> : null;
+}
+
+/** The button for the visitor's phone; both badges on a computer. Availability comes from distribution.json. */
+function PlatformInstall({ platform }: { platform: Platform }) {
+  if (platform === "ios") return <div className="actions"><InstallButton /></div>;
+  if (platform === "android" && distribution.android.status === "available") return <div className="actions"><AndroidDownloadButton /></div>;
+  return <DownloadButtons lang="pt" />;
 }
 
 /** Desktop only: the visitor points a phone camera at it and the link opens the app there.
@@ -100,7 +107,7 @@ export function ProfileLanding(_: Record<string, never>) {
         <div className="link-card">
           <div>
             <p>{c.noApp}</p>
-            <div className="actions"><InstallButton /></div>
+            <PlatformInstall platform={platform} />
           </div>
           {platform === "other" && <LinkQr url={`${location.origin}/@${profile.handle}`} />}
         </div>
@@ -114,7 +121,7 @@ export function ProfileLanding(_: Record<string, never>) {
       <div className="link-card">
         <div>
           <p>{c.noApp}</p>
-          <div className="actions"><InstallButton /></div>
+          <PlatformInstall platform={platform} />
         </div>
         {platform === "other" && handle && <LinkQr url={`${location.origin}/@${handle}`} />}
       </div>

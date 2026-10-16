@@ -41,7 +41,7 @@ export const chrome = {
     handleSame: "Conta como o mesmo nome de",
     iosTitle: "iPhone", androidTitle: "Android",
     downloadTitle: "Baixe o Bipe",
-    downloadLede: "O Bipe está em fase de testes. No iPhone, você instala pelo TestFlight, o app de testes da Apple.",
+    downloadLede: "O Bipe está em fase de testes no iPhone e no Android. No iPhone, você instala pelo TestFlight, o app de testes da Apple. No Android, você baixa o arquivo do app.",
     needs: "Precisa de",
     testflightSteps: ["Abra o link no iPhone.", "Instale o TestFlight, se pedir.", "Toque em Aceitar e depois em Instalar."],
     footerNote: { open: "Bipe é um experimento de código aberto da", closed: "Bipe é um experimento da" },
@@ -154,7 +154,7 @@ export const chrome = {
     scanToOpen: "Aponte a câmera do celular para o QR code. O link abre lá.",
     profile: {
       lead: "Esse é um link de perfil do Bipe. Com o app instalado, abre direto na conversa.",
-      noApp: "Ainda não tem o Bipe? A gente está em fase de testes no iPhone.",
+      noApp: "Ainda não tem o Bipe? O app está em fase de testes. Instale no seu celular:",
     },
     invite: {
       title: "Você recebeu um convite para o Bipe",
@@ -254,7 +254,7 @@ export const chrome = {
     handleSame: "Counts as the same name as",
     iosTitle: "iPhone", androidTitle: "Android",
     downloadTitle: "Get Bipe",
-    downloadLede: "Bipe is in testing. On iPhone you install it through TestFlight, Apple's app for test versions.",
+    downloadLede: "Bipe is in testing on iPhone and Android. On iPhone you install it through TestFlight, Apple's app for test versions. On Android you download the app file.",
     needs: "Needs",
     testflightSteps: ["Open the link on your iPhone.", "Install TestFlight if it asks.", "Tap Accept, then Install."],
     footerNote: { open: "Bipe is an open-source experiment by", closed: "Bipe is an experiment by" },
