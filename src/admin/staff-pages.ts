@@ -22,6 +22,8 @@ export const STAFF_CONSOLE = {
   problemas: { title: "Problemas", group: "Operação", issue: 367 },
   empresas: { title: "Empresas", group: "Empresas", issue: 375 },
   nomes: { title: "Nomes reservados", group: "Empresas", issue: 253 },
+  denuncias: { title: "Denúncias", group: "Confiança", issue: 380 },
+  lgpd: { title: "LGPD", group: "Confiança", issue: 381 },
   transparencia: { title: "Transparência", group: "Confiança", issue: 288 },
 } as const satisfies Record<string, StaffPageInfo>;
 
