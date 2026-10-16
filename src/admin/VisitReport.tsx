@@ -9,7 +9,7 @@ type Report = {
   brazil: Count;
   other_countries: Count;
   states: (Count & { state: string | null })[];
-  cities: (Count & { state: string | null; city: string })[];
+  cities: (Count & { state: string | null; city: string | null })[];
 };
 type Shapes = typeof import("./brazil-states");
 
@@ -113,7 +113,7 @@ function Body({ report }: { report: Report }) {
                   {cities.map((c, i) => (
                     <tr key={`${c.state}-${c.city}`}>
                       <td className="muted">{i + 1}</td>
-                      <td><strong>{c.city}</strong></td>
+                      <td>{c.city ? <strong>{c.city}</strong> : <span className="muted">Outras cidades</span>}</td>
                       <td>{c.state ?? "-"}</td>
                       <td className="num"><strong>{c.visitors}</strong></td>
                       <td className="num">{pct(c.visitors)}</td>
@@ -124,7 +124,7 @@ function Body({ report }: { report: Report }) {
               </table>
             </div>
           )}
-          {report.cities.length >= 200 && <p className="small muted">Só as 200 cidades com mais visitantes.</p>}
+          <p className="small muted">Cidades com menos de 3 visitantes entram em "Outras cidades" do estado.{report.cities.length >= 200 ? " Só as 200 linhas com mais visitantes." : ""}</p>
         </>
       )}
     </>

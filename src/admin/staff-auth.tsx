@@ -3,15 +3,13 @@
 // else gets 404. The token lives in this tab only.
 import { useEffect, useState } from "react";
 import { API_URL, MAS_ISSUER, STAFF_SITE_URL } from "../config";
+import { STAFF_PATHS, staffPath, type StaffPage } from "./staff-pages";
 
-/** Every staff page. The one MAS client lists them all as redirect URIs. */
-export const STAFF_PAGES = { convites: "/admin/convites/", visitas: "/admin/visitas/" } as const;
-export type StaffPage = keyof typeof STAFF_PAGES;
-
-const url = (page: StaffPage) => `${STAFF_SITE_URL}${STAFF_PAGES[page]}`;
+const url = (page: StaffPage) => `${STAFF_SITE_URL}${staffPath(page)}`;
 const SCOPE = "openid urn:matrix:org.matrix.msc2967.client:api:*";
-// v2: the client registers every staff page. A v1 client knows only /admin/convites/.
-const KEY = { client: "bipe-staff-client-v2", token: "bipe-staff-token", pkce: "bipe-staff-pkce" };
+// The client key carries the page list: a new staff page makes a new key, so the browser registers a
+// client that knows every redirect URI. MAS refuses a redirect URI the client did not register.
+const KEY = { client: `bipe-staff-client-${STAFF_PATHS.join(",")}`, token: "bipe-staff-token", pkce: "bipe-staff-pkce" };
 
 // Storage can throw in private windows; the page then signs in again on each load.
 const store = {
@@ -26,7 +24,19 @@ const random = (n = 32) => b64url(crypto.getRandomValues(new Uint8Array(n)));
 async function discovery() {
   const r = await fetch(`${MAS_ISSUER}.well-known/openid-configuration`);
   if (!r.ok) throw new Error("discovery");
-  return (await r.json()) as { authorization_endpoint: string; token_endpoint: string; registration_endpoint: string };
+  return (await r.json()) as { authorization_endpoint: string; token_endpoint: string; registration_endpoint: string; revocation_endpoint?: string };
+}
+
+/** Ends the token at MAS (RFC 7009, bipe#370). The caller deletes the stored copy also when this fails. */
+async function revoke(token: string) {
+  const d = await discovery();
+  const client = store.get(localStorage, KEY.client);
+  if (!d.revocation_endpoint || !client) return;
+  await fetch(d.revocation_endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ token, token_type_hint: "access_token", client_id: client }),
+  });
 }
 
 async function clientId(registrationEndpoint: string): Promise<string> {
@@ -38,7 +48,7 @@ async function clientId(registrationEndpoint: string): Promise<string> {
     body: JSON.stringify({
       client_name: "Bipe staff",
       client_uri: `${STAFF_SITE_URL}/`,
-      redirect_uris: (Object.keys(STAFF_PAGES) as StaffPage[]).map(url),
+      redirect_uris: STAFF_PATHS.map((p) => `${STAFF_SITE_URL}${p}`),
       application_type: "web",
       token_endpoint_auth_method: "none",
       grant_types: ["authorization_code"],
@@ -125,7 +135,13 @@ export function useStaffData<T>(page: StaffPage, path: string) {
     return () => { live = false; };
   }, [signedIn, path]);
 
-  const signOut = () => { store.del(sessionStorage, KEY.token); setSignedIn(false); setState({ kind: "signedOut" }); };
+  const signOut = () => {
+    const token = store.get(sessionStorage, KEY.token);
+    store.del(sessionStorage, KEY.token);
+    setSignedIn(false);
+    setState({ kind: "signedOut" });
+    if (token) revoke(token).catch(() => { /* the token is gone from the tab either way */ });
+  };
   const start = () => { signIn(page).catch(() => setState({ kind: "signedOut", error: "O servidor de contas não respondeu." })); };
   return { state, signOut, signIn: start };
 }

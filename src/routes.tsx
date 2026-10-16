@@ -189,6 +189,16 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   title: "Quem mais convida (equipe) · Bipe", description: "Relatório interno de convites.",
   body: () => <Island name="InviterReport" props={{}} />,
 }, {
+  // Staff index (bipe#372): every page in src/admin/staff-pages.ts. The HTML holds no data.
+  path: "/admin/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  title: "Equipe · Bipe", description: "Painéis internos.",
+  body: () => <Island name="AdminIndex" props={{}} />,
+}, {
+  // Staff only (bipe#373, ADR 0098): growth funnel and retention, aggregates only.
+  path: "/admin/crescimento/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  title: "Crescimento (equipe) · Bipe", description: "Relatório interno de crescimento.",
+  body: () => <Island name="GrowthReport" props={{}} />,
+}, {
   // Staff only (ADR 0098 in bipe/docs/adr): Umami visits in Brazil by state and city. The HTML holds no data.
   path: "/admin/visitas/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: "Visitas por estado (equipe) · Bipe", description: "Relatório interno de visitas ao site.",
