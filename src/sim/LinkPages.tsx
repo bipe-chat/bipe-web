@@ -153,6 +153,16 @@ export function InviteLanding(_: Record<string, never>) {
     <section className="wrap narrow section">
       <h1>{inviter ? c.titleFrom(inviter) : c.title}</h1>
       <p className="lede">{c.lead}</p>
+      {platform === "ios" && (
+        <ol className="steps">
+          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton /></div></li>
+          <li>{c.iosSteps[1]}</li>
+          <li>{c.iosSteps[2]}</li>
+        </ol>
+      )}
+      {platform === "android" && <p>{c.android}</p>}
+      {platform === "other" && <p>{c.other}</p>}
+      {/* Below the steps: people typed this code into TestFlight's Redeem box when it came first. */}
       <div className="link-card">
         <div>
           <p>{c.yourCode}</p>
@@ -164,15 +174,6 @@ export function InviteLanding(_: Record<string, never>) {
         </div>
         {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
       </div>
-      {platform === "ios" && (
-        <ol className="steps">
-          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton /></div></li>
-          <li>{c.iosSteps[1]}</li>
-          <li>{c.iosSteps[2]}</li>
-        </ol>
-      )}
-      {platform === "android" && <p>{c.android}</p>}
-      {platform === "other" && <p>{c.other}</p>}
     </section>
   );
 }
