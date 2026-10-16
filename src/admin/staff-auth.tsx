@@ -109,7 +109,7 @@ export function useStaffData<T>(page: StaffPage, path: string) {
         if (!store.get(sessionStorage, KEY.token)) setState({ kind: "signedOut" });
       } catch {
         setSignedIn(false);
-        setState({ kind: "signedOut", error: "O login não terminou. Tente de novo." });
+        setState({ kind: "signedOut", error: "Login falhou." });
       }
     })();
   }, [page]);
@@ -129,7 +129,7 @@ export function useStaffData<T>(page: StaffPage, path: string) {
         const data = (await r.json()) as T;
         if (live) setState({ kind: "ready", data });
       } catch {
-        if (live) setState({ kind: "signedOut", error: "A API não respondeu. Tente de novo." });
+        if (live) setState({ kind: "signedOut", error: "API fora do ar." });
       }
     })();
     return () => { live = false; };
@@ -142,7 +142,7 @@ export function useStaffData<T>(page: StaffPage, path: string) {
     setState({ kind: "signedOut" });
     if (token) revoke(token).catch(() => { /* the token is gone from the tab either way */ });
   };
-  const start = () => { signIn(page).catch(() => setState({ kind: "signedOut", error: "O servidor de contas não respondeu." })); };
+  const start = () => { signIn(page).catch(() => setState({ kind: "signedOut", error: "Login fora do ar." })); };
   return { state, signOut, signIn: start };
 }
 
@@ -152,13 +152,12 @@ export function StaffGateView({ state, signIn, signOut }: { state: StaffState<un
   if (state.kind === "signedOut") return (
     <>
       {state.error && <p>{state.error}</p>}
-      <p>Só para a equipe. Entre com uma conta marcada como admin.</p>
-      <div className="actions"><button className="button primary" onClick={signIn}>Entrar com a conta Bipe</button></div>
+      <div className="actions"><button className="button primary" onClick={signIn}>Entrar</button></div>
     </>
   );
   if (state.kind === "notStaff") return (
     <>
-      <p>Esta conta não é admin. Peça a marca de admin ou entre com outra conta.</p>
+      <p>Sem acesso.</p>
       <div className="actions"><button className="button secondary" onClick={signOut}>Sair</button></div>
     </>
   );

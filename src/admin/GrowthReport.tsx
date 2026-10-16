@@ -37,7 +37,6 @@ export function GrowthReport(_: Record<string, never>) {
   return (
     <section className="wrap section staff">
       <h1>Crescimento</h1>
-      <p className="lede">Funil de cadastro e retenção, a partir dos eventos que o servidor já vê. Os apps não mandam telemetria. Grupos com menos de 3 pessoas não aparecem.</p>
       <StaffGateView state={state} signIn={signIn} signOut={signOut} />
       {state.kind === "ready" && (
         <>
@@ -47,7 +46,7 @@ export function GrowthReport(_: Record<string, never>) {
             ))}
           </div>
           <Body g={state.data} />
-          <p className="small muted">Cadastros desde {new Date(`${state.data.since}T12:00:00`).toLocaleDateString("pt-BR")}. Os eventos do Synapse chegam a cada 15 minutos. <button className="linklike" onClick={signOut}>Sair</button></p>
+          <p className="small"><button className="linklike" onClick={signOut}>Sair</button></p>
         </>
       )}
     </section>
@@ -60,10 +59,9 @@ function Body({ g }: { g: Growth }) {
   return (
     <>
       <h2>Funil</h2>
-      <p className="small muted">Cada pessoa conta num passo só se fez todos os anteriores.</p>
       <div className="staff-scroll">
         <table className="staff-table">
-          <thead><tr><th>Passo</th><th className="num">Pessoas</th><th className="num">Do cadastro</th><th className="num">Do passo anterior</th><th aria-hidden="true"></th></tr></thead>
+          <thead><tr><th>Passo</th><th className="num">Pessoas</th><th className="num">Total</th><th className="num">Passo</th><th aria-hidden="true"></th></tr></thead>
           <tbody>
             {g.funnel.map((f, k) => (
               <tr key={f.step}>
@@ -78,9 +76,8 @@ function Body({ g }: { g: Growth }) {
         </table>
       </div>
 
-      <h2>Retenção por semana de cadastro</h2>
-      <p className="small muted">Ativos no dia N, entre quem já passou do dia N.</p>
-      {g.retention.length === 0 ? <p>Nenhum cadastro neste período.</p> : (
+      <h2>Retenção</h2>
+      {g.retention.length === 0 ? <p>Nenhum cadastro.</p> : (
         <div className="staff-scroll">
           <table className="staff-table">
             <thead><tr><th>Semana</th><th className="num">Cadastros</th>{days.map((d) => <th key={d} className="num">D{d}</th>)}</tr></thead>
@@ -89,11 +86,11 @@ function Body({ g }: { g: Growth }) {
                 <tr key={w.week}>
                   <td>{new Date(`${w.week}T12:00:00`).toLocaleDateString("pt-BR")}</td>
                   {w.signups === null
-                    ? <td className="num muted" colSpan={days.length + 1}>{`< ${g.min_cell} cadastros`}</td>
+                    ? <td className="num muted" colSpan={days.length + 1}>{`< ${g.min_cell}`}</td>
                     : <>
                         <td className="num"><strong>{w.signups}</strong></td>
                         {w.days.map((d) => (
-                          <td key={d.day} className="num">{d.due === 0 ? <span className="muted">ainda não</span> : <>{pct(d.kept, d.due)} <span className="small muted">{small(d.kept, g.min_cell)}/{d.due}</span></>}</td>
+                          <td key={d.day} className="num">{d.due === 0 ? <span className="muted">-</span> : <>{pct(d.kept, d.due)} <span className="small muted">{small(d.kept, g.min_cell)}/{d.due}</span></>}</td>
                         ))}
                       </>}
                 </tr>
@@ -103,7 +100,7 @@ function Body({ g }: { g: Growth }) {
         </div>
       )}
 
-      <h2>Todos os eventos</h2>
+      <h2>Eventos</h2>
       <div className="staff-scroll">
         <table className="staff-table">
           <thead><tr><th>Evento</th><th className="num">Pessoas</th><th className="num">Vezes</th></tr></thead>

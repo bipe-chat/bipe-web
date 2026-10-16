@@ -22,8 +22,7 @@ export function VisitReport(_: Record<string, never>) {
 
   return (
     <section className="wrap section staff">
-      <h1>Visitas por estado e cidade</h1>
-      <p className="lede">Visitas ao bipe.chat vindas do Brasil, contadas pelo Umami. O lugar vem do IP e é aproximado: operadoras de celular muitas vezes saem por São Paulo.</p>
+      <h1>Visitas</h1>
       <StaffGateView state={state} signIn={signIn} signOut={signOut} />
       {state.kind === "ready" && (
         <>
@@ -33,7 +32,7 @@ export function VisitReport(_: Record<string, never>) {
             ))}
           </div>
           <Body report={state.data} />
-          <p className="small muted">Mais detalhes em <a href="https://stats.bipe.chat">stats.bipe.chat</a>. <button className="linklike" onClick={signOut}>Sair</button></p>
+          <p className="small"><button className="linklike" onClick={signOut}>Sair</button></p>
         </>
       )}
     </section>
@@ -53,10 +52,10 @@ function Body({ report }: { report: Report }) {
   const cities = focus ? report.cities.filter((c) => c.state === focus) : report.cities;
 
   const tiles = [
-    { label: "Visitantes no Brasil", value: total },
-    { label: "Páginas vistas no Brasil", value: report.brazil.views },
-    { label: "Estados com visitas", value: report.states.filter((s) => s.state).length },
-    { label: "Visitantes fora do Brasil", value: report.other_countries.visitors },
+    { label: "Brasil", value: total },
+    { label: "Páginas", value: report.brazil.views },
+    { label: "Estados", value: report.states.filter((s) => s.state).length },
+    { label: "Fora do Brasil", value: report.other_countries.visitors },
   ];
 
   return (
@@ -64,7 +63,7 @@ function Body({ report }: { report: Report }) {
       <div className="staff-tiles">
         {tiles.map((t) => <div className="card" key={t.label}><span className="small muted">{t.label}</span><strong>{t.value}</strong></div>)}
       </div>
-      {total === 0 ? <p>Nenhuma visita do Brasil neste período.</p> : (
+      {total === 0 ? <p>Nenhuma visita.</p> : (
         <div className="staff-geo">
           <figure className="staff-map">
             {shapes ? (
@@ -82,7 +81,6 @@ function Body({ report }: { report: Report }) {
                 })}
               </svg>
             ) : <p className="muted">Carregando o mapa…</p>}
-            <figcaption className="small muted">Toque num estado para ver só as cidades dele.</figcaption>
           </figure>
           <div className="staff-scroll">
             <table className="staff-table">
@@ -104,8 +102,8 @@ function Body({ report }: { report: Report }) {
       {total > 0 && (
         <>
           <h2>Cidades{focus ? ` em ${names.get(focus) ?? focus}` : ""}</h2>
-          {focus && <p className="small"><button className="linklike" onClick={() => setFocus(null)}>Ver todas as cidades</button></p>}
-          {cities.length === 0 ? <p>Nenhuma cidade conhecida{focus ? " neste estado" : ""}.</p> : (
+          {focus && <p className="small"><button className="linklike" onClick={() => setFocus(null)}>Todas</button></p>}
+          {cities.length === 0 ? <p>Nenhuma cidade.</p> : (
             <div className="staff-scroll">
               <table className="staff-table">
                 <thead><tr><th>#</th><th>Cidade</th><th>Estado</th><th className="num">Visitantes</th><th className="num">Parte</th><th className="num">Páginas</th></tr></thead>
@@ -124,7 +122,7 @@ function Body({ report }: { report: Report }) {
               </table>
             </div>
           )}
-          <p className="small muted">Cidades com menos de 3 visitantes entram em "Outras cidades" do estado.{report.cities.length >= 200 ? " Só as 200 linhas com mais visitantes." : ""}</p>
+          
         </>
       )}
     </>

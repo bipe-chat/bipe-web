@@ -27,8 +27,7 @@ export function InviterReport(_: Record<string, never>) {
 
   return (
     <section className="wrap section staff">
-      <h1>Quem mais convida</h1>
-      <p className="lede">Pessoas que trazem mais gente para o Bipe. Só convites pessoais; convites criados pela equipe ficam de fora.</p>
+      <h1>Convites</h1>
       <StaffGateView state={state} signIn={signIn} signOut={signOut} />
       {state.kind === "ready" && <Report rows={rows} sort={sort} setSort={setSort} signOut={signOut} />}
     </section>
@@ -78,7 +77,7 @@ function Report({ rows, sort, setSort, signOut }: { rows: Inviter[]; sort: SortK
           </table>
         </div>
       )}
-      <p className="small muted">Também no CLI da API: <span className="mono">node dist/cli.js invite top</span>. <button className="linklike" onClick={signOut}>Sair</button></p>
+      <p className="small"><button className="linklike" onClick={signOut}>Sair</button></p>
     </>
   );
 }

@@ -15,12 +15,11 @@ export function AdminIndex(_: Record<string, never>) {
   return (
     <section className="wrap section staff">
       <h1>Equipe</h1>
-      <p className="lede">Painéis internos do Bipe. Todos só leem dados; ações continuam no CLI e no Element Admin.</p>
       <StaffGateView state={state} signIn={signIn} signOut={signOut} />
       {state.kind === "ready" && (
         <>
           <div className="staff-tiles">
-            <div className="card"><span className="small muted">Cadastros nos últimos 7 dias</span><strong>{signups === null ? `< ${state.data.min_cell}` : signups ?? 0}</strong></div>
+            <div className="card"><span className="small muted">Cadastros, 7 dias</span><strong>{signups === null ? `< ${state.data.min_cell}` : signups ?? 0}</strong></div>
           </div>
           {GROUPS.map((g) => (
             <div key={g} className="staff-group">
@@ -29,24 +28,22 @@ export function AdminIndex(_: Record<string, never>) {
                 {pages.filter((p) => p.group === g).map((p) => p.path ? (
                   <a key={p.title} className="card staff-card" href={p.path}>
                     <strong>{p.title}</strong>
-                    <span className="small muted">{p.purpose}</span>
                   </a>
                 ) : (
                   <div key={p.title} className="card staff-card planned">
                     <strong>{p.title}</strong>
-                    <span className="small muted">{p.purpose}</span>
-                    <span className="small muted">Planejado: bipe#{p.issue}</span>
+                    <span className="small muted">#{p.issue}</span>
                   </div>
                 ))}
               </div>
             </div>
           ))}
-          <h2>Outras ferramentas</h2>
+          <h2>Outros</h2>
           <ul>
-            <li><a href="https://stats.bipe.chat">Umami</a>: páginas, origens e campanhas do site. Login próprio.</li>
-            <li><a href="https://admin.bipe.net.br">Element Admin</a>: contas e salas.</li>
+            <li><a href="https://stats.bipe.chat">Umami</a></li>
+            <li><a href="https://admin.bipe.net.br">Element Admin</a></li>
           </ul>
-          <p className="small muted">Não mostramos aqui: conteúdo de mensagens, IPs, nem nada que ligue uma pessoa aos eventos de crescimento. <button className="linklike" onClick={signOut}>Sair</button></p>
+          <p className="small"><button className="linklike" onClick={signOut}>Sair</button></p>
         </>
       )}
     </section>

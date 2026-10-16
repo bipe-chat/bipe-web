@@ -186,7 +186,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
 }, {
   // Staff only (ADR 0056 in bipe/docs/adr). The HTML holds no data; the island signs in and asks the API.
   path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
-  title: "Quem mais convida (equipe) · Bipe", description: "Relatório interno de convites.",
+  title: "Convites · Bipe", description: "Relatório interno de convites.",
   body: () => <Island name="InviterReport" props={{}} />,
 }, {
   // Staff index (bipe#372): every page in src/admin/staff-pages.ts. The HTML holds no data.
@@ -196,12 +196,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
 }, {
   // Staff only (bipe#373, ADR 0098): growth funnel and retention, aggregates only.
   path: "/admin/crescimento/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
-  title: "Crescimento (equipe) · Bipe", description: "Relatório interno de crescimento.",
+  title: "Crescimento · Bipe", description: "Relatório interno de crescimento.",
   body: () => <Island name="GrowthReport" props={{}} />,
 }, {
   // Staff only (ADR 0098 in bipe/docs/adr): Umami visits in Brazil by state and city. The HTML holds no data.
   path: "/admin/visitas/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
-  title: "Visitas por estado (equipe) · Bipe", description: "Relatório interno de visitas ao site.",
+  title: "Visitas · Bipe", description: "Relatório interno de visitas ao site.",
   body: () => <Island name="VisitReport" props={{}} />,
 }, ...(["pt", "en"] as Lang[]).map((lang): Route => ({
   // Caddy serves this page with status 404 for every missing path (handle_errors in bipe-infra/compose/Caddyfile).

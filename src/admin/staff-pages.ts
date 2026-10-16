@@ -5,7 +5,6 @@ export type StaffGroup = "Crescimento" | "Operação" | "Empresas" | "Confiança
 
 export type StaffPageInfo = {
   title: string;
-  purpose: string;
   group: StaffGroup;
   /** Built pages have a path. Planned pages name their issue on bipe-chat/bipe. */
   path?: `/admin/${string}/` | "/admin/";
@@ -15,15 +14,15 @@ export type StaffPageInfo = {
 export const STAFF_INDEX = "/admin/";
 
 export const STAFF_CONSOLE = {
-  crescimento: { title: "Crescimento", purpose: "Funil de cadastro e retenção D1, D7 e D30 por semana de cadastro.", group: "Crescimento", path: "/admin/crescimento/" },
-  convites: { title: "Quem mais convida", purpose: "Pessoas que trazem mais gente, pelos convites pessoais.", group: "Crescimento", path: "/admin/convites/" },
-  visitas: { title: "Visitas por estado e cidade", purpose: "Visitas ao site vindas do Brasil, pelo Umami.", group: "Crescimento", path: "/admin/visitas/" },
-  experimentos: { title: "Teste de títulos", purpose: "Visitas, cliques e cadastros por versão do título.", group: "Crescimento", issue: 376 },
-  espera: { title: "Lista de espera", purpose: "Tamanho por plataforma e taxa de entrada por lote liberado.", group: "Operação", issue: 374 },
-  problemas: { title: "Relatos de problema", purpose: "Relatos enviados pelos apps.", group: "Operação", issue: 367 },
-  empresas: { title: "Empresas", purpose: "Pedidos de CNPJ, verificação e domínios.", group: "Empresas", issue: 375 },
-  nomes: { title: "Nomes reservados", purpose: "Fila de revisão de nomes e pedidos de empresas.", group: "Empresas", issue: 253 },
-  transparencia: { title: "Transparência", purpose: "Contagens semestrais para o relatório de transparência.", group: "Confiança", issue: 288 },
+  crescimento: { title: "Crescimento", group: "Crescimento", path: "/admin/crescimento/" },
+  convites: { title: "Convites", group: "Crescimento", path: "/admin/convites/" },
+  visitas: { title: "Visitas", group: "Crescimento", path: "/admin/visitas/" },
+  experimentos: { title: "Títulos", group: "Crescimento", issue: 376 },
+  espera: { title: "Lista de espera", group: "Operação", issue: 374 },
+  problemas: { title: "Problemas", group: "Operação", issue: 367 },
+  empresas: { title: "Empresas", group: "Empresas", issue: 375 },
+  nomes: { title: "Nomes reservados", group: "Empresas", issue: 253 },
+  transparencia: { title: "Transparência", group: "Confiança", issue: 288 },
 } as const satisfies Record<string, StaffPageInfo>;
 
 export type StaffPage = keyof typeof STAFF_CONSOLE | "index";
