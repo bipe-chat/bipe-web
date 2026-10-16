@@ -27,6 +27,12 @@ async function copyText(text: string): Promise<boolean> {
   return ok;
 }
 
+/** The Android test build is an APK from distribution.json; no button while it is not available. */
+function AndroidDownloadButton({ lang = "pt" }: { lang?: Lang }) {
+  const { android } = distribution;
+  return android.status === "available" && android.url ? <a className="button primary" href={android.url}><Icon name="android" />{android[lang].label}</a> : null;
+}
+
 export function InstallButton({ lang = "pt" }: { lang?: Lang }) {
   const { ios } = distribution;
   return ios.url ? <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a> : null;
@@ -160,7 +166,12 @@ export function InviteLanding(_: Record<string, never>) {
           <li>{c.iosSteps[2]}</li>
         </ol>
       )}
-      {platform === "android" && <p>{c.android}</p>}
+      {platform === "android" && (
+        <ol className="steps">
+          <li>{c.androidSteps[0]}<div style={{ marginTop: 10 }}><AndroidDownloadButton /></div></li>
+          <li>{c.androidSteps[1]}</li>
+        </ol>
+      )}
       {platform === "other" && <p>{c.other}</p>}
       {/* Below the steps: people typed this code into TestFlight's Redeem box when it came first. */}
       <div className="link-card">
@@ -170,7 +181,7 @@ export function InviteLanding(_: Record<string, never>) {
             <output className="mono invite-code">{code ?? "····-····-····"}</output>
             <button type="button" className="button secondary" disabled={!code} onClick={async () => setCopyLabel((await copyText(code!)) ? c.copied : c.copyFailed)}>{copyLabel}</button>
           </div>
-          <p className="small muted">{c.oneUse}</p>
+          <p className="small muted">{platform === "ios" && `${c.notTestFlight} `}{c.oneUse}</p>
         </div>
         {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
       </div>
