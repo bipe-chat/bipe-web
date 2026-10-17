@@ -1,33 +1,117 @@
-// Shared frame and formatters for the read-only staff pages. Copy rule (#368): data and labels only.
+// Shared frame and formatters for every staff page. Copy rule (#368): data and labels only.
+// The frame (nav, trail, header) renders before sign-in: it holds no data.
 import type { ReactNode } from "react";
 import { StaffGateView, useStaffData } from "./staff-auth";
-import type { StaffPage } from "./staff-pages";
+import { STAFF_CONSOLE, STAFF_GROUPS, STAFF_HOME, STAFF_INDEX, STAFF_LINKS, type StaffPage, type StaffPageInfo } from "./staff-pages";
 
-/** Title, sign-in gate, the report body once data is in, and Sair. */
-export function StaffShell<T>({ page, api, title, children }: { page: StaffPage; api: string; title: string; children: (data: T) => ReactNode }) {
-  const { state, signIn, signOut } = useStaffData<T>(page, api);
+const pages = Object.entries(STAFF_CONSOLE as Record<string, StaffPageInfo>);
+
+function StaffNav({ page }: { page: StaffPage }) {
+  const here = (key: string) => (key === page ? "page" : undefined);
   return (
-    <section className="wrap section staff">
-      <h1>{title}</h1>
-      <StaffGateView state={state} signIn={signIn} signOut={signOut} />
-      {state.kind === "ready" && (
-        <>
-          {children(state.data)}
-          <p className="small"><a href="/admin/">Equipe</a> · <button className="linklike" onClick={signOut}>Sair</button></p>
-        </>
-      )}
-    </section>
+    <nav className="staff-nav" aria-label="Equipe">
+      <a className="staff-nav-home" href={STAFF_INDEX} aria-current={here("index")}>Painel</a>
+      {STAFF_GROUPS.map((g) => (
+        <div key={g} className="staff-nav-group">
+          <span className="staff-nav-label">{g}</span>
+          {pages.filter(([, p]) => p.group === g).map(([key, p]) => p.path
+            ? <a key={key} href={p.path} aria-current={here(key)}>{p.title}</a>
+            : <span key={key} className="staff-nav-planned">{p.title} <span className="small">#{p.issue}</span></span>)}
+        </div>
+      ))}
+      <div className="staff-nav-group">
+        <span className="staff-nav-label">Outros</span>
+        {STAFF_LINKS.map((l) => <a key={l.href} href={l.href}>{l.title} ↗</a>)}
+      </div>
+    </nav>
   );
 }
 
-export function Tiles({ items }: { items: { label: string; value: ReactNode }[] }) {
+function Trail({ page, title }: { page: StaffPage; title: string }) {
+  const group = page === "index" ? null : (STAFF_CONSOLE[page] as StaffPageInfo).group;
   return (
-    <div className="staff-tiles">
-      {items.map((t) => <div className="card" key={t.label}><span className="small muted">{t.label}</span><strong>{t.value}</strong></div>)}
+    <nav className="crumbs small staff-crumbs" aria-label="Trilha">
+      <ol>
+        {page === "index" ? <li><span aria-current="page">{STAFF_HOME}</span></li> : (
+          <>
+            <li><a href={STAFF_INDEX}>{STAFF_HOME}</a></li>
+            <li>{group}</li>
+            <li><span aria-current="page">{title}</span></li>
+          </>
+        )}
+      </ol>
+    </nav>
+  );
+}
+
+/** Nav, trail, title row with the page's controls and Sair, the sign-in gate, then the report once data is in. */
+export function StaffShell<T>({ page, api, title, tools, children }: {
+  page: StaffPage; api: string | readonly string[]; title: string; tools?: ReactNode; children: (data: T) => ReactNode;
+}) {
+  const { state, signIn, signOut } = useStaffData<T>(page, api);
+  return (
+    <div className="staff-app">
+      <StaffNav page={page} />
+      <div className="staff-main">
+        <Trail page={page} title={title} />
+        <header className="staff-head">
+          <h1>{title}</h1>
+          {state.kind === "ready" && (
+            <div className="staff-head-tools">
+              {tools}
+              <button className="button secondary compact" onClick={signOut}>Sair</button>
+            </div>
+          )}
+        </header>
+        <StaffGateView state={state} signIn={signIn} signOut={signOut} />
+        {state.kind === "ready" && children(state.data)}
+      </div>
     </div>
   );
 }
 
+/** One section of a staff page: a heading, optional controls on the right, then the body. */
+export function Section({ title, aside, children }: { title: string; aside?: ReactNode; children: ReactNode }) {
+  return (
+    <section className="staff-section">
+      <div className="staff-section-head"><h2>{title}</h2>{aside}</div>
+      {children}
+    </section>
+  );
+}
+
+/** Period buttons in the title row. */
+export function Periods<V extends number>({ options, value, onChange, label = (v) => `${v} dias` }: {
+  options: readonly V[]; value: V; onChange: (v: V) => void; label?: (v: V) => string;
+}) {
+  return (
+    <div className="staff-seg" role="group" aria-label="Período">
+      {options.map((v) => <button key={v} aria-pressed={v === value} onClick={() => onChange(v)}>{label(v)}</button>)}
+    </div>
+  );
+}
+
+export type Tile = { label: string; value: ReactNode; sub?: ReactNode; href?: string; warn?: boolean };
+
+export function Tiles({ items }: { items: Tile[] }) {
+  return (
+    <div className="staff-tiles">
+      {items.map((t) => {
+        const body = <><span className="staff-tile-label">{t.label}</span><strong>{t.value}</strong>{t.sub !== undefined && <span className="staff-tile-sub">{t.sub}</span>}</>;
+        const cls = `staff-tile${t.warn ? " warn" : ""}`;
+        return t.href ? <a className={cls} key={t.label} href={t.href}>{body}</a> : <div className={cls} key={t.label}>{body}</div>;
+      })}
+    </div>
+  );
+}
+
+const nf = new Intl.NumberFormat("pt-BR");
+const pf = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
+export const num = (n: number | null | undefined) => (n === null || n === undefined ? "-" : nf.format(n));
+/** A percent value from the API (already in percent). */
+export const pctOf = (n: number | null | undefined) => (n === null || n === undefined ? "-" : `${pf.format(n)}%`);
+/** A percent change with its sign and arrow. */
+export const delta = (n: number | null | undefined) => (n === null || n === undefined ? "-" : `${n > 0 ? "▲ +" : n < 0 ? "▼ " : ""}${pf.format(n)}%`);
 export const fmtDate = (iso: string | null) => (iso ? new Date(iso.length === 10 ? `${iso}T12:00:00` : iso).toLocaleDateString("pt-BR") : "-");
 export const daysSince = (iso: string | null) => (iso ? Math.floor((Date.now() - Date.parse(iso)) / 86_400_000) : null);
 export const pct = (a: number | null, b: number | null) => (a === null || !b ? "-" : `${Math.round((100 * a) / b)}%`);

@@ -1,7 +1,7 @@
 // Staff page /admin/convites/ (ADR 0056 in bipe/docs/adr): inviters ranked by joins, to find hypergrowers.
 // Sign-in and the staff gate are in staff-auth.tsx.
 import { useMemo, useState } from "react";
-import { StaffGateView, useStaffData } from "./staff-auth";
+import { StaffShell, Tiles } from "./staff-ui";
 
 type Inviter = { user_id: string; handle: string | null; sent: number; joined: number; rate_pct: number | null; downstream: number; depth: number; last_join: string | null };
 type SortKey = "joined" | "downstream" | "sent" | "rate_pct" | "depth" | "last_join";
@@ -16,25 +16,19 @@ const COLS: { key: SortKey; label: string; hint: string }[] = [
 ];
 
 export function InviterReport(_: Record<string, never>) {
-  const { state, signIn, signOut } = useStaffData<{ inviters: Inviter[] }>("convites", "/v1/admin/inviters?limit=1000");
-  const [sort, setSort] = useState<SortKey>("joined");
-
-  const rows = useMemo(() => {
-    if (state.kind !== "ready") return [];
-    const v = (r: Inviter) => (sort === "last_join" ? (r.last_join ? Date.parse(r.last_join) : 0) : (r[sort] ?? -1));
-    return [...state.data.inviters].sort((a, b) => v(b) - v(a) || b.joined - a.joined);
-  }, [state, sort]);
-
   return (
-    <section className="wrap section staff">
-      <h1>Convites</h1>
-      <StaffGateView state={state} signIn={signIn} signOut={signOut} />
-      {state.kind === "ready" && <Report rows={rows} sort={sort} setSort={setSort} signOut={signOut} />}
-    </section>
+    <StaffShell<{ inviters: Inviter[] }> page="convites" api="/v1/admin/inviters?limit=1000" title="Convites">
+      {(d) => <Report inviters={d.inviters} />}
+    </StaffShell>
   );
 }
 
-function Report({ rows, sort, setSort, signOut }: { rows: Inviter[]; sort: SortKey; setSort: (k: SortKey) => void; signOut: () => void }) {
+function Report({ inviters }: { inviters: Inviter[] }) {
+  const [sort, setSort] = useState<SortKey>("joined");
+  const rows = useMemo(() => {
+    const v = (r: Inviter) => (sort === "last_join" ? (r.last_join ? Date.parse(r.last_join) : 0) : (r[sort] ?? -1));
+    return [...inviters].sort((a, b) => v(b) - v(a) || b.joined - a.joined);
+  }, [inviters, sort]);
   const sent = rows.reduce((n, r) => n + r.sent, 0), joined = rows.reduce((n, r) => n + r.joined, 0);
   const tiles = [
     { label: "Pessoas que convidaram", value: rows.length },
@@ -44,9 +38,7 @@ function Report({ rows, sort, setSort, signOut }: { rows: Inviter[]; sort: SortK
   ];
   return (
     <>
-      <div className="staff-tiles">
-        {tiles.map((t) => <div className="card" key={t.label}><span className="small muted">{t.label}</span><strong>{t.value}</strong></div>)}
-      </div>
+      <Tiles items={tiles} />
       {rows.length === 0 ? <p>Ninguém criou convite pessoal ainda.</p> : (
         <div className="staff-scroll">
           <table className="staff-table">
@@ -77,7 +69,6 @@ function Report({ rows, sort, setSort, signOut }: { rows: Inviter[]; sort: SortK
           </table>
         </div>
       )}
-      <p className="small"><button className="linklike" onClick={signOut}>Sair</button></p>
     </>
   );
 }

@@ -1,7 +1,7 @@
 // Staff page /admin/crescimento/ (bipe#373, ADR 0098): sign-up funnel and retention by sign-up week.
 // Aggregates only. The API returns null for a count of 1 or 2 and hides small weeks (bipe#371).
 import { useState } from "react";
-import { StaffGateView, useStaffData } from "./staff-auth";
+import { Periods, StaffShell } from "./staff-ui";
 
 export type Growth = {
   since: string;
@@ -31,25 +31,12 @@ const pct = (a: number | null, b: number | null) => (a === null || !b ? "-" : `$
 const small = (n: number | null, min: number) => (n === null ? `< ${min}` : String(n));
 
 export function GrowthReport(_: Record<string, never>) {
-  const [days, setDays] = useState<number>(90);
-  const { state, signIn, signOut } = useStaffData<Growth>("crescimento", `/v1/admin/growth?since=${dayAgo(days)}`);
-
+  const [days, setDays] = useState<(typeof PERIODS)[number]>(90);
   return (
-    <section className="wrap section staff">
-      <h1>Crescimento</h1>
-      <StaffGateView state={state} signIn={signIn} signOut={signOut} />
-      {state.kind === "ready" && (
-        <>
-          <div className="actions staff-periods" role="group" aria-label="Período">
-            {PERIODS.map((d) => (
-              <button key={d} className={`button ${d === days ? "primary" : "secondary"}`} aria-pressed={d === days} onClick={() => setDays(d)}>{d} dias</button>
-            ))}
-          </div>
-          <Body g={state.data} />
-          <p className="small"><button className="linklike" onClick={signOut}>Sair</button></p>
-        </>
-      )}
-    </section>
+    <StaffShell<Growth> page="crescimento" api={`/v1/admin/growth?since=${dayAgo(days)}`} title="Crescimento"
+      tools={<Periods options={PERIODS} value={days} onChange={setDays} />}>
+      {(g) => <Body g={g} />}
+    </StaffShell>
   );
 }
 

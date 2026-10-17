@@ -93,10 +93,11 @@ async function finishSignIn(page: StaffPage): Promise<string | null> {
 
 export type StaffState<T> = { kind: "loading" } | { kind: "signedOut"; error?: string } | { kind: "notStaff" } | { kind: "ready"; data: T };
 
-/** Signs in when needed and reads `path` from the API. A new `path` reads again. */
-export function useStaffData<T>(page: StaffPage, path: string) {
+/** Signs in when needed and reads `path` from the API. A list of paths reads them all and gives a list. A new path reads again. */
+export function useStaffData<T>(page: StaffPage, path: string | readonly string[]) {
   const [state, setState] = useState<StaffState<T>>({ kind: "loading" });
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  const key = JSON.stringify(path);
 
   useEffect(() => {
     // The API allows only the main site origin (CORS), so the page runs there.
@@ -119,21 +120,23 @@ export function useStaffData<T>(page: StaffPage, path: string) {
     const token = store.get(sessionStorage, KEY.token);
     if (!token) { setState({ kind: "signedOut" }); return; }
     let live = true;
+    const paths = JSON.parse(key) as string | string[];
     (async () => {
       try {
-        const r = await fetch(`${API_URL}${path}`, { headers: { authorization: `Bearer ${token}` } });
+        const answers = await Promise.all((Array.isArray(paths) ? paths : [paths]).map((p) => fetch(`${API_URL}${p}`, { headers: { authorization: `Bearer ${token}` } })));
         if (!live) return;
-        if (r.status === 401) { store.del(sessionStorage, KEY.token); setState({ kind: "signedOut" }); return; }
-        if (r.status === 404) { setState({ kind: "notStaff" }); return; }
-        if (!r.ok) throw new Error(String(r.status));
-        const data = (await r.json()) as T;
-        if (live) setState({ kind: "ready", data });
+        if (answers.some((r) => r.status === 401)) { store.del(sessionStorage, KEY.token); setState({ kind: "signedOut" }); return; }
+        if (answers.some((r) => r.status === 404)) { setState({ kind: "notStaff" }); return; }
+        const bad = answers.find((r) => !r.ok);
+        if (bad) throw new Error(String(bad.status));
+        const bodies = await Promise.all(answers.map((r) => r.json()));
+        if (live) setState({ kind: "ready", data: (Array.isArray(paths) ? bodies : bodies[0]) as T });
       } catch {
         if (live) setState({ kind: "signedOut", error: "API fora do ar." });
       }
     })();
     return () => { live = false; };
-  }, [signedIn, path]);
+  }, [signedIn, key]);
 
   const signOut = () => {
     const token = store.get(sessionStorage, KEY.token);

@@ -12,6 +12,14 @@ export type StaffPageInfo = {
 };
 
 export const STAFF_INDEX = "/admin/";
+export const STAFF_GROUPS: StaffGroup[] = ["Crescimento", "Operação", "Empresas", "Confiança"];
+/** Root of the staff breadcrumb trail and the name in the staff header. */
+export const STAFF_HOME = "Equipe";
+/** Tools outside the site, last in the staff nav. */
+export const STAFF_LINKS = [
+  { title: "Umami", href: "https://stats.bipe.chat" },
+  { title: "Element Admin", href: "https://admin.bipe.net.br" },
+];
 
 export const STAFF_CONSOLE = {
   crescimento: { title: "Crescimento", group: "Crescimento", path: "/admin/crescimento/" },

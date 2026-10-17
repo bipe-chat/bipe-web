@@ -33,6 +33,8 @@ export type Route = {
   jsonLd?: (abs: (p: string) => string) => object[];
   /** This page's name in the breadcrumb trail (src/nav.ts breadcrumbs). Default: the title without " · Bipe". */
   crumb?: string;
+  /** A staff page: the staff header, no site nav, no footer (src/admin/staff-ui.tsx draws the staff nav). */
+  staff?: boolean;
   /** The nav item this page belongs to. */
   section?: Section;
   body: () => ReactNode;
@@ -186,12 +188,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   body: () => <Island name="RecoverLanding" props={{}} />,
 }, {
   // Staff only (ADR 0056 in bipe/docs/adr). The HTML holds no data; the island signs in and asks the API.
-  path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: "Convites · Bipe", description: "Relatório interno de convites.",
   body: () => <Island name="InviterReport" props={{}} />,
 }, {
   // Staff index (bipe#372): every page in src/admin/staff-pages.ts. The HTML holds no data.
-  path: "/admin/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  path: "/admin/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: "Equipe · Bipe", description: "Painéis internos.",
   body: () => <Island name="AdminIndex" props={{}} />,
 }, ...([
@@ -199,17 +201,17 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   ["experimentos", "ExperimentsReport"], ["espera", "WaitlistReport"], ["empresas", "BusinessReport"],
   ["denuncias", "UserReports"], ["lgpd", "RetentionReport"],
 ] as const).map(([page, island]): Route => ({
-  path: staffPath(page), alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  path: staffPath(page), alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: `${STAFF_CONSOLE[page].title} · Bipe`, description: "Equipe.",
   body: () => <Island name={island} props={{}} />,
 })), {
   // Staff only (bipe#373, ADR 0098): growth funnel and retention, aggregates only.
-  path: "/admin/crescimento/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  path: "/admin/crescimento/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: "Crescimento · Bipe", description: "Relatório interno de crescimento.",
   body: () => <Island name="GrowthReport" props={{}} />,
 }, {
   // Staff only (ADR 0098 in bipe/docs/adr): Umami visits in Brazil by state and city. The HTML holds no data.
-  path: "/admin/visitas/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  path: "/admin/visitas/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: "Visitas · Bipe", description: "Relatório interno de visitas ao site.",
   body: () => <Island name="VisitReport" props={{}} />,
 }, ...(["pt", "en"] as Lang[]).map((lang): Route => ({

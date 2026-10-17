@@ -1,3 +1,4 @@
+import { STAFF_HOME, STAFF_INDEX } from "./admin/staff-pages";
 import { chrome } from "./copy";
 import { Wordmark } from "./components/brand";
 import { breadcrumbs, footerGroups, header, headerCta, links } from "./nav";
@@ -12,6 +13,19 @@ export function Layout({ route }: { route: Route }) {
   const trail = breadcrumbs(route);
   const current = (id: string) => (route.section === id ? "page" : undefined);
   const otherLang = c.other.lang === "pt" ? "pt-BR" : "en";
+  if (route.staff) return (
+    <>
+      <a className="visually-hidden" href="#main">{c.skip}</a>
+      <header className="site-head staff-top">
+        <div className="staff-top-row">
+          <a href={STAFF_INDEX} aria-label="Bipe, equipe" style={{ textDecoration: "none" }}><Wordmark size={22} /></a>
+          <span className="staff-top-name">{STAFF_HOME}</span>
+          <a className="staff-top-site small" href={paths.home(lang)}>bipe.chat ↗</a>
+        </div>
+      </header>
+      <main id="main">{route.body()}</main>
+    </>
+  );
   return (
     <>
       <a className="visually-hidden" href="#main">{c.skip}</a>

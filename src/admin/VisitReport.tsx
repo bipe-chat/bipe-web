@@ -1,7 +1,7 @@
 // Staff page /admin/visitas/ (ADR 0098 in bipe/docs/adr): site visits in Brazil by state and city, from Umami.
 // Sign-in and the staff gate are in staff-auth.tsx. The state shapes load only on this page (a separate chunk).
 import { useEffect, useMemo, useState } from "react";
-import { StaffGateView, useStaffData } from "./staff-auth";
+import { Periods, StaffShell, Tiles } from "./staff-ui";
 
 type Count = { visitors: number; views: number };
 type Report = {
@@ -17,25 +17,12 @@ const PERIODS = [7, 30, 90, 400] as const;
 const periodLabel = (d: number) => (d === 400 ? "Tudo" : `${d} dias`);
 
 export function VisitReport(_: Record<string, never>) {
-  const [days, setDays] = useState<number>(30);
-  const { state, signIn, signOut } = useStaffData<Report>("visitas", `/v1/admin/visits?days=${days}`);
-
+  const [days, setDays] = useState<(typeof PERIODS)[number]>(30);
   return (
-    <section className="wrap section staff">
-      <h1>Visitas</h1>
-      <StaffGateView state={state} signIn={signIn} signOut={signOut} />
-      {state.kind === "ready" && (
-        <>
-          <div className="actions staff-periods" role="group" aria-label="Período">
-            {PERIODS.map((d) => (
-              <button key={d} className={`button ${d === days ? "primary" : "secondary"}`} aria-pressed={d === days} onClick={() => setDays(d)}>{periodLabel(d)}</button>
-            ))}
-          </div>
-          <Body report={state.data} />
-          <p className="small"><button className="linklike" onClick={signOut}>Sair</button></p>
-        </>
-      )}
-    </section>
+    <StaffShell<Report> page="visitas" api={`/v1/admin/visits?days=${days}`} title="Visitas"
+      tools={<Periods options={PERIODS} value={days} onChange={setDays} label={periodLabel} />}>
+      {(r) => <Body report={r} />}
+    </StaffShell>
   );
 }
 
@@ -60,9 +47,7 @@ function Body({ report }: { report: Report }) {
 
   return (
     <>
-      <div className="staff-tiles">
-        {tiles.map((t) => <div className="card" key={t.label}><span className="small muted">{t.label}</span><strong>{t.value}</strong></div>)}
-      </div>
+      <Tiles items={tiles} />
       {total === 0 ? <p>Nenhuma visita.</p> : (
         <div className="staff-geo">
           <figure className="staff-map">
