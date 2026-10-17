@@ -22,7 +22,11 @@ const LABEL: Record<string, string> = {
   group_created: "Criou um grupo",
   call_started: "Começou uma chamada",
   active_day: "Dia ativo",
+  platform_ios: "iOS",
+  platform_android: "Android",
+  platform_web: "Web",
 };
+const PLATFORMS = ["platform_ios", "platform_android", "platform_web"];
 export const eventLabel = (id: string) => LABEL[id] ?? id;
 
 const PERIODS = [30, 90, 365] as const;
@@ -87,6 +91,9 @@ function Body({ g }: { g: Growth }) {
         </div>
       )}
 
+      <h2>Plataformas</h2>
+      <Platforms g={g} />
+
       <h2>Eventos</h2>
       <div className="staff-scroll">
         <table className="staff-table">
@@ -99,5 +106,26 @@ function Body({ g }: { g: Growth }) {
         </table>
       </div>
     </>
+  );
+}
+
+function Platforms({ g }: { g: Growth }) {
+  const rows = PLATFORMS.map((id) => ({ id, users: g.totals.find((t) => t.event === id)?.users ?? 0 }));
+  const max = Math.max(0, ...rows.map((r) => r.users ?? 0));
+  return (
+    <div className="staff-scroll">
+      <table className="staff-table">
+        <thead><tr><th>Plataforma</th><th className="num">Pessoas</th><th aria-hidden="true"></th></tr></thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.id}>
+              <td>{eventLabel(r.id)}</td>
+              <td className="num"><strong>{small(r.users, g.min_cell)}</strong></td>
+              <td className="staff-bar-cell"><span className="staff-bar" style={{ width: r.users && max ? `${(100 * r.users) / max}%` : 0 }} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
