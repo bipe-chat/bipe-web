@@ -10,6 +10,7 @@ export const paths = {
   audience: (lang: Lang, a: { slug: { pt: string; en: string } }) => `${base(lang)}${lang === "pt" ? "para" : "for"}/${a.slug[lang]}/`,
   download: (lang: Lang) => `${base(lang)}${lang === "pt" ? "baixar" : "download"}/`,
   business: (lang: Lang) => `${base(lang)}${lang === "pt" ? "empresas" : "business"}/`,
+  pricing: (lang: Lang) => `${base(lang)}${lang === "pt" ? "precos" : "pricing"}/`,
   technology: (lang: Lang) => `${base(lang)}${lang === "pt" ? "tecnologia" : "technology"}/`,
   compare: (lang: Lang) => `${base(lang)}compare/`,
   compareApp: (lang: Lang, app: { slug: string }) => `${base(lang)}compare/${app.slug}/`,

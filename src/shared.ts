@@ -117,6 +117,8 @@ export type Audience = {
   sections: { id: string; features: string[]; scene?: SceneId }[];
 } & Copy<{ name: string; title: string; headline: string; lede: string; sections: { heading: string; body: string }[]; note: string; cta: string; ctaSubject: string }>;
 
+export type PricingTierId = "small" | "company" | "institution" | "public";
+
 export const product = productJson as unknown as {
   promise: Copy<{ title: string; lede: string }>;
   realFake: Copy<{ title: string; lede: string; caption: string }>;
@@ -132,6 +134,18 @@ export const product = productJson as unknown as {
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
   business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
+  pricing: {
+    /** Feature ids of the tools that are free on every plan. */
+    tools: string[];
+    /** `amount` in BRL is set only after the pilot (ADR 0075). No amount: the page shows `pilotPrice`. */
+    tiers: { id: PricingTierId; amount?: number; contact?: boolean }[];
+  } & Copy<{
+    nav: string; link: string; title: string; lede: string;
+    principles: { heading: string; points: string[] }; why: { heading: string; points: string[] };
+    tiersHeading: string; freePrice: string; pilotPrice: string;
+    tiers: Record<PricingTierId, { name: string; who: string; billing: string; points: string[] }>;
+    nonprofit: string; tools: { heading: string; body: string }; pilot: { heading: string; points: string[] };
+  }>;
   partners: Copy<{ nav: string; label: string; title: string; lede: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; aboutLink: string; card: { title: string; line: string }; form: PartnerFormCopy }>;
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
   redirects: Record<string, string>;

@@ -446,6 +446,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
             </div>
           ))}
         </div>
+        <p style={{ marginTop: 24 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
       </section>
       <section className="wrap section"><CodeList lang={lang} ids={["business-bridge", "business-inbox"]} /></section>
       <MailCta lang={lang} cta={b.cta} />
@@ -453,8 +454,77 @@ export function BusinessPage({ lang }: { lang: Lang }) {
   );
 }
 
+/** The price of a tier: its amount once set after the pilot (ADR 0075), else the pilot line. */
+export function tierPrice(lang: Lang, tier: (typeof product.pricing.tiers)[number]): string {
+  const p = product.pricing[lang];
+  if (tier.amount === undefined) return p.pilotPrice;
+  if (tier.amount === 0) return p.freePrice;
+  return `R$ ${tier.amount.toLocaleString("pt-BR")}`;
+}
 
-/** Closing call to action on /empresas/ and /parceiros/: a link to the contact form. */
+/** How Bipe charges companies, with no amounts until the pilot ends. Copy and tiers: `pricing` in product.json. */
+export function PricingPage({ lang }: { lang: Lang }) {
+  const p = product.pricing[lang];
+  const tools = product.pricing.tools.map((id) => product.features.find((f) => f.id === id)!);
+  return (
+    <>
+      <section className="wrap section">
+        <div className="split">
+          <div>
+            <h1>{p.title}</h1>
+            <p className="lede">{p.lede}</p>
+          </div>
+          <div className="card">
+            <h2 style={{ fontSize: 24 }}>{p.principles.heading}</h2>
+            <Points items={p.principles.points} />
+          </div>
+        </div>
+      </section>
+      <section className="wrap narrow section">
+        <h2 style={{ fontSize: 28 }}>{p.why.heading}</h2>
+        <Points items={p.why.points} />
+      </section>
+      <section className="wrap section">
+        <h2 style={{ fontSize: 28, marginBottom: 24 }}>{p.tiersHeading}</h2>
+        <div className="tier-grid">
+          {product.pricing.tiers.map((tier) => {
+            const t = p.tiers[tier.id];
+            return (
+              <div className="card tier" key={tier.id}>
+                <h3 style={{ fontSize: 22 }}>{t.name}</h3>
+                <p>{t.who}</p>
+                <p className="tier-price display">{tierPrice(lang, tier)}</p>
+                <p>{t.billing}</p>
+                <ul className="points" style={{ marginTop: 16 }}>{t.points.map((x) => <li key={x} style={{ fontSize: 15 }}><Icon name="check" size={16} />{x}</li>)}</ul>
+                {tier.contact && <a className="button primary compact tier-cta" href={`${paths.partners(lang)}#form`}><Icon name="mail" />{chrome[lang].contact}</a>}
+              </div>
+            );
+          })}
+        </div>
+        <p className="muted" style={{ marginTop: 20 }}>{p.nonprofit}</p>
+      </section>
+      <section className="wrap section">
+        <div className="grid">
+          <div className="card">
+            <h3 style={{ fontSize: 20 }}>{p.tools.heading}</h3>
+            <p style={{ marginTop: 12 }}>{p.tools.body}</p>
+            <div className="more-links">
+              {tools.map((f) => <MoreLink key={f.id} href={paths.feature(lang, f)}>{f[lang].name}{f.status.ios === "planned" && f.status.android === "planned" ? ` (${chrome[lang].status.planned})` : ""}</MoreLink>)}
+            </div>
+          </div>
+          <div className="card">
+            <h3 style={{ fontSize: 20 }}>{p.pilot.heading}</h3>
+            <ul className="points" style={{ marginTop: 12 }}>{p.pilot.points.map((x) => <li key={x} style={{ color: "var(--muted)", fontSize: 15 }}><Icon name="check" size={16} />{x}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+      <MailCta lang={lang} cta={product.business[lang].cta} />
+    </>
+  );
+}
+
+
+/** Closing call to action on /empresas/, /precos/ and /parceiros/: a link to the contact form. */
 function MailCta({ lang, cta }: { lang: Lang; cta: string }) {
   return (
     <section className="wrap section">

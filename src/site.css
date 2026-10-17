@@ -117,6 +117,15 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .tentpole-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
 @media (max-width: 640px) { .tentpole-grid { grid-template-columns: 1fr; } }
 
+/* Pricing tiers (/precos/): four cards in a row, two on a tablet, one on a phone. */
+.tier-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1080px) { .tier-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .tier-grid { grid-template-columns: 1fr; } }
+.tier { display: flex; flex-direction: column; gap: 10px; }
+.tier .tier-price { font-size: 28px; color: var(--text); margin-top: 6px; }
+.tier .points { margin-top: 6px; }
+.tier .tier-cta { margin-top: auto; align-self: flex-start; }
+
 .chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; vertical-align: middle; }
 .chip.policy { background: var(--cpd-color-bg-trust-neutral-subtle); color: var(--cpd-color-text-trust-neutral); border: 1px solid var(--cpd-color-border-trust-neutral); }
 

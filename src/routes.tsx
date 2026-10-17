@@ -9,7 +9,7 @@ import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
-import { AboutPage, BrandKitPage, BusinessPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BrandKitPage, BusinessPage, PricingPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -86,6 +86,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     path: paths.business(lang), alt: paths.business(other(lang)), lang, section: "business",
     title: `${product.business[lang].nav} · Bipe`, description: product.business[lang].lede,
     body: () => <BusinessPage lang={lang} />,
+  },
+  {
+    path: paths.pricing(lang), alt: paths.pricing(other(lang)), lang, section: "business",
+    title: `${product.pricing[lang].nav} · Bipe`, description: product.pricing[lang].lede,
+    body: () => <PricingPage lang={lang} />,
   },
   {
     path: paths.partners(lang), alt: paths.partners(other(lang)), lang, section: "about",

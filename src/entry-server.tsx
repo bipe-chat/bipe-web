@@ -6,7 +6,7 @@ import { ogImageName, routes, type Route } from "./routes";
 import { chrome } from "./copy";
 import { breadcrumbs, footerGroups, links } from "./nav";
 import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
-import { bipeOn } from "./pages";
+import { bipeOn, tierPrice } from "./pages";
 
 export { routes, ogImageName };
 export { analyticsTags } from "./analytics";
@@ -113,6 +113,19 @@ export function renderMarkdown(route: Route): string {
   } else if (route.path === paths.business(lang)) {
     out.push(`(${product.business[lang].label})`, "");
     for (const sec of product.business[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
+    out.push(`${product.business[lang].cta} ${abs(paths.partners(lang))}#form`, "");
+  } else if (route.path === paths.pricing(lang)) {
+    const p = product.pricing[lang];
+    for (const sec of [p.principles, p.why]) out.push(`## ${sec.heading}`, "", ...sec.points.map((x) => `- ${x}`), "");
+    out.push(`## ${p.tiersHeading}`, "");
+    for (const tier of product.pricing.tiers) {
+      const t = p.tiers[tier.id];
+      out.push(`### ${t.name}`, "", t.who, "", `**${tierPrice(lang, tier)}**. ${t.billing}`, "", ...t.points.map((x) => `- ${x}`), "");
+      if (tier.contact) out.push(`${chrome[lang].contact}: ${abs(paths.partners(lang))}#form`, "");
+    }
+    out.push(p.nonprofit, "", `## ${p.tools.heading}`, "", p.tools.body, "");
+    for (const f of product.pricing.tools.map((id) => product.features.find((x) => x.id === id)!)) out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (${c.status[f.status.ios]})`);
+    out.push("", `## ${p.pilot.heading}`, "", ...p.pilot.points.map((x) => `- ${x}`), "");
     out.push(`${product.business[lang].cta} ${abs(paths.partners(lang))}#form`, "");
   } else if (route.path === paths.technology(lang)) {
     for (const g of product.technical.groups) {
