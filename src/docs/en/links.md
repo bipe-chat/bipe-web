@@ -55,7 +55,7 @@ Base URL: `https://api.bipe.net.br`. These calls need no sign-in. Each one has a
 | `GET /v1/invites/{code}` | Whether an invite code can still be used, and the inviter's handle |
 | `GET /v1/handles/{handle}/availability` | Whether a handle is free. It never says who holds it |
 | `POST /v1/waitlist` | Joins the waitlist for a platform that has no build yet |
-| `POST /v1/partners` | Sends a partnership request from an organisation |
+| `POST /v1/organisations` | Sends a request from an organisation that wants to use Bipe or to partner |
 
 Browsers can call the API only from `https://bipe.chat`.
 

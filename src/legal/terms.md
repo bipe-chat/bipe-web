@@ -12,7 +12,7 @@ Bipe is in testing and, for now, invite only. To create an account, you tick a b
 No scams, spam, harassment, illegal content or pretending to be someone else. Accounts that do this get suspended.
 
 ## Contact
-[Contact us](/en/partners/#form)
+[Contact us](/en/organisations/#form)
 
 ## Privacy
 See the [privacy policy](/en/privacy/).

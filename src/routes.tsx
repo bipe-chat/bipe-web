@@ -9,7 +9,7 @@ import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
-import { AboutPage, BrandKitPage, BusinessPage, PricingPage, OgCardsPage, PartnersPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, BrandKitPage, BusinessPage, PricingPage, OgCardsPage, OrganisationsPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -93,10 +93,10 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     body: () => <PricingPage lang={lang} />,
   },
   {
-    path: paths.partners(lang), alt: paths.partners(other(lang)), lang, section: "about",
-    title: `${product.partners[lang].nav} · Bipe`, description: product.partners[lang].lede,
-    og: { title: product.partners[lang].card.title, description: product.partners[lang].card.line, family: product.partners[lang].nav },
-    body: () => <PartnersPage lang={lang} />,
+    path: paths.organisations(lang), alt: paths.organisations(other(lang)), lang, section: "about",
+    title: `${product.organisations[lang].nav} · Bipe`, description: product.organisations[lang].lede,
+    og: { title: product.organisations[lang].card.title, description: product.organisations[lang].card.line, family: product.organisations[lang].nav },
+    body: () => <OrganisationsPage lang={lang} />,
   },
   {
     path: paths.technology(lang), alt: paths.technology(other(lang)), lang,
