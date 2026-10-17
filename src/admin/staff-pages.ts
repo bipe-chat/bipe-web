@@ -22,7 +22,7 @@ export const STAFF_LINKS = [
 ];
 
 export const STAFF_CONSOLE = {
-  crescimento: { title: "Crescimento", group: "Crescimento", path: "/admin/crescimento/" },
+  crescimento: { title: "Funil", group: "Crescimento", path: "/admin/crescimento/" },
   convites: { title: "Convites", group: "Crescimento", path: "/admin/convites/" },
   visitas: { title: "Visitas", group: "Crescimento", path: "/admin/visitas/" },
   experimentos: { title: "Títulos", group: "Crescimento", path: "/admin/experimentos/" },

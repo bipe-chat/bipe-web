@@ -2,7 +2,7 @@
 // The frame (nav, trail, header) renders before sign-in: it holds no data.
 import type { ReactNode } from "react";
 import { StaffGateView, useStaffData } from "./staff-auth";
-import { STAFF_CONSOLE, STAFF_GROUPS, STAFF_HOME, STAFF_INDEX, STAFF_LINKS, type StaffPage, type StaffPageInfo } from "./staff-pages";
+import { STAFF_CONSOLE, STAFF_GROUPS, STAFF_INDEX, STAFF_LINKS, type StaffPage, type StaffPageInfo } from "./staff-pages";
 
 const pages = Object.entries(STAFF_CONSOLE as Record<string, StaffPageInfo>);
 
@@ -14,9 +14,7 @@ function StaffNav({ page }: { page: StaffPage }) {
       {STAFF_GROUPS.map((g) => (
         <div key={g} className="staff-nav-group">
           <span className="staff-nav-label">{g}</span>
-          {pages.filter(([, p]) => p.group === g).map(([key, p]) => p.path
-            ? <a key={key} href={p.path} aria-current={here(key)}>{p.title}</a>
-            : <span key={key} className="staff-nav-planned">{p.title} <span className="small">#{p.issue}</span></span>)}
+          {pages.filter(([, p]) => p.group === g && p.path).map(([key, p]) => <a key={key} href={p.path} aria-current={here(key)}>{p.title}</a>)}
         </div>
       ))}
       <div className="staff-nav-group">
@@ -27,44 +25,48 @@ function StaffNav({ page }: { page: StaffPage }) {
   );
 }
 
-function Trail({ page, title }: { page: StaffPage; title: string }) {
-  const group = page === "index" ? null : (STAFF_CONSOLE[page] as StaffPageInfo).group;
+/** Painel, group, page. The index has no trail. */
+function Trail({ page, title }: { page: Exclude<StaffPage, "index">; title: string }) {
   return (
     <nav className="crumbs small staff-crumbs" aria-label="Trilha">
       <ol>
-        {page === "index" ? <li><span aria-current="page">{STAFF_HOME}</span></li> : (
-          <>
-            <li><a href={STAFF_INDEX}>{STAFF_HOME}</a></li>
-            <li>{group}</li>
-            <li><span aria-current="page">{title}</span></li>
-          </>
-        )}
+        <li><a href={STAFF_INDEX}>Painel</a></li>
+        <li>{(STAFF_CONSOLE[page] as StaffPageInfo).group}</li>
+        <li><span aria-current="page">{title}</span></li>
       </ol>
     </nav>
   );
 }
 
-/** Nav, trail, title row with the page's controls and Sair, the sign-in gate, then the report once data is in. */
+/**
+ * Signed in as staff: nav, trail, title row with the page's controls and Sair, then the report.
+ * Before that: the title and the sign-in gate only. The static HTML names no other staff page.
+ */
 export function StaffShell<T>({ page, api, title, tools, children }: {
   page: StaffPage; api: string | readonly string[]; title: string; tools?: ReactNode; children: (data: T) => ReactNode;
 }) {
   const { state, signIn, signOut } = useStaffData<T>(page, api);
+  if (state.kind !== "ready") return (
+    <div className="staff-app staff-gate">
+      <div className="staff-main">
+        <h1>{title}</h1>
+        <StaffGateView state={state} signIn={signIn} signOut={signOut} />
+      </div>
+    </div>
+  );
   return (
     <div className="staff-app">
       <StaffNav page={page} />
       <div className="staff-main">
-        <Trail page={page} title={title} />
+        {page !== "index" && <Trail page={page} title={title} />}
         <header className="staff-head">
           <h1>{title}</h1>
-          {state.kind === "ready" && (
-            <div className="staff-head-tools">
-              {tools}
-              <button className="button secondary compact" onClick={signOut}>Sair</button>
-            </div>
-          )}
+          <div className="staff-head-tools">
+            {tools}
+            <button className="button secondary compact" onClick={signOut}>Sair</button>
+          </div>
         </header>
-        <StaffGateView state={state} signIn={signIn} signOut={signOut} />
-        {state.kind === "ready" && children(state.data)}
+        {children(state.data)}
       </div>
     </div>
   );

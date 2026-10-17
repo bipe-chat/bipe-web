@@ -60,7 +60,7 @@ function Dashboard({ m, s }: { m: Metrics; s: Summary }) {
   ];
   return (
     <>
-      <Section title="Crescimento" aside={<a className="small" href={path("crescimento")}>Funil e retenção</a>}>
+      <Section title="Crescimento" aside={<a className="small" href={path("crescimento")}>Funil</a>}>
         <Tiles items={[
           { label: "Contas", value: small(m.accounts), sub: g.accounts_28d_pct === null ? undefined : `${delta(g.accounts_28d_pct)} em 28 d` },
           { label: "Crescimento semanal", value: pctOf(g.accounts_weekly_pct), sub: "média de 4 semanas" },

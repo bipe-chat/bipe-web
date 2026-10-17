@@ -207,7 +207,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
 })), {
   // Staff only (bipe#373, ADR 0098): growth funnel and retention, aggregates only.
   path: "/admin/crescimento/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
-  title: "Crescimento · Bipe", description: "Relatório interno de crescimento.",
+  title: "Funil · Bipe", description: "Equipe.",
   body: () => <Island name="GrowthReport" props={{}} />,
 }, {
   // Staff only (ADR 0098 in bipe/docs/adr): Umami visits in Brazil by state and city. The HTML holds no data.

@@ -33,7 +33,7 @@ const small = (n: number | null, min: number) => (n === null ? `< ${min}` : Stri
 export function GrowthReport(_: Record<string, never>) {
   const [days, setDays] = useState<(typeof PERIODS)[number]>(90);
   return (
-    <StaffShell<Growth> page="crescimento" api={`/v1/admin/growth?since=${dayAgo(days)}`} title="Crescimento"
+    <StaffShell<Growth> page="crescimento" api={`/v1/admin/growth?since=${dayAgo(days)}`} title="Funil"
       tools={<Periods options={PERIODS} value={days} onChange={setDays} />}>
       {(g) => <Body g={g} />}
     </StaffShell>
