@@ -429,6 +429,9 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .staff-card { display: flex; flex-direction: column; gap: 6px; padding: 16px; color: inherit; text-decoration: none; }
 a.staff-card:hover { border-color: var(--acai); }
 .staff-card.planned { opacity: 0.6; }
+.staff-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+.staff-stat { display: flex; flex-direction: column; gap: 2px; }
+.staff-stat b { font-size: 28px; font-variant-numeric: tabular-nums; line-height: 1.1; }
 .staff-table tr.warn td { background: var(--cpd-color-bg-trust-neutral-subtle); }
 /* Verified contact (QR in person): the seal with a small QR corner (design/trust-ui.md). */
 .seal-qr { position: relative; display: inline-flex; }
