@@ -91,13 +91,20 @@ async function finishSignIn(page: StaffPage): Promise<string | null> {
   return ((await r.json()) as { access_token: string }).access_token;
 }
 
+// After the first page has hydrated, a page that StaffApp switches to may read the tab's storage in its
+// first render (no server HTML to match), so it starts signed in and with the data it had before.
+let hydrated = false;
+export const markHydrated = () => { hydrated = true; };
+const cache = new Map<string, unknown>();
+
 export type StaffState<T> = { kind: "loading" } | { kind: "signedOut"; error?: string } | { kind: "notStaff" } | { kind: "ready"; data: T };
 
 /** Signs in when needed and reads `path` from the API. A list of paths reads them all and gives a list. A new path reads again. */
 export function useStaffData<T>(page: StaffPage, path: string | readonly string[]) {
-  const [state, setState] = useState<StaffState<T>>({ kind: "loading" });
-  const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const key = JSON.stringify(path);
+  const [state, setState] = useState<StaffState<T>>(() =>
+    hydrated && cache.has(key) && store.get(sessionStorage, KEY.token) ? { kind: "ready", data: cache.get(key) as T } : { kind: "loading" });
+  const [signedIn, setSignedIn] = useState<boolean | null>(() => (hydrated ? Boolean(store.get(sessionStorage, KEY.token)) : null));
 
   useEffect(() => {
     // The API allows only the main site origin (CORS), so the page runs there.
@@ -130,7 +137,9 @@ export function useStaffData<T>(page: StaffPage, path: string | readonly string[
         const bad = answers.find((r) => !r.ok);
         if (bad) throw new Error(String(bad.status));
         const bodies = await Promise.all(answers.map((r) => r.json()));
-        if (live) setState({ kind: "ready", data: (Array.isArray(paths) ? bodies : bodies[0]) as T });
+        const data = (Array.isArray(paths) ? bodies : bodies[0]) as T;
+        cache.set(key, data);
+        if (live) setState({ kind: "ready", data });
       } catch {
         if (live) setState({ kind: "signedOut", error: "API fora do ar." });
       }
@@ -141,12 +150,13 @@ export function useStaffData<T>(page: StaffPage, path: string | readonly string[
   const signOut = () => {
     const token = store.get(sessionStorage, KEY.token);
     store.del(sessionStorage, KEY.token);
+    cache.clear();
     setSignedIn(false);
     setState({ kind: "signedOut" });
     if (token) revoke(token).catch(() => { /* the token is gone from the tab either way */ });
   };
   const start = () => { signIn(page).catch(() => setState({ kind: "signedOut", error: "Login fora do ar." })); };
-  return { state, signOut, signIn: start };
+  return { state, signedIn, signOut, signIn: start };
 }
 
 /** The sign-in, not-staff and loading states that every staff page shows the same way. */

@@ -190,30 +190,29 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   // Staff only (ADR 0056 in bipe/docs/adr). The HTML holds no data; the island signs in and asks the API.
   path: "/admin/convites/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: "Convites · Bipe", description: "Relatório interno de convites.",
-  body: () => <Island name="InviterReport" props={{}} />,
+  body: () => <Island name="StaffApp" props={{ page: "convites" }} />,
 }, {
   // Staff index (bipe#372): every page in src/admin/staff-pages.ts. The HTML holds no data.
   path: "/admin/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
-  title: "Equipe · Bipe", description: "Painéis internos.",
-  body: () => <Island name="AdminIndex" props={{}} />,
+  title: "Equipe · Bipe", description: "Equipe.",
+  body: () => <Island name="StaffApp" props={{ page: "index" }} />,
 }, ...([
   // Read-only staff pages (bipe#368). Paths and titles come from src/admin/staff-pages.ts.
-  ["experimentos", "ExperimentsReport"], ["espera", "WaitlistReport"], ["empresas", "BusinessReport"],
-  ["denuncias", "UserReports"], ["lgpd", "RetentionReport"],
-] as const).map(([page, island]): Route => ({
+  "experimentos", "espera", "empresas", "denuncias", "lgpd",
+] as const).map((page): Route => ({
   path: staffPath(page), alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: `${STAFF_CONSOLE[page].title} · Bipe`, description: "Equipe.",
-  body: () => <Island name={island} props={{}} />,
+  body: () => <Island name="StaffApp" props={{ page }} />,
 })), {
   // Staff only (bipe#373, ADR 0098): growth funnel and retention, aggregates only.
   path: "/admin/crescimento/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: "Funil · Bipe", description: "Equipe.",
-  body: () => <Island name="GrowthReport" props={{}} />,
+  body: () => <Island name="StaffApp" props={{ page: "crescimento" }} />,
 }, {
   // Staff only (ADR 0098 in bipe/docs/adr): Umami visits in Brazil by state and city. The HTML holds no data.
   path: "/admin/visitas/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: "Visitas · Bipe", description: "Relatório interno de visitas ao site.",
-  body: () => <Island name="VisitReport" props={{}} />,
+  body: () => <Island name="StaffApp" props={{ page: "visitas" }} />,
 }, ...(["pt", "en"] as Lang[]).map((lang): Route => ({
   // Caddy serves this page with status 404 for every missing path (handle_errors in bipe-infra/compose/Caddyfile).
   path: `${paths.home(lang)}404/`, alt: null, lang, noindex: true,

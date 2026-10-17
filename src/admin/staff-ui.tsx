@@ -45,8 +45,9 @@ function Trail({ page, title }: { page: Exclude<StaffPage, "index">; title: stri
 export function StaffShell<T>({ page, api, title, tools, children }: {
   page: StaffPage; api: string | readonly string[]; title: string; tools?: ReactNode; children: (data: T) => ReactNode;
 }) {
-  const { state, signIn, signOut } = useStaffData<T>(page, api);
-  if (state.kind !== "ready") return (
+  const { state, signedIn, signIn, signOut } = useStaffData<T>(page, api);
+  // Signed in and still loading: keep the frame, so a page switch does not flash.
+  if (state.kind !== "ready" && !(state.kind === "loading" && signedIn)) return (
     <div className="staff-app staff-gate">
       <div className="staff-main">
         <h1>{title}</h1>
@@ -66,7 +67,7 @@ export function StaffShell<T>({ page, api, title, tools, children }: {
             <button className="button secondary compact" onClick={signOut}>Sair</button>
           </div>
         </header>
-        {children(state.data)}
+        {state.kind === "ready" ? children(state.data) : <p className="muted">Carregando…</p>}
       </div>
     </div>
   );

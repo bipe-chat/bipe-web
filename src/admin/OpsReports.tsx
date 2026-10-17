@@ -1,6 +1,13 @@
 // Read-only staff pages on existing data (bipe#374, #375, #376, #380, #381). Frame: staff-ui.tsx.
-import { dataRegister } from "../shared";
+import { dataRegister, product } from "../shared";
 import { daysSince, fmtDate, pct, small, StaffShell, Tiles } from "./staff-ui";
+
+// Headline per arm id from bipe-shared product.json (issue #77): h0 is the control, promise.pt.title. Retired arms keep their text.
+type Arm = { id: string; pt: string; date?: string };
+const ARMS = new Map<string, Arm>([
+  ["h0", { id: "h0", pt: product.promise.pt.title }],
+  ...[...product.headlineTest.arms, ...((product.headlineTest as { retired?: Arm[] }).retired ?? [])].map((a): [string, Arm] => [a.id, a as Arm]),
+]);
 
 type Experiments = { experiments: { id: string; first_day: string; last_day: string; arms: { arm: string; visitors: number; install_clicks: number; waitlist: number | null }[] }[] };
 
@@ -16,7 +23,10 @@ export function ExperimentsReport(_: Record<string, never>) {
               <tbody>
                 {e.arms.map((a) => (
                   <tr key={a.arm}>
-                    <td><strong>{a.arm}</strong></td>
+                    <td>
+                      <strong>{a.arm}</strong> {ARMS.get(a.arm)?.date && <span className="small muted">retirado em {fmtDate(ARMS.get(a.arm)!.date!)}</span>}
+                      {ARMS.get(a.arm) && <div className="staff-quote">{ARMS.get(a.arm)!.pt}</div>}
+                    </td>
                     <td className="num">{a.visitors}</td>
                     <td className="num">{a.install_clicks}</td>
                     <td className="num">{pct(a.install_clicks, a.visitors)}</td>

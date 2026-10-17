@@ -458,6 +458,7 @@ a.staff-tile:hover { border-color: var(--acai); }
 .staff-table th button, .linklike { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 .staff-table th button:hover, .linklike { text-decoration: underline; }
 .staff-table td .mono { overflow-wrap: anywhere; }
+.staff-quote { font-family: var(--brand); font-weight: 800; font-size: 16px; line-height: 1.25; margin-top: 2px; }
 .staff-table tbody tr:hover td { background: var(--surface); }
 .staff-geo { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 24px; align-items: start; margin-bottom: 32px; }
 @media (max-width: 760px) { .staff-geo { grid-template-columns: 1fr; } }
