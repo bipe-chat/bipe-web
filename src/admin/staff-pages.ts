@@ -17,13 +17,13 @@ export const STAFF_CONSOLE = {
   crescimento: { title: "Crescimento", group: "Crescimento", path: "/admin/crescimento/" },
   convites: { title: "Convites", group: "Crescimento", path: "/admin/convites/" },
   visitas: { title: "Visitas", group: "Crescimento", path: "/admin/visitas/" },
-  experimentos: { title: "Títulos", group: "Crescimento", issue: 376 },
-  espera: { title: "Lista de espera", group: "Operação", issue: 374 },
+  experimentos: { title: "Títulos", group: "Crescimento", path: "/admin/experimentos/" },
+  espera: { title: "Lista de espera", group: "Operação", path: "/admin/lista-de-espera/" },
   problemas: { title: "Problemas", group: "Operação", issue: 367 },
-  empresas: { title: "Empresas", group: "Empresas", issue: 375 },
+  empresas: { title: "Empresas", group: "Empresas", path: "/admin/empresas/" },
   nomes: { title: "Nomes reservados", group: "Empresas", issue: 253 },
-  denuncias: { title: "Denúncias", group: "Confiança", issue: 380 },
-  lgpd: { title: "LGPD", group: "Confiança", issue: 381 },
+  denuncias: { title: "Denúncias", group: "Confiança", path: "/admin/denuncias/" },
+  lgpd: { title: "LGPD", group: "Confiança", path: "/admin/lgpd/" },
   transparencia: { title: "Transparência", group: "Confiança", issue: 288 },
 } as const satisfies Record<string, StaffPageInfo>;
 

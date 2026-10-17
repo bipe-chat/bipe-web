@@ -1,3 +1,4 @@
+import { STAFF_CONSOLE, staffPath } from "./admin/staff-pages";
 import type { ReactNode } from "react";
 import { chrome } from "./copy";
 import { compare, dataRegister, distribution, privacyRegister, product, publicRepos, type Lang } from "./shared";
@@ -193,7 +194,15 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/admin/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: "Equipe · Bipe", description: "Painéis internos.",
   body: () => <Island name="AdminIndex" props={{}} />,
-}, {
+}, ...([
+  // Read-only staff pages (bipe#368). Paths and titles come from src/admin/staff-pages.ts.
+  ["experimentos", "ExperimentsReport"], ["espera", "WaitlistReport"], ["empresas", "BusinessReport"],
+  ["denuncias", "UserReports"], ["lgpd", "RetentionReport"],
+] as const).map(([page, island]): Route => ({
+  path: staffPath(page), alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
+  title: `${STAFF_CONSOLE[page].title} · Bipe`, description: "Equipe.",
+  body: () => <Island name={island} props={{}} />,
+})), {
   // Staff only (bipe#373, ADR 0098): growth funnel and retention, aggregates only.
   path: "/admin/crescimento/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: "Crescimento · Bipe", description: "Relatório interno de crescimento.",
