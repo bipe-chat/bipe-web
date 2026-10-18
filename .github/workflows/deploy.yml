@@ -1,3 +1,5 @@
+# DISABLED (18 October 2026): GitHub runners cannot reach the SaveinCloud gate (ssh timeout on every run).
+# Deploy from the Mac with pnpm run deploy. Turn it back on only after the gate accepts GitHub runner addresses.
 # Deploys bipe.chat from main without a laptop on the path. Use it when the local network cannot reach
 # the SaveinCloud gate (14 October 2026: the Cirion AS11415 route dropped it). Run: gh workflow run deploy.yml
 # Ships only what is committed on main. No --delete, same as scripts/deploy.sh. PNG icons need macOS

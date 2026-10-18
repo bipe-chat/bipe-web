@@ -41,3 +41,9 @@ Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; on
 - Link-preview cards: every route gets a 1200x630 PNG at `/og/<name>.png`, rendered at build time by `scripts/og.mjs` (Satori and resvg, same on every machine). Text is the route's title and description; set `og` on a route to give the card its own title, line and footer label (example: `/organizacoes/`, from `organisations.card` in `product.json`). The name comes from `ogImageName` in `src/routes.tsx`. All cards show on `/cartoes/` (noindex). A card uses only static text: never an invite code or a handle (crawlers fetch the URL with the code in it).
 - OpenAI moderation blocks some cast photo outputs (`moderation_blocked`, `sexual`) on harmless prompts, for example a young woman "dressed to go out" in a changing-room mirror. Rewrite the `look` with plain, complete clothes and a home setting. Codex also sometimes answers DONE without calling `image_gen`; the script retries once.
 - CSS entrance animations do not run in a hidden browser tab, so a screenshot of a hidden preview shows an empty phone.
+
+## Before you push
+
+- CI must stay green. `scripts/verify` runs what the required checks of the `main` ruleset run. Run it before every push; the pre-push hook runs it when this clone has `git config core.hooksPath .bipe-hooks` (set it once per clone; worktrees share it).
+- A push with red local checks is not allowed. Never use `git push --no-verify`.
+- If CI still fails on your pull request, fix it before you start other work. Never leave a red pull request at the end of a run.

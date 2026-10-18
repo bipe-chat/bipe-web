@@ -35,6 +35,9 @@ jobs:
           ref: ${{ steps.shared.outputs.ref }}
           path: bipe-shared
           persist-credentials: false
+      # check-code-links compares with origin/main of the sibling clone, also when a branch is checked out.
+      - name: Fetch bipe-shared main
+        run: git -C bipe-shared fetch -q --depth 1 origin main:refs/remotes/origin/main
       - uses: actions/checkout@v4
         with:
           repository: bipe-chat/compound-design-tokens

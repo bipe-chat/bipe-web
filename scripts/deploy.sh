@@ -24,7 +24,7 @@ if ! nc -z "$wait_flag" 8 "$host" "$BIPE_DEPLOY_PORT" 2>/dev/null; then
   else
     echo "bipe.chat does not answer from here either. Check from outside: https://check-host.net/check-http?host=https://bipe.chat" >&2
   fi
-  echo "Deploy from GitHub instead (ships main only): gh workflow run deploy.yml -R bipe-chat/bipe-web" >&2
+  echo "Deploy from a network that reaches the gate. The GitHub deploy workflow is disabled: runners cannot reach it either (18 October 2026)." >&2
   exit 1
 fi
 

@@ -1,0 +1,11 @@
+#!/bin/sh
+# Bipe: run scripts/verify (the checks the main ruleset requires) before a push, so CI stays green.
+# Enable once per clone: git config core.hooksPath <this folder>. A push that only deletes a branch skips it.
+while read -r _local_ref local_sha _remote_ref _remote_sha; do
+  [ "$local_sha" = 0000000000000000000000000000000000000000 ] && continue
+  top=$(git rev-parse --show-toplevel)
+  # Git sets GIT_DIR and friends for hooks; verify runs git -C in sibling repos, which they would redirect.
+  unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_COMMON_DIR GIT_PREFIX
+  exec "$top/scripts/verify"
+done
+exit 0
