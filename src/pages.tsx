@@ -2,7 +2,7 @@ import { chrome } from "./copy";
 import { CodeList } from "./components/code";
 import { AppIcon, Mark, MARK, MARKS, Seal, Wordmark, type MarkId } from "./components/brand";
 import brandAssets from "./components/brand-assets.json";
-import { DownloadButtons, Icon, MoreLink, PlatformStatus } from "./components/ui";
+import { DownloadButtons, FeatureIcon, Icon, MoreLink, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
@@ -217,6 +217,7 @@ function FeatureArea({ lang, area, level }: { lang: Lang; area: (typeof product.
 function FeatureCard({ lang, f, anchor }: { lang: Lang; f: Feature; anchor?: boolean }) {
   return (
     <a className="card feature" href={paths.feature(lang, f)} id={anchor ? f.id : undefined}>
+      <FeatureIcon f={f} />
       <h3>{f[lang].name}</h3>
       <PlatformStatus lang={lang} f={f} />
       <p>{f[lang].body}</p>

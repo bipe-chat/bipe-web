@@ -6,7 +6,7 @@ import scamsJson from "@shared/product/scams.json";
 import { chrome } from "../copy";
 import { CodeList } from "../components/code";
 import { paths } from "../paths";
-import { Icon, type IconName } from "../components/ui";
+import { FeatureIcon, Icon, type IconName } from "../components/ui";
 import { product, type Lang } from "../shared";
 import { Figure } from "../sim/Figure";
 import type { FigureId } from "../sim/scenes";
@@ -79,12 +79,6 @@ const scamIcon: Record<string, IconName> = {
   threats: "warning", fakeKidnap: "lock", sextortion: "eye", groupScam: "group", fakeCharity: "gift",
   // outside: golpes that start outside a chat
   motoboy: "scooter", maquininha: "terminal", trocaCartao: "card", ligacao: "call",
-};
-/** Icon per Bipe feature on the protect cards. */
-const featureIcon: Record<string, IconName> = {
-  "scam-alerts": "warning", requests: "chat", "no-sms": "key", "money-pause": "hourglass", "verified-badge": "badge",
-  "family-check": "person", "new-phone": "phone", "reserved-names": "at", lookalikes: "search", "cnpj-badge": "bank",
-  "pix-cards": "pix", "pix-charges": "receipt", "verified-groups": "group", communities: "globe",
 };
 
 /** "Fonte: Publisher" with a link, and the kind when it is not a primary source. */
@@ -225,7 +219,7 @@ function ProtectCard({ lang, feature }: { lang: Lang; feature: string }) {
   const p = scams.protect.find((x) => x.feature === feature);
   return (
     <a className="card scam-type" href={paths.feature(lang, f)}>
-      <span className="scam-type-icon"><Icon name={featureIcon[feature] ?? "shield"} size={22} /></span>
+      <FeatureIcon f={f} />
       <h3>{f[lang].name}</h3>
       <p>{p ? p[lang] : f[lang].body}</p>
       <p className="scam-type-status">iPhone: {st[f.status.ios]} · Android: {st[f.status.android]}</p>
@@ -266,7 +260,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
                 const s = t.stats[0] ? statOf(t.stats[0]) : null;
                 return (
                   <article className="card scam-type" key={t.id} id={t.id}>
-                    <span className="scam-type-icon"><Icon name={scamIcon[t.id] ?? "warning"} size={22} /></span>
+                    <span className="icon-tile"><Icon name={scamIcon[t.id] ?? "warning"} size={22} /></span>
                     <h4><a className="stretch" href={paths.scamType(lang, t)}>{t[lang].heading}</a></h4>
                     <p>{t[lang].body}</p>
                     {s && (
@@ -293,7 +287,7 @@ export function ScamsPage({ lang }: { lang: Lang }) {
               const src = sourceOf(o.source);
               return (
                 <article className="card scam-type" key={o.id} id={o.id}>
-                  <span className="scam-type-icon"><Icon name={scamIcon[o.id] ?? "warning"} size={22} /></span>
+                  <span className="icon-tile"><Icon name={scamIcon[o.id] ?? "warning"} size={22} /></span>
                   <h4>{o[lang].name}</h4>
                   <p>{o[lang].body}</p>
                   <p className="scam-type-more"><a className="stretch" href={src.url}>{c.outsideMore} ({src.publisher}) ↗</a></p>

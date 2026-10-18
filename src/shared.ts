@@ -1,4 +1,5 @@
 import type { OrganisationFormCopy } from "./sim/OrganisationForm";
+import type { IconName } from "./components/ui";
 // The site's only door into bipe-shared. Registries, strings and product copy come from there;
 // the scam, handle and name logic is the reference implementation every app must match.
 import familyTerms from "@shared/registries/family-terms.json";
@@ -102,6 +103,8 @@ export type Feature = {
   slug: Copy<string>;
   /** Phone scenes and sims that show the feature in practice; the first sits beside the text (bipe#176). */
   figures?: FigureId[];
+  /** One glyph per feature, unique in the grid (Icon in src/components/ui.tsx). gen-product-doc.mjs checks it. */
+  icon: IconName;
   /** Deep links into the code: ids in distribution.json source.code. */
   code?: string[];
 } & Copy<{ name: string; body: string; points: string[] }>;

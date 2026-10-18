@@ -6,7 +6,9 @@ import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind 
 export type IconName = "warning" | "check" | "person" | "send" | "apple" | "android" | "mail" | "globe" | "shield" | "pix" | "circle" | "back" | "plus" | "mic" | "search" | "chat" | "group"
   | "phone" | "call" | "bag" | "key" | "heart" | "scales" | "bank" | "box" | "briefcase" | "headset" | "tag" | "receipt"
   | "house" | "swap" | "barcode" | "cash" | "trend" | "dice" | "link" | "cursor" | "sim" | "lock" | "eye" | "gift"
-  | "card" | "terminal" | "scooter" | "hourglass" | "badge" | "at" | "calendar" | "clock";
+  | "card" | "terminal" | "scooter" | "hourglass" | "badge" | "at" | "calendar" | "clock"
+  | "devices" | "letters" | "person-question" | "qr" | "user-plus" | "eye-off" | "server" | "code" | "document" | "ticket"
+  | "pix-check" | "sticker" | "poll" | "group-badge";
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const p = {
@@ -62,6 +64,21 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
     hourglass: "M7 3h10M7 21h10M8 3v3.5a4 4 0 0 0 1.6 3.2L12 12l2.4-2.3A4 4 0 0 0 16 6.5V3M8 21v-3.5a4 4 0 0 1 1.6-3.2L12 12l2.4 2.3a4 4 0 0 1 1.6 3.2V21",
     badge: "M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6L12 3Zm-3.5 9 2.5 2.5 4.5-5",
     at: "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm3.5 3.5v1.5a2.5 2.5 0 0 0 5 0V12a8.5 8.5 0 1 0-3.3 6.7",
+    // Feature icons on the Recursos cards (icon in product.json). One glyph per feature.
+    devices: "M9 7V4.5A1.5 1.5 0 0 1 10.5 3h8A1.5 1.5 0 0 1 20 4.5v12a1.5 1.5 0 0 1-1.5 1.5H15M5.5 7h8A1.5 1.5 0 0 1 15 8.5v11a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 19.5v-11A1.5 1.5 0 0 1 5.5 7Zm3 11h2",
+    letters: "M3 19 7.5 6 12 19M4.8 14.5h5.4M20 12.5V19m0-3.25a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
+    "person-question": "M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6.5 9c0-3.3 2.9-6 6.5-6 1.2 0 2.3.3 3.2.8M17 14a2.25 2.25 0 1 1 3.2 2c-.7.35-.95.75-.95 1.4v.35m0 2.75v.01",
+    qr: "M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h2.5v2.5H14zm3.5 3.5H20V20h-2.5zM7 7v.01M17 7v.01M7 17v.01",
+    "user-plus": "M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6.5 9c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6M19 7v6m-3-3h6",
+    "eye-off": "M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Zm9.5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM4 4l16 16",
+    server: "M4 4h16v6.5H4zm0 9.5h16V20H4zM7.5 7.25v.01m0 9.5v.01M11 7.25h5.5M11 16.75h5.5",
+    code: "M8.5 7 3.5 12l5 5m7-10 5 5-5 5M13.5 5l-3 14",
+    document: "M6 3h8.5L19 7.5V21H6V3Zm8 0v5h5M9 12.5h7M9 16.5h7",
+    ticket: "M3 7h18v3.2a1.8 1.8 0 0 0 0 3.6V17H3v-3.2a1.8 1.8 0 0 0 0-3.6V7Zm11.5 0v2m0 3v2m0 3v-1",
+    "pix-check": "M10 4l6 6-6 6-6-6 6-6Zm-2 6h4m2 8.5 2.5 2.5 4.5-5",
+    sticker: "M5 4h14v9.5L13.5 20H5V4Zm14 9.5h-4a1.5 1.5 0 0 0-1.5 1.5v5M9.5 9v.01M14.5 9v.01",
+    poll: "M6 20v-8m6 8V5m6 15v-9M3.5 20h17",
+    "group-badge": "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 9c0-3 2.7-5.5 6-5.5 1.5 0 2.9.5 3.9 1.3M16 11a3 3 0 1 0 0-6m-1 12 2 2 4-4.5",
   }[name];
   const filled = name === "apple" || name === "android";
   return (
@@ -69,6 +86,12 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
       <path d={p} />
     </svg>
   );
+}
+
+/** The feature's icon tile: a filled wash once any platform has it (testing, built, policy), an outline while it is planned on both. */
+export function FeatureIcon({ f }: { f: Feature }) {
+  const planned = f.status.ios === "planned" && f.status.android === "planned";
+  return <span className={planned ? "icon-tile planned" : "icon-tile"}><Icon name={f.icon} size={22} /></span>;
 }
 
 /** Status per platform as plain text, no pill. A policy feature has no platform status to show. */

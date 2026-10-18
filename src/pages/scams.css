@@ -66,7 +66,6 @@
 .scam-types { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
 .scam-type { position: relative; display: flex; flex-direction: column; gap: 10px; border: 1px solid transparent; transition: border-color .15s; }
 .scam-type:hover, .scam-type:focus-within { border-color: var(--acai); }
-.scam-type-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--acai-wash); color: var(--acai); }
 .scam-type h3, .scam-type h4 { margin: 4px 0 0; font: 850 21px/1.2 var(--brand); letter-spacing: -.01em; }
 .scam-type h4 a { color: var(--text); text-decoration: none; }
 .scam-type a.stretch::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
