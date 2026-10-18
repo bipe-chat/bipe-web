@@ -496,7 +496,9 @@ export function PricingPage({ lang }: { lang: Lang }) {
                 <p className="tier-price display">{tierPrice(lang, tier)}</p>
                 <p>{t.billing}</p>
                 <ul className="points" style={{ marginTop: 16 }}>{t.points.map((x) => <li key={x} style={{ fontSize: 15 }}><Icon name="check" size={16} />{x}</li>)}</ul>
-                {tier.contact && <a className="button primary compact tier-cta" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{chrome[lang].contact}</a>}
+                {tier.cta === "app"
+                  ? <a className="button secondary compact tier-cta" href={paths.download(lang)}>{p.ctaApp}</a>
+                  : <a className="button primary compact tier-cta" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{p.ctaForm}</a>}
               </div>
             );
           })}
@@ -518,19 +520,19 @@ export function PricingPage({ lang }: { lang: Lang }) {
           </div>
         </div>
       </section>
-      <MailCta lang={lang} cta={product.business[lang].cta} />
+      <MailCta lang={lang} cta={product.business[lang].cta} label={p.ctaForm} />
     </>
   );
 }
 
 
 /** Closing call to action on /empresas/ and /precos/: a link to the organisation form. */
-function MailCta({ lang, cta }: { lang: Lang; cta: string }) {
+function MailCta({ lang, cta, label }: { lang: Lang; cta: string; label?: string }) {
   return (
     <section className="wrap section">
       <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
         <h2 style={{ fontSize: 26 }}>{cta}</h2>
-        <a className="button primary" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{chrome[lang].contact}</a>
+        <a className="button primary" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{label ?? chrome[lang].contact}</a>
       </div>
     </section>
   );
@@ -561,6 +563,15 @@ export function OrganisationsPage({ lang }: { lang: Lang }) {
               <p style={{ color: "var(--muted)", fontSize: 15, marginTop: 12, marginBottom: 0 }}>{s.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+      <section className="wrap narrow section">
+        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
+          <div style={{ flex: "1 1 280px" }}>
+            <h2 style={{ fontSize: 22 }}>{p.small.heading}</h2>
+            <p style={{ color: "var(--muted)", fontSize: 15, marginTop: 8, marginBottom: 0 }}>{p.small.body}</p>
+          </div>
+          <a className="button secondary" href={paths.download(lang)}>{p.small.button}</a>
         </div>
       </section>
       <section className="wrap narrow section" id="form">

@@ -139,17 +139,17 @@ export const product = productJson as unknown as {
     /** Feature ids of the tools that are free on every plan. */
     tools: string[];
     /** `amount` in BRL is set only after the pilot (ADR 0075). No amount: the page shows `pilotPrice`. */
-    tiers: { id: PricingTierId; amount?: number; contact?: boolean }[];
+    tiers: { id: PricingTierId; amount?: number; cta: "app" | "form" }[];
   } & Copy<{
     nav: string; link: string; title: string; lede: string;
     principles: { heading: string; points: string[] }; why: { heading: string; points: string[] };
-    tiersHeading: string; freePrice: string; pilotPrice: string;
+    tiersHeading: string; freePrice: string; pilotPrice: string; ctaApp: string; ctaForm: string;
     tiers: Record<PricingTierId, { name: string; who: string; billing: string; points: string[] }>;
     nonprofit: string; tools: { heading: string; body: string }; pilot: { heading: string; points: string[] };
   }>;
   organisations: Copy<{
     nav: string; label: string; title: string; lede: string; why: { heading: string; points: string[] }; figureCaption: string;
-    ask: { heading: string; body: string }; steward: { heading: string; body: string };
+    ask: { heading: string; body: string }; steward: { heading: string; body: string }; small: { heading: string; body: string; button: string };
     cta: string; aboutLink: string; card: { title: string; line: string }; form: OrganisationFormCopy;
   }>;
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };

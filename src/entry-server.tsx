@@ -121,7 +121,7 @@ export function renderMarkdown(route: Route): string {
     for (const tier of product.pricing.tiers) {
       const t = p.tiers[tier.id];
       out.push(`### ${t.name}`, "", t.who, "", `**${tierPrice(lang, tier)}**. ${t.billing}`, "", ...t.points.map((x) => `- ${x}`), "");
-      if (tier.contact) out.push(`${chrome[lang].contact}: ${abs(paths.organisations(lang))}#form`, "");
+      out.push(tier.cta === "app" ? `${p.ctaApp}: ${abs(paths.download(lang))}` : `${p.ctaForm}: ${abs(paths.organisations(lang))}#form`, "");
     }
     out.push(p.nonprofit, "", `## ${p.tools.heading}`, "", p.tools.body, "");
     for (const f of product.pricing.tools.map((id) => product.features.find((x) => x.id === id)!)) out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (${c.status[f.status.ios]})`);
@@ -171,6 +171,7 @@ export function renderMarkdown(route: Route): string {
     const o = product.organisations[lang];
     out.push(`## ${o.why.heading}`, "", ...o.why.points.map((p) => `- ${p}`), "");
     for (const sec of [o.ask, o.steward]) out.push(`## ${sec.heading}`, "", sec.body, "");
+    out.push(`## ${o.small.heading}`, "", `${o.small.body} ${abs(paths.download(lang))}`, "");
     out.push(`${o.cta} ${abs(paths.organisations(lang))}#form`, "");
   }
   out.push("", `## ${c.download}`, "");
