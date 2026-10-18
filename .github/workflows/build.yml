@@ -1,0 +1,55 @@
+# Builds the site on every pull request: typecheck, prerender, code links. The main ruleset requires it.
+# A cross-repo change uses the bipe-shared branch of the same name when it exists, else main.
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: bipe-web
+          persist-credentials: false
+      - name: Pick the bipe-shared branch
+        id: shared
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          ref=main
+          if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads https://github.com/bipe-chat/bipe-shared.git "$BRANCH" > /dev/null; then
+            ref="$BRANCH"
+          fi
+          echo "bipe-shared: $ref"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-shared
+          ref: ${{ steps.shared.outputs.ref }}
+          path: bipe-shared
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/compound-design-tokens
+          path: bipe-tokens
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: bipe-web/package.json
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: bipe-web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: bipe-web
+      - run: pnpm build
+        working-directory: bipe-web
