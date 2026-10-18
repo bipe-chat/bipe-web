@@ -162,10 +162,8 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .feature { display: flex; flex-direction: column; gap: 8px; }
 .feature h3 { margin: 0; }
 .feature .icon-tile { margin-bottom: 6px; }
-/* Icon tile (identity.md, Icons): rounded square, never the seal shape. Filled wash once shipped, outline while planned. */
+/* Icon tile (identity.md, Icons): rounded square, never the seal shape. One look for every status. */
 .icon-tile { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 14px; background: var(--acai-wash); color: var(--acai); }
-.icon-tile.planned { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
-.feature .platform-status { font-size: 13px; margin: -4px 0 4px; }
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 
 /* The stage holds a simulation, so it reads as separate from the page. */

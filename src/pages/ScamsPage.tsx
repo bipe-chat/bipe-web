@@ -212,9 +212,8 @@ function Chart({ lang, chart }: { lang: Lang; chart: ScamChart }) {
   );
 }
 
-/** A Bipe feature that protects against the scam, with its status per platform from product.json. */
+/** A Bipe feature that protects against the scam. Its page shows the status. */
 function ProtectCard({ lang, feature }: { lang: Lang; feature: string }) {
-  const st = chrome[lang].status;
   const f = product.features.find((x) => x.id === feature)!;
   const p = scams.protect.find((x) => x.feature === feature);
   return (
@@ -222,7 +221,6 @@ function ProtectCard({ lang, feature }: { lang: Lang; feature: string }) {
       <FeatureIcon f={f} />
       <h3>{f[lang].name}</h3>
       <p>{p ? p[lang] : f[lang].body}</p>
-      <p className="scam-type-status">iPhone: {st[f.status.ios]} · Android: {st[f.status.android]}</p>
     </a>
   );
 }
