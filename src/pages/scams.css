@@ -22,7 +22,7 @@
 
 /* Columns: change over time */
 .scam-columns { --plot: 200px; }
-.scam-plot { position: relative; height: var(--plot); padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2px; align-items: end; margin-top: 22px; }
+.scam-plot { position: relative; height: var(--plot); padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 2px; align-items: end; margin-top: 22px; }
 .scam-grid { position: absolute; inset: 0 0 0 3.6em; width: calc(100% - 3.6em); overflow: visible; }
 /* Out of grid flow: as a grid item it takes the first column slot and pushes the last column to a second row. */
 .scam-ticks { position: absolute; inset: 0; }
@@ -32,7 +32,8 @@
 .scam-col .scam-mark { width: min(24px, 70%); }
 .scam-col:hover .scam-mark rect { fill: var(--mark-hover); }
 .scam-cap { position: absolute; left: 50%; transform: translate(-50%, -4px); font-size: 13px; color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.scam-axis { padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2px; margin-top: 6px; font-size: 12px; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.scam-axis { padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 2px; margin-top: 6px; font-size: 12px; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.scam-axis span { min-width: 0; overflow-wrap: anywhere; }
 
 /* Bars: categories */
 .scam-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
