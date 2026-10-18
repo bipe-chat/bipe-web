@@ -1,0 +1,14 @@
+#!/bin/sh
+# Runs what the required CI check "build" runs (build.yml): typecheck, prerender, code links.
+# The pre-push hook in .bipe-hooks calls it.
+# Usage: scripts/verify [--all]
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+base=$(git merge-base HEAD origin/main 2>/dev/null || echo HEAD)
+if [ "${1:-}" != --all ] && [ -z "$(git diff --name-only "$base" HEAD | grep -v '\.md$' || true)" ]; then
+  echo "verify: only Markdown changed since origin/main, nothing to check (scripts/verify --all forces it)"
+  exit 0
+fi
+pnpm install --frozen-lockfile --prefer-offline
+pnpm build
+echo "verify: ok"
