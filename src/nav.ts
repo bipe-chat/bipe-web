@@ -29,8 +29,8 @@ export function links(lang: Lang) {
     pricing: { href: paths.pricing(lang), label: product.pricing[lang].nav },
     about: { href: paths.about(lang), label: c.about },
     brand: { href: paths.brand(lang), label: c.brand.link },
-    partners: { href: paths.partners(lang), label: product.partners[lang].nav },
-    contact: { href: `${paths.partners(lang)}#form`, label: c.contact },
+    organisations: { href: paths.organisations(lang), label: product.organisations[lang].nav },
+    contact: { href: `${paths.organisations(lang)}#form`, label: c.contact },
     whoCanRead: { href: paths.whoCanRead(lang), label: privacyRegister[lang].nav },
     privacy: { href: paths.privacy(lang), label: c.privacy },
     lgpd: { href: paths.lgpd(lang), label: dataRegister[lang].nav },
@@ -54,7 +54,7 @@ export const footer = [
   { group: "product", links: ["tentpoles", "features", "compare", "download"] }, // What does it do, and how do I get it?
   { group: "for", links: ["audiences", "business", "pricing"] }, // Is it for me?
   { group: "learn", links: ["scams", "technology", "docs", "source"] }, // How does it work, can I check it?
-  { group: "bipe", links: ["about", "brand", "partners", "contact"] }, // Who is behind it?
+  { group: "bipe", links: ["about", "brand", "organisations", "contact"] }, // Who is behind it?
   { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];
 

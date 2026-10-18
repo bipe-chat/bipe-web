@@ -118,7 +118,7 @@ for (const [from, to] of Object.entries(ssr.redirects)) {
   if (ssr.routes.some((r) => r.path === from)) throw new Error(`redirect ${from} shadows a page`);
   if (!ssr.routes.some((r) => r.path === to)) throw new Error(`redirect ${from} points to missing page ${to}`);
   mkdirSync(join(dist, from), { recursive: true });
-  writeFileSync(join(dist, from, "index.html"), `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${site}${to}"><meta http-equiv="refresh" content="0; url=${to}"><a href="${to}">${site}${to}</a>\n`);
+  writeFileSync(join(dist, from, "index.html"), `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${site}${to}"><meta http-equiv="refresh" content="0; url=${to}"><script>location.replace("${to}" + location.hash)</script><a href="${to}">${site}${to}</a>\n`);
 }
 
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());

@@ -1,4 +1,4 @@
-import type { PartnerFormCopy } from "./sim/PartnerForm";
+import type { OrganisationFormCopy } from "./sim/OrganisationForm";
 // The site's only door into bipe-shared. Registries, strings and product copy come from there;
 // the scam, handle and name logic is the reference implementation every app must match.
 import familyTerms from "@shared/registries/family-terms.json";
@@ -38,6 +38,7 @@ export const scamWarningKind = lib.scamWarningKind as (text: string, reg: Regist
 export const handleProblem = lib.handleProblem as (handle: string, reg: Registries) => "too_short" | "too_long" | "invalid_characters" | "reserved" | null;
 export const handleSkeleton = lib.handleSkeleton as (handle: string, reg: Registries) => string;
 export const extractInviteCodeRef = lib.extractInviteCode as (text: string, reg: Registries) => string | null;
+export const normalizeCnpj = lib.normalizeCnpj as (input: string) => string | null;
 export type PixCode = { status: "valid" | "badCrc" | "malformed"; dynamic: boolean; key: string | null; keyType: string | null; name: string | null; city: string | null; amount: string | null; info: string | null };
 /** The Conferir no Bipe check of shared text (pix-check, test-vectors/pix-check.json). */
 export const pixCheck = pixLib.pixCheck as (text: string, reg: Registries) => { code: PixCode | null; keys: { value: string; types: string[] }[]; warning: ScamKind | null };
@@ -146,7 +147,11 @@ export const product = productJson as unknown as {
     tiers: Record<PricingTierId, { name: string; who: string; billing: string; points: string[] }>;
     nonprofit: string; tools: { heading: string; body: string }; pilot: { heading: string; points: string[] };
   }>;
-  partners: Copy<{ nav: string; label: string; title: string; lede: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; aboutLink: string; card: { title: string; line: string }; form: PartnerFormCopy }>;
+  organisations: Copy<{
+    nav: string; label: string; title: string; lede: string; why: { heading: string; points: string[] }; figureCaption: string;
+    ask: { heading: string; body: string }; steward: { heading: string; body: string };
+    cta: string; aboutLink: string; card: { title: string; line: string }; form: OrganisationFormCopy;
+  }>;
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
   redirects: Record<string, string>;
 };

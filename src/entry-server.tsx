@@ -106,14 +106,14 @@ export function renderMarkdown(route: Route): string {
       }
       out.push("");
     });
-    out.push(`${copy.cta} ${abs(paths.partners(lang))}#form`, "");
+    out.push(`${copy.cta} ${abs(paths.organisations(lang))}#form`, "");
   } else if (feature) {
     out.push(`iPhone: ${c.status[feature.status.ios]}; Android: ${c.status[feature.status.android]}`, "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
     for (const t of product.tentpoles.filter((x) => x.features.includes(feature.id))) out.push(`${c.partOf} [${t[lang].name}](${abs(paths.tentpole(lang, t))})`, "");
   } else if (route.path === paths.business(lang)) {
     out.push(`(${product.business[lang].label})`, "");
     for (const sec of product.business[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
-    out.push(`${product.business[lang].cta} ${abs(paths.partners(lang))}#form`, "");
+    out.push(`${product.business[lang].cta} ${abs(paths.organisations(lang))}#form`, "");
   } else if (route.path === paths.pricing(lang)) {
     const p = product.pricing[lang];
     for (const sec of [p.principles, p.why]) out.push(`## ${sec.heading}`, "", ...sec.points.map((x) => `- ${x}`), "");
@@ -121,12 +121,12 @@ export function renderMarkdown(route: Route): string {
     for (const tier of product.pricing.tiers) {
       const t = p.tiers[tier.id];
       out.push(`### ${t.name}`, "", t.who, "", `**${tierPrice(lang, tier)}**. ${t.billing}`, "", ...t.points.map((x) => `- ${x}`), "");
-      if (tier.contact) out.push(`${chrome[lang].contact}: ${abs(paths.partners(lang))}#form`, "");
+      if (tier.contact) out.push(`${chrome[lang].contact}: ${abs(paths.organisations(lang))}#form`, "");
     }
     out.push(p.nonprofit, "", `## ${p.tools.heading}`, "", p.tools.body, "");
     for (const f of product.pricing.tools.map((id) => product.features.find((x) => x.id === id)!)) out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (${c.status[f.status.ios]})`);
     out.push("", `## ${p.pilot.heading}`, "", ...p.pilot.points.map((x) => `- ${x}`), "");
-    out.push(`${product.business[lang].cta} ${abs(paths.partners(lang))}#form`, "");
+    out.push(`${product.business[lang].cta} ${abs(paths.organisations(lang))}#form`, "");
   } else if (route.path === paths.technology(lang)) {
     for (const g of product.technical.groups) {
       out.push(`## ${g[lang].heading}`, "", g[lang].line, "");
@@ -166,16 +166,17 @@ export function renderMarkdown(route: Route): string {
     out.push(...scamTypeMarkdown(lang, scams.types.find((t) => route.path === paths.scamType(lang, t))!, abs));
   } else if (route.path === paths.about(lang)) {
     for (const s of product.about[lang].sections) out.push(`## ${s.heading}`, "", s.body, "");
-    out.push(`[${product.partners[lang].aboutLink}](${abs(paths.partners(lang))})`, "");
-  } else if (route.path === paths.partners(lang)) {
-    out.push(`(${product.partners[lang].label})`, "");
-    for (const sec of product.partners[lang].sections) out.push(`## ${sec.heading}`, "", ...sec.points.map((p) => `- ${p}`), "");
-    out.push(`${product.partners[lang].cta} ${abs(paths.partners(lang))}#form`, "");
+    out.push(`[${product.organisations[lang].aboutLink}](${abs(paths.organisations(lang))})`, "");
+  } else if (route.path === paths.organisations(lang)) {
+    const o = product.organisations[lang];
+    out.push(`## ${o.why.heading}`, "", ...o.why.points.map((p) => `- ${p}`), "");
+    for (const sec of [o.ask, o.steward]) out.push(`## ${sec.heading}`, "", sec.body, "");
+    out.push(`${o.cta} ${abs(paths.organisations(lang))}#form`, "");
   }
   out.push("", `## ${c.download}`, "");
   if (distribution.ios.url) out.push(`- ${distribution.ios[lang].label}: ${distribution.ios.url} (${distribution.ios[lang].note})`);
   if (distribution.android.status === "available" && distribution.android.url) out.push(`- ${distribution.android[lang].label}: ${distribution.android.url} (${distribution.android[lang].note})`);
-  else out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${abs(paths.partners(lang))}#form`);
+  else out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${abs(paths.organisations(lang))}#form`);
   out.push("", `${c.steward} ${distribution.steward.name}: ${distribution.steward.url}`);
   if (publicRepos.length > 0) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
   return out.join("\n") + "\n";

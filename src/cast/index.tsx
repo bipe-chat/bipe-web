@@ -55,7 +55,9 @@ export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; 
   const e = who(id);
   const src = photoUrl(e);
   const style = { width: size, height: size, fontSize: size * 0.5625 };
-  if (src) return <img className="avatar" src={src} alt="" width={size} height={size} style={style} loading="lazy" decoding="async" />;
+  // ADR 0120: the shape follows the verified state. Only a verified institution (CNPJ) is a rounded square.
+  const shape = e.trust === "institution" ? " org" : "";
+  if (src) return <img className={`avatar${shape}`} src={src} alt="" width={size} height={size} style={style} loading="lazy" decoding="async" />;
   const base = e.name || savedAs ? label(e, savedAs) : matrixId(e).replace(/^\W+/, "");
-  return <div className={`avatar d${decor(e)}`} style={style}>{base.charAt(0).toUpperCase()}</div>;
+  return <div className={`avatar${shape} d${decor(e)}`} style={style}>{base.charAt(0).toUpperCase()}</div>;
 }
