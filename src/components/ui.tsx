@@ -75,7 +75,7 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
 export function PlatformStatus({ lang, f }: { lang: Lang; f: Feature }) {
   const c = chrome[lang];
   if (f.status.ios === "policy" && f.status.android === "policy") return null;
-  return <p className="small muted">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>;
+  return <p className="small muted platform-status">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>;
 }
 
 /** Mirrors BipeScamWarningView (bipe-ios): caution card under the message. */

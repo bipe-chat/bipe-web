@@ -206,7 +206,7 @@ function FeatureArea({ lang, area, level }: { lang: Lang; area: (typeof product.
   return (
     <div className="area">
       <H>{area[lang]}</H>
-      <div className="grid">
+      <div className="grid even">
         {items.map((f) => <FeatureCard lang={lang} f={f} key={f.id} anchor />)}
       </div>
     </div>
@@ -218,8 +218,8 @@ function FeatureCard({ lang, f, anchor }: { lang: Lang; f: Feature; anchor?: boo
   return (
     <a className="card feature" href={paths.feature(lang, f)} id={anchor ? f.id : undefined}>
       <h3>{f[lang].name}</h3>
-      <p>{f[lang].body}</p>
       <PlatformStatus lang={lang} f={f} />
+      <p>{f[lang].body}</p>
     </a>
   );
 }

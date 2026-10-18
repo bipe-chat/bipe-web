@@ -76,9 +76,11 @@ h3 { font-size: 19px; margin: 0 0 6px; }
 .figure-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--gutter); margin-top: var(--gutter); }
 .figure-row { margin-top: var(--gutter); }
 @media (max-width: 400px) { .figure-grid { grid-template-columns: 1fr; } }
+/* .even: the same column width in every grid on the page (Recursos), at most 3 columns; empty tracks stay empty. */
+.grid.even { grid-template-columns: repeat(auto-fill, minmax(max(240px, calc((100% - 32px) / 3)), 1fr)); }
 /* auto-fit: 1 to 4 cards fill the row, no empty tracks. 5 or 6 cards: at most 3 columns (3+2, 3+3), not 4+1 or 4+2. */
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.grid:has(> :nth-child(5)):not(:has(> :nth-child(7))) { grid-template-columns: repeat(auto-fit, minmax(max(240px, calc((100% - 32px) / 3)), 1fr)); }
+.grid:not(.even):has(> :nth-child(5)):not(:has(> :nth-child(7))) { grid-template-columns: repeat(auto-fit, minmax(max(240px, calc((100% - 32px) / 3)), 1fr)); }
 @media (max-width: 860px) {
   .hero, .split { grid-template-columns: 1fr; gap: var(--gutter); }
   .split.flip > :first-child { order: 0; }
@@ -157,6 +159,8 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .compare-row h3 a { color: inherit; }
 @media (max-width: 640px) { .compare-cols { grid-template-columns: 1fr; gap: 16px; } }
 .feature { display: flex; flex-direction: column; gap: 8px; }
+.feature h3 { margin: 0; }
+.feature .platform-status { font-size: 13px; margin: -4px 0 4px; }
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 
 /* The stage holds a simulation, so it reads as separate from the page. */
