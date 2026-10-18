@@ -213,13 +213,12 @@ function FeatureArea({ lang, area, level }: { lang: Lang; area: (typeof product.
   );
 }
 
-/** One building block as a card that opens its page. anchor keeps the old #id links on the features page working. */
+/** One building block as a card that opens its page. No status on the card: the feature page shows it (identity.md, Icons). anchor keeps the old #id links on the features page working. */
 function FeatureCard({ lang, f, anchor }: { lang: Lang; f: Feature; anchor?: boolean }) {
   return (
     <a className="card feature" href={paths.feature(lang, f)} id={anchor ? f.id : undefined}>
       <FeatureIcon f={f} />
       <h3>{f[lang].name}</h3>
-      <PlatformStatus lang={lang} f={f} />
       <p>{f[lang].body}</p>
     </a>
   );

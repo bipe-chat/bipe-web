@@ -88,17 +88,16 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   );
 }
 
-/** The feature's icon tile: a filled wash once any platform has it (testing, built, policy), an outline while it is planned on both. */
+/** The feature's icon tile. The same for every status: status shows only on the feature page. */
 export function FeatureIcon({ f }: { f: Feature }) {
-  const planned = f.status.ios === "planned" && f.status.android === "planned";
-  return <span className={planned ? "icon-tile planned" : "icon-tile"}><Icon name={f.icon} size={22} /></span>;
+  return <span className="icon-tile"><Icon name={f.icon} size={22} /></span>;
 }
 
 /** Status per platform as plain text, no pill. A policy feature has no platform status to show. */
 export function PlatformStatus({ lang, f }: { lang: Lang; f: Feature }) {
   const c = chrome[lang];
   if (f.status.ios === "policy" && f.status.android === "policy") return null;
-  return <p className="small muted platform-status">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>;
+  return <p className="small muted">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>;
 }
 
 /** Mirrors BipeScamWarningView (bipe-ios): caution card under the message. */
