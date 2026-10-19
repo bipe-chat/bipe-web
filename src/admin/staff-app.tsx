@@ -4,6 +4,7 @@ import { useEffect, useState, type ComponentType } from "react";
 import { AdminIndex } from "./AdminIndex";
 import { GrowthReport } from "./GrowthReport";
 import { InviterReport } from "./InviterReport";
+import { MessagingResearch } from "./MessagingResearch";
 import { BusinessReport, ExperimentsReport, RetentionReport, UserReports, WaitlistReport } from "./OpsReports";
 import { markHydrated } from "./staff-auth";
 import { STAFF_CONSOLE, STAFF_INDEX, type StaffPage, type StaffPageInfo } from "./staff-pages";
@@ -11,7 +12,7 @@ import { VisitReport } from "./VisitReport";
 
 const VIEWS: Record<StaffPage, ComponentType<Record<string, never>>> = {
   index: AdminIndex, crescimento: GrowthReport, convites: InviterReport, visitas: VisitReport, experimentos: ExperimentsReport,
-  espera: WaitlistReport, empresas: BusinessReport, denuncias: UserReports, lgpd: RetentionReport,
+  espera: WaitlistReport, empresas: BusinessReport, denuncias: UserReports, lgpd: RetentionReport, pesquisa: MessagingResearch,
   // Planned pages have no path, so no link reaches them.
   problemas: AdminIndex, nomes: AdminIndex, transparencia: AdminIndex,
 };

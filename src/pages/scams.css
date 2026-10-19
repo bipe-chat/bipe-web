@@ -54,9 +54,12 @@
 @media (forced-colors: active) { .scam-mark rect { fill: CanvasText; } .scam-bars li.dim .scam-mark rect { fill: GrayText; } }
 .scam-more, .scam-advice { padding-left: 20px; display: grid; gap: 12px; }
 .scam-more .scam-source { margin-top: 2px; }
+.scam-methods { display: grid; gap: 24px; margin-top: 28px; }
+.scam-methods h3 { margin: 0 0 8px; font-size: 20px; }
+.scam-methods p { margin: 0; }
+.scam-methods .scam-source { margin-top: 8px; }
 .scam-ticks + .scam-col .scam-cap { left: 0; transform: translateY(-4px); }
 .scam-col:last-child .scam-cap { left: auto; right: 0; transform: translateY(-4px); }
-.scam-others { padding-left: 20px; display: grid; gap: 8px; }
 /* Library of golpes (bipe#175): group headings on the hub, the outside-Bipe list, the limit box on a type page. */
 .scam-group { font-size: 15px; text-transform: none; color: var(--muted); margin: 36px 0 4px; font-family: var(--brand); font-weight: 600; }
 .scam-limit-box { margin-top: 24px; border-left: 3px solid var(--line); padding-left: 16px; }
@@ -67,7 +70,7 @@
 .scam-type { position: relative; display: flex; flex-direction: column; gap: 10px; border: 1px solid transparent; transition: border-color .15s; }
 .scam-type:hover, .scam-type:focus-within { border-color: var(--acai); }
 .scam-type h3, .scam-type h4 { margin: 4px 0 0; font: 850 21px/1.2 var(--brand); letter-spacing: -.01em; }
-.scam-type h4 a { color: var(--text); text-decoration: none; }
+.scam-type h3 a, .scam-type h4 a { color: var(--text); text-decoration: none; }
 .scam-type a.stretch::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
 .scam-type a.stretch:focus-visible { outline: none; }
 .scam-type:has(a.stretch:focus-visible) { outline: 2px solid var(--acai); outline-offset: 2px; }

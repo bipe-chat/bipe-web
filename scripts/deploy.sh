@@ -10,6 +10,7 @@ test -f dist/index.html || { echo "dist/ is empty: run pnpm build" >&2; exit 1; 
 test -f scripts/deploy.env || { echo "scripts/deploy.env is missing: copy scripts/deploy.env.example" >&2; exit 1; }
 . scripts/deploy.env
 
+sh ../bipe-infra/scripts/check-deploy-source.sh . ../bipe-shared ../bipe-infra
 rsync -a dist/ ../bipe-infra/compose/site/
 
 # Preflight: some local networks cannot reach the SaveinCloud gate while the site is up for everyone
