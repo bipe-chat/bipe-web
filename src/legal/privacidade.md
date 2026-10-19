@@ -1,5 +1,5 @@
 # Política de privacidade
-_Bipe, versão de testes. Atualizada em 17 de outubro de 2026._
+_Bipe, versão de testes. Atualizada em 18 de outubro de 2026._
 
 O Bipe é um app de mensagens brasileiro e ainda está em fase de testes. Aqui você vê, sem rodeio, quais dados a gente guarda, onde eles ficam e por quê.
 
@@ -10,7 +10,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - **Sua conta:** nome de usuário, nome de exibição e uma versão protegida da sua senha. A senha em si, a gente nunca vê.
 - **Seu e-mail:** serve para você entrar na conta e recuperar o acesso. A gente não manda propaganda e não mostra seu e-mail para ninguém no app.
 - **Lista de espera:** se você deixar seu e-mail no site, a gente guarda o e-mail, o sistema (Android ou iPhone), o idioma e a página do site onde você se inscreveu. Quando chegar a sua vez, a gente manda um único e-mail com um convite, que vale por 14 dias. Seu endereço é apagado quando o convite for usado ou vencer, ou antes, se você pedir. Ele não serve para mais nada.
-- **Pedido de organização:** se uma organização usa o formulário da página para organizações, a gente guarda o nome, o tipo e o CNPJ da organização, o nome, o cargo e o e-mail de quem escreveu, quantos clientes ela atende, os canais que usa, quanto paga hoje para falar com os clientes, a mensagem e o idioma. Esses dados ficam no servidor do Bipe, no Brasil. Eles servem só para responder e para entender quanto as organizações pagam hoje, e são apagados depois de um ano, ou antes, se você pedir.
+- **Pedido de organização:** se uma organização usa o formulário da página para organizações, a gente guarda o nome, o tipo e o CNPJ da organização, o nome, o cargo e o e-mail de quem escreveu, quantos clientes ela atende, os canais que usa, quanto paga hoje para falar com os clientes, a mensagem e o idioma. A gente guarda esses dados no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia. Os dados de quem usa o app ficam no Brasil. Eles servem só para responder e para entender quanto as organizações pagam hoje, e são apagados depois de um ano, ou antes, se você pedir.
 - **Suas mensagens:** conversas privadas são criptografadas de ponta a ponta. O servidor guarda tudo embaralhado e não consegue ler. Em salas sem criptografia, o servidor guarda o texto. Quem pode ler o quê, em linguagem simples: [Quem pode ler suas conversas](/quem-pode-ler/).
 - **Dados de conexão:** quando você se conecta, registramos o endereço IP, a data e a hora. O Marco Civil da Internet (artigo 15) obriga a guardar esses registros por 6 meses.
 - **Fotos e arquivos:** o que você envia fica no servidor para quem recebe conseguir baixar.
@@ -25,7 +25,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - Não pede seu número de telefone.
 
 ## Onde seus dados ficam
-No Brasil. Os servidores ficam em São Paulo, numa empresa brasileira de nuvem. O Bipe não troca mensagens com outros servidores: a federação está desligada.
+No Brasil. Os servidores ficam em São Paulo, numa empresa brasileira de nuvem. O Bipe não troca mensagens com outros servidores: a federação está desligada. A exceção é o pedido de organização, que a gente guarda no Starlings, na União Europeia (veja acima).
 
 ## Notificações
 Quando as notificações estiverem ligadas, o sistema de avisos da Apple vai receber só um alerta de que chegou mensagem, sem o conteúdo.

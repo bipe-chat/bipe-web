@@ -18,7 +18,7 @@ The cast is the set of fictional people, groups and institutions in the site's p
 | `name` | The verified or full legal-style name. For an unverified account, the name it chose: a scammer copies the real person's name. |
 | `short` | What friends call the person in chats ("Bia", "Seu Antônio"). The chat list shows this unless a scene sets `savedAs`. |
 | `handle` | Without the `@`. An external account uses `user:server`. `null` when the person has no handle. |
-| `trust` | `none`, `profile`, `pix`, `govbr`, `institution`, `external`, `suspended`. |
+| `trust` | `none`, `profile`, `pix`, `govbr`, `institution`, `company` (a business with a CNPJ seal, bipe#252), `external`, `suspended`. |
 | `about` | One line for the team: age, job, city, and the role in scenes. Shown only on `/elenco/`. |
 | `photo` | `{ style, look }`, or `{ copyOf: "<id>" }` to reuse another photo (scammers copy photos), or `null` for initials. |
 

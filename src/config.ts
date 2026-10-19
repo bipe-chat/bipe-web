@@ -1,5 +1,7 @@
 // The Bipe API the public pages call from the browser (CORS allows bipe.chat only).
 export const API_URL = "https://api.bipe.net.br";
+// The Bipe workspace on Starlings. The organisation form posts there, and each request becomes a lead (bipe#273).
+export const ORGANISATION_FORM_URL = "https://bipe.starlings.work/api/forms/organisations";
 // MAS, the account server. The staff page signs in there (ADR 0056 in bipe/docs/adr).
 export const MAS_ISSUER = "https://account.bipe.net.br/";
 // The API's CORS allows only this origin, so staff pages run here and not on bipe.chat.

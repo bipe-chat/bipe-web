@@ -210,6 +210,7 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .avatar.d5 { background: var(--cpd-color-bg-decorative-5); color: var(--cpd-color-text-decorative-5); }
 .avatar.d6 { background: var(--cpd-color-bg-decorative-6); color: var(--cpd-color-text-decorative-6); }
 .seal { color: var(--cpd-color-icon-trust-verified); display: inline-flex; }
+.seal-glyph { fill: var(--on-acai); }
 .screen-body { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
 .screen-body.chat { padding: 0 0 8px; justify-content: flex-end; }
 .screen-body.form { padding: 12px 16px; gap: 12px; }
@@ -293,6 +294,14 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .profile h1 { margin-bottom: 4px; }
 .profile-handle { color: var(--muted); margin-top: 0; overflow-wrap: anywhere; }
 .profile-bio { white-space: pre-line; overflow-wrap: anywhere; font-size: 18px; }
+.profile h1 .seal { vertical-align: -3px; }
+/* Verified company (bipe#252): the verified trust surface, legal name and CNPJ from the signed badge. */
+.company-facts { background: var(--cpd-color-bg-trust-verified-subtle); border: 1px solid var(--cpd-color-border-trust-verified); border-radius: 12px; padding: 14px 16px; margin: 16px 0; }
+.company-facts > p { margin: 0; }
+.company-facts strong { color: var(--cpd-color-text-trust-verified); }
+.company-facts dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 10px 0; }
+.company-facts dt { color: var(--muted); }
+.company-facts dd { margin: 0; overflow-wrap: anywhere; }
 .steps li { margin-bottom: 14px; }
 /* Link QR (desktop only): always dark modules on a light ground, so every phone camera reads it. */
 .link-qr { margin: 32px 0 0; width: 152px; display: grid; gap: 8px; }

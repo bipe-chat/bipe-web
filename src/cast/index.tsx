@@ -4,7 +4,7 @@ import data from "./cast.json";
 
 /** What the app would show about this account (bipe/docs/trust-levels.md, design/trust-ui.md). */
 /** `contact`: confirmed by QR in person (the seal with a QR corner). */
-export type Trust = "none" | "profile" | "pix" | "govbr" | "contact" | "institution" | "external" | "suspended";
+export type Trust = "none" | "profile" | "pix" | "govbr" | "contact" | "institution" | "company" | "external" | "suspended";
 
 export type CastEntry = {
   id: string;
@@ -55,8 +55,8 @@ export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; 
   const e = who(id);
   const src = photoUrl(e);
   const style = { width: size, height: size, fontSize: size * 0.5625 };
-  // ADR 0120: the shape follows the verified state. Only a verified institution (CNPJ) is a rounded square.
-  const shape = e.trust === "institution" ? " org" : "";
+  // ADR 0120: the shape follows the verified state. Only a CNPJ-verified institution or company is a rounded square.
+  const shape = e.trust === "institution" || e.trust === "company" ? " org" : "";
   if (src) return <img className={`avatar${shape}`} src={src} alt="" width={size} height={size} style={style} loading="lazy" decoding="async" />;
   const base = e.name || savedAs ? label(e, savedAs) : matrixId(e).replace(/^\W+/, "");
   return <div className={`avatar${shape} d${decor(e)}`} style={style}>{base.charAt(0).toUpperCase()}</div>;
