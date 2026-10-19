@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { API_URL } from "../config";
+import { ORGANISATION_FORM_URL } from "../config";
 import { normalizeCnpj, type Lang } from "../shared";
 
 type State = "idle" | "sending" | "done" | "error";
@@ -19,7 +19,8 @@ export type OrganisationFormCopy = {
 };
 
 /**
- * POST /v1/organisations (ADR 0126, bipe#410). The API answers 202 for every well-formed request.
+ * Posts to the `organisations` form of the Bipe workspace on Starlings (bipe#273, ADR 0126, bipe#410).
+ * Starlings answers 202 for every well-formed request and files it as a lead. The fields are OrganisationRequest.
  * The customer and spend questions are for organisations that want to use Bipe; a partner skips them.
  * Copy: `organisations.form` in product.json.
  */
@@ -37,7 +38,7 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
     if (cnpj && !normalizeCnpj(cnpj)) return setCnpjBad(true);
     setState("sending");
     try {
-      const r = await fetch(`${API_URL}/v1/organisations`, {
+      const r = await fetch(ORGANISATION_FORM_URL, {
         method: "POST",
         headers: { "content-type": "application/json" },
         referrerPolicy: "no-referrer",
