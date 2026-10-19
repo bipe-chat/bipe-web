@@ -11,7 +11,7 @@ import { text, type Line, type RequestRow } from "./scenes";
 import { TrustMark } from "./ScenePhone";
 import "./PixCard.css";
 
-const VERIFIED = ["pix", "govbr", "institution"];
+const VERIFIED = ["pix", "govbr", "institution", "company"];
 
 /** Money pause: the money-request card, then the copy button counts down before it unlocks. */
 export function PauseCard({ lang, seconds }: { lang: Lang; seconds: number }) {
@@ -29,7 +29,7 @@ export function PauseCard({ lang, seconds }: { lang: Lang; seconds: number }) {
   );
 }
 
-/** A charge from a CNPJ-verified institution. No link: the payer pays by Pix in the bank app. */
+/** A charge from a CNPJ-verified institution or company. No link: the payer pays by Pix in the bank app. */
 export function ChargeCard({ lang, from, amount, description, paid }: { lang: Lang; from: CastEntry; amount: string; description: string; paid: boolean }) {
   return (
     <div className={`pixreq ${paid ? "received" : "issued"}`}>
@@ -41,7 +41,7 @@ export function ChargeCard({ lang, from, amount, description, paid }: { lang: La
         <div>
           <strong className="pixreq-amount">{amount}</strong>
           <div className="pixreq-desc">{description}</div>
-          <div className="pixreq-to">{from.name} <Seal size={13} label={t(lang, "bipe_badge_institution")} /></div>
+          <div className="pixreq-to">{from.name} <TrustMark lang={lang} trust={from.trust} size={13} /></div>
         </div>
         {!paid && <FakeQr seed={`${from.id}${amount}`} />}
       </div>
