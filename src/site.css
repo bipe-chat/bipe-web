@@ -259,7 +259,18 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .trust { display: flex; gap: 8px; align-items: flex-start; padding: 10px; border-radius: 10px; border: 1px solid; font-size: 13px; line-height: 1.35; }
 .trust svg { flex: none; margin-top: 1px; }
 .trust strong { display: block; font-weight: 600; }
-.trust.caution { background: var(--cpd-color-bg-trust-caution-subtle); border-color: var(--cpd-color-border-trust-caution); color: var(--cpd-color-text-trust-caution); }
+/* Keep caution in the amber accent. A warm neutral surface sits with the chat bubbles,
+   and normal body text lets the heading and icon carry the warning. */
+.trust.caution {
+  background: color-mix(in srgb, var(--cpd-color-text-trust-caution) 4%, var(--cpd-color-bg-trust-neutral-subtle));
+  border-color: color-mix(in srgb, var(--cpd-color-border-trust-caution), var(--cpd-color-border-trust-neutral));
+  color: var(--text);
+}
+.trust.caution > svg { color: var(--cpd-color-icon-trust-caution); }
+.trust.caution strong { color: var(--cpd-color-text-trust-caution); }
+@media (prefers-contrast: more) {
+  .trust.caution { border-color: var(--cpd-color-border-trust-caution); }
+}
 .trust.danger { background: var(--cpd-color-bg-trust-danger-subtle); border: 2px solid var(--cpd-color-border-trust-danger); color: var(--cpd-color-text-trust-danger); }
 .trust.neutral { background: var(--cpd-color-bg-trust-neutral-subtle); border-color: var(--cpd-color-border-trust-neutral); color: var(--cpd-color-text-trust-neutral); }
 .trust.verified { background: var(--cpd-color-bg-trust-verified-subtle); border-color: var(--cpd-color-border-trust-verified); color: var(--cpd-color-text-trust-verified); }
