@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Avatar, label, who, type CastEntry, type Trust } from "../cast";
-import { Mark, Seal } from "../components/brand";
+import { CompanySeal, Mark, Seal } from "../components/brand";
 import { chrome } from "../copy";
 import { Icon, ScamWarningCard, TrustCard } from "../components/ui";
 import { Bubble, Phone, runs, TabBar } from "../components/phone";
@@ -18,6 +18,7 @@ export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust
   if (trust === "pix" || trust === "govbr") return <Seal size={size} label={t(lang, "bipe_badge_verified")} />;
   if (trust === "contact") return <span className="seal-qr"><Seal size={size} label={t(lang, "bipe_badge_verified_contact")} /></span>;
   if (trust === "institution") return <Seal size={size} label={t(lang, "bipe_badge_institution")} />;
+  if (trust === "company") return <CompanySeal size={size} label={t(lang, "bipe_badge_company")} />;
   if (trust === "suspended") return <span className="seal off" title={t(lang, "bipe_badge_suspended")}><Mark size={size} /></span>;
   if (trust === "external") return <span className="globe"><Icon name="globe" size={size} /></span>;
   return null;
@@ -29,6 +30,7 @@ function subline(lang: Lang, e: CastEntry, trust: Trust) {
   if (trust === "pix" || trust === "govbr") return t(lang, "bipe_badge_verified_name", e.name ?? "");
   if (trust === "contact") return t(lang, "bipe_badge_verified_contact");
   if (trust === "institution") return `${t(lang, "bipe_badge_institution")} · CNPJ ${e.cnpj}`;
+  if (trust === "company") return `${t(lang, "bipe_badge_company")} · CNPJ ${e.cnpj}`;
   if (trust === "suspended") return <span className="caution-text">{t(lang, "bipe_badge_suspended")}</span>;
   return e.handle ? `@${e.handle}` : "";
 }
