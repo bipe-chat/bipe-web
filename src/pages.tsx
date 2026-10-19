@@ -743,9 +743,9 @@ export function HelpPage({ lang }: { lang: Lang }) {
     <section className="wrap narrow section">
       <h1>{c.title}</h1>
       <p className="lede">{c.lede}</p>
-      <p><a href={`mailto:${distribution.contact}`}>{distribution.contact}</a></p>
       <p>{c.message}</p>
       <p className="small muted">{c.safety}</p>
+      <Island name="HelpForm" props={{ lang, copy: c.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
       <h2 style={{ marginTop: 40 }}>{c.linksTitle}</h2>
       <ul>
         <li><a href={paths.download(lang)}>{c.download}</a></li>

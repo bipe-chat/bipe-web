@@ -1,5 +1,5 @@
 # Privacy policy
-_Bipe, test version. Updated 18 October 2026._
+_Bipe, test version. Updated 19 October 2026._
 
 Bipe is a Brazilian messaging app, still in testing. This page tells you plainly what data we keep, where it lives and why. The Portuguese version is the reference text.
 
@@ -14,6 +14,7 @@ During testing, Bipe is run by Envisioning. Questions or requests about your dat
 - **Your messages:** private conversations are end-to-end encrypted. The server stores them scrambled and can't read them. In rooms without encryption, the server stores the text. Who can read what, in plain words: [Who can read your chats](/en/who-can-read/).
 - **Connection data:** when you connect, we log the IP address, date and time. Brazil's Marco Civil da Internet (article 15) requires us to keep these logs for 6 months.
 - **Photos and files:** what you send stays on the server so the people you send it to can download it.
+- **Message from the website:** if you write through the form on the help page, we store your name, your email, the message, the language and the replies in the conversation. We keep this data in Starlings, Envisioning's work system, on servers in the European Union. An email carries a private link so you can continue the conversation. The data stays until you ask us to delete it.
 - **Milestones:** the app sends no statistics. From what the server already sees, it notes a few milestones per day: account created, first sign-in, first message, contact verified, invite sent or used, group created, call started and day of use. Each one is tied to a code derived from your account, not to your username, with no content and nothing about who you talk to. It tells us whether Bipe is useful and at which step people give up. It is kept for 13 months.
 
 ## What we don't do
@@ -25,7 +26,7 @@ During testing, Bipe is run by Envisioning. Questions or requests about your dat
 - We don't ask for your phone number.
 
 ## Where your data lives
-In Brazil. The servers are in São Paulo, with a Brazilian cloud company. Bipe doesn't exchange messages with other servers: federation is off. The exception is the organisation request, which we keep in Starlings, in the European Union (see above).
+In Brazil. The servers are in São Paulo, with a Brazilian cloud company. Bipe doesn't exchange messages with other servers: federation is off. The exceptions are the organisation request and the message from the website, which we keep in Starlings, in the European Union (see above).
 
 ## Notifications
 Once notifications are on, Apple's notification service will only get an alert that a message arrived, never the content.

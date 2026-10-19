@@ -1,5 +1,5 @@
 # Política de privacidade
-_Bipe, versão de testes. Atualizada em 18 de outubro de 2026._
+_Bipe, versão de testes. Atualizada em 19 de outubro de 2026._
 
 O Bipe é um app de mensagens brasileiro e ainda está em fase de testes. Aqui você vê, sem rodeio, quais dados a gente guarda, onde eles ficam e por quê.
 
@@ -14,6 +14,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - **Suas mensagens:** conversas privadas são criptografadas de ponta a ponta. O servidor guarda tudo embaralhado e não consegue ler. Em salas sem criptografia, o servidor guarda o texto. Quem pode ler o quê, em linguagem simples: [Quem pode ler suas conversas](/quem-pode-ler/).
 - **Dados de conexão:** quando você se conecta, registramos o endereço IP, a data e a hora. O Marco Civil da Internet (artigo 15) obriga a guardar esses registros por 6 meses.
 - **Fotos e arquivos:** o que você envia fica no servidor para quem recebe conseguir baixar.
+- **Mensagem pelo site:** se você escreve pelo formulário da página de ajuda, a gente guarda seu nome, seu e-mail, a mensagem, o idioma e as respostas da conversa. A gente guarda esses dados no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia. Um e-mail leva um link privado para você continuar a conversa. Os dados ficam até você pedir para apagar.
 - **Marcos de uso:** o app não manda estatística. O servidor anota, a partir do que ele já vê, alguns marcos por dia: conta criada, primeira entrada, primeira mensagem, contato verificado, convite enviado ou usado, grupo criado, chamada iniciada e dia de uso. Cada marco fica ligado a um código derivado da sua conta, não ao seu nome de usuário, sem conteúdo e sem saber com quem você fala. Serve para saber se o Bipe é útil e em que passo as pessoas desistem. Fica guardado por 13 meses.
 
 ## O que a gente não faz
@@ -25,7 +26,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - Não pede seu número de telefone.
 
 ## Onde seus dados ficam
-No Brasil. Os servidores ficam em São Paulo, numa empresa brasileira de nuvem. O Bipe não troca mensagens com outros servidores: a federação está desligada. A exceção é o pedido de organização, que a gente guarda no Starlings, na União Europeia (veja acima).
+No Brasil. Os servidores ficam em São Paulo, numa empresa brasileira de nuvem. O Bipe não troca mensagens com outros servidores: a federação está desligada. As exceções são o pedido de organização e a mensagem pelo site, que a gente guarda no Starlings, na União Europeia (veja acima).
 
 ## Notificações
 Quando as notificações estiverem ligadas, o sistema de avisos da Apple vai receber só um alerta de que chegou mensagem, sem o conteúdo.

@@ -90,7 +90,7 @@ export function renderMarkdown(route: Route): string {
   } else if (route.path === paths.help(lang)) {
     const h = c.help;
     const account = product.features.find((f) => f.id === "new-phone")!;
-    return [...out, `[${distribution.contact}](mailto:${distribution.contact})`, "", h.message, "", h.safety, "", `## ${h.linksTitle}`, "", `- [${h.download}](${abs(paths.download(lang))})`, `- [${h.account}](${abs(paths.feature(lang, account))})`, `- [${h.data}](${abs(paths.lgpd(lang))})`, `- [${h.organisations}](${abs(paths.organisations(lang))})`, ""].join("\n");
+    return [...out, `${h.lede} ${abs(paths.help(lang))}`, "", h.message, "", h.safety, "", `## ${h.linksTitle}`, "", `- [${h.download}](${abs(paths.download(lang))})`, `- [${h.account}](${abs(paths.feature(lang, account))})`, `- [${h.data}](${abs(paths.lgpd(lang))})`, `- [${h.organisations}](${abs(paths.organisations(lang))})`, ""].join("\n");
   } else if (route.path === paths.features(lang)) {
     // Same grouping as the pages: the two sides of ADR 0047, then what sits outside them.
     const tpLine = (t: (typeof product.tentpoles)[number]) => `- [${t[lang].title}](${abs(paths.tentpole(lang, t))}) (${c.status[t.status]}): ${t[lang].summary}`;

@@ -55,7 +55,6 @@ Endereço base: `https://api.bipe.net.br`. Estas chamadas não pedem login. Cada
 | `GET /v1/invites/{código}` | Se um código de convite ainda vale, e o @ de quem convidou |
 | `GET /v1/handles/{arroba}/availability` | Se um @ está livre. Nunca diz quem tem o @ |
 | `POST /v1/waitlist` | Entra na lista de espera de uma plataforma que ainda não tem app |
-| `POST /v1/organisations` | Envia o pedido de uma organização que quer usar o Bipe ou ser parceira |
 
 No navegador, só o `https://bipe.chat` pode chamar a API.
 
