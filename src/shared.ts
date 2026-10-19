@@ -125,6 +125,7 @@ export type PricingTierId = "small" | "company" | "institution" | "public";
 
 export const product = productJson as unknown as {
   promise: Copy<{ title: string; lede: string }>;
+  home: { features: string[] };
   realFake: Copy<{ title: string; lede: string; caption: string }>;
   headlineTest: { experiment: string; active: boolean; arms: ({ id: string; angle: string } & Copy<string>)[] };
   sides: Side[];

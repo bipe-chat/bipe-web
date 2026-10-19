@@ -12,7 +12,7 @@ O Bipe está em fase de testes e, por enquanto, só entra quem tem convite. Para
 Nada de golpe, spam, assédio, conteúdo ilegal ou se passar por outra pessoa. Conta que fizer isso é suspensa.
 
 ## Contato
-[Fale com a gente](/organizacoes/#form)
+[Fale com a gente](/ajuda/)
 
 ## Privacidade
 Veja a [política de privacidade](/privacidade/).

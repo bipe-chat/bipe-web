@@ -41,39 +41,9 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
 }
 
 
-function TentpoleCard({ lang, tp }: { lang: Lang; tp: Tentpole }) {
-  return (
-    <a className="card tentpole-card" href={paths.tentpole(lang, tp)}>
-      {tp.status === "planned" && <span className="small muted">{chrome[lang].status.planned}</span>}
-      <span className="display">{tp[lang].title}</span>
-      <p>{tp[lang].summary}</p>
-      <span className="more button secondary compact">{chrome[lang].more} <span aria-hidden="true">→</span></span>
-    </a>
-  );
-}
-
-/** The Pix request card on the home page: feature copy from product.json, figure caption leads with the planned status. */
-function PixSection({ lang }: { lang: Lang }) {
-  const f = product.features.find((x) => x.id === "pix-cards");
-  const tp = product.tentpoles.find((t) => t.demos.includes("pix"));
-  if (!f || !tp) return null;
-  return (
-    <section className="wrap section">
-      <div className="split flip">
-        <div>
-          <h2>{tp[lang].demos[tp.demos.indexOf("pix")]?.title ?? f[lang].name}</h2>
-          <p className="lede">{f[lang].body}</p>
-          <Points items={f[lang].points} />
-          <p style={{ marginTop: 24 }}><MoreLink href={paths.feature(lang, f)}>{chrome[lang].more}</MoreLink></p>
-        </div>
-        <Figure lang={lang} id="pix" caption={figureCaption(lang, f)} />
-      </div>
-    </section>
-  );
-}
-
 export function HomePage({ lang }: { lang: Lang }) {
-  const [lead, ...rest] = product.tentpoles;
+  const c = chrome[lang];
+  const lead = product.tentpoles[0];
   return (
     <>
       <section className="wrap hero">
@@ -81,77 +51,36 @@ export function HomePage({ lang }: { lang: Lang }) {
           <h1 id="hero-title">{product.promise[lang].title}</h1>
           {lang === "pt" && HEADLINE.active && <script dangerouslySetInnerHTML={{ __html: assignScript() }} />}
           <p className="lede">{product.promise[lang].lede}</p>
-          <DownloadButtons lang={lang} />
-          <p className="small muted" style={{ marginTop: 14 }}>{distribution.ios[lang].note}</p>
-          <p style={{ marginTop: 28, marginBottom: 0 }}>{chrome[lang].waitlist.heroLead}</p>
-          <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.home(lang) }} />
+          <a className="button primary" href={paths.download(lang)}>{c.home.try}</a>
+          <p className="small muted" style={{ marginTop: 14 }}>{c.home.testing}</p>
         </div>
         <Demo lang={lang} tp={lead} index={0} />
       </section>
-
-      <section className="wrap section" id="golpe-ou-verdade">
-        <h2>{product.realFake[lang].title}</h2>
-        <p className="lede" style={{ maxWidth: "40em" }}>{product.realFake[lang].lede}</p>
-        <Island name="RealVsFake" props={{ lang }} />
-        <p className="small muted" style={{ marginTop: 16 }}>{product.realFake[lang].caption}</p>
-      </section>
-
-      <PixSection lang={lang} />
-
       <section className="wrap section">
-        <h2 style={{ marginBottom: 24 }}>{chrome[lang].tentpolesTitle}</h2>
-        <div className="grid tentpole-grid">{product.tentpoles.map((tp) => <TentpoleCard lang={lang} tp={tp} key={tp.id} />)}</div>
+        <h2>{c.home.featuresTitle}</h2>
+        <div className="grid" style={{ marginTop: 24 }}>
+          {product.home.features.map((id) => <FeatureCard lang={lang} f={product.features.find((f) => f.id === id)!} key={id} />)}
+        </div>
+        <p className="more-links"><MoreLink href={paths.features(lang)}>{c.allFeatures}</MoreLink></p>
       </section>
-
-      {rest.map((tp, i) => (
-        <section className="wrap section" key={tp.id}><TentpoleSection lang={lang} tp={tp} flip={i % 2 === 0} /></section>
-      ))}
-
-      <PixCheckSection lang={lang} />
-
       <section className="wrap section">
         <div className="origin">
           <span style={{ color: "var(--acai)" }}><Mark size={56} /></span>
           <div>
             <h2 style={{ fontSize: 28 }}>{product.origin[lang].title}</h2>
-            <p className="muted" style={{ margin: "8px 0 0", maxWidth: "40em" }}>{product.origin[lang].body} <a href={paths.about(lang)}>{chrome[lang].about} →</a></p>
+            <p className="muted" style={{ margin: "8px 0 0", maxWidth: "40em" }}>{product.origin[lang].body}</p>
+            <MoreLink href={paths.about(lang)}>{c.about}</MoreLink>
           </div>
         </div>
       </section>
-
-      <section className="wrap section">
-        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
-          <AppIcon size={72} />
-          <div style={{ flex: 1, minWidth: 240 }}>
-            <h2>{chrome[lang].downloadTitle}</h2>
-            <p className="muted" style={{ margin: "8px 0 0" }}>{chrome[lang].downloadLede}</p>
-          </div>
-          <DownloadButtons lang={lang} />
-        </div>
+      <section className="wrap narrow section" id="convite">
+        <h2>{c.home.joinTitle}</h2>
+        <p>{c.waitlist.heroLead}</p>
+        <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.home(lang) }} />
+        <p><a href={paths.download(lang)}>{c.home.hasInvite}</a></p>
+        <p className="small"><a href={paths.help(lang)}>{c.home.help}</a></p>
       </section>
     </>
-  );
-}
-
-function PixCheckSection({ lang }: { lang: Lang }) {
-  const feature = product.features.find((item) => item.id === "pix-check");
-  const figure = feature?.figures?.[0];
-  if (!feature || !figure) return null;
-  const inTesterBuild = feature.status.ios === "testing" || feature.status.android === "testing";
-  return (
-    <section className="wrap section" id="conferir-pix">
-      <div className="split">
-        <div>
-          {!inTesterBuild && <p className="small muted">{chrome[lang].status.planned}</p>}
-          <h2>{feature[lang].name}</h2>
-          <p className="lede">{feature[lang].body}</p>
-          <PlatformStatus lang={lang} f={feature} />
-          <Points items={feature[lang].points} />
-          <p style={{ marginTop: 24 }}><MoreLink href={paths.feature(lang, feature)}>{chrome[lang].more}</MoreLink></p>
-        </div>
-        <Figure lang={lang} id={figure} caption={figureCaption(lang, feature)} />
-      </div>
-    </section>
   );
 }
 
@@ -337,7 +266,7 @@ export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
       <section className="wrap section">
         <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
           <h2 style={{ fontSize: 26 }}>{copy.cta}</h2>
-          <a className="button primary" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{chrome[lang].contact}</a>
+          <a className="button primary" href={paths.help(lang)}><Icon name="mail" />{chrome[lang].contact}</a>
         </div>
       </section>
       <section className="wrap section">
@@ -361,6 +290,13 @@ export function DownloadPage({ lang }: { lang: Lang }) {
     <section className="wrap section">
       <h1>{c.downloadTitle}</h1>
       <p className="lede">{c.downloadLede}</p>
+      <div id="convite" style={{ marginBottom: 40 }}>
+        <h2>{c.onboarding.title}</h2>
+        <p>{c.onboarding.lead}</p>
+        <ol>{c.onboarding.steps.map((step) => <li key={step}>{step}</li>)}</ol>
+        <p className="small muted">{c.onboarding.codeNote}</p>
+        <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.download(lang) }} />
+      </div>
       <div className="download-grid">
         <div className="card platform">
           <h2>{c.iosTitle}</h2>
@@ -376,6 +312,7 @@ export function DownloadPage({ lang }: { lang: Lang }) {
             : <Island name="WaitlistForm" props={{ lang, platform: "android", source: paths.download(lang) }} />}
         </div>
       </div>
+      <p style={{ marginTop: 24 }}><a href={paths.help(lang)}>{c.home.help}</a></p>
       {publicRepos.length > 0 && (
         <div id="source" style={{ marginTop: 56 }}>
           <h2>{c.sourceTitle}</h2>
@@ -794,7 +731,28 @@ export function AboutPage({ lang }: { lang: Lang }) {
         <MoreLink href={paths.organisations(lang)}>{product.organisations[lang].aboutLink}</MoreLink>
         <MoreLink href={paths.brand(lang)}>{chrome[lang].brand.link}</MoreLink>
       </p>
-      <p style={{ marginTop: 16 }}><a href={`${paths.organisations(lang)}#form`}>{chrome[lang].contact}</a></p>
+      <p style={{ marginTop: 16 }}><a href={paths.help(lang)}>{chrome[lang].help.title}</a></p>
+    </section>
+  );
+}
+
+export function HelpPage({ lang }: { lang: Lang }) {
+  const c = chrome[lang].help;
+  const account = product.features.find((f) => f.id === "new-phone")!;
+  return (
+    <section className="wrap narrow section">
+      <h1>{c.title}</h1>
+      <p className="lede">{c.lede}</p>
+      <p><a href={`mailto:${distribution.contact}`}>{distribution.contact}</a></p>
+      <p>{c.message}</p>
+      <p className="small muted">{c.safety}</p>
+      <h2 style={{ marginTop: 40 }}>{c.linksTitle}</h2>
+      <ul>
+        <li><a href={paths.download(lang)}>{c.download}</a></li>
+        <li><a href={paths.feature(lang, account)}>{c.account}</a></li>
+        <li><a href={paths.lgpd(lang)}>{c.data}</a></li>
+        <li><a href={paths.organisations(lang)}>{c.organisations}</a></li>
+      </ul>
     </section>
   );
 }

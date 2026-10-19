@@ -30,7 +30,7 @@ export function links(lang: Lang) {
     about: { href: paths.about(lang), label: c.about },
     brand: { href: paths.brand(lang), label: c.brand.link },
     organisations: { href: paths.organisations(lang), label: product.organisations[lang].nav },
-    contact: { href: `${paths.organisations(lang)}#form`, label: c.contact },
+    contact: { href: paths.help(lang), label: c.help.title },
     whoCanRead: { href: paths.whoCanRead(lang), label: privacyRegister[lang].nav },
     privacy: { href: paths.privacy(lang), label: c.privacy },
     lgpd: { href: paths.lgpd(lang), label: dataRegister[lang].nav },
@@ -42,7 +42,7 @@ export function links(lang: Lang) {
 export type LinkId = keyof ReturnType<typeof links>;
 
 /** Header links in order, then the call-to-action button. On a phone the button sits beside the wordmark. */
-export const header = ["trust", "features", "compare", "about"] as const satisfies readonly LinkId[];
+export const header = ["trust", "features", "about"] as const satisfies readonly LinkId[];
 export const headerCta = "download" satisfies LinkId;
 
 /**
@@ -51,9 +51,9 @@ export const headerCta = "download" satisfies LinkId;
  * "tentpoles" expands to every tentpole page in product.json order.
  */
 export const footer = [
-  { group: "product", links: ["tentpoles", "features", "compare", "download"] }, // What does it do, and how do I get it?
+  { group: "product", links: ["tentpoles", "features", "download"] }, // What does it do, and how do I get it?
   { group: "for", links: ["audiences", "business", "pricing"] }, // Is it for me?
-  { group: "learn", links: ["scams", "technology", "docs", "source"] }, // How does it work, can I check it?
+  { group: "learn", links: ["scams", "technology", "docs", "compare", "source"] }, // How does it work, can I check it?
   { group: "bipe", links: ["about", "brand", "organisations", "contact"] }, // Who is behind it?
   { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];

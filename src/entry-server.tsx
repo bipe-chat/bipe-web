@@ -41,6 +41,11 @@ export function selfTest(): void {
     if (r.noindex || r.path === paths.home(r.lang) || !/^\/(en\/)?[^/]+\/$/.test(r.path)) continue;
     if (!footerGroups(r.lang).some((g) => g.links.some((l) => l.href === r.path))) throw new Error(`footer: top-level page ${r.path} is missing (src/nav.ts footer)`);
   }
+  // Home highlights describe features already available in an iPhone tester build.
+  for (const id of product.home.features) {
+    const f = product.features.find((feature) => feature.id === id);
+    if (!f || !["testing", "policy"].includes(f.status.ios)) throw new Error(`home: ${id} is not available in the test app`);
+  }
   for (const v of inviteCodes.vectors as { input: string; code: string | null }[]) {
     const got = extractInviteCode(v.input);
     if (got !== v.code) throw new Error(`invite-codes vector failed: ${JSON.stringify(v.input)} gave ${got}, want ${v.code}`);
@@ -71,7 +76,22 @@ export function renderMarkdown(route: Route): string {
   const cmpApp = compare.apps.find((a) => paths.compareApp(lang, a) === route.path);
   const feature = product.features.find((f) => paths.feature(lang, f) === route.path);
   const audience = product.audiences.find((a) => paths.audience(lang, a) === route.path);
-  if (route.path === paths.home(lang) || route.path === paths.features(lang)) {
+  if (route.path === paths.home(lang)) {
+    out.push(`## ${c.home.featuresTitle}`, "");
+    for (const id of product.home.features) {
+      const f = product.features.find((f) => f.id === id)!;
+      out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}): ${f[lang].body}`);
+    }
+    out.push("", `## ${product.origin[lang].title}`, "", product.origin[lang].body, "", `[${c.about}](${abs(paths.about(lang))})`, "");
+    out.push(`## ${c.home.joinTitle}`, "", c.waitlist.heroLead, "", `[${c.waitlist.submit}](${abs(paths.home(lang))}#convite)`, "", `[${c.home.hasInvite}](${abs(paths.download(lang))})`, "");
+  } else if (route.path === paths.download(lang)) {
+    out.push(`## ${c.onboarding.title}`, "", c.onboarding.lead, "", ...c.onboarding.steps.map((step, i) => `${i + 1}. ${step}`), "", c.onboarding.codeNote, "");
+    out.push(`[${c.waitlist.submit}](${abs(paths.download(lang))}#convite)`, "", `[${c.home.help}](${abs(paths.help(lang))})`, "");
+  } else if (route.path === paths.help(lang)) {
+    const h = c.help;
+    const account = product.features.find((f) => f.id === "new-phone")!;
+    return [...out, `[${distribution.contact}](mailto:${distribution.contact})`, "", h.message, "", h.safety, "", `## ${h.linksTitle}`, "", `- [${h.download}](${abs(paths.download(lang))})`, `- [${h.account}](${abs(paths.feature(lang, account))})`, `- [${h.data}](${abs(paths.lgpd(lang))})`, `- [${h.organisations}](${abs(paths.organisations(lang))})`, ""].join("\n");
+  } else if (route.path === paths.features(lang)) {
     // Same grouping as the pages: the two sides of ADR 0047, then what sits outside them.
     const tpLine = (t: (typeof product.tentpoles)[number]) => `- [${t[lang].title}](${abs(paths.tentpole(lang, t))}) (${c.status[t.status]}): ${t[lang].summary}`;
     const fLine = (f: (typeof product.features)[number]) => `- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]}): ${f[lang].body}`;
@@ -106,7 +126,7 @@ export function renderMarkdown(route: Route): string {
       }
       out.push("");
     });
-    out.push(`${copy.cta} ${abs(paths.organisations(lang))}#form`, "");
+    out.push(`${copy.cta} ${abs(paths.help(lang))}`, "");
   } else if (feature) {
     out.push(`iPhone: ${c.status[feature.status.ios]}; Android: ${c.status[feature.status.android]}`, "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
     for (const t of product.tentpoles.filter((x) => x.features.includes(feature.id))) out.push(`${c.partOf} [${t[lang].name}](${abs(paths.tentpole(lang, t))})`, "");
@@ -179,7 +199,7 @@ export function renderMarkdown(route: Route): string {
   if (distribution.android.status === "available" && distribution.android.url) out.push(`- ${distribution.android[lang].label}: ${distribution.android.url} (${distribution.android[lang].note})`);
   else out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${abs(paths.organisations(lang))}#form`);
   out.push("", `${c.steward} ${distribution.steward.name}: ${distribution.steward.url}`);
-  if (publicRepos.length > 0) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
+  if (publicRepos.length > 0 && route.path === paths.download(lang)) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
   return out.join("\n") + "\n";
 }
 
