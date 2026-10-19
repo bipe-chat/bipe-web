@@ -1,7 +1,7 @@
 // The staff console registry (bipe#372): every staff page, built or planned. It feeds the MAS redirect URIs
 // (staff-auth.tsx), the routes (routes.tsx) and the index /admin/. Add a page here first.
 
-export type StaffGroup = "Crescimento" | "Operação" | "Empresas" | "Confiança";
+export type StaffGroup = "Crescimento" | "Operação" | "Empresas" | "Confiança" | "Pesquisa";
 
 export type StaffPageInfo = {
   title: string;
@@ -12,7 +12,7 @@ export type StaffPageInfo = {
 };
 
 export const STAFF_INDEX = "/admin/";
-export const STAFF_GROUPS: StaffGroup[] = ["Crescimento", "Operação", "Empresas", "Confiança"];
+export const STAFF_GROUPS: StaffGroup[] = ["Crescimento", "Operação", "Empresas", "Confiança", "Pesquisa"];
 /** Root of the staff breadcrumb trail and the name in the staff header. */
 export const STAFF_HOME = "Equipe";
 /** Tools outside the site, last in the staff nav. */
@@ -33,6 +33,7 @@ export const STAFF_CONSOLE = {
   denuncias: { title: "Denúncias", group: "Confiança", path: "/admin/denuncias/" },
   lgpd: { title: "LGPD", group: "Confiança", path: "/admin/lgpd/" },
   transparencia: { title: "Transparência", group: "Confiança", issue: 288 },
+  pesquisa: { title: "Pesquisa e estratégia", group: "Pesquisa", path: "/admin/pesquisa/" },
 } as const satisfies Record<string, StaffPageInfo>;
 
 export type StaffPage = keyof typeof STAFF_CONSOLE | "index";

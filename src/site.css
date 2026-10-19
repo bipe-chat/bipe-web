@@ -23,6 +23,7 @@
 }
 
 * { box-sizing: border-box; }
+::selection { background-color: var(--acai); color: var(--on-acai); }
 html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 var(--brand); }
 a { color: var(--acai); }
