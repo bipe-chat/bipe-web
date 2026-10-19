@@ -7,6 +7,8 @@ import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
 import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
+import { CompanySeal } from "../components/brand";
+import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
 import { distribution, extractInviteCodeRef, reg, t, type Lang } from "../shared";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
@@ -62,18 +64,21 @@ function LinkQr({ url }: { url: string }) {
   );
 }
 
-type PublicProfile ={ handle: string; name: string; bio?: string; photo_url?: string };
+type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string; company?: CompanyBadge };
 
-/** Accepts only the fields the page renders, and photos only from the API host (ADR 0041). */
-function readProfile(p: unknown, handle: string): PublicProfile | null {
+/** Accepts only the fields the page renders, and photos only from the API host (ADR 0041).
+ *  The seal shows only for a badge that verifies as lvl "cnpj" (src/badge.ts); a person's page shows none. */
+async function readProfile(p: unknown, handle: string): Promise<PublicProfile | null> {
   if (!p || typeof p !== "object") return null;
-  const { handle: h, name, bio, photo_url } = p as Record<string, unknown>;
+  const { handle: h, name, bio, photo_url, badge } = p as Record<string, unknown>;
   if (h !== handle || typeof name !== "string" || !name) return null;
+  const company = badge === undefined ? null : await verifyCompanyBadge(badge);
   return {
     handle,
     name,
     ...(typeof bio === "string" && bio ? { bio } : {}),
     ...(typeof photo_url === "string" && photo_url.startsWith(`${API_URL}/v1/profiles/`) ? { photo_url } : {}),
+    ...(company ? { company } : {}),
   };
 }
 
@@ -92,16 +97,30 @@ export function ProfileLanding(_: Record<string, never>) {
     // Published profiles only (opt-in). The API answers the same 404 for "no handle" and "profile off".
     fetch(`${API_URL}/v1/profiles/${encodeURIComponent(h)}`, { referrerPolicy: "no-referrer" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((p) => setProfile(readProfile(p, h)))
+      .then((p) => readProfile(p, h))
+      .then(setProfile)
       .catch(() => {});
   }, []);
   if (profile) {
     return (
       <section className="wrap narrow section profile">
         {profile.photo_url && <img className="profile-photo" src={profile.photo_url} alt="" width={112} height={112} referrerPolicy="no-referrer" />}
-        <h1 style={{ overflowWrap: "anywhere" }}>{profile.name}</h1>
+        <h1 style={{ overflowWrap: "anywhere" }}>{profile.name}{profile.company && <> <CompanySeal size={28} label={t("pt", "bipe_badge_company")} /></>}</h1>
         <p className="profile-handle">@{profile.handle}</p>
-        <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
+        {profile.company ? (
+          <div className="company-facts">
+            <p><strong>{t("pt", "bipe_badge_company")}</strong></p>
+            <dl>
+              <dt>{t("pt", "bipe_badge_company_legal_name")}</dt>
+              <dd>{profile.company.legalName}</dd>
+              <dt>{t("pt", "bipe_badge_company_cnpj")}</dt>
+              <dd className="mono">{formatCnpj(profile.company.cnpj)}</dd>
+            </dl>
+            <p className="small muted">{t("pt", "bipe_badge_company_body")}</p>
+          </div>
+        ) : (
+          <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
+        )}
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
         <p className="lede">{c.lead}</p>
         <div className="link-card">

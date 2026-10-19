@@ -87,12 +87,12 @@
     },
     {
       "id": "clinica", "kind": "institution", "name": "Clínica Vida", "short": "Clínica Vida", "handle": "clinicavida",
-      "about": "Fictional health clinic. Verified institution (CNPJ).", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional health clinic. Verified company (CNPJ).", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a health clinic, a simple rounded leaf merged with a heart, teal on white" }
     },
     {
       "id": "banco", "kind": "institution", "name": "Banco Seriema", "short": "Banco Seriema", "handle": "bancoseriema",
-      "about": "Fictional bank. Verified institution (CNPJ). The real card desk that 'suporte' poses as.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional bank. Verified company (CNPJ). The real card desk that 'suporte' poses as.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a bank, a stylised long-legged bird in profile inside a rounded square, deep blue and gold on white" }
     },
     {
@@ -102,12 +102,12 @@
     },
     {
       "id": "jatoba", "kind": "institution", "name": "Lojas Jatobá", "short": "Lojas Jatobá", "handle": "lojasjatoba",
-      "about": "Fictional national retail chain (home goods and electronics). Verified institution (CNPJ). The business track: orders, delivery notices, Pix charges with its CNPJ. The real shop next to the fake 'outlet'.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional national retail chain (home goods and electronics). Verified company (CNPJ). The business track: orders, delivery notices, Pix charges with its CNPJ. The real shop next to the fake 'outlet'.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a home goods and electronics store, a rounded shopping bag with a single seed pod shape on it, coral and dark grey on white" }
     },
     {
       "id": "sabia", "kind": "institution", "name": "Sabiá Entregas", "short": "Sabiá Entregas", "handle": "sabiaentregas",
-      "about": "Fictional parcel delivery company. Verified institution (CNPJ). Real tracking notices next to the fake 'rastreio' fee.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional parcel delivery company. Verified company (CNPJ). Real tracking notices next to the fake 'rastreio' fee.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a parcel delivery company, a small round bird carrying a box, brown and orange on white" }
     },
     {
@@ -122,7 +122,7 @@
     },
     {
       "id": "prado", "kind": "institution", "name": "Prado Advocacia", "short": "Prado Advocacia", "handle": "pradoadvocacia",
-      "about": "Fictional law office, Rio de Janeiro. Verified institution (CNPJ). The real office of the lawyer that 'advogado' poses as.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional law office, Rio de Janeiro. Verified company (CNPJ). The real office of the lawyer that 'advogado' poses as.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a law office, a simple balance scale inside a circle, burgundy and grey on white" }
     },
     {
@@ -132,27 +132,27 @@
     },
     {
       "id": "mare", "kind": "institution", "name": "Pousada Maré Mansa", "short": "Pousada Maré Mansa", "handle": "pousadamaremansa",
-      "about": "Fictional small guesthouse, Florianópolis. Verified institution (CNPJ). The real booking next to the fake holiday rental 'silvia'. A small company on the business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional small guesthouse, Florianópolis. Verified company (CNPJ). The real booking next to the fake holiday rental 'silvia'. A small company on the business track.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a beach guesthouse, a small house shape above two gentle waves, sea blue and sand on white" }
     },
     {
       "id": "caju", "kind": "institution", "name": "CajuNet Internet", "short": "CajuNet", "handle": "cajunet",
-      "about": "Fictional regional internet provider, Fortaleza. Verified institution (CNPJ). Bills, outage notices and a 'segunda via' that only comes from its CNPJ. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional regional internet provider, Fortaleza. Verified company (CNPJ). Bills, outage notices and a 'segunda via' that only comes from its CNPJ. Business track.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "an internet provider, a cashew fruit with three small signal arcs above it, orange-red and green on white" }
     },
     {
       "id": "caramelo", "kind": "institution", "name": "Caramelo Banho e Tosa", "short": "Caramelo Banho e Tosa", "handle": "caramelobanhoetosa",
-      "about": "Fictional pet grooming shop (banho e tosa), Campinas. Verified institution (CNPJ). The sample business of the Agenda scenes: two agendas, Ana and Bruno, who have no Bipe account. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional pet grooming shop (banho e tosa), Campinas. Verified company (CNPJ). The sample business of the Agenda scenes: two agendas, Ana and Bruno, who have no Bipe account. Business track.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a pet grooming shop, a simple round dog head with floppy ears next to two soap bubbles, caramel brown and teal on cream" }
     },
     {
       "id": "padaria", "kind": "institution", "name": "Padaria Trigo Bom", "short": "Padaria Trigo Bom", "handle": "padariatrigobom",
-      "about": "Fictional neighbourhood bakery, Belo Horizonte. Verified institution (CNPJ). The sample business of the catálogo and pedidos scenes. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional neighbourhood bakery, Belo Horizonte. Verified company (CNPJ). The sample business of the catálogo and pedidos scenes. Business track.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a neighbourhood bakery, a simple round bread roll with a wheat ear beside it, warm golden brown and deep red on cream" }
     },
     {
       "id": "oficina", "kind": "institution", "name": "Auto Mecânica Ipê", "short": "Auto Mecânica Ipê", "handle": "automecanicaipe",
-      "about": "Fictional car repair shop, Goiânia. Verified institution (CNPJ). The sample business of the orçamento scene. Business track.", "trust": "institution", "cnpj": "00.000.000/0001-00",
+      "about": "Fictional car repair shop, Goiânia. Verified company (CNPJ). The sample business of the orçamento scene. Business track.", "trust": "company", "cnpj": "00.000.000/0001-00",
       "photo": { "style": "logo", "look": "a car repair shop, a simple wrench crossed with a small yellow ipê flower, dark grey and yellow on white" }
     },
     {

@@ -34,6 +34,19 @@ export function Wordmark({ id = MARK, size = 26 }: { id?: MarkId; size?: number 
   );
 }
 
+/** Verified company (CNPJ badge, bipe#252): the solid seal with a building glyph (design/trust-ui.md). Same drawing as BipeSealMark in bipe-ios. */
+export function CompanySeal({ size = 16, label }: { size?: number; label: string }) {
+  return (
+    <span className="seal company" title={label}>
+      <svg width={size} height={size} viewBox="0 0 64 64" role="img" aria-label={label}>
+        <path d={MARKS[MARK]} fill="currentColor" />
+        <path className="seal-glyph" d="M21 46V21.5c0-.8.7-1.5 1.5-1.5h12c.8 0 1.5.7 1.5 1.5V28h6.5c.8 0 1.5.7 1.5 1.5V46Z" />
+        <path fill="currentColor" d="M25 24h3v3h-3zm5 0h3v3h-3zm-5 6h3v3h-3zm5 0h3v3h-3zm-5 6h3v3h-3zm5 0h3v3h-3zm9-4h3v3h-3zm0 6h3v3h-3z" />
+      </svg>
+    </span>
+  );
+}
+
 /** Verified seal next to a name: the mark at text size. */
 export function Seal({ size = 16, label }: { size?: number; label: string }) {
   return (
