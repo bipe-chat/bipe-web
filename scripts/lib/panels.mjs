@@ -1,60 +1,39 @@
 // The parts of a store panel (bipe-chat/bipe#463), as Satori nodes for scripts/store-images.mjs.
-// The text and the layout name come from the `## Screenshots` table in bipe-shared/product/appstore.md
-// (`headline`, `sub`, `layout`, `callout`). The region of each capture that a callout shows is in SCENES below.
+// The text comes from the `## Screenshots` table in bipe-shared/product/appstore.md (`title`, `sub`).
 //
-// One device per panel: an upright phone at the same size and place on every panel, its top under
-// the copy, running off the bottom edge. A callout (a row with text in the `callout` column) shows
-// one region of the screen larger, in a white card over the phone, where the detail is too small to
-// read at store size. Layouts: hero (brand row above the copy) and phone. The text layout (a panel
-// with no capture) has no drawing: the Brazil outline was dropped on 20 October 2026 and can come
-// back with a better drawing (bipe-chat/bipe#463). The backdrop is scripts/lib/backdrop.mjs.
+// A panel, after Telegram and Signal: a short centred title, one subtitle sentence under it, and one
+// large upright phone, centred, at 85% of the panel width (at 75% the whole phone fits above the edge), its top under the subtitle and its
+// bottom cut by the panel edge, at the same place on every panel. The phone is an iPhone: a thin
+// black bezel with continuous corners, the Dynamic Island and the status bar (9:41, signal, Wi-Fi,
+// battery), drawn here because the captures have none. The backdrop is scripts/lib/backdrop.mjs.
 import { h } from "../og.mjs";
-import { RAMPS } from "./backdrop.mjs";
 import { squirclePath } from "./squircle.mjs";
 
 const WHITE = "#FFFFFF";
 const BEZEL = "#0C0D0F";
-// Text on a white chip. Always açaí: the fruit ramps never carry text (backdrop.mjs).
-const CHIP_INK = RAMPS.acai[1100];
+const INK = "#000000";
 
 /**
- * Per capture slug: `region` is the part of the capture a callout shows larger, as fractions of the
- * capture (x, y, w, h). A panel shows the callout only when its `callout` column has text. The
- * regions match the pt-BR captures of bipe-ios/appstore/capture.sh from 20 October 2026
- * (bipe-chat/bipe#462). Move a region when a screen moves.
+ * The region of a capture that the Play feature graphic shows larger, as fractions of the capture
+ * (x, y, w, h). Matches the pt-BR captures of bipe-ios/appstore/capture.sh from 20 October 2026.
  */
-export const SCENES = {
-  "aviso-golpe": { region: [0.04, 0.672, 0.92, 0.22] },
-  pedidos: { region: [0.02, 0.182, 0.96, 0.112] },
-  "conferir-pix": { region: [0.06, 0.165, 0.89, 0.2] },
-  "seu-arroba": { region: [0.2, 0.528, 0.6, 0.3] },
-  "selo-cnpj": { region: [0.035, 0.06, 0.39, 0.058] },
-  grupos: { region: [0.02, 0.185, 0.96, 0.095] },
-  stickers: { region: [0.045, 0.222, 0.7, 0.322] },
-};
+export const FEATURE_REGION = { "aviso-golpe": [0.04, 0.672, 0.92, 0.22] };
 
 /** Captures a panel needs, by slug. */
 export const captureSlugs = (panel) => (panel.feature === "-" ? [] : [panel.slug]);
 
 // Layout per device kind, in units of a canvas 1320 wide; `s` scales them to the real width, so the
-// type has the same proportion on every device. Headlines get 2 lines. `frameTop` is the same on
-// every panel and leaves room for the hero brand row, a 2-line headline and a 1-line sub.
-// `margin` is the least gap between a callout card and the panel edge.
+// type has the same proportion on every device. `frameTop` is the same on every panel and leaves
+// room for a 1-line title and a 2-line sub. `frame` is the phone width with its bezel.
 const LAYOUT = {
-  phone: { side: 96, top: 140, label: 32, headline: 112, sub: 48, gap: 24, frameTop: 640, screen: 1000, bezel: 24, brand: 68, margin: 40 },
-  // Play phone: 1080x1920 is shorter than the iPhone, so the phone is smaller.
-  play: { side: 96, top: 120, label: 32, headline: 104, sub: 46, gap: 22, frameTop: 590, screen: 780, bezel: 22, brand: 62, margin: 40 },
-  tablet: { side: 96, top: 84, label: 26, headline: 84, sub: 38, gap: 18, frameTop: 440, screen: 900, bezel: 22, brand: 52, margin: 40 },
+  phone: { top: 150, copy: 1100, title: 104, sub: 50, gap: 26, frameTop: 540, frame: 1120, bezel: 18, island: true },
+  // Play phone: 1080x1920 is shorter than the iPhone.
+  play: { top: 120, copy: 1100, title: 96, sub: 46, gap: 24, frameTop: 500, frame: 1000, bezel: 18, island: true },
+  // iPad: no Dynamic Island.
+  tablet: { top: 80, copy: 1100, title: 80, sub: 38, gap: 18, frameTop: 330, frame: 1100, bezel: 18, island: false },
 };
 
-/** Text with `*highlight*` spans, as inline runs. */
-const rich = (text, colour) =>
-  text.split(/(\*[^*]+\*)/).filter(Boolean).map((part) => (part.startsWith("*") ? h("span", { style: { color: colour } }, part.slice(1, -1)) : part));
-
 const abs = (style, ...children) => h("div", { style: { position: "absolute", display: "flex", ...style } }, ...children);
-
-const chip = (text, size, s) =>
-  h("div", { style: { display: "flex", padding: `${size * 0.32}px ${size * 0.7}px`, borderRadius: 999, backgroundColor: WHITE, color: CHIP_INK, fontSize: size, fontWeight: 800, lineHeight: 1.1, boxShadow: `0 ${8 * s}px ${24 * s}px rgba(0,0,0,0.22)` } }, text);
 
 function brandRow(markPath, size) {
   return h("div", { style: { display: "flex", alignItems: "center", gap: size * 0.3 } },
@@ -63,12 +42,40 @@ function brandRow(markPath, size) {
   );
 }
 
-function copyBlock({ panel, L, s, t, markPath, hero }) {
-  return h("div", { style: { display: "flex", flexDirection: "column", gap: L.gap * s, alignItems: "flex-start" } },
-    hero ? h("div", { style: { display: "flex", marginBottom: L.gap * 0.5 * s } }, brandRow(markPath, L.brand * s)) : null,
-    h("div", { style: { display: "block", fontSize: L.headline * s, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.06 } }, ...rich(panel.headline, t.highlight)),
-    panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.25, color: t.sub } }, ...rich(panel.sub, t.ink)) : null,
+function copyBlock({ panel, L, s, t }) {
+  return h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: L.gap * s, textAlign: "center" } },
+    h("div", { style: { display: "block", fontSize: L.title * s, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.06 } }, panel.title),
+    panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.3, color: t.sub } }, panel.sub) : null,
   );
+}
+
+/**
+ * The status bar and the Dynamic Island, in points of a 440 pt wide screen (iPhone 6.9"), scaled to
+ * the screen width `w`. The island is 126 x 37 pt, 11 pt from the top; the time and the icons sit on
+ * its centre line.
+ */
+function statusBar(w, island) {
+  const k = w / 440;
+  const cy = 29.5;
+  const bars = [4, 6.2, 8.5, 11].map((bh, i) => h("rect", { x: 318 + i * 4.6, y: cy + 5.5 - bh, width: 3.2, height: bh, rx: 1, fill: INK }));
+  const arc = (r) => {
+    const a = Math.PI / 4;
+    const [cx, by] = [347.5, cy + 5.5];
+    return `M${cx - r * Math.sin(a)} ${by - r * Math.cos(a)}A${r} ${r} 0 0 1 ${cx + r * Math.sin(a)} ${by - r * Math.cos(a)}`;
+  };
+  return [
+    abs({ left: 0, top: 0, width: w, height: 62 * k },
+      h("svg", { width: w, height: 62 * k, viewBox: "0 0 440 62" },
+        island ? h("rect", { x: 157, y: 11, width: 126, height: 37, rx: 18.5, fill: INK }) : null,
+        ...bars,
+        ...[4.5, 8, 11.5].map((r) => h("path", { d: arc(r), fill: "none", stroke: INK, "stroke-width": 2.1, "stroke-linecap": "round" })),
+        h("rect", { x: 362, y: cy - 6, width: 25, height: 12, rx: 3.6, fill: "none", stroke: INK, "stroke-opacity": 0.4, "stroke-width": 1 }),
+        h("rect", { x: 364, y: cy - 4, width: 21, height: 8, rx: 2.2, fill: INK }),
+        h("rect", { x: 388.2, y: cy - 2, width: 1.6, height: 4, rx: 0.8, fill: INK, "fill-opacity": 0.4 }),
+      )),
+    // The time is Satori text (paths), so it needs no font in resvg.
+    abs({ left: 40 * k, top: (cy - 11) * k, width: 80 * k, height: 22 * k, justifyContent: "center", alignItems: "center", fontSize: 17 * k, fontWeight: 800, color: INK, letterSpacing: "-0.01em" }, "9:41"),
+  ];
 }
 
 /**
@@ -77,7 +84,7 @@ function copyBlock({ panel, L, s, t, markPath, hero }) {
  * `screenRadius`). The capture sits inset in the bezel, clipped with the screen path (Satori writes
  * CSS clip-path as an SVG clipPath; an <image> inside an inline SVG does not render).
  */
-function phone({ capture, left, top, screenW, bezel, s }) {
+function phone({ capture, left, top, screenW, bezel, s, island }) {
   const screenH = screenW * (capture.height / capture.width);
   const radius = capture.radius * (screenW / capture.width);
   const w = screenW + 2 * bezel;
@@ -92,84 +99,51 @@ function phone({ capture, left, top, screenW, bezel, s }) {
   const body = abs({ left, top, width: w, height: hh },
     h("svg", { width: w, height: hh, viewBox: `0 0 ${w} ${hh}`, style: { position: "absolute", left: 0, top: 0 } }, h("path", { d: frame, fill: BEZEL })),
     h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { position: "absolute", left: bezel, top: bezel, clipPath: `path("${squirclePath(screenW, screenH, radius)}")` } }),
+    abs({ left: bezel, top: bezel, width: screenW, height: screenH }, ...statusBar(screenW, island)),
   );
   return [shadow, body];
 }
 
-/** The region of the capture, shown larger in a white card, with the panel's callout label. */
-function calloutCard({ capture, region, left, top, width, label, s, labelSize }) {
-  const [rx, ry, rw, rh] = region;
-  const imgW = width / rw;
-  const imgH = imgW * (capture.height / capture.width);
-  const height = rh * imgH;
-  return abs({ left, top, width, height, flexDirection: "column" },
-    abs({ left: 0, top: 0, width, height, overflow: "hidden", borderRadius: 32 * s, border: `${6 * s}px solid ${WHITE}`, boxShadow: `0 ${30 * s}px ${70 * s}px rgba(0,0,0,0.4)`, backgroundColor: WHITE },
-      h("img", { src: capture.dataUrl, width: imgW, height: imgH, style: { position: "absolute", left: -rx * imgW, top: -ry * imgH } }),
-    ),
-    label ? abs({ left: 36 * s, top: -labelSize * 0.9 }, chip(label, labelSize, s)) : null,
-  );
-}
-
-const cardHeight = (capture, region, width) => width * (region[3] / region[2]) * (capture.height / capture.width);
-
-function capturePanel({ panel, width, height, kind, captures, tone: t, markPath }) {
+function capturePanel({ panel, width, height, kind, captures, tone: t }) {
   const s = width / 1320;
   const L = LAYOUT[kind];
   const capture = captures.get(panel.slug);
   const bezel = L.bezel * s;
-  const screenW = L.screen * s;
-  const screenH = screenW * (capture.height / capture.width);
-  const frameW = screenW + 2 * bezel;
-  const frameLeft = (width - frameW) / 2;
-  const frameTop = L.frameTop * s;
-  const parts = phone({ capture, left: frameLeft, top: frameTop, screenW, bezel, s });
-
-  const region = SCENES[panel.slug]?.region;
-  if (panel.callout && region) {
-    // The card is a little wider than the phone and stays inside the panel. It sits over the lower
-    // half of the visible phone, unless the region it enlarges is there: then it sits above it.
-    const margin = L.margin * s;
-    const labelSize = L.label * 1.15 * s;
-    const cardW = Math.min(frameW + 100 * s, width - 2 * margin);
-    const cardH = cardHeight(capture, region, cardW);
-    const cardLeft = (width - cardW) / 2;
-    const visibleBottom = Math.min(frameTop + screenH + 2 * bezel, height);
-    const lowerMid = (frameTop + (visibleBottom - frameTop) * 0.5 + visibleBottom) / 2;
-    const regionTop = frameTop + bezel + region[1] * screenH;
-    const regionBottom = regionTop + region[3] * screenH;
-    let cardTop = lowerMid - cardH / 2;
-    if (cardTop < regionBottom + 40 * s && cardTop + cardH > regionTop - 40 * s) cardTop = regionTop - 60 * s - cardH;
-    cardTop = Math.max(frameTop + labelSize, Math.min(height - margin - cardH, cardTop));
-    parts.push(calloutCard({ capture, region, left: cardLeft, top: cardTop, width: cardW, label: panel.callout, s, labelSize }));
-  }
-
+  const frameW = L.frame * s;
+  const screenW = frameW - 2 * bezel;
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
-    ...parts,
-    abs({ left: L.side * s, top: L.top * s, width: width - 2 * L.side * s }, copyBlock({ panel, L, s, t, markPath, hero: panel.layout === "hero" })),
+    ...phone({ capture, left: (width - frameW) / 2, top: L.frameTop * s, screenW, bezel, s, island: L.island }),
+    abs({ left: (width - L.copy * s) / 2, top: L.top * s, width: L.copy * s, justifyContent: "center" }, copyBlock({ panel, L, s, t })),
   );
 }
 
-/** Play feature graphic: mark and wordmark with the store subtitle, and the hero callout. */
+/** Play feature graphic: mark and wordmark with the store subtitle, and one region of panel 1. */
 function featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath }) {
   const capture = captures.get(panel.slug);
-  const region = SCENES[panel.slug]?.region;
+  const region = FEATURE_REGION[panel.slug];
   const cardW = 440;
+  let card = null;
+  if (capture && region) {
+    const [rx, ry, rw, rh] = region;
+    const imgW = cardW / rw;
+    const imgH = imgW * (capture.height / capture.width);
+    const cardH = rh * imgH;
+    card = abs({ left: width - cardW - 56, top: (height - cardH) / 2, width: cardW, height: cardH, overflow: "hidden", borderRadius: 16, border: `3px solid ${WHITE}`, boxShadow: "0 15px 35px rgba(0,0,0,0.4)", backgroundColor: WHITE },
+      h("img", { src: capture.dataUrl, width: imgW, height: imgH, style: { position: "absolute", left: -rx * imgW, top: -ry * imgH } }));
+  }
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
     abs({ left: 64, top: 0, width: 470, height, flexDirection: "column", justifyContent: "center", gap: 28 },
       brandRow(markPath, 96),
       h("div", { style: { display: "block", fontSize: 46, fontWeight: 800, letterSpacing: "-0.01em", lineHeight: 1.12 } }, subtitle),
     ),
-    capture && region
-      ? calloutCard({ capture, region, left: width - cardW - 56, top: (height - cardW * (region[3] / region[2]) * (capture.height / capture.width)) / 2, width: cardW, label: panel.callout, s: 0.5, labelSize: 26 })
-      : null,
+    card,
   );
 }
 
-/** The Satori node for one panel. `captures` maps slug to { dataUrl, width, height }. */
+/** The Satori node for one panel. `captures` maps slug to { dataUrl, width, height, radius }. */
 export function panelNode({ panel, dev, captures, tone: t, markPath, subtitle }) {
   const { width, height } = dev;
   if (dev.kind === "feature") return featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath });
-  const kind = dev.kind;
   if (panel.feature === "-") throw new Error(`panels: ${panel.slug} is a text panel, and the builder has no drawing for it (bipe#463)`);
-  return capturePanel({ panel, width, height, kind, captures, tone: t, markPath });
+  return capturePanel({ panel, width, height, kind: dev.kind, captures, tone: t });
 }

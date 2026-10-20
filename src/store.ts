@@ -8,7 +8,7 @@ export type StoreSet = {
   locale: string;
   width: number;
   height: number;
-  exports: { order: number; slug: string; file: string; headline: string }[];
+  exports: { order: number; slug: string; file: string; title: string }[];
 };
 
 const manifests = import.meta.glob<StoreSet>(
