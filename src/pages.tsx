@@ -13,6 +13,7 @@ import { ScenePhone, TrustMark } from "./sim/ScenePhone";
 import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
 import { WhoCanReadSummary } from "./pages/PrivacyPage";
+import { storeSets } from "./store";
 import { codeLinks, compare, distribution, privacyRegister, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
@@ -866,6 +867,28 @@ export function CastPage() {
       <div className="figure-grid">
         {SIMS.map((id) => <Figure lang={lang} id={id} caption={id} key={id} />)}
       </div>
+    </section>
+  );
+}
+
+export function StorePanelsPage() {
+  return (
+    <section className="wrap section">
+      <h1>Imagens da loja</h1>
+      {storeSets.length === 0 && <p className="muted">Nenhum painel.</p>}
+      {storeSets.map((s) => (
+        <div key={s.href} style={{ marginTop: 48 }}>
+          <h2>{s.label} · {s.locale} <span className="mono small muted">{s.width}x{s.height}</span></h2>
+          <div className="cast-grid">
+            {s.exports.map((e) => (
+              <figure key={e.file} style={{ margin: 0 }}>
+                <a href={s.href + e.file}><img src={s.href + e.file} alt={e.headline.replace(/\*/g, "")} width={s.width} height={s.height} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block" }} /></a>
+                <figcaption className="small mono muted" style={{ marginTop: 8 }}>{e.file}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      ))}
     </section>
   );
 }

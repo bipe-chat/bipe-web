@@ -6,6 +6,7 @@ Static site for bipe.chat. Vite + React 19 + TypeScript, prerendered to HTML; on
 
 - `pnpm build`: typecheck, then `scripts/build.mjs` writes `dist/` (pages, `.md` twins, `llms.txt`, sitemap, icons).
 - `pnpm preview`: serves `dist/` on port 4321.
+- `pnpm store:images --device <iphone69|ipad13|play-phone|play-feature> [--locale pt-BR]`: renders the App Store and Play panels (`scripts/store-images.mjs`, bipe#455) from the `## Screenshots` tables in `../bipe-shared/product/appstore.md` and the captures in `../bipe-ios/appstore/raw/`. Sizes come from `../bipe-ios/appstore/devices.mjs`. Output: `../bipe-ios/appstore/screenshots/<device>/<locale>/` (committed there, the upload input) or `../bipe-android/appstore/screenshots/`. It stops on a missing, blank or wrong-size capture. `/elenco/loja/` (noindex) shows every set the build finds. Change the panel text in `appstore.md`, never in the builder.
 - `pnpm run deploy` (not `pnpm deploy`, which is a pnpm built-in): needs `scripts/deploy.env` (git-ignored, from `deploy.env.example`). Build, then `scripts/deploy.sh` copies `dist/` into `../bipe-infra/compose/site/` and rsyncs it to the dev node. No `--delete`.
 
 ## Rules
