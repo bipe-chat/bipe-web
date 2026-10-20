@@ -139,7 +139,7 @@ export function brandTone(i) {
 
 /**
  * Default chosen (bipe#463): grain on the cards and most panels, tones from brandTone(). A panel
- * layout may take another texture: the mark pattern behind the text panel, which has no phone, and
- * the plain mesh behind the hero, where the callout is already the busiest object.
+ * layout may take another texture: the plain mesh behind the hero, where the callout is already the
+ * busiest object.
  */
-export const BRAND = { texture: "grain", tone: brandTone, byLayout: { text: "pattern", hero: "mesh" } };
+export const BRAND = { texture: "grain", tone: brandTone, byLayout: { hero: "mesh" } };

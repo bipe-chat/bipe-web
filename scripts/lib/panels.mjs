@@ -1,12 +1,13 @@
 // The parts of a store panel (bipe-chat/bipe#463), as Satori nodes for scripts/store-images.mjs.
 // The text and the layout name come from the `## Screenshots` table in bipe-shared/product/appstore.md
-// (`layout`, `badge`, `callout`). The region of each capture that a callout shows is in SCENES below.
+// (`headline`, `sub`, `layout`, `callout`). The region of each capture that a callout shows is in SCENES below.
 //
 // One device per panel: an upright phone at the same size and place on every panel, its top under
 // the copy, running off the bottom edge. A callout (a row with text in the `callout` column) shows
 // one region of the screen larger, in a white card over the phone, where the detail is too small to
-// read at store size. Layouts: hero (brand row above the copy), phone, text (no capture: an outline
-// of Brazil with a server). The backdrop under the panel is scripts/lib/backdrop.mjs.
+// read at store size. Layouts: hero (brand row above the copy) and phone. The text layout (a panel
+// with no capture) has no drawing: the Brazil outline was dropped on 20 October 2026 and can come
+// back with a better drawing (bipe-chat/bipe#463). The backdrop is scripts/lib/backdrop.mjs.
 import { h } from "../og.mjs";
 import { RAMPS } from "./backdrop.mjs";
 import { squirclePath } from "./squircle.mjs";
@@ -37,13 +38,13 @@ export const captureSlugs = (panel) => (panel.feature === "-" ? [] : [panel.slug
 
 // Layout per device kind, in units of a canvas 1320 wide; `s` scales them to the real width, so the
 // type has the same proportion on every device. Headlines get 2 lines. `frameTop` is the same on
-// every panel and leaves room for the hero brand row, a badge, a 2-line headline and a 1-line sub.
+// every panel and leaves room for the hero brand row, a 2-line headline and a 1-line sub.
 // `margin` is the least gap between a callout card and the panel edge.
 const LAYOUT = {
-  phone: { side: 96, top: 140, badge: 32, headline: 112, sub: 48, gap: 24, frameTop: 700, screen: 1000, bezel: 24, brand: 68, margin: 40 },
+  phone: { side: 96, top: 140, label: 32, headline: 112, sub: 48, gap: 24, frameTop: 640, screen: 1000, bezel: 24, brand: 68, margin: 40 },
   // Play phone: 1080x1920 is shorter than the iPhone, so the phone is smaller.
-  play: { side: 96, top: 120, badge: 32, headline: 104, sub: 46, gap: 22, frameTop: 660, screen: 780, bezel: 22, brand: 62, margin: 40 },
-  tablet: { side: 96, top: 84, badge: 26, headline: 84, sub: 38, gap: 18, frameTop: 470, screen: 900, bezel: 22, brand: 52, margin: 40 },
+  play: { side: 96, top: 120, label: 32, headline: 104, sub: 46, gap: 22, frameTop: 590, screen: 780, bezel: 22, brand: 62, margin: 40 },
+  tablet: { side: 96, top: 84, label: 26, headline: 84, sub: 38, gap: 18, frameTop: 440, screen: 900, bezel: 22, brand: 52, margin: 40 },
 };
 
 /** Text with `*highlight*` spans, as inline runs. */
@@ -65,9 +66,6 @@ function brandRow(markPath, size) {
 function copyBlock({ panel, L, s, t, markPath, hero }) {
   return h("div", { style: { display: "flex", flexDirection: "column", gap: L.gap * s, alignItems: "flex-start" } },
     hero ? h("div", { style: { display: "flex", marginBottom: L.gap * 0.5 * s } }, brandRow(markPath, L.brand * s)) : null,
-    panel.badge ? h("div", {
-      style: { display: "flex", padding: `${L.badge * 0.38 * s}px ${L.badge * 0.8 * s}px`, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.16)", fontSize: L.badge * s, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1 },
-    }, panel.badge) : null,
     h("div", { style: { display: "block", fontSize: L.headline * s, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.06 } }, ...rich(panel.headline, t.highlight)),
     panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.25, color: t.sub } }, ...rich(panel.sub, t.ink)) : null,
   );
@@ -131,7 +129,7 @@ function capturePanel({ panel, width, height, kind, captures, tone: t, markPath 
     // The card is a little wider than the phone and stays inside the panel. It sits over the lower
     // half of the visible phone, unless the region it enlarges is there: then it sits above it.
     const margin = L.margin * s;
-    const labelSize = L.badge * 1.15 * s;
+    const labelSize = L.label * 1.15 * s;
     const cardW = Math.min(frameW + 100 * s, width - 2 * margin);
     const cardH = cardHeight(capture, region, cardW);
     const cardLeft = (width - cardW) / 2;
@@ -148,53 +146,6 @@ function capturePanel({ panel, width, height, kind, captures, tone: t, markPath 
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
     ...parts,
     abs({ left: L.side * s, top: L.top * s, width: width - 2 * L.side * s }, copyBlock({ panel, L, s, t, markPath, hero: panel.layout === "hero" })),
-  );
-}
-
-// Brazil, simplified to 59 border points (longitude, latitude), for the text panel. A plain outline:
-// the Brazil point is proof, not a slogan (ADR 0047), so there is no flag and no national colour.
-const BRAZIL = [
-  [-51.6, 4.4], [-50.0, 1.8], [-49.9, -0.5], [-48.0, -0.7], [-44.5, -2.5], [-41.5, -2.9], [-38.5, -3.7], [-35.2, -5.2], [-34.8, -7.1],
-  [-35.3, -9.7], [-37.0, -11.0], [-38.5, -13.0], [-39.0, -17.5], [-40.3, -20.3], [-42.0, -22.9], [-43.2, -23.0], [-46.3, -24.0],
-  [-48.5, -26.2], [-48.6, -28.5], [-50.2, -30.5], [-52.1, -32.2], [-53.4, -33.7], [-53.5, -32.5], [-55.5, -30.9], [-57.6, -30.2],
-  [-56.0, -28.0], [-53.8, -27.2], [-54.6, -25.6], [-54.3, -24.0], [-55.4, -23.9], [-55.7, -22.3], [-57.9, -22.1], [-58.0, -19.9],
-  [-57.6, -18.0], [-58.4, -16.3], [-60.2, -16.3], [-60.4, -13.5], [-61.9, -13.5], [-65.0, -11.9], [-65.4, -10.0], [-66.6, -9.9],
-  [-69.5, -11.0], [-70.6, -11.0], [-72.5, -9.5], [-73.9, -7.4], [-72.9, -5.2], [-70.0, -4.2], [-69.4, -1.3], [-69.8, 0.6],
-  [-67.0, 2.0], [-64.0, 2.0], [-63.4, 3.9], [-60.7, 5.2], [-59.8, 4.0], [-58.0, 1.5], [-56.0, 2.0], [-54.0, 2.2], [-52.0, 2.5],
-];
-const SAO_PAULO = [-46.6, -23.5];
-const project = ([lon, lat]) => [(lon + 74) * Math.cos((15 * Math.PI) / 180), 5.3 - lat];
-
-function brazilMap({ size, s, t }) {
-  const pts = BRAZIL.map(project);
-  const w = Math.max(...pts.map((p) => p[0]));
-  const hh = Math.max(...pts.map((p) => p[1]));
-  const k = size / Math.max(w, hh);
-  const pad = 12 * s; // room for the stroke, so the outline is not cut at the edge
-  const d = `M${pts.map(([x, y]) => `${(x * k + pad).toFixed(1)} ${(y * k + pad).toFixed(1)}`).join("L")}Z`;
-  const [px, py] = project(SAO_PAULO).map((v) => v * k + pad);
-  const server = 150 * s;
-  // Satori passes an <svg> through to resvg; the server glyph is plain markup inside it.
-  return h("svg", { width: w * k + 2 * pad, height: hh * k + 2 * pad, viewBox: `0 0 ${w * k + 2 * pad} ${hh * k + 2 * pad}` },
-    h("path", { d, fill: t.blobs[0], stroke: WHITE, "stroke-width": 6 * s, "stroke-linejoin": "round" }),
-    ...[1, 2, 3].map((n) => h("circle", { cx: px, cy: py, r: (60 + n * 70) * s, fill: "none", stroke: WHITE, "stroke-opacity": 0.6 / n, "stroke-width": 4 * s })),
-    h("rect", { x: px - server / 2, y: py - server * 0.75, width: server, height: server * 0.98, rx: 22 * s, fill: WHITE }),
-    ...[0, 1, 2].flatMap((i) => [
-      h("rect", { x: px - server / 2 + 14 * s, y: py - server * 0.62 + i * 40 * s, width: server - 28 * s, height: 30 * s, rx: 8 * s, fill: CHIP_INK }),
-      h("circle", { cx: px + server / 2 - 34 * s, cy: py - server * 0.62 + 15 * s + i * 40 * s, r: 5 * s, fill: WHITE }),
-    ]),
-  );
-}
-
-function textPanel({ panel, width, height, kind, tone: t, markPath }) {
-  const s = width / 1320;
-  const L = LAYOUT[kind];
-  // The whole outline, centred in the space under the copy (from the phone top line down).
-  const top = L.frameTop * s;
-  const mapSize = Math.min(width - 2 * L.side * s, (height - top) * 0.8);
-  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
-    abs({ left: L.side * s, top: L.top * s, width: width - 2 * L.side * s }, copyBlock({ panel, L, s, t, markPath })),
-    abs({ left: 0, top, width, height: height - top, alignItems: "center", justifyContent: "center" }, brazilMap({ size: mapSize, s, t })),
   );
 }
 
@@ -219,6 +170,6 @@ export function panelNode({ panel, dev, captures, tone: t, markPath, subtitle })
   const { width, height } = dev;
   if (dev.kind === "feature") return featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath });
   const kind = dev.kind;
-  if (panel.feature === "-") return textPanel({ panel, width, height, kind, tone: t, markPath });
+  if (panel.feature === "-") throw new Error(`panels: ${panel.slug} is a text panel, and the builder has no drawing for it (bipe#463)`);
   return capturePanel({ panel, width, height, kind, captures, tone: t, markPath });
 }
