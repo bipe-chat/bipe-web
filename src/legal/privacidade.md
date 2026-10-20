@@ -16,6 +16,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - **Fotos e arquivos:** o que você envia fica no servidor para quem recebe conseguir baixar.
 - **Mensagem pelo site:** se você escreve pelo formulário da página de ajuda, a gente guarda seu nome, seu e-mail, a mensagem, o idioma e as respostas da conversa. A gente guarda esses dados no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia. Um e-mail leva um link privado para você continuar a conversa. Os dados ficam até você pedir para apagar.
 - **Marcos de uso:** o app não manda estatística. O servidor anota, a partir do que ele já vê, alguns marcos por dia: conta criada, primeira entrada, primeira mensagem, contato verificado, convite enviado ou usado, grupo criado, chamada iniciada e dia de uso. Cada marco fica ligado a um código derivado da sua conta, não ao seu nome de usuário, sem conteúdo e sem saber com quem você fala. Serve para saber se o Bipe é útil e em que passo as pessoas desistem. Fica guardado por 13 meses.
+- **Área de transferência:** quando o app abre sem conta, ele pergunta ao celular se tem algo copiado, sem ler o conteúdo. Se tiver, o app mostra o botão "Colar". Ele só lê o que você copiou quando você toca nesse botão, e usa só o código de convite que encontrar. Esse código vai para o servidor do Bipe, como acontece quando você abre um link de convite. No Android instalado pela Google Play, o app também lê o convite que a loja entrega junto com a instalação.
 
 ## O que a gente não faz
 - Não mostra anúncio.

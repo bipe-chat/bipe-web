@@ -26,6 +26,7 @@ O código tem de 12 a 20 caracteres: `A-Z`, `a-z`, `0-9` e `-`. O código é um 
 
 - A página confere o código em `api.bipe.net.br` e mostra os passos para cada plataforma.
 - A página não envia referrer.
+- O botão de instalar copia o link do convite. No app, o botão "Colar" da tela inicial usa esse link. Um link da Google Play leva `referrer=convite/<código>`, que o app lê na primeira abertura.
 - A prévia do link nunca mostra o código.
 
 ## Links de e-mail
