@@ -8,13 +8,11 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
+import { BRAND, backdropSvg, compose } from "./lib/backdrop.mjs";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 /** Gutter wide enough that a square centre crop (WhatsApp, iMessage) keeps the title. */
 const PAD = 72;
-const PLUM = "#80307B"; // acai.1100 light
-const PLUM_DEEP = "#682264"; // acai.1200 light
-const PLUM_SOFT = "#913C8C"; // acai.1000 light
 const WHITE = "#FFFFFF";
 const RULE = "rgba(255,255,255,0.22)";
 
@@ -43,16 +41,9 @@ const clamp = (lines, style, text) => h("div", { style: { display: "block", line
 function card({ markPath, title, description, family }) {
   const { width, height } = OG_SIZE;
   return h("div", {
-    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: PAD, backgroundColor: PLUM, color: WHITE, fontFamily: "Nunito", position: "relative" },
+    // No background: compose() puts the brand backdrop (scripts/lib/backdrop.mjs) under the card.
+    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: PAD, color: WHITE, fontFamily: "Nunito", position: "relative" },
   },
-    // The mark, large and low-contrast, bleeding off the top right: the brand without a second logo.
-    // A positioned div holds the decoration, so it stays out of the flex flow.
-    h("div", { style: { position: "absolute", left: 0, top: 0, width, height, display: "flex" } },
-      h("svg", { width, height, viewBox: `0 0 ${width} ${height}` },
-        h("g", { transform: `translate(${width - 300} -170) scale(7)` }, h("path", { d: markPath, fill: PLUM_SOFT })),
-        h("g", { transform: `translate(${width - 190} -40) scale(3.4)` }, h("path", { d: markPath, fill: PLUM_DEEP })),
-      ),
-    ),
     h("div", { style: { display: "flex", alignItems: "center", gap: 18 } },
       h("svg", { width: 64, height: 64, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: WHITE })),
       h("div", { style: { display: "flex", fontSize: 58, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
@@ -72,7 +63,7 @@ function card({ markPath, title, description, family }) {
 export { h };
 
 /** Writes the card PNG to outPath. */
-export async function writeOgCard({ outPath, markPath, title, description, family }) {
-  const svg = await satori(card({ markPath, title, description, family }), { ...OG_SIZE, fonts });
-  writeFileSync(outPath, new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width } }).render().asPng());
+export async function writeOgCard({ outPath, markPath, title, description, family, texture = BRAND.texture, tone = BRAND.tone(0) }) {
+  const svg = compose(await satori(card({ markPath, title, description, family }), { ...OG_SIZE, fonts }), backdropSvg({ ...OG_SIZE, texture, tone, markPath }));
+  writeFileSync(outPath, new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width }, background: tone.base }).render().asPng());
 }

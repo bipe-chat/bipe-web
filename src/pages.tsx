@@ -872,6 +872,8 @@ export function CastPage() {
 }
 
 export function StorePanelsPage() {
+  // One row per set, in store order. The App Store search result shows the first three panels, so
+  // they get an outline: judge them as a row.
   return (
     <section className="wrap section">
       <h1>Imagens da loja</h1>
@@ -879,10 +881,10 @@ export function StorePanelsPage() {
       {storeSets.map((s) => (
         <div key={s.href} style={{ marginTop: 48 }}>
           <h2>{s.label} · {s.locale} <span className="mono small muted">{s.width}x{s.height}</span></h2>
-          <div className="cast-grid">
+          <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 12 }}>
             {s.exports.map((e) => (
-              <figure key={e.file} style={{ margin: 0 }}>
-                <a href={s.href + e.file}><img src={s.href + e.file} alt={e.headline.replace(/\*/g, "")} width={s.width} height={s.height} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block" }} /></a>
+              <figure key={e.file} style={{ margin: 0, flex: `0 0 ${s.width > s.height ? 420 : 200}px` }}>
+                <a href={s.href + e.file}><img src={s.href + e.file} alt={e.headline.replace(/\*/g, "")} width={s.width} height={s.height} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block", outline: e.order <= 3 ? "3px solid var(--acai)" : "none", outlineOffset: 3 }} /></a>
                 <figcaption className="small mono muted" style={{ marginTop: 8 }}>{e.file}</figcaption>
               </figure>
             ))}

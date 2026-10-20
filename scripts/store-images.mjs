@@ -1,9 +1,9 @@
-// Renders the App Store and Google Play images (bipe-chat/bipe#455): one captioned panel per row of
-// the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures that
-// bipe-ios/appstore/capture.sh makes. A panel is the açaí background, the headline with its
-// *highlight*, the sub and the capture in a device frame drawn in code. A text panel (feature `-`)
-// shows the mark instead of a capture. Satori lays the panel out and resvg rasterises it, as in
-// scripts/og.mjs, so the output is the same on every machine and needs no browser.
+// Renders the App Store and Google Play images (bipe-chat/bipe#455, #463): one captioned panel per
+// row of the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures that
+// bipe-ios/appstore/capture.sh makes. The panel parts (badge, headline, phone, callout, people, the
+// Brazil map) are in scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
+// link-preview cards. Satori lays the panel out and resvg rasterises it, as in scripts/og.mjs, so the
+// output is the same on every machine and needs no browser.
 //
 //   pnpm store:images --device iphone69 --locale pt-BR
 //   pnpm store:images --device play-phone --shared ../../.factory/bipe-shared
@@ -13,8 +13,10 @@
 //   --locale      pt-BR | en-US (default: every locale in appstore.md)
 //   --shared      bipe-shared clone; gives the parser and the listing (default ../bipe-shared)
 //   --listing     the listing file (default <shared>/product/appstore.md)
-//   --raw         captures, as <raw>/<device>/<appearance>/<slug>.png (default ../bipe-ios/appstore/raw)
+//   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default ../bipe-ios/appstore/raw)
 //   --appearance  light | dark (default light)
+//   --texture     mesh | grain | pattern for every panel (default: BRAND.byLayout, else BRAND.texture)
+//   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
 //   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots for Play)
 //
 // Writes <out>/<device>/<locale>/NN-<slug>-WxH.png and manifest.json. Each PNG is RGB with no alpha
@@ -26,30 +28,17 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { deflateSync, crc32 } from "node:zlib";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
-import { fonts, h } from "./og.mjs";
+import { fonts } from "./og.mjs";
+import { captureSlugs, panelNode } from "./lib/panels.mjs";
+import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PLUM = "#80307B"; // acai.1100 light
-const PLUM_DEEP = "#682264"; // acai.1200 light
-const PLUM_SOFT = "#913C8C"; // acai.1000 light
-const HIGHLIGHT = "#EFC7EA"; // acai.500 light
-const WHITE = "#FFFFFF";
-const BEZEL = "#0C0D0F";
 
 // Google Play targets. Play has no capture tool yet, so the phone panels use the iPhone captures
 // (`captureFrom`) for layout checks only. They move to bipe-android with the Android capture issue.
 const PLAY_DEVICES = {
-  "play-phone": { label: "Play phone", kind: "phone", width: 1080, height: 1920, captureFrom: "iphone69" },
-  "play-feature": { label: "Play feature graphic", kind: "feature", width: 1024, height: 500 },
-};
-
-// Layout per device kind, in units of a canvas 1320 wide; `s` scales them to the real width, so the
-// type has the same proportion on every phone. `frameTop` is fixed so the phones line up across the
-// set; a headline gets 3 lines and a sub 2 above it. On a tablet the copy stays left of the backdrop mark. The frame runs off the bottom edge on purpose.
-// The shadow has no negative spread: resvg 2.6 panics on one in the iPad layout.
-const LAYOUT = {
-  phone: { side: 104, copyWidth: 1112, top: 168, headline: 124, sub: 54, gap: 36, frameTop: 800, screen: 992, bezel: 24, screenRadius: 124 },
-  tablet: { side: 104, top: 104, headline: 92, sub: 42, gap: 26, copyWidth: 880, frameTop: 560, screen: 940, bezel: 22, screenRadius: 44 },
+  "play-phone": { label: "Play phone", kind: "play", width: 1080, height: 1920, captureFrom: "iphone69" },
+  "play-feature": { label: "Play feature graphic", kind: "feature", width: 1024, height: 500, captureFrom: "iphone69" },
 };
 
 function args(argv) {
@@ -141,78 +130,40 @@ function isBlank(dataUrl, width, height) {
   return true;
 }
 
-// --- Panels --------------------------------------------------------------------------------------
-
-/** Headline text with `*highlight*` spans, as inline runs. */
-const rich = (text, colour) =>
-  text.split(/(\*[^*]+\*)/).filter(Boolean).map((part) => (part.startsWith("*") ? h("span", { style: { color: colour } }, part.slice(1, -1)) : part));
-
-/** The mark, large and low-contrast, bleeding off the top right, as on the link-preview cards. */
-const backdrop = (width, height, markPath, s) =>
-  h("div", { style: { position: "absolute", left: 0, top: 0, width, height, display: "flex" } },
-    h("svg", { width, height, viewBox: `0 0 ${width} ${height}` },
-      h("g", { transform: `translate(${width - 520 * s} ${-300 * s}) scale(${12 * s})` }, h("path", { d: markPath, fill: PLUM_SOFT })),
-      h("g", { transform: `translate(${width - 330 * s} ${-90 * s}) scale(${5.6 * s})` }, h("path", { d: markPath, fill: PLUM_DEEP })),
-    ),
-  );
-
-const copy = (panel, L, s, align = "left") =>
-  h("div", { style: { display: "flex", flexDirection: "column", gap: L.gap * s, alignItems: align === "center" ? "center" : "flex-start", textAlign: align } },
-    h("div", { style: { display: "block", fontSize: L.headline * s, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.06, textWrap: "balance" } }, ...rich(panel.headline, HIGHLIGHT)),
-    panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.25, color: "rgba(255,255,255,0.86)", textWrap: "balance" } }, ...rich(panel.sub, WHITE)) : null,
-  );
-
-function capturePanel({ panel, width, height, kind, capture, markPath }) {
-  const s = width / 1320;
-  const L = LAYOUT[kind];
-  const screenW = L.screen * s;
-  const screenH = screenW * (capture.height / capture.width);
-  const bezel = L.bezel * s;
-  const frameW = screenW + 2 * bezel;
-  return h("div", { style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", position: "relative", overflow: "hidden", backgroundColor: PLUM, color: WHITE, fontFamily: "Nunito" } },
-    backdrop(width, height, markPath, s),
-    h("div", { style: { position: "absolute", left: L.side * s, top: L.top * s, width: L.copyWidth * s, display: "flex" } }, copy(panel, L, s)),
-    h("div", {
-      style: {
-        position: "absolute", left: (width - frameW) / 2, top: L.frameTop * s, width: frameW, padding: bezel, boxSizing: "border-box", display: "flex",
-        backgroundColor: BEZEL, borderRadius: L.screenRadius * s + bezel, boxShadow: `0 ${40 * s}px ${80 * s}px rgba(0,0,0,0.35)`,
-      },
-    }, h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { borderRadius: L.screenRadius * s } })),
-  );
-}
-
-function textPanel({ panel, width, height, kind, markPath }) {
-  const s = width / 1320;
-  const L = LAYOUT[kind];
-  const mark = (kind === "tablet" ? 260 : 340) * s;
-  return h("div", { style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 96 * s, position: "relative", overflow: "hidden", backgroundColor: PLUM, color: WHITE, fontFamily: "Nunito", padding: `0 ${L.side * s}px` } },
-    backdrop(width, height, markPath, s),
-    h("svg", { width: mark, height: mark, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: WHITE })),
-    copy(panel, { ...L, headline: L.headline * 1.15, sub: L.sub * 1.1 }, s, "center"),
-  );
-}
-
-/** Play feature graphic: mark and wordmark on the left, the text panel's headline on the right. No backdrop: at 500 high it covers the headline. */
-function featureGraphic({ panel, width, height, markPath }) {
-  return h("div", { style: { width, height, boxSizing: "border-box", display: "flex", alignItems: "center", gap: 56, padding: "0 72px", position: "relative", overflow: "hidden", backgroundColor: PLUM, color: WHITE, fontFamily: "Nunito" } },
-    h("div", { style: { display: "flex", alignItems: "center", gap: 22 } },
-      h("svg", { width: 112, height: 112, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: WHITE })),
-      h("div", { style: { display: "flex", fontSize: 104, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
-    ),
-    h("div", { style: { display: "block", flex: 1, fontSize: 58, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.08, textWrap: "balance" } }, ...rich(panel.headline, HIGHLIGHT)),
-  );
-}
-
-/** Renders one panel and returns RGB PNG bytes at exactly width x height. */
-export async function renderPanel(node, width, height) {
-  const svg = await satori(node, { width, height, fonts });
-  const img = new Resvg(svg, { fitTo: { mode: "width", value: width }, background: PLUM }).render();
+/**
+ * Renders one panel on the brand backdrop (scripts/lib/backdrop.mjs) and returns RGB PNG bytes at
+ * exactly width x height. Without `backdrop` the node must paint its own opaque background.
+ */
+export async function renderPanel(node, width, height, backdrop) {
+  let svg = await satori(node, { width, height, fonts });
+  if (backdrop) svg = compose(svg, backdropSvg({ width, height, ...backdrop }));
+  const img = new Resvg(svg, { fitTo: { mode: "width", value: width }, background: backdrop?.tone.base ?? "#000000" }).render();
   if (img.width !== width || img.height !== height) throw new Error(`rendered ${img.width}x${img.height}, expected ${width}x${height}`);
   const png = encodeRgbPng(img.pixels, width, height);
   const info = pngInfo(png);
   if (info.alpha || info.width !== width || info.height !== height) throw new Error("encoded PNG does not match the store rules");
   return png;
 }
+
+/** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
+export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle }) {
+  const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
+  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index });
+}
+
+/** A capture file as the panels use it. Throws on a wrong size or a blank image. */
+export function loadCapture(file, captureDev) {
+  const buf = readFileSync(file);
+  const info = pngInfo(buf);
+  if (info.width !== captureDev.width || info.height !== captureDev.height) throw new Error(`${file} is ${info.width}x${info.height}, devices.mjs says ${captureDev.width}x${captureDev.height}`);
+  const dataUrl = `data:image/png;base64,${buf.toString("base64")}`;
+  if (isBlank(dataUrl, info.width, info.height)) throw new Error(`${file} is blank`);
+  if (!(captureDev.screenRadius > 0)) throw new Error(`devices.mjs: ${captureDev.key} has no screenRadius`);
+  return { dataUrl, width: info.width, height: info.height, radius: captureDev.screenRadius, file };
+}
+
+/** The panel the feature graphic and panel 1 lead with: the hero, else the first panel. */
+const heroPanel = (panels) => panels.find((p) => p.layout === "hero") ?? panels[0];
 
 // --- Run -----------------------------------------------------------------------------------------
 
@@ -234,6 +185,8 @@ async function main() {
   const locales = opt.locale ? [opt.locale] : LOCALES;
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
   const markPath = marks.paths[marks.chosen];
+  const texture = opt.texture; // unset: BRAND.byLayout, then BRAND.texture
+  const toneFor = opt.accent ? (i) => (i % 2 ? tone(opt.accent, "acai") : tone("acai", opt.accent)) : BRAND.tone;
 
   for (const locale of locales) {
     const panels = listing.screenshots[locale];
@@ -243,20 +196,13 @@ async function main() {
     const captures = new Map();
     if (captureDev) {
       const problems = [];
-      for (const p of panels.filter((p) => p.feature !== "-")) {
-        const file = join(rawRoot, captureDev.key, appearance, `${p.slug}.png`);
+      const need = dev.kind === "feature" ? [heroPanel(panels).slug] : panels.flatMap(captureSlugs);
+      for (const slug of need) {
+        const file = join(rawRoot, captureDev.key, appearance, locale, `${slug}.png`);
         if (!existsSync(file)) { problems.push(`missing ${file}`); continue; }
-        const buf = readFileSync(file);
-        const info = pngInfo(buf);
-        if (info.width !== captureDev.width || info.height !== captureDev.height) {
-          problems.push(`${file} is ${info.width}x${info.height}, devices.mjs says ${captureDev.width}x${captureDev.height}`);
-          continue;
-        }
-        const dataUrl = `data:image/png;base64,${buf.toString("base64")}`;
-        if (isBlank(dataUrl, info.width, info.height)) { problems.push(`${file} is blank`); continue; }
-        captures.set(p.slug, { dataUrl, width: info.width, height: info.height, file });
+        try { captures.set(slug, loadCapture(file, captureDev)); } catch (e) { problems.push(e.message); }
       }
-      if (problems.length) throw new Error(`store-images: ${dev.key} ${locale}: ${problems.length} capture problem(s). Run bipe-ios/appstore/capture.sh ${captureDev.key} ${appearance}.\n  ${problems.join("\n  ")}`);
+      if (problems.length) throw new Error(`store-images: ${dev.key} ${locale}: ${problems.length} capture problem(s). Run bipe-ios/appstore/capture.sh ${captureDev.key} ${appearance} --locale ${locale}.\n  ${problems.join("\n  ")}`);
     }
 
     const dir = join(outRoot, dev.key, locale);
@@ -266,17 +212,17 @@ async function main() {
     const { width, height } = dev;
     const size = `${width}x${height}`;
     const jobs = dev.kind === "feature"
-      ? [{ panel: panels.find((p) => p.feature === "-") ?? panels[0], slug: "feature-graphic" }]
+      ? [{ panel: heroPanel(panels), slug: "feature-graphic" }]
       : panels.map((panel) => ({ panel, slug: panel.slug }));
     const exports = [];
     for (const [i, { panel, slug }] of jobs.entries()) {
       const capture = captures.get(panel.slug);
-      const node = dev.kind === "feature" ? featureGraphic({ panel, width, height, markPath })
-        : panel.feature === "-" ? textPanel({ panel, width, height, kind: dev.kind, markPath })
-        : capturePanel({ panel, width, height, kind: dev.kind, capture, markPath });
+      const subtitle = listing.platforms.ios?.locales[locale]?.subtitle ?? "";
+      // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
+      const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.png`;
-      writeFileSync(join(dir, file), await renderPanel(node, width, height));
-      exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${panel.slug}.png` : null });
+      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture: texture ?? BRAND.byLayout[panel.layout] ?? BRAND.texture, index: i, subtitle }));
+      exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, layout: panel.layout || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${panel.slug}.png` : null });
       console.log(`${dev.key} ${locale} ${file}`);
     }
     const manifest = { device: dev.key, label: dev.label, platform: play ? "android" : "ios", ascDeviceType: dev.ascDeviceType ?? null, locale, appearance, width, height, exports };
