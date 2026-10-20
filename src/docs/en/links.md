@@ -26,6 +26,7 @@ The code has 12 to 20 characters: `A-Z`, `a-z`, `0-9` and `-`. The code is a sec
 
 - The page checks the code at `api.bipe.net.br` and shows the steps for each platform.
 - The page sends no referrer.
+- The install button copies the invite link. In the app, the "Paste" button on the start screen uses that link. A Google Play link carries `referrer=convite/<code>`, which the app reads when it first opens.
 - A link preview never shows the code.
 
 ## Email links

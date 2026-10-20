@@ -1,7 +1,7 @@
 // Landing pages for links shared from the app. Caddy rewrites /@handle to /perfil/ and
 // /convite/<code> to /convite/, so both read the real path in the browser. With the app installed,
 // universal links (.well-known/apple-app-site-association) open the app before these pages load.
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { encode } from "uqr";
 import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
@@ -29,15 +29,34 @@ async function copyText(text: string): Promise<boolean> {
   return ok;
 }
 
-/** The Android test build is an APK from distribution.json; no button while it is not available. */
-function AndroidDownloadButton({ lang = "pt" }: { lang?: Lang }) {
-  const { android } = distribution;
-  return android.status === "available" && android.url ? <a className="button primary" href={android.url}><Icon name="android" />{android[lang].label}</a> : null;
+/** Invite page (bipe#197): the store link keeps the invite through the install. Google Play hands `referrer` to the app
+ *  (Play Install Referrer); the APK and TestFlight cannot, so the button also copies the invite link for the app's "Colar". */
+function storeUrl(url: string, inviteCode?: string): string {
+  if (!inviteCode || new URL(url).hostname !== "play.google.com") return url;
+  const u = new URL(url);
+  u.searchParams.set("referrer", `convite/${inviteCode}`);
+  return u.toString();
 }
 
-export function InstallButton({ lang = "pt" }: { lang?: Lang }) {
+function copyInviteThenOpen(inviteCode: string | undefined) {
+  if (!inviteCode) return undefined;
+  return async (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const href = e.currentTarget.href;
+    await copyText(`${location.origin}/convite/${inviteCode}`);
+    location.href = href;
+  };
+}
+
+/** The Android test build is an APK from distribution.json; no button while it is not available. */
+function AndroidDownloadButton({ lang = "pt", inviteCode }: { lang?: Lang; inviteCode?: string }) {
+  const { android } = distribution;
+  return android.status === "available" && android.url ? <a className="button primary" href={storeUrl(android.url, inviteCode)} onClick={copyInviteThenOpen(inviteCode)}><Icon name="android" />{android[lang].label}</a> : null;
+}
+
+export function InstallButton({ lang = "pt", inviteCode }: { lang?: Lang; inviteCode?: string }) {
   const { ios } = distribution;
-  return ios.url ? <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a> : null;
+  return ios.url ? <a className="button primary" href={ios.url} onClick={copyInviteThenOpen(inviteCode)}><Icon name="apple" />{ios[lang].label}</a> : null;
 }
 
 /** The button for the visitor's phone; both badges on a computer. Availability comes from distribution.json. */
@@ -187,14 +206,14 @@ export function InviteLanding(_: Record<string, never>) {
       <p className="lede">{c.lead}</p>
       {platform === "ios" && (
         <ol className="steps">
-          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton /></div></li>
+          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton inviteCode={code ?? undefined} /></div>{code && <p className="small muted">{c.copiesLink}</p>}</li>
           <li>{c.iosSteps[1]}</li>
           <li>{c.iosSteps[2]}</li>
         </ol>
       )}
       {platform === "android" && (
         <ol className="steps">
-          <li>{c.androidSteps[0]}<div style={{ marginTop: 10 }}><AndroidDownloadButton /></div></li>
+          <li>{c.androidSteps[0]}<div style={{ marginTop: 10 }}><AndroidDownloadButton inviteCode={code ?? undefined} /></div>{code && <p className="small muted">{c.copiesLink}</p>}</li>
           <li>{c.androidSteps[1]}</li>
         </ol>
       )}

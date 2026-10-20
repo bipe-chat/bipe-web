@@ -167,14 +167,15 @@ export const chrome = {
       copy: "Copiar código", copied: "Copiado", copyFailed: "Segure o código para copiar",
       notTestFlight: "Esse código não funciona no TestFlight.",
       oneUse: "Ele vale só no Bipe, para uma pessoa.",
+      copiesLink: "O botão copia o link do convite. No app, toque em \"Colar\" para entrar com ele.",
       iosSteps: [
         "Toque no botão abaixo. Ele abre o TestFlight, o app da Apple para versões de testes. Se o celular pedir, instale o TestFlight antes. Depois toque em \"Aceitar\" e em \"Instalar\". O TestFlight não pede código: não digite o código do convite lá.",
-        "Depois de instalar, toque de novo no link que você recebeu. O app abre com o convite já preenchido.",
-        "Se o app não abrir sozinho, toque em \"Criar conta\" e em \"Colar\". O app encontra o código.",
+        "Abra o Bipe e toque em \"Colar\". O app pega o convite que esta página copiou.",
+        "Se o botão \"Colar\" não aparecer, toque de novo no link que você recebeu. O app abre com o convite já preenchido.",
       ],
       androidSteps: [
         "Toque no botão abaixo para baixar o Bipe. É uma versão de testes. Abra o arquivo no celular. O Android pede para você permitir a instalação.",
-        "Abra o Bipe e toque em \"Criar conta\". Quando o app pedir o convite, copie o código abaixo e cole lá.",
+        "Abra o Bipe e toque em \"Colar convite\". Se o botão não aparecer, toque em \"Tenho um convite\" e cole o código abaixo.",
       ],
       other: "Abra este link no celular. O Bipe está em testes no iPhone e no Android.",
       invalid: "Esse convite não vale mais. Pode ter sido usado, cancelado ou ter vencido.",
