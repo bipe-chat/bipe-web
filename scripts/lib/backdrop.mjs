@@ -8,19 +8,19 @@
 //   grain    mesh plus a fine feTurbulence noise layer at low opacity
 //   pattern  mesh plus the Bipe mark at large scale, cropped, tone on tone
 //
-// Ramps: açaí is acai in bipe-tokens. The fruit ramps are a proposal for marketing backgrounds only,
-// solved like bipe-tokens/bipe/acai-ramp.mjs (OKLCH, the same WCAG step targets as Compound green on
-// the light theme). They move to bipe-tokens when MZ picks them; until then they live only here.
-// Never use them for trust or state colours (bipe/docs/design/trust-ui.md).
+// Ramps come only from bipe-tokens: açaí is `acai` in tokens/theme-light.json, and the expressive
+// ramps (pitanga, jabuticaba, jenipapo) are tokens/bipe-expressive.json. The expressive ramps are for
+// marketing backgrounds only: never text, borders or trust states (bipe-tokens BIPE.md, change 6).
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
+const tokens = join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-tokens/tokens");
+const values = (family) => Object.fromEntries(Object.entries(family).map(([step, t]) => [step, t.value.toUpperCase()]));
+export const ACCENTS = ["pitanga", "jabuticaba", "jenipapo"];
 export const RAMPS = {
-  acai: { 100: "#FFFAFF", 200: "#FFF5FF", 300: "#FAEFF9", 400: "#F5E0F2", 500: "#EFC7EA", 600: "#E8B3E2", 700: "#DB96D4", 800: "#BF6BB9", 900: "#A24A9C", 1000: "#913C8C", 1100: "#80307B", 1200: "#682264", 1300: "#4C1749", 1400: "#321030" },
-  // Coral, OKLCH hue 33. Between Compound red (25) and orange (42): background fields only, never text or borders.
-  pitanga: { 100: "#FFFBF7", 200: "#FFF7F3", 300: "#FFEFEB", 400: "#FFDFD8", 500: "#FFC6B8", 600: "#FEB19F", 700: "#F6927C", 800: "#DF634A", 900: "#C13F26", 1000: "#AE2F16", 1100: "#9B2208", 1200: "#7E1500", 1300: "#5D0E00", 1400: "#3E0B03" },
-  // Deep violet, OKLCH hue 305, low chroma.
-  jabuticaba: { 100: "#FFFAFF", 200: "#FCF6FF", 300: "#F5F0FD", 400: "#EAE3F5", 500: "#DBCDEE", 600: "#CFBCE7", 700: "#BBA2DA", 800: "#9B7BBF", 900: "#7E5DA2", 1000: "#6F5092", 1100: "#614381", 1200: "#4D3468", 1300: "#38244C", 1400: "#241832" },
-  // Blue-black of the jenipapo dye, OKLCH hue 230.
-  jenipapo: { 100: "#F0FFFF", 200: "#ECFBFF", 300: "#E6F5FB", 400: "#D1EAF4", 500: "#ACDAED", 600: "#8FCDE6", 700: "#62B8D8", 800: "#0A95BB", 900: "#00759B", 1000: "#006589", 1100: "#005778", 1200: "#004460", 1300: "#003145", 1400: "#00212E" },
+  acai: values(JSON.parse(readFileSync(join(tokens, "theme-light.json"), "utf8")).color.acai),
+  ...Object.fromEntries(Object.entries(JSON.parse(readFileSync(join(tokens, "bipe-expressive.json"), "utf8")).color.expressive).map(([k, v]) => [k, values(v)])),
 };
 
 export const TEXTURES = ["mesh", "grain", "pattern"];
@@ -128,7 +128,14 @@ export function compose(satoriSvg, backdrop) {
 }
 
 /**
- * The brand choice for the cards and the panels. A store set alternates the tones panel by panel.
- * Default chosen (bipe#463): grain on açaí, alternating with pitanga, until MZ picks from the sheet.
+ * The brand tone for image number i of a set (store panels in order, link-preview cards by route):
+ * even images are açaí-led with the next accent as a blob, odd images are led by that accent. So the
+ * colour changes on every image, panel 1 is açaí, and the accents come in a fixed order.
  */
-export const BRAND = { texture: "grain", tones: [tone("acai", "pitanga"), tone("pitanga", "acai")] };
+export function brandTone(i) {
+  const accent = ACCENTS[Math.floor(i / 2) % ACCENTS.length];
+  return i % 2 === 0 ? tone("acai", accent) : tone(accent, "acai");
+}
+
+/** Default chosen (bipe#463): grain on every panel and card, tones from brandTone(). */
+export const BRAND = { texture: "grain", tone: brandTone };

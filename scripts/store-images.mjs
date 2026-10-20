@@ -16,7 +16,7 @@
 //   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default ../bipe-ios/appstore/raw)
 //   --appearance  light | dark (default light)
 //   --texture     mesh | grain | pattern (default: BRAND in scripts/lib/backdrop.mjs)
-//   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this ramp (default: BRAND)
+//   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
 //   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots for Play)
 //
 // Writes <out>/<device>/<locale>/NN-<slug>-WxH.png and manifest.json. Each PNG is RGB with no alpha
@@ -158,7 +158,8 @@ export function loadCapture(file, captureDev) {
   if (info.width !== captureDev.width || info.height !== captureDev.height) throw new Error(`${file} is ${info.width}x${info.height}, devices.mjs says ${captureDev.width}x${captureDev.height}`);
   const dataUrl = `data:image/png;base64,${buf.toString("base64")}`;
   if (isBlank(dataUrl, info.width, info.height)) throw new Error(`${file} is blank`);
-  return { dataUrl, width: info.width, height: info.height, file };
+  if (!(captureDev.screenRadius > 0)) throw new Error(`devices.mjs: ${captureDev.key} has no screenRadius`);
+  return { dataUrl, width: info.width, height: info.height, radius: captureDev.screenRadius, file };
 }
 
 /** The panel the feature graphic and panel 1 lead with: the hero, else the first panel. */
@@ -185,7 +186,7 @@ async function main() {
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
   const markPath = marks.paths[marks.chosen];
   const texture = opt.texture ?? BRAND.texture;
-  const tones = opt.accent ? [tone("acai", opt.accent), tone(opt.accent, "acai")] : BRAND.tones;
+  const toneFor = opt.accent ? (i) => (i % 2 ? tone(opt.accent, "acai") : tone("acai", opt.accent)) : BRAND.tone;
 
   for (const locale of locales) {
     const panels = listing.screenshots[locale];
@@ -217,8 +218,8 @@ async function main() {
     for (const [i, { panel, slug }] of jobs.entries()) {
       const capture = captures.get(panel.slug);
       const subtitle = listing.platforms.ios?.locales[locale]?.subtitle ?? "";
-      // The tones alternate across the set, and the backdrop variant moves the blobs on every panel.
-      const t = tones[i % tones.length];
+      // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
+      const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.png`;
       writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle }));
       exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, layout: panel.layout || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${panel.slug}.png` : null });

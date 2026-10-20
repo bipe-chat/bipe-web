@@ -1,5 +1,5 @@
 # Builds the site on every pull request: typecheck, prerender, code links. The main ruleset requires it.
-# A cross-repo change uses the bipe-shared branch of the same name when it exists, else main.
+# A cross-repo change uses the bipe-shared and bipe-tokens branches of the same name when they exist, else main.
 name: Build
 
 on:
@@ -38,9 +38,21 @@ jobs:
       # check-code-links compares with origin/main of the sibling clone, also when a branch is checked out.
       - name: Fetch bipe-shared main
         run: git -C bipe-shared fetch -q --depth 1 origin main:refs/remotes/origin/main
+      - name: Pick the bipe-tokens branch
+        id: tokens
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          ref=main
+          if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads https://github.com/bipe-chat/compound-design-tokens.git "$BRANCH" > /dev/null; then
+            ref="$BRANCH"
+          fi
+          echo "bipe-tokens: $ref"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           repository: bipe-chat/compound-design-tokens
+          ref: ${{ steps.tokens.outputs.ref }}
           path: bipe-tokens
           persist-credentials: false
       - uses: pnpm/action-setup@v4

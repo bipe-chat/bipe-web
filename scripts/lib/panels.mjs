@@ -11,6 +11,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { h } from "../og.mjs";
 import { RAMPS } from "./backdrop.mjs";
+import { squirclePath } from "./squircle.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const WHITE = "#FFFFFF";
@@ -46,10 +47,10 @@ export function captureSlugs(panel) {
 // type has the same proportion on every device. Headlines get 2 lines (bipe-chat/bipe#463).
 // The shadow has no negative spread: resvg 2.6 panics on one in the iPad layout.
 const LAYOUT = {
-  phone: { side: 96, top: 150, badge: 32, headline: 112, sub: 48, gap: 26, frameTop: 820, screen: 900, bezel: 22, screenRadius: 112, person: 168, brand: 72 },
+  phone: { side: 96, top: 150, badge: 32, headline: 112, sub: 48, gap: 26, frameTop: 820, screen: 900, bezel: 22, person: 168, brand: 72 },
   // Play phone: 1080x1920 is shorter than the iPhone, so the phone is smaller and higher.
-  play: { side: 96, top: 130, badge: 32, headline: 104, sub: 46, gap: 24, frameTop: 760, screen: 760, bezel: 20, screenRadius: 96, person: 150, brand: 66 },
-  tablet: { side: 96, top: 90, badge: 26, headline: 84, sub: 38, gap: 20, frameTop: 540, screen: 860, bezel: 20, screenRadius: 40, person: 128, brand: 56 },
+  play: { side: 96, top: 130, badge: 32, headline: 104, sub: 46, gap: 24, frameTop: 760, screen: 760, bezel: 20, person: 150, brand: 66 },
+  tablet: { side: 96, top: 90, badge: 26, headline: 84, sub: 38, gap: 20, frameTop: 540, screen: 860, bezel: 20, person: 128, brand: 56 },
 };
 // Phone placement per layout: x offset of the phone centre from the canvas centre, rotation in
 // degrees, and the screen width as a share of the layout screen. The callout moves to the other side.
@@ -105,26 +106,37 @@ function turn([x, y], [cx, cy], deg) {
   return [cx + (x - cx) * Math.cos(a) - (y - cy) * Math.sin(a), cy + (x - cx) * Math.sin(a) + (y - cy) * Math.cos(a)];
 }
 
-/** A phone as [shadow, body]: bezel, screen and, when `region` is set, an outline around the region. */
+/**
+ * A phone as [shadow, body]. The bezel and the screen are continuous-corner paths (squircle.mjs)
+ * with the screen radius of the capture device (bipe-ios/appstore/devices.mjs, `screenRadius`). The
+ * capture is clipped with the screen path, not a CSS radius, so the corners match an iPhone. When
+ * `region` is set, an outline marks the region the callout shows.
+ */
 function phone({ capture, left, top, screenW, L, s, rotate, region }) {
   const screenH = screenW * (capture.height / capture.width);
   const bezel = L.bezel * s;
-  const radius = (L.screenRadius * s * screenW) / (L.screen * s);
+  const radius = capture.radius * (screenW / capture.width);
+  const w = screenW + 2 * bezel;
+  const hh = screenH + 2 * bezel;
+  const frame = squirclePath(w, hh, radius + bezel);
   const outline = region
     ? abs({ left: bezel + region[0] * screenW - 8 * s, top: bezel + region[1] * screenH - 8 * s, width: region[2] * screenW + 16 * s, height: region[3] * screenH + 16 * s, border: `${6 * s}px solid ${CHIP_INK}`, borderRadius: 24 * s, boxShadow: `0 0 0 ${5 * s}px ${WHITE}` })
     : null;
-  // resvg 2.6 panics on any box shadow inside a rotated element (iPad tilt), so the shadow is a
-  // blurred rectangle in its own SVG, turned with the same angle, behind the phone.
-  const w = screenW + 2 * bezel;
-  const hh = screenH + 2 * bezel;
+  // resvg 2.6 panics on a box shadow inside a rotated element (iPad tilt), so the shadow is the
+  // frame path, blurred, in its own SVG, turned with the same angle, behind the phone.
   const pad = 200 * s;
   const shadow = abs({ left: left - pad, top: top - pad, width: w + 2 * pad, height: hh + 2 * pad },
     h("svg", { width: w + 2 * pad, height: hh + 2 * pad, viewBox: `0 0 ${w + 2 * pad} ${hh + 2 * pad}` },
       h("defs", {}, h("filter", { id: "phone-shadow", x: "-50%", y: "-50%", width: "200%", height: "200%" }, h("feGaussianBlur", { stdDeviation: 40 * s }))),
-      h("rect", { x: pad, y: pad + 40 * s, width: w, height: hh, rx: radius + bezel, fill: "rgba(0,0,0,0.35)", filter: "url(#phone-shadow)", transform: `rotate(${rotate ?? 0} ${pad + w / 2} ${pad + hh / 2})` }),
+      h("g", { transform: `rotate(${rotate ?? 0} ${pad + w / 2} ${pad + hh / 2}) translate(${pad} ${pad + 40 * s})` },
+        h("path", { d: frame, fill: "rgba(0,0,0,0.35)", filter: "url(#phone-shadow)" })),
     ));
-  const body = abs({ left, top, width: w, height: hh, padding: bezel, boxSizing: "border-box", backgroundColor: BEZEL, borderRadius: radius + bezel, transform: rotate ? `rotate(${rotate}deg)` : undefined },
-    h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { borderRadius: radius } }), outline);
+  // The bezel is an SVG path; the capture is a Satori image clipped with the screen path (Satori
+  // writes CSS clip-path as an SVG clipPath). An <image> inside an inline SVG does not render.
+  const body = abs({ left, top, width: w, height: hh, transform: rotate ? `rotate(${rotate}deg)` : undefined },
+    h("svg", { width: w, height: hh, viewBox: `0 0 ${w} ${hh}`, style: { position: "absolute", left: 0, top: 0 } }, h("path", { d: frame, fill: BEZEL })),
+    h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { position: "absolute", left: bezel, top: bezel, clipPath: `path("${squirclePath(screenW, screenH, radius)}")` } }),
+    outline);
   return [shadow, body];
 }
 
