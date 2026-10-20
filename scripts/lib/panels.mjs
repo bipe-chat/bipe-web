@@ -26,13 +26,13 @@ const CHIP_INK = RAMPS.acai[1100];
  * captures of bipe-ios/appstore/capture.sh (bipe-chat/bipe#462). Move a region when a screen moves.
  */
 export const SCENES = {
-  "aviso-golpe": { region: [0.03, 0.62, 0.94, 0.2], people: ["gabi"] },
-  pedidos: { region: [0.02, 0.135, 0.96, 0.11], people: ["camila"] },
-  "conferir-pix": { region: [0.05, 0.24, 0.9, 0.2], second: "conferir-pix-alterado" },
-  "seu-arroba": { region: [0.2, 0.52, 0.6, 0.33] },
-  "selo-cnpj": { region: [0.03, 0.05, 0.46, 0.07] },
-  grupos: { region: [0.02, 0.175, 0.96, 0.095], people: ["antonio", "bia"] },
-  stickers: { region: [0.05, 0.21, 0.7, 0.34] },
+  "aviso-golpe": { region: [0.04, 0.672, 0.92, 0.22], people: ["gabi"] },
+  pedidos: { region: [0.02, 0.182, 0.96, 0.112], people: ["camila"] },
+  "conferir-pix": { region: [0.06, 0.165, 0.89, 0.2], second: "conferir-pix-alterado" },
+  "seu-arroba": { region: [0.2, 0.528, 0.6, 0.3] },
+  "selo-cnpj": { region: [0.035, 0.06, 0.39, 0.058] },
+  grupos: { region: [0.02, 0.185, 0.96, 0.095], people: ["antonio", "bia"] },
+  stickers: { region: [0.045, 0.222, 0.7, 0.322] },
 };
 
 /** Captures a panel needs, by slug: its own and the back phone of two-phones. */

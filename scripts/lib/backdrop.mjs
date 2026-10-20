@@ -137,5 +137,9 @@ export function brandTone(i) {
   return i % 2 === 0 ? tone("acai", accent) : tone(accent, "acai");
 }
 
-/** Default chosen (bipe#463): grain on every panel and card, tones from brandTone(). */
-export const BRAND = { texture: "grain", tone: brandTone };
+/**
+ * Default chosen (bipe#463): grain on the cards and most panels, tones from brandTone(). A panel
+ * layout may take another texture: the mark pattern behind the text panel, which has no phone, and
+ * the plain mesh behind the hero, where the callout is already the busiest object.
+ */
+export const BRAND = { texture: "grain", tone: brandTone, byLayout: { text: "pattern", hero: "mesh" } };

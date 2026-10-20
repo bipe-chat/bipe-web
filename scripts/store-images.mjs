@@ -15,7 +15,7 @@
 //   --listing     the listing file (default <shared>/product/appstore.md)
 //   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default ../bipe-ios/appstore/raw)
 //   --appearance  light | dark (default light)
-//   --texture     mesh | grain | pattern (default: BRAND in scripts/lib/backdrop.mjs)
+//   --texture     mesh | grain | pattern for every panel (default: BRAND.byLayout, else BRAND.texture)
 //   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
 //   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots for Play)
 //
@@ -185,7 +185,7 @@ async function main() {
   const locales = opt.locale ? [opt.locale] : LOCALES;
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
   const markPath = marks.paths[marks.chosen];
-  const texture = opt.texture ?? BRAND.texture;
+  const texture = opt.texture; // unset: BRAND.byLayout, then BRAND.texture
   const toneFor = opt.accent ? (i) => (i % 2 ? tone(opt.accent, "acai") : tone("acai", opt.accent)) : BRAND.tone;
 
   for (const locale of locales) {
@@ -221,7 +221,7 @@ async function main() {
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.png`;
-      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle }));
+      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture: texture ?? BRAND.byLayout[panel.layout] ?? BRAND.texture, index: i, subtitle }));
       exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, layout: panel.layout || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${panel.slug}.png` : null });
       console.log(`${dev.key} ${locale} ${file}`);
     }
