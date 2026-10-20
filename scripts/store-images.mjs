@@ -1,4 +1,4 @@
-// Renders the App Store and Google Play images (bipe-chat/bipe#455, #463): one captioned panel per
+// Renders the App Store, Google Play and Instagram images (bipe-chat/bipe#455, #463, #465): one captioned panel per
 // row of the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures that
 // bipe-ios/appstore/capture.sh makes. The panel parts (badge, headline, phone, callout, people, the
 // Brazil map) are in scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
@@ -7,17 +7,22 @@
 //
 //   pnpm store:images --device iphone69 --locale pt-BR
 //   pnpm store:images --device play-phone --shared ../../.factory/bipe-shared
+//   pnpm store:images --device ig-story --locale pt-BR --listing social/posts.md
 //
 // Options (paths are relative to bipe-web):
-//   --device      iphone69 | ipad13 | play-phone | play-feature (default iphone69)
+//   --device      iphone69 | ipad13 | play-phone | play-feature | ig-post | ig-story | ig-square (default iphone69)
 //   --locale      pt-BR | en-US (default: every locale in appstore.md)
 //   --shared      bipe-shared clone; gives the parser and the listing (default ../bipe-shared)
-//   --listing     the listing file (default <shared>/product/appstore.md)
-//   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default ../bipe-ios/appstore/raw)
+//   --listing     the listing file (default <shared>/product/appstore.md). Any file with a `## Screenshots`
+//                 table works: social/posts.md holds the social-only posts. A `capture` column reuses a
+//                 store capture under another slug.
+//   --ios         bipe-ios clone; gives devices.mjs and the captures (default ../bipe-ios)
+//   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default <ios>/appstore/raw)
 //   --appearance  light | dark (default light)
 //   --texture     mesh | grain | pattern for every panel (default: BRAND.byLayout, else BRAND.texture)
 //   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
-//   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots for Play)
+//   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots
+//                 for Play, out/social for Instagram, which is gitignored and never a store folder)
 //
 // Writes <out>/<device>/<locale>/NN-<slug>-WxH.png and manifest.json. Each PNG is RGB with no alpha
 // channel at the exact store size. The builder stops on a missing, blank or wrong-size capture
@@ -29,17 +34,23 @@ import { deflateSync, crc32 } from "node:zlib";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { fonts } from "./og.mjs";
-import { captureSlugs, panelNode } from "./lib/panels.mjs";
+import { captureSlugs, panelNode, shotOf } from "./lib/panels.mjs";
 import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// Google Play targets. Play has no capture tool yet, so the phone panels use the iPhone captures
-// (`captureFrom`) for layout checks only. They move to bipe-android with the Android capture issue.
-const PLAY_DEVICES = {
-  "play-phone": { label: "Play phone", kind: "play", width: 1080, height: 1920, captureFrom: "iphone69" },
-  "play-feature": { label: "Play feature graphic", kind: "feature", width: 1024, height: 500, captureFrom: "iphone69" },
+// Targets that are not in bipe-ios/appstore/devices.mjs. Play has no capture tool yet, so the phone
+// panels use the iPhone captures (`captureFrom`) for layout checks only. They move to bipe-android
+// with the Android capture issue. The Instagram targets (bipe-chat/bipe#465) use the iPhone captures
+// too; the story keeps text out of the bands the IG bars cover (LAYOUT.story in lib/panels.mjs).
+const OTHER_DEVICES = {
+  "play-phone": { label: "Play phone", platform: "android", kind: "play", width: 1080, height: 1920, captureFrom: "iphone69" },
+  "play-feature": { label: "Play feature graphic", platform: "android", kind: "feature", width: 1024, height: 500, captureFrom: "iphone69" },
+  "ig-post": { label: "Instagram post", platform: "social", kind: "post", width: 1080, height: 1350, captureFrom: "iphone69" },
+  "ig-story": { label: "Instagram story", platform: "social", kind: "story", width: 1080, height: 1920, captureFrom: "iphone69" },
+  "ig-square": { label: "Instagram square", platform: "social", kind: "square", width: 1080, height: 1080, captureFrom: "iphone69" },
 };
+const OUT = { ios: "../bipe-ios/appstore/screenshots", android: "../bipe-android/appstore/screenshots", social: "out/social" };
 
 function args(argv) {
   const out = {};
@@ -173,14 +184,15 @@ async function main() {
   const shared = rel(opt.shared ?? "../bipe-shared");
   const { parseAppstore, LOCALES } = await import(pathToFileURL(join(shared, "tools/lib/appstore.mjs")).href);
   const listing = parseAppstore(readFileSync(opt.listing ? rel(opt.listing) : join(shared, "product/appstore.md"), "utf8"));
-  const { device: iosDevice } = await import(pathToFileURL(rel("../bipe-ios/appstore/devices.mjs")).href);
+  const ios = rel(opt.ios ?? "../bipe-ios");
+  const { device: iosDevice } = await import(pathToFileURL(join(ios, "appstore/devices.mjs")).href);
 
   const key = opt.device ?? "iphone69";
-  const play = PLAY_DEVICES[key];
-  const dev = play ? { key, ...play } : iosDevice(key);
-  const captureDev = play?.captureFrom ? iosDevice(play.captureFrom) : play ? null : dev;
-  const outRoot = rel(opt.out ?? (play ? "../bipe-android/appstore/screenshots" : "../bipe-ios/appstore/screenshots"));
-  const rawRoot = rel(opt.raw ?? "../bipe-ios/appstore/raw");
+  const other = OTHER_DEVICES[key];
+  const dev = other ? { key, ...other } : { platform: "ios", ...iosDevice(key) };
+  const captureDev = other?.captureFrom ? iosDevice(other.captureFrom) : other ? null : dev;
+  const outRoot = rel(opt.out ?? OUT[dev.platform]);
+  const rawRoot = opt.raw ? rel(opt.raw) : join(ios, "appstore/raw");
   const appearance = opt.appearance ?? "light";
   const locales = opt.locale ? [opt.locale] : LOCALES;
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
@@ -196,7 +208,7 @@ async function main() {
     const captures = new Map();
     if (captureDev) {
       const problems = [];
-      const need = dev.kind === "feature" ? [heroPanel(panels).slug] : panels.flatMap(captureSlugs);
+      const need = dev.kind === "feature" ? [shotOf(heroPanel(panels))] : panels.flatMap(captureSlugs);
       for (const slug of need) {
         const file = join(rawRoot, captureDev.key, appearance, locale, `${slug}.png`);
         if (!existsSync(file)) { problems.push(`missing ${file}`); continue; }
@@ -216,16 +228,16 @@ async function main() {
       : panels.map((panel) => ({ panel, slug: panel.slug }));
     const exports = [];
     for (const [i, { panel, slug }] of jobs.entries()) {
-      const capture = captures.get(panel.slug);
+      const capture = captures.get(shotOf(panel));
       const subtitle = listing.platforms.ios?.locales[locale]?.subtitle ?? "";
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.png`;
       writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture: texture ?? BRAND.byLayout[panel.layout] ?? BRAND.texture, index: i, subtitle }));
-      exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, layout: panel.layout || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${panel.slug}.png` : null });
+      exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, layout: panel.layout || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
       console.log(`${dev.key} ${locale} ${file}`);
     }
-    const manifest = { device: dev.key, label: dev.label, platform: play ? "android" : "ios", ascDeviceType: dev.ascDeviceType ?? null, locale, appearance, width, height, exports };
+    const manifest = { device: dev.key, label: dev.label, platform: dev.platform, ascDeviceType: dev.ascDeviceType ?? null, locale, appearance, width, height, exports };
     writeFileSync(join(dir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
   }
 }

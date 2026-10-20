@@ -35,23 +35,37 @@ export const SCENES = {
   stickers: { region: [0.045, 0.222, 0.7, 0.322] },
 };
 
+/** The capture slug of a panel: the `capture` column when set (social posts reuse store captures), else the slug. */
+export const shotOf = (panel) => panel.capture || panel.slug;
+
 /** Captures a panel needs, by slug: its own and the back phone of two-phones. */
 export function captureSlugs(panel) {
   if (panel.feature === "-") return [];
-  const second = panel.layout === "two-phones" ? SCENES[panel.slug]?.second : null;
-  if (panel.layout === "two-phones" && !second) throw new Error(`panels: ${panel.slug} has layout two-phones but no second capture in SCENES`);
-  return second ? [panel.slug, second] : [panel.slug];
+  const shot = shotOf(panel);
+  const second = panel.layout === "two-phones" ? SCENES[shot]?.second : null;
+  if (panel.layout === "two-phones" && !second) throw new Error(`panels: ${shot} has layout two-phones but no second capture in SCENES`);
+  return second ? [shot, second] : [shot];
 }
 
 // Layout per device kind, in units of a canvas 1320 wide; `s` scales them to the real width, so the
 // type has the same proportion on every device. Headlines get 2 lines (bipe-chat/bipe#463).
 // The shadow has no negative spread: resvg 2.6 panics on one in the iPad layout.
+// `clear` is a band at the foot that the callout card and the people keep clear of; `map` is the
+// Brazil outline of the text panel as a share of the height, with `mapBottom` under it.
+const BASE = { clear: 0, map: 0.5, mapBottom: 220 };
 const LAYOUT = {
-  phone: { side: 96, top: 150, badge: 32, headline: 112, sub: 48, gap: 26, frameTop: 820, screen: 900, bezel: 22, person: 168, brand: 72 },
+  phone: { ...BASE, side: 96, top: 150, badge: 32, headline: 112, sub: 48, gap: 26, frameTop: 820, screen: 900, bezel: 22, person: 168, brand: 72 },
   // Play phone: 1080x1920 is shorter than the iPhone, so the phone is smaller and higher.
-  play: { side: 96, top: 130, badge: 32, headline: 104, sub: 46, gap: 24, frameTop: 760, screen: 760, bezel: 20, person: 150, brand: 66 },
-  tablet: { side: 96, top: 90, badge: 26, headline: 84, sub: 38, gap: 20, frameTop: 540, screen: 860, bezel: 20, person: 128, brand: 56 },
+  play: { ...BASE, side: 96, top: 130, badge: 32, headline: 104, sub: 46, gap: 24, frameTop: 760, screen: 760, bezel: 20, person: 150, brand: 66 },
+  tablet: { ...BASE, side: 96, top: 90, badge: 26, headline: 84, sub: 38, gap: 20, frameTop: 540, screen: 860, bezel: 20, person: 128, brand: 56, mapBottom: 70 },
+  // Instagram (bipe-chat/bipe#465), all 1080 wide. The phone runs off the foot of post and square.
+  post: { ...BASE, side: 96, top: 120, badge: 32, headline: 100, sub: 44, gap: 22, frameTop: 640, screen: 640, bezel: 18, person: 140, brand: 64, map: 0.42, mapBottom: 120 },
+  square: { ...BASE, side: 96, top: 100, badge: 30, headline: 92, sub: 42, gap: 20, frameTop: 560, screen: 560, bezel: 16, person: 124, brand: 60, map: 0.4, mapBottom: 70 },
+  // Story: the IG bars cover the top 250 px and the bottom 340 px, so no text goes there
+  // (306 and 416 units at 1080 wide). Only the phone may run into the bottom band.
+  story: { ...BASE, side: 96, top: 330, badge: 32, headline: 104, sub: 46, gap: 24, frameTop: 900, screen: 700, bezel: 20, person: 150, brand: 66, clear: 416, map: 0.36, mapBottom: 460 },
 };
+const SOCIAL = new Set(["post", "square", "story"]);
 // Phone placement per layout: x offset of the phone centre from the canvas centre, rotation in
 // degrees, and the screen width as a share of the layout screen. The callout moves to the other side.
 const PLACE = {
@@ -160,8 +174,8 @@ function capturePanel({ panel, width, height, kind, captures, tone: t, markPath 
   const layout = panel.layout || "phone";
   const P = PLACE[layout];
   if (!P) throw new Error(`panels: ${panel.slug}: layout ${layout} needs a capture-free panel`);
-  const scene = SCENES[panel.slug] ?? {};
-  const capture = captures.get(panel.slug);
+  const scene = SCENES[shotOf(panel)] ?? {};
+  const capture = captures.get(shotOf(panel));
   const screenW = L.screen * P.scale * s;
   const screenH = screenW * (capture.height / capture.width);
   const frameW = screenW + 2 * L.bezel * s;
@@ -196,7 +210,7 @@ function capturePanel({ panel, width, height, kind, captures, tone: t, markPath 
     const above = anchorTop[1] > visibleMid;
     const gap = 90 * s;
     let cardTop = above ? anchorTop[1] - gap - cardH : anchorBottom[1] + gap;
-    cardTop = Math.max(frameTop - 40 * s, Math.min(height - cardH - 48 * s, cardTop));
+    cardTop = Math.max(frameTop - 40 * s, Math.min(height - cardH - (48 + L.clear) * s, cardTop));
     const cardLeft = Math.max(56 * s, Math.min(width - cardW - 56 * s, (width - cardW) / 2 - P.dx * 0.8 * s));
     const anchor = above ? anchorTop : anchorBottom;
     const cardEdge = [Math.max(cardLeft + 60 * s, Math.min(cardLeft + cardW - 60 * s, anchor[0])), above ? cardTop + cardH : cardTop];
@@ -220,9 +234,12 @@ function capturePanel({ panel, width, height, kind, captures, tone: t, markPath 
     const x = onLeft ? Math.max(40 * s, frameLeft - d * 0.55) : Math.min(width - d - 40 * s, frameLeft + frameW - d * 0.45);
     // Photo with its ring, the gap and the name chip.
     const blockH = d + 14 * s + 12 * s + L.badge * 1.1 * 1.64 * s + 24 * s;
-    const free = (y) => y + blockH < height - 40 * s && taken.every(([a, b]) => y + blockH < a - 20 * s || y > b + 20 * s);
+    const free = (y) => y + blockH < height - (40 + L.clear) * s && taken.every(([a, b]) => y + blockH < a - 20 * s || y > b + 20 * s);
+    // On the short Instagram canvases there is often no free place: the person is left out there,
+    // so a photo never covers the callout card. The store panels keep the old place.
     const y = [frameTop + 140 * s, ...taken.flatMap(([a, b]) => [b + 40 * s, a - blockH - 40 * s]), frameTop + frameH * 0.55]
-      .filter((v) => v >= frameTop).find(free) ?? frameTop + 140 * s;
+      .filter((v) => v >= frameTop).find(free) ?? (SOCIAL.has(kind) ? null : frameTop + 140 * s);
+    if (y === null) return;
     taken.push([y, y + blockH]);
     parts.push(abs({ left: x, top: y, flexDirection: "column", alignItems: onLeft ? "flex-start" : "flex-end", gap: 12 * s },
       h("img", { src: p.photo, width: d, height: d, style: { borderRadius: d / 2, border: `${7 * s}px solid ${WHITE}`, objectFit: "cover", boxShadow: `0 ${16 * s}px ${40 * s}px rgba(0,0,0,0.3)` } }),
@@ -273,17 +290,17 @@ function brazilMap({ size, s, t }) {
 function textPanel({ panel, width, height, kind, tone: t, markPath }) {
   const s = width / 1320;
   const L = LAYOUT[kind];
-  const mapSize = Math.min(width - 2 * L.side * s, height * 0.5);
+  const mapSize = Math.min(width - 2 * L.side * s, height * L.map);
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
     abs({ left: L.side * s, top: L.top * s, width: width - 2 * L.side * s }, copyBlock({ panel, L, s, t, markPath })),
-    abs({ left: (width - mapSize) / 2, top: height - mapSize - (kind === "tablet" ? 70 : 220) * s, width: mapSize, height: mapSize, justifyContent: "center" }, brazilMap({ size: mapSize, s, t })),
+    abs({ left: (width - mapSize) / 2, top: height - mapSize - L.mapBottom * s, width: mapSize, height: mapSize, justifyContent: "center" }, brazilMap({ size: mapSize, s, t })),
   );
 }
 
 /** Play feature graphic: mark and wordmark with the store subtitle, and the hero callout. */
 function featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath }) {
-  const capture = captures.get(panel.slug);
-  const region = SCENES[panel.slug]?.region;
+  const capture = captures.get(shotOf(panel));
+  const region = SCENES[shotOf(panel)]?.region;
   const cardW = 440;
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
     abs({ left: 64, top: 0, width: 470, height, flexDirection: "column", justifyContent: "center", gap: 28 },
