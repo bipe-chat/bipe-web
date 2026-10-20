@@ -1,77 +1,50 @@
 // The parts of a store panel (bipe-chat/bipe#463), as Satori nodes for scripts/store-images.mjs.
 // The text and the layout name come from the `## Screenshots` table in bipe-shared/product/appstore.md
-// (`layout`, `badge`, `callout`). What the builder needs to know about each capture (the region to
-// show larger, the people at the frame, a second screen) is in SCENES below.
+// (`layout`, `badge`, `callout`). The region of each capture that a callout shows is in SCENES below.
 //
-// Layouts: hero (brand row, then the largest callout of the set), phone, tilt-left, tilt-right,
-// two-phones, text (no capture: an outline of Brazil with a server). The backdrop under the panel
-// is scripts/lib/backdrop.mjs; panels paint no background of their own.
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+// One device per panel: an upright phone at the same size and place on every panel, its top under
+// the copy, running off the bottom edge. A callout (a row with text in the `callout` column) shows
+// one region of the screen larger, in a white card over the phone, where the detail is too small to
+// read at store size. Layouts: hero (brand row above the copy), phone, text (no capture: an outline
+// of Brazil with a server). The backdrop under the panel is scripts/lib/backdrop.mjs.
 import { h } from "../og.mjs";
 import { RAMPS } from "./backdrop.mjs";
 import { squirclePath } from "./squircle.mjs";
 
-const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const WHITE = "#FFFFFF";
 const BEZEL = "#0C0D0F";
 // Text on a white chip. Always açaí: the fruit ramps never carry text (backdrop.mjs).
 const CHIP_INK = RAMPS.acai[1100];
 
 /**
- * Per capture slug: `region` is the part of the capture the callout shows larger, as fractions of
- * the capture (x, y, w, h); `people` are cast ids shown at the frame (names only, never a number);
- * `second` is the capture for the back phone of the two-phones layout. The regions match the
- * captures of bipe-ios/appstore/capture.sh (bipe-chat/bipe#462). Move a region when a screen moves.
+ * Per capture slug: `region` is the part of the capture a callout shows larger, as fractions of the
+ * capture (x, y, w, h). A panel shows the callout only when its `callout` column has text. The
+ * regions match the pt-BR captures of bipe-ios/appstore/capture.sh from 20 October 2026
+ * (bipe-chat/bipe#462). Move a region when a screen moves.
  */
 export const SCENES = {
-  "aviso-golpe": { region: [0.04, 0.672, 0.92, 0.22], people: ["gabi"] },
-  pedidos: { region: [0.02, 0.182, 0.96, 0.112], people: ["camila"] },
-  "conferir-pix": { region: [0.06, 0.165, 0.89, 0.2], second: "conferir-pix-alterado" },
+  "aviso-golpe": { region: [0.04, 0.672, 0.92, 0.22] },
+  pedidos: { region: [0.02, 0.182, 0.96, 0.112] },
+  "conferir-pix": { region: [0.06, 0.165, 0.89, 0.2] },
   "seu-arroba": { region: [0.2, 0.528, 0.6, 0.3] },
   "selo-cnpj": { region: [0.035, 0.06, 0.39, 0.058] },
-  grupos: { region: [0.02, 0.185, 0.96, 0.095], people: ["antonio", "bia"] },
+  grupos: { region: [0.02, 0.185, 0.96, 0.095] },
   stickers: { region: [0.045, 0.222, 0.7, 0.322] },
 };
 
-/** Captures a panel needs, by slug: its own and the back phone of two-phones. */
-export function captureSlugs(panel) {
-  if (panel.feature === "-") return [];
-  const second = panel.layout === "two-phones" ? SCENES[panel.slug]?.second : null;
-  if (panel.layout === "two-phones" && !second) throw new Error(`panels: ${panel.slug} has layout two-phones but no second capture in SCENES`);
-  return second ? [panel.slug, second] : [panel.slug];
-}
+/** Captures a panel needs, by slug. */
+export const captureSlugs = (panel) => (panel.feature === "-" ? [] : [panel.slug]);
 
 // Layout per device kind, in units of a canvas 1320 wide; `s` scales them to the real width, so the
-// type has the same proportion on every device. Headlines get 2 lines (bipe-chat/bipe#463).
-// The shadow has no negative spread: resvg 2.6 panics on one in the iPad layout.
+// type has the same proportion on every device. Headlines get 2 lines. `frameTop` is the same on
+// every panel and leaves room for the hero brand row, a badge, a 2-line headline and a 1-line sub.
+// `margin` is the least gap between a callout card and the panel edge.
 const LAYOUT = {
-  phone: { side: 96, top: 150, badge: 32, headline: 112, sub: 48, gap: 26, frameTop: 820, screen: 900, bezel: 22, person: 168, brand: 72 },
-  // Play phone: 1080x1920 is shorter than the iPhone, so the phone is smaller and higher.
-  play: { side: 96, top: 130, badge: 32, headline: 104, sub: 46, gap: 24, frameTop: 760, screen: 760, bezel: 20, person: 150, brand: 66 },
-  tablet: { side: 96, top: 90, badge: 26, headline: 84, sub: 38, gap: 20, frameTop: 540, screen: 860, bezel: 20, person: 128, brand: 56 },
+  phone: { side: 96, top: 140, badge: 32, headline: 112, sub: 48, gap: 24, frameTop: 700, screen: 1000, bezel: 24, brand: 68, margin: 40 },
+  // Play phone: 1080x1920 is shorter than the iPhone, so the phone is smaller.
+  play: { side: 96, top: 120, badge: 32, headline: 104, sub: 46, gap: 22, frameTop: 660, screen: 780, bezel: 22, brand: 62, margin: 40 },
+  tablet: { side: 96, top: 84, badge: 26, headline: 84, sub: 38, gap: 18, frameTop: 470, screen: 900, bezel: 22, brand: 52, margin: 40 },
 };
-// Phone placement per layout: x offset of the phone centre from the canvas centre, rotation in
-// degrees, and the screen width as a share of the layout screen. The callout moves to the other side.
-const PLACE = {
-  hero: { dx: 110, rotate: -2, scale: 0.9, top: 90 },
-  phone: { dx: 0, rotate: 0, scale: 1, top: 0 },
-  "tilt-left": { dx: 80, rotate: -3, scale: 1, top: 0 },
-  "tilt-right": { dx: -80, rotate: 3, scale: 1, top: 0 },
-  "two-phones": { dx: 150, rotate: 4, scale: 0.9, top: 40 },
-};
-
-const photos = new Map();
-const cast = JSON.parse(readFileSync(join(root, "src/cast/cast.json"), "utf8")).cast;
-/** A cast person as the panels show them: the short name and the photo as a data URL. */
-function person(id) {
-  const e = cast.find((c) => c.id === id);
-  if (!e?.photo) throw new Error(`panels: cast entry ${id} has no photo`);
-  const file = join(root, "src/cast/photos", `${"copyOf" in e.photo ? e.photo.copyOf : e.id}.jpg`);
-  if (!photos.has(file)) photos.set(file, `data:image/jpeg;base64,${readFileSync(file).toString("base64")}`);
-  return { name: e.short ?? e.name, photo: photos.get(file) };
-}
 
 /** Text with `*highlight*` spans, as inline runs. */
 const rich = (text, colour) =>
@@ -79,8 +52,8 @@ const rich = (text, colour) =>
 
 const abs = (style, ...children) => h("div", { style: { position: "absolute", display: "flex", ...style } }, ...children);
 
-const chip = (text, size, s, style = {}) =>
-  h("div", { style: { display: "flex", padding: `${size * 0.32}px ${size * 0.7}px`, borderRadius: 999, backgroundColor: WHITE, color: CHIP_INK, fontSize: size, fontWeight: 800, lineHeight: 1.1, boxShadow: `0 ${8 * s}px ${24 * s}px rgba(0,0,0,0.22)`, ...style } }, text);
+const chip = (text, size, s) =>
+  h("div", { style: { display: "flex", padding: `${size * 0.32}px ${size * 0.7}px`, borderRadius: 999, backgroundColor: WHITE, color: CHIP_INK, fontSize: size, fontWeight: 800, lineHeight: 1.1, boxShadow: `0 ${8 * s}px ${24 * s}px rgba(0,0,0,0.22)` } }, text);
 
 function brandRow(markPath, size) {
   return h("div", { style: { display: "flex", alignItems: "center", gap: size * 0.3 } },
@@ -89,9 +62,9 @@ function brandRow(markPath, size) {
   );
 }
 
-function copyBlock({ panel, L, s, t, markPath, hero, align = "flex-start" }) {
-  return h("div", { style: { display: "flex", flexDirection: "column", gap: L.gap * s, alignItems: align, textAlign: align === "center" ? "center" : "left" } },
-    hero ? h("div", { style: { display: "flex", marginBottom: L.gap * s } }, brandRow(markPath, L.brand * s)) : null,
+function copyBlock({ panel, L, s, t, markPath, hero }) {
+  return h("div", { style: { display: "flex", flexDirection: "column", gap: L.gap * s, alignItems: "flex-start" } },
+    hero ? h("div", { style: { display: "flex", marginBottom: L.gap * 0.5 * s } }, brandRow(markPath, L.brand * s)) : null,
     panel.badge ? h("div", {
       style: { display: "flex", padding: `${L.badge * 0.38 * s}px ${L.badge * 0.8 * s}px`, borderRadius: 999, backgroundColor: "rgba(255,255,255,0.16)", fontSize: L.badge * s, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1 },
     }, panel.badge) : null,
@@ -100,43 +73,28 @@ function copyBlock({ panel, L, s, t, markPath, hero, align = "flex-start" }) {
   );
 }
 
-/** Rotates the point (x, y) by `deg` around (cx, cy), as CSS rotate() does with y down. */
-function turn([x, y], [cx, cy], deg) {
-  const a = (deg * Math.PI) / 180;
-  return [cx + (x - cx) * Math.cos(a) - (y - cy) * Math.sin(a), cy + (x - cx) * Math.sin(a) + (y - cy) * Math.cos(a)];
-}
-
 /**
- * A phone as [shadow, body]. The bezel and the screen are continuous-corner paths (squircle.mjs)
- * with the screen radius of the capture device (bipe-ios/appstore/devices.mjs, `screenRadius`). The
- * capture is clipped with the screen path, not a CSS radius, so the corners match an iPhone. When
- * `region` is set, an outline marks the region the callout shows.
+ * The phone as [shadow, body], upright. The bezel and the screen are continuous-corner paths
+ * (squircle.mjs) with the screen radius of the capture device (bipe-ios/appstore/devices.mjs,
+ * `screenRadius`). The capture sits inset in the bezel, clipped with the screen path (Satori writes
+ * CSS clip-path as an SVG clipPath; an <image> inside an inline SVG does not render).
  */
-function phone({ capture, left, top, screenW, L, s, rotate, region }) {
+function phone({ capture, left, top, screenW, bezel, s }) {
   const screenH = screenW * (capture.height / capture.width);
-  const bezel = L.bezel * s;
   const radius = capture.radius * (screenW / capture.width);
   const w = screenW + 2 * bezel;
   const hh = screenH + 2 * bezel;
   const frame = squirclePath(w, hh, radius + bezel);
-  const outline = region
-    ? abs({ left: bezel + region[0] * screenW - 8 * s, top: bezel + region[1] * screenH - 8 * s, width: region[2] * screenW + 16 * s, height: region[3] * screenH + 16 * s, border: `${6 * s}px solid ${CHIP_INK}`, borderRadius: 24 * s, boxShadow: `0 0 0 ${5 * s}px ${WHITE}` })
-    : null;
-  // resvg 2.6 panics on a box shadow inside a rotated element (iPad tilt), so the shadow is the
-  // frame path, blurred, in its own SVG, turned with the same angle, behind the phone.
   const pad = 200 * s;
   const shadow = abs({ left: left - pad, top: top - pad, width: w + 2 * pad, height: hh + 2 * pad },
     h("svg", { width: w + 2 * pad, height: hh + 2 * pad, viewBox: `0 0 ${w + 2 * pad} ${hh + 2 * pad}` },
       h("defs", {}, h("filter", { id: "phone-shadow", x: "-50%", y: "-50%", width: "200%", height: "200%" }, h("feGaussianBlur", { stdDeviation: 40 * s }))),
-      h("g", { transform: `rotate(${rotate ?? 0} ${pad + w / 2} ${pad + hh / 2}) translate(${pad} ${pad + 40 * s})` },
-        h("path", { d: frame, fill: "rgba(0,0,0,0.35)", filter: "url(#phone-shadow)" })),
+      h("path", { d: frame, transform: `translate(${pad} ${pad + 40 * s})`, fill: "rgba(0,0,0,0.35)", filter: "url(#phone-shadow)" }),
     ));
-  // The bezel is an SVG path; the capture is a Satori image clipped with the screen path (Satori
-  // writes CSS clip-path as an SVG clipPath). An <image> inside an inline SVG does not render.
-  const body = abs({ left, top, width: w, height: hh, transform: rotate ? `rotate(${rotate}deg)` : undefined },
+  const body = abs({ left, top, width: w, height: hh },
     h("svg", { width: w, height: hh, viewBox: `0 0 ${w} ${hh}`, style: { position: "absolute", left: 0, top: 0 } }, h("path", { d: frame, fill: BEZEL })),
     h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { position: "absolute", left: bezel, top: bezel, clipPath: `path("${squirclePath(screenW, screenH, radius)}")` } }),
-    outline);
+  );
   return [shadow, body];
 }
 
@@ -154,85 +112,42 @@ function calloutCard({ capture, region, left, top, width, label, s, labelSize })
   );
 }
 
+const cardHeight = (capture, region, width) => width * (region[3] / region[2]) * (capture.height / capture.width);
+
 function capturePanel({ panel, width, height, kind, captures, tone: t, markPath }) {
   const s = width / 1320;
   const L = LAYOUT[kind];
-  const layout = panel.layout || "phone";
-  const P = PLACE[layout];
-  if (!P) throw new Error(`panels: ${panel.slug}: layout ${layout} needs a capture-free panel`);
-  const scene = SCENES[panel.slug] ?? {};
   const capture = captures.get(panel.slug);
-  const screenW = L.screen * P.scale * s;
+  const bezel = L.bezel * s;
+  const screenW = L.screen * s;
   const screenH = screenW * (capture.height / capture.width);
-  const frameW = screenW + 2 * L.bezel * s;
-  const frameH = screenH + 2 * L.bezel * s;
-  const frameLeft = (width - frameW) / 2 + P.dx * s;
-  const frameTop = (L.frameTop + P.top) * s;
-  const centre = [frameLeft + frameW / 2, frameTop + frameH / 2];
-  const parts = [];
-  // Vertical spans the callout card takes, so the people do not cover it.
-  const taken = [];
+  const frameW = screenW + 2 * bezel;
+  const frameLeft = (width - frameW) / 2;
+  const frameTop = L.frameTop * s;
+  const parts = phone({ capture, left: frameLeft, top: frameTop, screenW, bezel, s });
 
-  if (layout === "two-phones") {
-    const back = captures.get(scene.second);
-    const backW = screenW * 0.86;
-    parts.push(...phone({ capture: back, left: frameLeft - 330 * s, top: frameTop - 60 * s, screenW: backW, L, s, rotate: -7 }));
+  const region = SCENES[panel.slug]?.region;
+  if (panel.callout && region) {
+    // The card is a little wider than the phone and stays inside the panel. It sits over the lower
+    // half of the visible phone, unless the region it enlarges is there: then it sits above it.
+    const margin = L.margin * s;
+    const labelSize = L.badge * 1.15 * s;
+    const cardW = Math.min(frameW + 100 * s, width - 2 * margin);
+    const cardH = cardHeight(capture, region, cardW);
+    const cardLeft = (width - cardW) / 2;
+    const visibleBottom = Math.min(frameTop + screenH + 2 * bezel, height);
+    const lowerMid = (frameTop + (visibleBottom - frameTop) * 0.5 + visibleBottom) / 2;
+    const regionTop = frameTop + bezel + region[1] * screenH;
+    const regionBottom = regionTop + region[3] * screenH;
+    let cardTop = lowerMid - cardH / 2;
+    if (cardTop < regionBottom + 40 * s && cardTop + cardH > regionTop - 40 * s) cardTop = regionTop - 60 * s - cardH;
+    cardTop = Math.max(frameTop + labelSize, Math.min(height - margin - cardH, cardTop));
+    parts.push(calloutCard({ capture, region, left: cardLeft, top: cardTop, width: cardW, label: panel.callout, s, labelSize }));
   }
-  parts.push(...phone({ capture, left: frameLeft, top: frameTop, screenW, L, s, rotate: P.rotate, region: scene.region }));
-
-  if (scene.region) {
-    // The card is wider than the region on the screen: the hero card is the largest object on the
-    // panel. It sits beside the region (above it in the lower half, below it in the upper half), on
-    // the side away from the phone, with a thin connector to the outlined region.
-    const [rx, ry, rw, rh] = scene.region;
-    const bezel = L.bezel * s;
-    const regionW = rw * screenW;
-    const regionH = rh * screenH;
-    const cardW = layout === "hero" ? width - 2 * 56 * s : Math.min(width - 2 * 64 * s, Math.max(620 * s, regionW * 1.4));
-    const cardH = regionH * (cardW / regionW);
-    const anchorTop = turn([frameLeft + bezel + (rx + rw / 2) * screenW, frameTop + bezel + ry * screenH - 8 * s], centre, P.rotate);
-    const anchorBottom = turn([frameLeft + bezel + (rx + rw / 2) * screenW, frameTop + bezel + (ry + rh) * screenH + 8 * s], centre, P.rotate);
-    const visibleMid = (frameTop + height) / 2;
-    const above = anchorTop[1] > visibleMid;
-    const gap = 90 * s;
-    let cardTop = above ? anchorTop[1] - gap - cardH : anchorBottom[1] + gap;
-    cardTop = Math.max(frameTop - 40 * s, Math.min(height - cardH - 48 * s, cardTop));
-    const cardLeft = Math.max(56 * s, Math.min(width - cardW - 56 * s, (width - cardW) / 2 - P.dx * 0.8 * s));
-    const anchor = above ? anchorTop : anchorBottom;
-    const cardEdge = [Math.max(cardLeft + 60 * s, Math.min(cardLeft + cardW - 60 * s, anchor[0])), above ? cardTop + cardH : cardTop];
-    parts.push(abs({ left: 0, top: 0, width, height },
-      h("svg", { width, height, viewBox: `0 0 ${width} ${height}` },
-        // An açaí core with a white halo, so the line shows on the light screen and on the backdrop.
-        h("line", { x1: anchor[0], y1: anchor[1], x2: cardEdge[0], y2: cardEdge[1], stroke: WHITE, "stroke-width": 13 * s, "stroke-linecap": "round" }),
-        h("line", { x1: anchor[0], y1: anchor[1], x2: cardEdge[0], y2: cardEdge[1], stroke: CHIP_INK, "stroke-width": 5 * s, "stroke-linecap": "round" }),
-        h("circle", { cx: anchor[0], cy: anchor[1], r: 16 * s, fill: WHITE }),
-        h("circle", { cx: anchor[0], cy: anchor[1], r: 10 * s, fill: CHIP_INK }),
-      )));
-    parts.push(calloutCard({ capture, region: scene.region, left: cardLeft, top: cardTop, width: cardW, label: panel.callout, s, labelSize: L.badge * 1.15 * s }));
-    taken.push([cardTop - L.badge * 1.2 * s, cardTop + cardH]);
-  }
-
-  // People at the frame edge, on the side the phone leaves free.
-  (scene.people ?? []).forEach((id, i) => {
-    const p = person(id);
-    const d = L.person * s;
-    const onLeft = P.dx >= 0;
-    const x = onLeft ? Math.max(40 * s, frameLeft - d * 0.55) : Math.min(width - d - 40 * s, frameLeft + frameW - d * 0.45);
-    // Photo with its ring, the gap and the name chip.
-    const blockH = d + 14 * s + 12 * s + L.badge * 1.1 * 1.64 * s + 24 * s;
-    const free = (y) => y + blockH < height - 40 * s && taken.every(([a, b]) => y + blockH < a - 20 * s || y > b + 20 * s);
-    const y = [frameTop + 140 * s, ...taken.flatMap(([a, b]) => [b + 40 * s, a - blockH - 40 * s]), frameTop + frameH * 0.55]
-      .filter((v) => v >= frameTop).find(free) ?? frameTop + 140 * s;
-    taken.push([y, y + blockH]);
-    parts.push(abs({ left: x, top: y, flexDirection: "column", alignItems: onLeft ? "flex-start" : "flex-end", gap: 12 * s },
-      h("img", { src: p.photo, width: d, height: d, style: { borderRadius: d / 2, border: `${7 * s}px solid ${WHITE}`, objectFit: "cover", boxShadow: `0 ${16 * s}px ${40 * s}px rgba(0,0,0,0.3)` } }),
-      chip(p.name, L.badge * 1.1 * s, s),
-    ));
-  });
 
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
     ...parts,
-    abs({ left: L.side * s, top: L.top * s, width: width - 2 * L.side * s }, copyBlock({ panel, L, s, t, markPath, hero: layout === "hero" })),
+    abs({ left: L.side * s, top: L.top * s, width: width - 2 * L.side * s }, copyBlock({ panel, L, s, t, markPath, hero: panel.layout === "hero" })),
   );
 }
 
@@ -255,13 +170,14 @@ function brazilMap({ size, s, t }) {
   const w = Math.max(...pts.map((p) => p[0]));
   const hh = Math.max(...pts.map((p) => p[1]));
   const k = size / Math.max(w, hh);
-  const d = `M${pts.map(([x, y]) => `${(x * k).toFixed(1)} ${(y * k).toFixed(1)}`).join("L")}Z`;
-  const [px, py] = project(SAO_PAULO).map((v) => v * k);
+  const pad = 12 * s; // room for the stroke, so the outline is not cut at the edge
+  const d = `M${pts.map(([x, y]) => `${(x * k + pad).toFixed(1)} ${(y * k + pad).toFixed(1)}`).join("L")}Z`;
+  const [px, py] = project(SAO_PAULO).map((v) => v * k + pad);
   const server = 150 * s;
   // Satori passes an <svg> through to resvg; the server glyph is plain markup inside it.
-  return h("svg", { width: w * k, height: hh * k, viewBox: `0 0 ${w * k} ${hh * k}`, style: { overflow: "visible" } },
-    h("path", { d, fill: "rgba(255,255,255,0.12)", stroke: WHITE, "stroke-width": 6 * s, "stroke-linejoin": "round" }),
-    ...[1, 2, 3].map((n) => h("circle", { cx: px, cy: py, r: (60 + n * 70) * s, fill: "none", stroke: WHITE, "stroke-opacity": 0.5 / n, "stroke-width": 4 * s })),
+  return h("svg", { width: w * k + 2 * pad, height: hh * k + 2 * pad, viewBox: `0 0 ${w * k + 2 * pad} ${hh * k + 2 * pad}` },
+    h("path", { d, fill: t.blobs[0], stroke: WHITE, "stroke-width": 6 * s, "stroke-linejoin": "round" }),
+    ...[1, 2, 3].map((n) => h("circle", { cx: px, cy: py, r: (60 + n * 70) * s, fill: "none", stroke: WHITE, "stroke-opacity": 0.6 / n, "stroke-width": 4 * s })),
     h("rect", { x: px - server / 2, y: py - server * 0.75, width: server, height: server * 0.98, rx: 22 * s, fill: WHITE }),
     ...[0, 1, 2].flatMap((i) => [
       h("rect", { x: px - server / 2 + 14 * s, y: py - server * 0.62 + i * 40 * s, width: server - 28 * s, height: 30 * s, rx: 8 * s, fill: CHIP_INK }),
@@ -273,10 +189,12 @@ function brazilMap({ size, s, t }) {
 function textPanel({ panel, width, height, kind, tone: t, markPath }) {
   const s = width / 1320;
   const L = LAYOUT[kind];
-  const mapSize = Math.min(width - 2 * L.side * s, height * 0.5);
+  // The whole outline, centred in the space under the copy (from the phone top line down).
+  const top = L.frameTop * s;
+  const mapSize = Math.min(width - 2 * L.side * s, (height - top) * 0.8);
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
     abs({ left: L.side * s, top: L.top * s, width: width - 2 * L.side * s }, copyBlock({ panel, L, s, t, markPath })),
-    abs({ left: (width - mapSize) / 2, top: height - mapSize - (kind === "tablet" ? 70 : 220) * s, width: mapSize, height: mapSize, justifyContent: "center" }, brazilMap({ size: mapSize, s, t })),
+    abs({ left: 0, top, width, height: height - top, alignItems: "center", justifyContent: "center" }, brazilMap({ size: mapSize, s, t })),
   );
 }
 
