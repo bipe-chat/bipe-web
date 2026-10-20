@@ -9,7 +9,7 @@ import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
-import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OgCardsPage, OrganisationsPage, BrandPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OgCardsPage, OrganisationsPage, BrandPage, CastPage, StorePanelsPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -176,6 +176,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/elenco/", alt: null, lang: "pt", noindex: true,
   title: "Elenco e cenas (interno) · Bipe", description: "Pessoas de exemplo e cenas das simulações do site.",
   body: () => <CastPage />,
+}, {
+  // Panels from scripts/store-images.mjs (bipe#455), when the app repos are cloned next to this one.
+  path: "/elenco/loja/", alt: null, lang: "pt", noindex: true,
+  title: "Imagens da loja (interno) · Bipe", description: "Os painéis da App Store e do Google Play, por aparelho e idioma.",
+  body: () => <StorePanelsPage />,
 }, {
   // Target of the Caddy rewrite for /@handle.
   path: "/perfil/", alt: null, lang: "pt", noindex: true,

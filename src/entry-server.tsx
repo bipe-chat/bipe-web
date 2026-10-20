@@ -10,6 +10,7 @@ import { bipeOn, tierPrice } from "./pages";
 
 export { routes, ogImageName };
 export { analyticsTags } from "./analytics";
+export { storeSets } from "./store";
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
 
 /** The section label for a route's share card footer: the same words as the site nav (src/nav.ts). */

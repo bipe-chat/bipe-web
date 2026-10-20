@@ -2,7 +2,7 @@
 // prerendered index.html and index.md per route, plus llms.txt, sitemap.xml and robots.txt.
 // dist/ is copied over the Caddy site directory by scripts/deploy.sh; pages it does not own
 // (.well-known, icone.png) stay in bipe-infra.
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { build } from "vite";
@@ -119,6 +119,12 @@ for (const [from, to] of Object.entries(ssr.redirects)) {
   if (!ssr.routes.some((r) => r.path === to)) throw new Error(`redirect ${from} points to missing page ${to}`);
   mkdirSync(join(dist, from), { recursive: true });
   writeFileSync(join(dist, from, "index.html"), `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${site}${to}"><meta http-equiv="refresh" content="0; url=${to}"><script>location.replace("${to}" + location.hash)</script><a href="${to}">${site}${to}</a>\n`);
+}
+
+// Store panels for /elenco/loja/ (scripts/store-images.mjs): the files each manifest lists.
+for (const set of ssr.storeSets) {
+  mkdirSync(join(dist, set.href), { recursive: true });
+  for (const e of set.exports) copyFileSync(join(root, "src", set.dir, e.file), join(dist, set.href, e.file));
 }
 
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
