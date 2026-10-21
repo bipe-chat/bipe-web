@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ORGANISATION_FORM_URL } from "../config";
 import { normalizeCnpj, type Lang } from "../shared";
 
@@ -29,6 +29,13 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
   const [kind, setKind] = useState<Kind | "">("");
   const [cnpjBad, setCnpjBad] = useState(false);
   const asks = kind !== "partner";
+  // The note replaces a tall form, so the page gets shorter under the reader. Bring the note into view and focus it.
+  const doneRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (state !== "done") return;
+    doneRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    doneRef.current?.focus({ preventScroll: true });
+  }, [state]);
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -60,7 +67,7 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
     }
   }
 
-  if (state === "done") return <p className="waitlist-done" role="status">{c.done}</p>;
+  if (state === "done") return <p ref={doneRef} tabIndex={-1} className="waitlist-done" role="status">{c.done}</p>;
   return (
     <form className="org-form" onSubmit={submit}>
       <label>{c.organisation}<input name="organisation" required maxLength={200} autoComplete="organization" /></label>
