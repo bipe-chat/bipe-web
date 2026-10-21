@@ -284,10 +284,7 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; margin-top: 32px; }
 .platform h2 { font-size: 26px; margin-bottom: 8px; }
 
-/* Brand board */
-.marks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
-.mark-board { display: flex; flex-direction: column; gap: 18px; }
-.mark-board .sizes { display: flex; align-items: flex-end; gap: 14px; color: var(--acai); flex-wrap: wrap; }
+/* Brand kit */
 .brand-kit { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; margin-top: 32px; }
 .brand-asset { margin: 0; display: flex; flex-direction: column; gap: 14px; }
 .brand-asset figcaption { display: flex; flex-direction: column; gap: 4px; }
@@ -297,7 +294,6 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .brand-colours { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px; margin-top: 16px; }
 .brand-colours .card { display: flex; flex-direction: column; gap: 6px; }
 .brand-colours .swatch { height: 72px; border-radius: 10px; margin-bottom: 8px; }
-.mark-board .dark { background: #101317; color: #D993D2; border-radius: 14px; padding: 14px; display: flex; gap: 14px; align-items: center; }
 
 /* Link landing pages (/@handle, /convite/<code>) */
 .invite-code { font-size: 22px; font-weight: 600; letter-spacing: 1px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; user-select: all; -webkit-user-select: all; }

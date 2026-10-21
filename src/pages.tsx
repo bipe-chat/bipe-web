@@ -1,6 +1,6 @@
 import { chrome } from "./copy";
 import { CodeList } from "./components/code";
-import { AppIcon, Mark, MARK, MARKS, Seal, Wordmark, type MarkId } from "./components/brand";
+import { AppIcon, Mark } from "./components/brand";
 import brandAssets from "./components/brand-assets.json";
 import { DownloadButtons, FeatureIcon, Icon, MoreLink, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
@@ -791,28 +791,6 @@ export function BrandKitPage({ lang }: { lang: Lang }) {
       </div>
       <h2 style={{ marginTop: 56 }}>{b.useTitle}</h2>
       <ul>{b.use.map((u) => <li key={u}>{u}</li>)}</ul>
-    </section>
-  );
-}
-
-/** Draft marks side by side, for picking one (artwork-brief.md acceptance checks). noindex. */
-export function BrandPage() {
-  return (
-    <section className="wrap section">
-      <h1>Marca: rascunhos</h1>
-      <p className="lede">Três direções do símbolo "balão com selo". A escolhida hoje é a <strong>{MARK.toUpperCase()}</strong>. Para trocar, mude <span className="mono">chosen</span> em <span className="mono">bipe-web/src/components/marks.json</span>.</p>
-      <div className="marks" style={{ marginTop: 32 }}>
-        {(Object.keys(MARKS) as MarkId[]).map((id) => (
-          <div className="card mark-board" key={id} style={id === MARK ? { outline: "2px solid var(--acai)" } : undefined}>
-            <strong className="display" style={{ fontSize: 28 }}>{id.toUpperCase()}</strong>
-            <div className="sizes">{[16, 24, 32, 48, 72].map((s) => <Mark id={id} size={s} key={s} />)}</div>
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>{[29, 60, 120].map((s) => <AppIcon id={id} size={s} key={s} />)}</div>
-            <Wordmark id={id} size={32} />
-            <div className="dark"><Mark id={id} size={32} /><span style={{ fontFamily: "var(--brand)", fontWeight: 900, fontSize: 28 }}>bipe</span></div>
-            <p style={{ margin: 0, display: "flex", gap: 6, alignItems: "center" }}>Ana Souza <Seal size={14} label="Verificado" /></p>
-          </div>
-        ))}
-      </div>
     </section>
   );
 }

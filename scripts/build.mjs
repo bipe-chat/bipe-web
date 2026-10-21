@@ -131,7 +131,7 @@ for (const set of ssr.storeSets) {
 
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
 writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
-writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /marca/\nDisallow: /elenco/\nDisallow: /cartoes/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
+writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /elenco/\nDisallow: /cartoes/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
 rmSync(join(dist, ".vite"), { recursive: true, force: true });
 rmSync(ssrOut, { recursive: true, force: true });
 checkCodeLinks(dist, JSON.parse(readFileSync(join(root, "../bipe-shared/product/distribution.json"), "utf8")));
