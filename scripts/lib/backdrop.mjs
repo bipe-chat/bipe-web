@@ -9,7 +9,7 @@
 //   pattern  mesh plus the Bipe mark at large scale, cropped, tone on tone
 //
 // Ramps come only from bipe-tokens: açaí is `acai` in tokens/theme-light.json, and the expressive
-// ramps (pitanga, jabuticaba, jenipapo) are tokens/bipe-expressive.json. The expressive ramps are for
+// ramps (pitanga, caju, jabuticaba, jenipapo) are tokens/bipe-expressive.json. The expressive ramps are for
 // marketing backgrounds only: never text, borders or trust states (bipe-tokens BIPE.md, change 6).
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 
 const tokens = join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-tokens/tokens");
 const values = (family) => Object.fromEntries(Object.entries(family).map(([step, t]) => [step, t.value.toUpperCase()]));
-export const ACCENTS = ["pitanga", "jabuticaba", "jenipapo"];
+export const ACCENTS = ["pitanga", "caju", "jabuticaba", "jenipapo"];
 export const RAMPS = {
   acai: values(JSON.parse(readFileSync(join(tokens, "theme-light.json"), "utf8")).color.acai),
   ...Object.fromEntries(Object.entries(JSON.parse(readFileSync(join(tokens, "bipe-expressive.json"), "utf8")).color.expressive).map(([k, v]) => [k, values(v)])),
@@ -42,6 +42,8 @@ export function tone(ramp, accent = ramp) {
     base: r[1100],
     blobs: [r[900], a[1000], r[1300]],
     mark: [r[900], r[1300]],
+    // The brand mark behind every panel and card: one step lighter than the base.
+    brandMark: r[1000],
     ink: WHITE,
     sub: "rgba(255,255,255,0.88)",
     highlight: accent === ramp ? r[500] : a[500],
@@ -74,8 +76,8 @@ const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - 
  * The lowest contrast of the ink and the highlight against any colour the backdrop can show: the
  * base, each blob at full blob opacity, each mark, each with the white grain on top.
  */
-export function toneContrast(t, texture) {
-  const fields = [t.base, ...t.blobs.map((b) => mixRgb(hexRgb(t.base), hexRgb(b), BLOB_OPACITY)), ...(texture === "pattern" ? t.mark : [])]
+export function toneContrast(t, texture, mark = false) {
+  const fields = [t.base, ...t.blobs.map((b) => mixRgb(hexRgb(t.base), hexRgb(b), BLOB_OPACITY)), ...(texture === "pattern" ? t.mark : []), ...(mark ? [t.brandMark] : [])]
     .map((c) => (typeof c === "string" ? hexRgb(c) : c))
     .map((c) => (texture === "grain" ? mixRgb(c, [255, 255, 255], GRAIN_OPACITY) : c));
   const min = (fg) => Math.min(...fields.map((f) => contrast(hexRgb(fg), f)));
@@ -83,16 +85,16 @@ export function toneContrast(t, texture) {
 }
 
 /** Throws when the headline would fall below AA: 4.5:1 for the white ink, 3:1 for the large highlight. */
-export function checkTone(t, texture) {
-  const c = toneContrast(t, texture);
+export function checkTone(t, texture, mark = false) {
+  const c = toneContrast(t, texture, mark);
   if (c.ink < 4.5 || c.highlight < 3) throw new Error(`backdrop ${t.name}/${texture}: contrast ink ${c.ink.toFixed(2)}, highlight ${c.highlight.toFixed(2)}; AA needs 4.5 and 3`);
   return c;
 }
 
 /** SVG markup for the backdrop of a width x height image. `variant` picks the blob and mark places. */
-export function backdropSvg({ width, height, texture = "grain", tone: t, markPath, variant = 0 }) {
+export function backdropSvg({ width, height, texture = "grain", tone: t, markPath, variant = 0, mark = false }) {
   if (!TEXTURES.includes(texture)) throw new Error(`backdrop: unknown texture ${texture}`);
-  checkTone(t, texture);
+  checkTone(t, texture, mark);
   const side = Math.max(width, height);
   const places = BLOB_PLACES[variant % BLOB_PLACES.length];
   const defs = [];
@@ -101,6 +103,12 @@ export function backdropSvg({ width, height, texture = "grain", tone: t, markPat
     defs.push(`<radialGradient id="bd_blob${i}"><stop offset="0" stop-color="${t.blobs[i]}" stop-opacity="${BLOB_OPACITY}"/><stop offset="1" stop-color="${t.blobs[i]}" stop-opacity="0"/></radialGradient>`);
     layers.push(`<circle cx="${x * width}" cy="${y * height}" r="${r * side}" fill="url(#bd_blob${i})"/>`);
   });
+  if (mark) {
+    // The Bipe bubble mark, large and tone on tone, at the same place and scale on every image:
+    // 1.15 times the shorter side, from 30% across and 30% down, so the panel edge crops it.
+    const size = 1.15 * Math.min(width, height);
+    layers.push(`<path transform="translate(${0.3 * width} ${0.3 * height}) scale(${size / 64})" d="${markPath}" fill="${t.brandMark}"/>`);
+  }
   if (texture === "pattern") {
     MARK_PLACES[variant % MARK_PLACES.length].forEach(([x, y, size], i) => {
       const scale = (size * side) / 64;
@@ -138,8 +146,7 @@ export function brandTone(i) {
 }
 
 /**
- * Default chosen (bipe#463): grain on the cards and most panels, tones from brandTone(). A panel
- * layout may take another texture: the mark pattern behind the text panel, which has no phone, and
- * the plain mesh behind the hero, where the callout is already the busiest object.
+ * Default chosen (bipe#463): grain on every panel and card, tones from brandTone(), and the large
+ * tone-on-tone brand mark behind the content (MZ: "bring back the logo shape on all").
  */
-export const BRAND = { texture: "grain", tone: brandTone, byLayout: { text: "pattern", hero: "mesh" } };
+export const BRAND = { texture: "grain", tone: brandTone, mark: true };
