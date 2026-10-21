@@ -1,7 +1,7 @@
 // Renders the App Store, Google Play and Instagram images (bipe-chat/bipe#455, #463, #465): one captioned panel per
 // row of the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures that
-// bipe-ios/appstore/capture.sh makes. The panel parts (badge, headline, phone, callout, people, the
-// Brazil map) are in scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
+// bipe-ios/appstore/capture.sh makes. The panel parts (title, sub, phone with status bar) are in
+// scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
 // link-preview cards. Satori lays the panel out and resvg rasterises it, as in scripts/og.mjs, so the
 // output is the same on every machine and needs no browser.
 //
@@ -19,7 +19,7 @@
 //   --ios         bipe-ios clone; gives devices.mjs and the captures (default ../bipe-ios)
 //   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default <ios>/appstore/raw)
 //   --appearance  light | dark (default light)
-//   --texture     mesh | grain | pattern for every panel (default: BRAND.byLayout, else BRAND.texture)
+//   --texture     mesh | grain | pattern for every panel (default: BRAND.texture)
 //   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
 //   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots
 //                 for Play, out/social for Instagram, which is gitignored and never a store folder)
@@ -159,7 +159,7 @@ export async function renderPanel(node, width, height, backdrop) {
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
 export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle }) {
   const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
-  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index });
+  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark });
 }
 
 /** A capture file as the panels use it. Throws on a wrong size or a blank image. */
@@ -173,8 +173,8 @@ export function loadCapture(file, captureDev) {
   return { dataUrl, width: info.width, height: info.height, radius: captureDev.screenRadius, file };
 }
 
-/** The panel the feature graphic and panel 1 lead with: the hero, else the first panel. */
-const heroPanel = (panels) => panels.find((p) => p.layout === "hero") ?? panels[0];
+/** The panel the feature graphic shows: panel 1. */
+const heroPanel = (panels) => panels[0];
 
 // --- Run -----------------------------------------------------------------------------------------
 
@@ -197,7 +197,7 @@ async function main() {
   const locales = opt.locale ? [opt.locale] : LOCALES;
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
   const markPath = marks.paths[marks.chosen];
-  const texture = opt.texture; // unset: BRAND.byLayout, then BRAND.texture
+  const texture = opt.texture ?? BRAND.texture;
   const toneFor = opt.accent ? (i) => (i % 2 ? tone(opt.accent, "acai") : tone("acai", opt.accent)) : BRAND.tone;
 
   for (const locale of locales) {
@@ -233,8 +233,8 @@ async function main() {
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.png`;
-      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture: texture ?? BRAND.byLayout[panel.layout] ?? BRAND.texture, index: i, subtitle }));
-      exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, layout: panel.layout || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
+      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle }));
+      exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
       console.log(`${dev.key} ${locale} ${file}`);
     }
     const manifest = { device: dev.key, label: dev.label, platform: dev.platform, ascDeviceType: dev.ascDeviceType ?? null, locale, appearance, width, height, exports };

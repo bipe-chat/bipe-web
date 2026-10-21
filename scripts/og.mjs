@@ -64,6 +64,6 @@ export { h };
 
 /** Writes the card PNG to outPath. */
 export async function writeOgCard({ outPath, markPath, title, description, family, texture = BRAND.texture, tone = BRAND.tone(0) }) {
-  const svg = compose(await satori(card({ markPath, title, description, family }), { ...OG_SIZE, fonts }), backdropSvg({ ...OG_SIZE, texture, tone, markPath }));
+  const svg = compose(await satori(card({ markPath, title, description, family }), { ...OG_SIZE, fonts }), backdropSvg({ ...OG_SIZE, texture, tone, markPath, mark: BRAND.mark }));
   writeFileSync(outPath, new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width }, background: tone.base }).render().asPng());
 }

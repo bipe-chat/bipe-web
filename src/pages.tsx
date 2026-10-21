@@ -884,7 +884,7 @@ export function StorePanelsPage() {
           <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 12 }}>
             {s.exports.map((e) => (
               <figure key={e.file} style={{ margin: 0, flex: `0 0 ${s.width > s.height ? 420 : 200}px` }}>
-                <a href={s.href + e.file}><img src={s.href + e.file} alt={e.headline.replace(/\*/g, "")} width={s.width} height={s.height} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block", outline: e.order <= 3 ? "3px solid var(--acai)" : "none", outlineOffset: 3 }} /></a>
+                <a href={s.href + e.file}><img src={s.href + e.file} alt={e.title} width={s.width} height={s.height} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block", outline: e.order <= 3 ? "3px solid var(--acai)" : "none", outlineOffset: 3 }} /></a>
                 <figcaption className="small mono muted" style={{ marginTop: 8 }}>{e.file}</figcaption>
               </figure>
             ))}
