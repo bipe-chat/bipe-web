@@ -1,5 +1,5 @@
 # Builds the site on every pull request: typecheck, prerender, code links. The main ruleset requires it.
-# A cross-repo change uses the bipe-shared and bipe-tokens branches of the same name when they exist, else main.
+# A cross-repo change uses the bipe-shared, bipe-tokens and bipe-ios branches of the same name when they exist, else main.
 name: Build
 
 on:
@@ -54,6 +54,25 @@ jobs:
           repository: bipe-chat/compound-design-tokens
           ref: ${{ steps.tokens.outputs.ref }}
           path: bipe-tokens
+          persist-credentials: false
+      # The App Store captures for the store panels and social posts on /sobre/marca/ (scripts/brand-images.mjs).
+      - name: Pick the bipe-ios branch
+        id: ios
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          ref=main
+          if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads https://github.com/bipe-chat/bipe-ios.git "$BRANCH" > /dev/null; then
+            ref="$BRANCH"
+          fi
+          echo "bipe-ios: $ref"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-ios
+          ref: ${{ steps.ios.outputs.ref }}
+          path: bipe-ios
+          sparse-checkout: appstore
           persist-credentials: false
       - uses: pnpm/action-setup@v4
         with:

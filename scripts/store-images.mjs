@@ -187,8 +187,8 @@ const heroPanel = (panels) => panels[0];
 
 // --- Run -----------------------------------------------------------------------------------------
 
-async function main() {
-  const opt = args(process.argv.slice(2));
+/** Renders one device set per locale; `opt` takes the CLI options above. Returns the manifests it wrote. */
+export async function renderSet(opt) {
   const rel = (p) => resolve(root, p);
   const shared = rel(opt.shared ?? "../bipe-shared");
   const { parseAppstore, LOCALES } = await import(pathToFileURL(join(shared, "tools/lib/appstore.mjs")).href);
@@ -209,6 +209,7 @@ async function main() {
   const texture = opt.texture ?? BRAND.texture;
   const toneFor = opt.accent ? (i) => (i % 2 ? tone(opt.accent, "acai") : tone("acai", opt.accent)) : BRAND.tone;
 
+  const written = [];
   for (const locale of locales) {
     const panels = listing.screenshots[locale];
     if (!panels?.length) throw new Error(`appstore.md has no screenshot table for ${locale}`);
@@ -247,15 +248,17 @@ async function main() {
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.${ext}`;
       writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle, format }));
       exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
-      console.log(`${dev.key} ${locale} ${file}`);
+      if (!opt.quiet) console.log(`${dev.key} ${locale} ${file}`);
     }
     const manifest = { device: dev.key, label: dev.label, platform: dev.platform, ascDeviceType: dev.ascDeviceType ?? null, locale, appearance, width, height, exports };
     writeFileSync(join(dir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+    written.push(manifest);
   }
+  return written;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  main().catch((e) => {
+  renderSet(args(process.argv.slice(2))).catch((e) => {
     console.error(e.message);
     process.exit(1);
   });
