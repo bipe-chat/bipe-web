@@ -17,10 +17,15 @@ import { fileURLToPath } from "node:url";
 const tokens = join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-tokens/tokens");
 const values = (family) => Object.fromEntries(Object.entries(family).map(([step, t]) => [step, t.value.toUpperCase()]));
 export const ACCENTS = ["pitanga", "caju", "jabuticaba", "jenipapo"];
+const light = JSON.parse(readFileSync(join(tokens, "theme-light.json"), "utf8")).color;
 export const RAMPS = {
-  acai: values(JSON.parse(readFileSync(join(tokens, "theme-light.json"), "utf8")).color.acai),
+  acai: values(light.acai),
   ...Object.fromEntries(Object.entries(JSON.parse(readFileSync(join(tokens, "bipe-expressive.json"), "utf8")).color.expressive).map(([k, v]) => [k, values(v)])),
 };
+
+// The caution amber of the app's scam warning (yellow in tokens/theme-light.json). The store callouts
+// draw the warning with it, so the enlarged card has the colours of the card in the phone.
+export const CAUTION = values(light.yellow);
 
 export const TEXTURES = ["mesh", "pattern"];
 const WHITE = "#FFFFFF";
