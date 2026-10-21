@@ -281,10 +281,12 @@ export function brazilNetworkSvg({ width, height, seed = 1, palette = {}, box = 
   }).join("");
 
   // Cities: a soft halo, then a bright core. Tier 0 (São Paulo) is the largest and whitest.
+  // Every capital reads as a lit city at 240 px (MZ: "make all capitals visibly lit"). Tier 2 has a
+  // core about twice the largest mesh node, at full brightness, and its own halo; tier 1 stays above it.
   const CITY = [
     { core: 0.0095, halo: 0.09, haloO: 0.85, fill: P.core },
-    { core: 0.006, halo: 0.05, haloO: 0.6, fill: P.city },
-    { core: 0.0038, halo: 0.026, haloO: 0.4, fill: P.edge },
+    { core: 0.0075, halo: 0.062, haloO: 0.75, fill: P.city },
+    { core: 0.0052, halo: 0.05, haloO: 0.65, fill: P.city },
   ];
   const halos = cities.map((i) => { const c = CITY[kind[i]]; return `<circle cx="${f(pts[i][0])}" cy="${f(pts[i][1])}" r="${f(S * c.halo)}" fill="url(#bn-halo)" opacity="${c.haloO}"/>`; }).join("");
   const cores = cities.map((i) => { const c = CITY[kind[i]]; return `<circle cx="${f(pts[i][0])}" cy="${f(pts[i][1])}" r="${f(S * c.core)}" fill="${c.fill}"/>`; }).join("");
