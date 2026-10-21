@@ -13,14 +13,16 @@ export const BRAND_SETS = {
   posts: { listing: "social/posts.md", devices: ["ig-post", "ig-story", "ig-square"] },
 };
 const SHOWN = new Set(["built", "testing", "policy"]);
+// The store has pt-BR captures only. Add a locale here when bipe-ios/appstore/raw has its captures.
+const LOCALES = ["pt-BR"];
 
 export async function writeBrandImages(root, outDir) {
   rmSync(outDir, { recursive: true, force: true });
   const product = JSON.parse(readFileSync(join(root, "../bipe-shared/product/product.json"), "utf8"));
   const status = new Map(product.features.map((f) => [f.id, Object.values(f.status ?? {})]));
   for (const [group, { listing, devices }] of Object.entries(BRAND_SETS)) {
-    for (const device of devices) {
-      const manifests = await renderSet({ device, out: join(outDir, group), quiet: true, ...(listing && { listing }) });
+    for (const device of devices) for (const locale of LOCALES) {
+      const manifests = await renderSet({ device, locale, out: join(outDir, group), quiet: true, ...(listing && { listing }) });
       // Public images claim only features that ship (bipe-shared/product/appstore.md rule).
       for (const m of manifests) for (const e of m.exports) {
         if (e.feature !== "-" && !status.get(e.feature)?.some((s) => SHOWN.has(s))) throw new Error(`brand-images: ${group} ${device} ${e.file} shows feature ${e.feature}, which does not ship`);
