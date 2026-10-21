@@ -9,7 +9,7 @@
 //   pattern  mesh plus the Bipe mark at large scale, cropped, tone on tone
 //
 // Ramps come only from bipe-tokens: açaí is `acai` in tokens/theme-light.json, and the expressive
-// ramps (pitanga, jabuticaba, jenipapo) are tokens/bipe-expressive.json. The expressive ramps are for
+// ramps (pitanga, caju, jabuticaba, jenipapo) are tokens/bipe-expressive.json. The expressive ramps are for
 // marketing backgrounds only: never text, borders or trust states (bipe-tokens BIPE.md, change 6).
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 
 const tokens = join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-tokens/tokens");
 const values = (family) => Object.fromEntries(Object.entries(family).map(([step, t]) => [step, t.value.toUpperCase()]));
-export const ACCENTS = ["pitanga", "jabuticaba", "jenipapo"];
+export const ACCENTS = ["pitanga", "caju", "jabuticaba", "jenipapo"];
 export const RAMPS = {
   acai: values(JSON.parse(readFileSync(join(tokens, "theme-light.json"), "utf8")).color.acai),
   ...Object.fromEntries(Object.entries(JSON.parse(readFileSync(join(tokens, "bipe-expressive.json"), "utf8")).color.expressive).map(([k, v]) => [k, values(v)])),

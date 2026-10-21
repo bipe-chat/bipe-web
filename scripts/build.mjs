@@ -51,7 +51,7 @@ const cardTitle = (title) => title.replace(/^Bipe · /, "").replace(/ · Bipe$/,
 async function ogImageTags(route) {
   const name = ssr.ogImageName(route);
   // The card tone rotates by route, as the store panels rotate by panel (scripts/lib/backdrop.mjs).
-  await writeOgCard({ outPath: join(dist, "og", `${name}.png`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, family: ssr.ogFamily(route), tone: brandTone(ssr.routes.indexOf(route)) });
+  await writeOgCard({ outPath: join(dist, "og", `${name}.png`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, illustration: ssr.ogIllustration(route), tone: brandTone(ssr.routes.indexOf(route)) });
   return [
     `<meta property="og:image" content="${site}/og/${name}.png">`,
     '<meta property="og:image:type" content="image/png">',

@@ -10,7 +10,8 @@
 //   pnpm store:images --device ig-story --locale pt-BR --listing social/posts.md
 //
 // Options (paths are relative to bipe-web):
-//   --device      iphone69 | ipad13 | play-phone | play-feature | ig-post | ig-story | ig-square (default iphone69)
+//   --device      iphone69 | play-phone | play-feature | ig-post | ig-story | ig-square (default iphone69).
+//                 No iPad: the store set is iPhone and Play only (bipe#419).
 //   --locale      pt-BR | en-US (default: every locale in appstore.md)
 //   --shared      bipe-shared clone; gives the parser and the listing (default ../bipe-shared)
 //   --listing     the listing file (default <shared>/product/appstore.md). Any file with a `## Screenshots`
@@ -34,7 +35,8 @@ import { deflateSync, crc32 } from "node:zlib";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { fonts } from "./og.mjs";
-import { captureSlugs, panelNode, shotOf } from "./lib/panels.mjs";
+import { captureSlugs, illustrationBox, panelNode, shotOf } from "./lib/panels.mjs";
+import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
 import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -147,7 +149,8 @@ function isBlank(dataUrl, width, height) {
  */
 export async function renderPanel(node, width, height, backdrop) {
   let svg = await satori(node, { width, height, fonts });
-  if (backdrop) svg = compose(svg, backdropSvg({ width, height, ...backdrop }));
+  if (backdrop?.svg) svg = compose(svg, backdrop.svg);
+  else if (backdrop) svg = compose(svg, backdropSvg({ width, height, ...backdrop }));
   const img = new Resvg(svg, { fitTo: { mode: "width", value: width }, background: backdrop?.tone.base ?? "#000000" }).render();
   if (img.width !== width || img.height !== height) throw new Error(`rendered ${img.width}x${img.height}, expected ${width}x${height}`);
   const png = encodeRgbPng(img.pixels, width, height);
@@ -159,6 +162,10 @@ export async function renderPanel(node, width, height, backdrop) {
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
 export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle }) {
   const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
+  // A panel with no capture shows the Brazil network on its own jabuticaba field, with no brand
+  // mark behind it (every such panel is about data in Brazil: dados-no-brasil, social text posts).
+  if (panel.feature === "-" && dev.kind !== "feature")
+    return renderPanel(node, dev.width, dev.height, { svg: brazilNetworkSvg({ width: dev.width, height: dev.height, box: illustrationBox(dev) }), tone: t });
   return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark });
 }
 

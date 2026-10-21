@@ -15,9 +15,9 @@ const INK = "#000000";
 
 /**
  * The region of a capture that the Play feature graphic shows larger, as fractions of the capture
- * (x, y, w, h). Matches the pt-BR captures of bipe-ios/appstore/capture.sh from 20 October 2026.
+ * (x, y, w, h): the second scam message with its warning, in the pt-BR capture of 20 October 2026, 21:58.
  */
-export const FEATURE_REGION = { "aviso-golpe": [0.04, 0.672, 0.92, 0.22] };
+export const FEATURE_REGION = { "aviso-golpe": [0.03, 0.578, 0.84, 0.21] };
 
 /** The capture slug of a panel: the `capture` column when set (social posts reuse store captures), else the slug. */
 export const shotOf = (panel) => panel.capture || panel.slug;
@@ -29,17 +29,19 @@ export const captureSlugs = (panel) => (panel.feature === "-" ? [] : [shotOf(pan
 // type has the same proportion on every device. `frameTop` is the same on every panel and leaves
 // room for a 1-line title and a 2-line sub. `frame` is the phone width with its bezel.
 const LAYOUT = {
-  phone: { top: 150, copy: 1100, title: 104, sub: 50, gap: 26, frameTop: 540, frame: 1120, bezel: 16, rim: 8, island: true },
+  // The sub is 60% of the title (MZ: the subtitle read like a caption). The phone is 1180 units
+  // wide so that its bottom bezel and bottom corners fall off the panel: the screen runs out of
+  // the bottom edge, about 180 units deep on every panel.
+  phone: { top: 150, copy: 1120, title: 104, sub: 62, gap: 24, frameTop: 560, frame: 1180, bezel: 16, rim: 8, island: true },
   // Play phone: 1080x1920 is shorter than the iPhone.
-  play: { top: 120, copy: 1100, title: 96, sub: 46, gap: 24, frameTop: 500, frame: 1000, bezel: 15, rim: 5, island: true },
+  play: { top: 120, copy: 1120, title: 96, sub: 58, gap: 22, frameTop: 520, frame: 1000, bezel: 15, rim: 6, island: true },
   // Instagram (bipe-chat/bipe#465), all 1080 wide. The story keeps text out of the bands the IG bars
   // cover: the top 250 px and the bottom 340 px (306 and 416 units). Only the phone runs into them.
-  post: { top: 120, copy: 1100, title: 96, sub: 44, gap: 22, frameTop: 470, frame: 900, bezel: 14, rim: 6, island: true },
-  square: { top: 100, copy: 1100, title: 88, sub: 40, gap: 20, frameTop: 420, frame: 820, bezel: 13, rim: 5, island: true },
-  story: { top: 330, copy: 1100, title: 100, sub: 46, gap: 24, frameTop: 720, frame: 960, bezel: 15, rim: 6, island: true },
-  // iPad: no Dynamic Island.
-  tablet: { top: 80, copy: 1100, title: 80, sub: 38, gap: 18, frameTop: 330, frame: 1100, bezel: 16, rim: 6, island: false },
+  post: { top: 120, copy: 1120, title: 96, sub: 58, gap: 22, frameTop: 510, frame: 900, bezel: 14, rim: 6, island: true },
+  square: { top: 100, copy: 1120, title: 88, sub: 53, gap: 20, frameTop: 450, frame: 820, bezel: 13, rim: 5, island: true },
+  story: { top: 330, copy: 1120, title: 100, sub: 60, gap: 24, frameTop: 780, frame: 960, bezel: 15, rim: 6, island: true },
 };
+// There is no iPad layout: the store set is iPhone and Play only (MZ, 20 October 2026; bipe#419).
 
 const abs = (style, ...children) => h("div", { style: { position: "absolute", display: "flex", ...style } }, ...children);
 
@@ -53,7 +55,7 @@ function brandRow(markPath, size) {
 function copyBlock({ panel, L, s, t }) {
   return h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: L.gap * s, textAlign: "center" } },
     h("div", { style: { display: "block", fontSize: L.title * s, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.06 } }, panel.title),
-    panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.3, color: t.sub } }, panel.sub) : null,
+    panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.25, color: t.sub } }, panel.sub) : null,
   );
 }
 
@@ -146,16 +148,24 @@ function capturePanel({ panel, width, height, kind, captures, tone: t }) {
 }
 
 /**
- * A panel with no capture (feature `-`, used by social/posts.md): the title and the sub, larger,
- * centred on the canvas over the backdrop and its brand mark. The store set has no such panel.
+ * A panel with no capture (feature `-`): the title and the sub at the same place as on the other
+ * panels. The Brazil network fills the space under them; store-images.mjs draws it as the backdrop
+ * of this panel, in the box that illustrationBox() gives.
  */
 function textPanel({ panel, width, height, kind, tone: t }) {
   const s = width / 1320;
   const L = LAYOUT[kind];
-  const big = { ...L, title: L.title * 1.25, sub: L.sub * 1.15 };
-  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito", alignItems: "center", justifyContent: "center" } },
-    h("div", { style: { display: "flex", width: L.copy * s, justifyContent: "center" } }, copyBlock({ panel, L: big, s, t })),
+  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
+    abs({ left: (width - L.copy * s) / 2, top: L.top * s, width: L.copy * s, justifyContent: "center" }, copyBlock({ panel, L, s, t })),
   );
+}
+
+/** Where the illustration of a panel with no capture goes: under the copy, from the phone top line down. */
+export function illustrationBox(dev) {
+  const L = LAYOUT[dev.kind];
+  const s = dev.width / 1320;
+  const top = L.frameTop * s;
+  return { x: dev.width * 0.05, y: top, w: dev.width * 0.9, h: dev.height - top - dev.height * 0.03 };
 }
 
 /** Play feature graphic: mark and wordmark with the store subtitle, and one region of panel 1. */
@@ -184,6 +194,7 @@ function featureGraphic({ panel, subtitle, width, height, captures, tone: t, mar
 /** The Satori node for one panel. `captures` maps slug to { dataUrl, width, height, radius }. */
 export function panelNode({ panel, dev, captures, tone: t, markPath, subtitle }) {
   const { width, height } = dev;
+  if (!LAYOUT[dev.kind] && dev.kind !== "feature") throw new Error(`panels: no layout for ${dev.key} (${dev.kind}); the store set is iPhone and Play only (bipe#419)`);
   if (dev.kind === "feature") return featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath });
   if (panel.feature === "-") return textPanel({ panel, width, height, kind: dev.kind, tone: t });
   return capturePanel({ panel, width, height, kind: dev.kind, captures, tone: t });

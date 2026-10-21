@@ -25,8 +25,8 @@ export type Route = {
   noAnalytics?: boolean;
   /** Name of the link-preview PNG under /og/ (scripts/og.mjs). Default: from the path. Every route gets a card. */
   ogCard?: string;
-  /** Card text when it differs from the page title and description, and the label in the card's footer. */
-  og?: { title?: string; description?: string; family?: string };
+  /** Card text when it differs from the page title and description. */
+  og?: { title?: string; description?: string };
   /** The page's own Markdown source. The .md twin is this text as is. */
   markdown?: string;
   /** schema.org objects for the head, built from absolute URLs (entry-server.tsx renderJsonLd). */
@@ -95,7 +95,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   {
     path: paths.organisations(lang), alt: paths.organisations(other(lang)), lang, section: "about",
     title: `${product.organisations[lang].nav} · Bipe`, description: product.organisations[lang].lede,
-    og: { title: product.organisations[lang].card.title, description: product.organisations[lang].card.line, family: product.organisations[lang].nav },
+    og: { title: product.organisations[lang].card.title, description: product.organisations[lang].card.line },
     body: () => <OrganisationsPage lang={lang} />,
   },
   {

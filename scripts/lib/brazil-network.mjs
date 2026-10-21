@@ -9,14 +9,14 @@
 // seeded RNG makes every run with the same seed give the same image.
 //
 // Colours come only from bipe-tokens (via backdrop.mjs): jabuticaba for the dark field, pitanga
-// for the light. Caju is not in tokens (dropped for its clash with caution amber), so pitanga alone
-// carries the coral-to-peach light.
+// for the light, and caju as a second, warmer light for the capitals.
 import { RAMPS } from "./backdrop.mjs";
 
 /** The default palette, from the expressive ramps. Pass `palette` to override any key. */
 export function brazilPalette() {
   const j = RAMPS.jabuticaba;
   const p = RAMPS.pitanga;
+  const c = RAMPS.caju;
   return {
     field: j[1400], // background
     fieldLift: j[1300], // soft lift behind the map
@@ -24,7 +24,7 @@ export function brazilPalette() {
     line: p[700], // mesh lines
     node: p[600], // small nodes
     edge: p[500], // border nodes
-    city: p[400], // capital cores
+    city: c[400], // capital cores
     core: p[100], // São Paulo core
   };
 }
