@@ -1,6 +1,6 @@
 import marks from "./marks.json";
 
-// Draft marks; /marca/ shows them side by side. marks.json picks the one the site uses.
+// Draft marks. marks.json picks the one the site uses.
 export const MARKS = marks.paths;
 export type MarkId = keyof typeof MARKS;
 export const MARK = marks.chosen as MarkId;
