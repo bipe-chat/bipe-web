@@ -148,7 +148,7 @@ export async function renderPanel(node, width, height, backdrop) {
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
 export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle }) {
   const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
-  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index });
+  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark });
 }
 
 /** A capture file as the panels use it. Throws on a wrong size or a blank image. */
