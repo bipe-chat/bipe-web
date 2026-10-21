@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { Resvg } from "@resvg/resvg-js";
+import { encodeJpeg } from "./lib/raster.mjs";
 import satori from "satori";
 import { BRAND, backdropSvg, compose } from "./lib/backdrop.mjs";
 import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
@@ -65,11 +66,12 @@ function card({ markPath, title, description, illustration }) {
 export { h };
 
 /**
- * Writes the card PNG to outPath. `illustration: "brazil"` draws the Brazil network
+ * Writes the card JPEG to outPath (lib/raster.mjs). `illustration: "brazil"` draws the Brazil network
  * (lib/brazil-network.mjs) on its own field in place of the brand backdrop.
  */
 export async function writeOgCard({ outPath, markPath, title, description, illustration, texture = BRAND.texture, tone = BRAND.tone(0) }) {
   const back = illustration === "brazil" ? brazilNetworkSvg({ ...OG_SIZE }) : backdropSvg({ ...OG_SIZE, texture, tone, markPath, mark: BRAND.mark });
   const svg = compose(await satori(card({ markPath, title, description, illustration }), { ...OG_SIZE, fonts }), back);
-  writeFileSync(outPath, new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width }, background: tone.base }).render().asPng());
+  const img = new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width }, background: tone.base }).render();
+  writeFileSync(outPath, encodeJpeg(img.pixels, img.width, img.height));
 }

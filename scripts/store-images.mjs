@@ -20,12 +20,12 @@
 //   --ios         bipe-ios clone; gives devices.mjs and the captures (default ../bipe-ios)
 //   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default <ios>/appstore/raw)
 //   --appearance  light | dark (default light)
-//   --texture     mesh | grain | pattern for every panel (default: BRAND.texture)
+//   --texture     mesh | pattern for every panel (default: BRAND.texture)
 //   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
 //   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots
 //                 for Play, out/social for Instagram, which is gitignored and never a store folder)
 //
-// Writes <out>/<device>/<locale>/NN-<slug>-WxH.png and manifest.json. Each PNG is RGB with no alpha
+// Writes <out>/<device>/<locale>/NN-<slug>-WxH.png (.jpg for social posts) and manifest.json. Each PNG is RGB with no alpha
 // channel at the exact store size. The builder stops on a missing, blank or wrong-size capture
 // and never writes a placeholder: a blank iPad set once passed the size checks in another app.
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
@@ -38,6 +38,7 @@ import { fonts } from "./og.mjs";
 import { captureSlugs, illustrationBox, panelNode, shotOf } from "./lib/panels.mjs";
 import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
 import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
+import { encodeJpeg } from "./lib/raster.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -145,14 +146,15 @@ function isBlank(dataUrl, width, height) {
 
 /**
  * Renders one panel on the brand backdrop (scripts/lib/backdrop.mjs) and returns RGB PNG bytes at
- * exactly width x height. Without `backdrop` the node must paint its own opaque background.
+ * exactly width x height, or JPEG bytes with format "jpeg" (social posts, lib/raster.mjs). Without `backdrop` the node must paint its own opaque background.
  */
-export async function renderPanel(node, width, height, backdrop) {
+export async function renderPanel(node, width, height, backdrop, format = "png") {
   let svg = await satori(node, { width, height, fonts });
   if (backdrop?.svg) svg = compose(svg, backdrop.svg);
   else if (backdrop) svg = compose(svg, backdropSvg({ width, height, ...backdrop }));
   const img = new Resvg(svg, { fitTo: { mode: "width", value: width }, background: backdrop?.tone.base ?? "#000000" }).render();
   if (img.width !== width || img.height !== height) throw new Error(`rendered ${img.width}x${img.height}, expected ${width}x${height}`);
+  if (format === "jpeg") return encodeJpeg(img.pixels, width, height);
   const png = encodeRgbPng(img.pixels, width, height);
   const info = pngInfo(png);
   if (info.alpha || info.width !== width || info.height !== height) throw new Error("encoded PNG does not match the store rules");
@@ -160,13 +162,13 @@ export async function renderPanel(node, width, height, backdrop) {
 }
 
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
-export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle }) {
+export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle, format }) {
   const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
   // A panel with no capture shows the Brazil network on its own jabuticaba field, with no brand
   // mark behind it (every such panel is about data in Brazil: dados-no-brasil, social text posts).
   if (panel.feature === "-" && dev.kind !== "feature")
-    return renderPanel(node, dev.width, dev.height, { svg: brazilNetworkSvg({ width: dev.width, height: dev.height, box: illustrationBox(dev) }), tone: t });
-  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark });
+    return renderPanel(node, dev.width, dev.height, { svg: brazilNetworkSvg({ width: dev.width, height: dev.height, box: illustrationBox(dev) }), tone: t }, format);
+  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark }, format);
 }
 
 /** A capture file as the panels use it. Throws on a wrong size or a blank image. */
@@ -226,10 +228,13 @@ async function main() {
 
     const dir = join(outRoot, dev.key, locale);
     mkdirSync(dir, { recursive: true });
-    for (const f of readdirSync(dir)) if (f.endsWith(".png") || f === "manifest.json") unlinkSync(join(dir, f));
+    for (const f of readdirSync(dir)) if (f.endsWith(".png") || f.endsWith(".jpg") || f === "manifest.json") unlinkSync(join(dir, f));
 
     const { width, height } = dev;
     const size = `${width}x${height}`;
+    // Social posts ship on the web, so they are JPEG; store panels stay PNG for App Store Connect.
+    const format = dev.platform === "social" ? "jpeg" : "png";
+    const ext = format === "jpeg" ? "jpg" : "png";
     const jobs = dev.kind === "feature"
       ? [{ panel: heroPanel(panels), slug: "feature-graphic" }]
       : panels.map((panel) => ({ panel, slug: panel.slug }));
@@ -239,8 +244,8 @@ async function main() {
       const subtitle = listing.platforms.ios?.locales[locale]?.subtitle ?? "";
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
-      const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.png`;
-      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle }));
+      const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.${ext}`;
+      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle, format }));
       exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
       console.log(`${dev.key} ${locale} ${file}`);
     }

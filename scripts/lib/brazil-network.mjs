@@ -306,14 +306,12 @@ export function brazilNetworkSvg({ width, height, seed = 1, palette = {}, box = 
 <radialGradient id="bn-sp" gradientUnits="userSpaceOnUse" cx="${f(sp[0])}" cy="${f(sp[1])}" r="${f(S * 0.32)}"><stop offset="0" stop-color="${P.haze}" stop-opacity="0.3"/><stop offset="1" stop-color="${P.haze}" stop-opacity="0"/></radialGradient>
 <radialGradient id="bn-halo"><stop offset="0" stop-color="${P.city}" stop-opacity="1"/><stop offset="0.12" stop-color="${P.edge}" stop-opacity="0.7"/><stop offset="0.35" stop-color="${P.line}" stop-opacity="0.25"/><stop offset="1" stop-color="${P.line}" stop-opacity="0"/></radialGradient>
 <filter id="bn-glow" ${full}><feGaussianBlur stdDeviation="${f(S * 0.004)}"/></filter>
-<filter id="bn-grain" ${full}><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="${seed % 1000}"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"/></filter>
 <filter id="bn-wide" ${full}><feGaussianBlur stdDeviation="${f(S * 0.012)}"/></filter>
 </defs>
 <rect width="${width}" height="${height}" fill="${P.field}"/>
 <rect width="${width}" height="${height}" fill="url(#bn-corner)"/>
 <rect width="${width}" height="${height}" fill="url(#bn-lift)"/>
 <path d="${outline}" fill="url(#bn-sp)"/>
-<rect width="${width}" height="${height}" filter="url(#bn-grain)" opacity="0.05"/>
 <g filter="url(#bn-wide)" opacity="0.5"><g stroke="${P.line}" stroke-width="${f(lw * 3)}">${lines}</g></g>
 <g filter="url(#bn-glow)" opacity="0.9"><g stroke="${P.line}" stroke-width="${f(lw * 1.6)}">${lines}</g>${small}</g>
 ${halos}
