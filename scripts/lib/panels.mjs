@@ -54,7 +54,7 @@ function brandRow(markPath, size) {
 
 function copyBlock({ panel, L, s, t }) {
   return h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: L.gap * s, textAlign: "center" } },
-    h("div", { style: { display: "block", fontSize: L.title * s, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.06 } }, panel.title),
+    h("div", { style: { display: "block", fontSize: L.title * s, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.06 } }, panel.title),
     panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.25, color: t.sub } }, panel.sub) : null,
   );
 }
@@ -131,6 +131,18 @@ function phone({ capture, left, top, screenW, bezel, rim, s, island }) {
     abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...statusBar(screenW, island)),
   );
   return [shadow, body];
+}
+
+/**
+ * Where the capture sits on a panel of `dev`, in panel pixels: { left, top, width, height }. The
+ * callouts (lib/callouts.mjs) map a point of the capture to the panel with it.
+ */
+export function screenBox(dev, capture) {
+  const s = dev.width / 1320;
+  const L = LAYOUT[dev.kind];
+  const edge = (L.bezel + L.rim) * s;
+  const width = L.frame * s - 2 * edge;
+  return { left: (dev.width - L.frame * s) / 2 + edge, top: L.frameTop * s + edge, width, height: width * (capture.height / capture.width) };
 }
 
 function capturePanel({ panel, width, height, kind, captures, tone: t }) {

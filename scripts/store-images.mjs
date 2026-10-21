@@ -39,6 +39,7 @@ import { captureSlugs, illustrationBox, panelNode, shotOf } from "./lib/panels.m
 import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
 import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
 import { encodeJpeg } from "./lib/raster.mjs";
+import { calloutSvg, overlay } from "./lib/callouts.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -147,9 +148,10 @@ function isBlank(dataUrl, width, height) {
 /**
  * Renders one panel on the brand backdrop (scripts/lib/backdrop.mjs) and returns RGB PNG bytes at
  * exactly width x height, or JPEG bytes with format "jpeg" (social posts, lib/raster.mjs). Without `backdrop` the node must paint its own opaque background.
+ * `top` is SVG markup that paints over the panel (the callout layer, lib/callouts.mjs).
  */
-export async function renderPanel(node, width, height, backdrop, format = "png") {
-  let svg = await satori(node, { width, height, fonts });
+export async function renderPanel(node, width, height, backdrop, format = "png", top = "") {
+  let svg = overlay(await satori(node, { width, height, fonts }), top);
   if (backdrop?.svg) svg = compose(svg, backdrop.svg);
   else if (backdrop) svg = compose(svg, backdropSvg({ width, height, ...backdrop }));
   const img = new Resvg(svg, { fitTo: { mode: "width", value: width }, background: backdrop?.tone.base ?? "#000000" }).render();
@@ -162,13 +164,14 @@ export async function renderPanel(node, width, height, backdrop, format = "png")
 }
 
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
-export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle, format }) {
+export async function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle, format, locale, strings }) {
   const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
   // A panel with no capture shows the Brazil network on its own jabuticaba field, with no brand
   // mark behind it (every such panel is about data in Brazil: dados-no-brasil, social text posts).
   if (panel.feature === "-" && dev.kind !== "feature")
     return renderPanel(node, dev.width, dev.height, { svg: brazilNetworkSvg({ width: dev.width, height: dev.height, box: illustrationBox(dev) }), tone: t }, format);
-  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark }, format);
+  const top = strings ? await calloutSvg({ panel, dev, captures, locale, strings }) : "";
+  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark }, format, top);
 }
 
 /** A capture file as the panels use it. Throws on a wrong size or a blank image. */
@@ -212,6 +215,7 @@ export async function renderSet(opt) {
   const written = [];
   for (const locale of locales) {
     const panels = listing.screenshots[locale];
+    const strings = JSON.parse(readFileSync(join(shared, `strings/${locale === "pt-BR" ? "pt-BR" : "en"}.json`), "utf8")).strings;
     if (!panels?.length) throw new Error(`appstore.md has no screenshot table for ${locale}`);
 
     // Check every capture before anything is written, so a failed run leaves the old set in place.
@@ -246,7 +250,7 @@ export async function renderSet(opt) {
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.${ext}`;
-      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle, format }));
+      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle, format, locale, strings }));
       exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
       if (!opt.quiet) console.log(`${dev.key} ${locale} ${file}`);
     }
