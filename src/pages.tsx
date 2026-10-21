@@ -1,6 +1,6 @@
 import { chrome } from "./copy";
 import { CodeList } from "./components/code";
-import { AppIcon, Mark, MARK, MARKS, Seal, Wordmark, type MarkId } from "./components/brand";
+import { AppIcon, Mark } from "./components/brand";
 import brandAssets from "./components/brand-assets.json";
 import { DownloadButtons, FeatureIcon, Icon, MoreLink, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
@@ -759,12 +759,35 @@ export function HelpPage({ lang }: { lang: Lang }) {
 }
 
 /** Logo downloads (/sobre/marca/). The files are rendered at build time by scripts/brand.mjs from brand-assets.json. */
-export function BrandKitPage({ lang }: { lang: Lang }) {
+/** One row of downloadable images: each links to the full file, with its size under it. */
+function ImageRow({ images, width, height }: { images: { href: string; alt: string }[]; width: number; height: number }) {
+  return (
+    <div className="brand-images">
+      {images.map((i) => (
+        <figure key={i.href} style={{ flexBasis: width > height ? 360 : 180 }}>
+          <a href={i.href} download><img src={i.href} alt={i.alt} width={width} height={height} loading="lazy" /></a>
+          <figcaption className="small mono muted">{width}x{height} {i.href.split(".").pop()?.toUpperCase()}</figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: string; title: string; image: string }[] }) {
   const b = chrome[lang].brand;
+  const stores = storeSets.filter((s) => s.group === "loja");
+  // The Instagram store posts and the social-only posts of one format share a row.
+  const social = [...new Set(storeSets.filter((s) => s.group !== "loja").map((s) => s.device))]
+    .map((device) => storeSets.filter((s) => s.group !== "loja" && s.device === device));
+  const files = (s: (typeof storeSets)[number]) => s.exports.map((e) => ({ href: s.href + e.file, alt: e.title }));
   return (
     <section className="wrap section">
       <h1>{b.title}</h1>
       <p className="lede">{b.lede}</p>
+      <nav className="brand-nav" aria-label={b.title}>
+        {(["logo", "stores", "cards", "social"] as const).map((k) => <a key={k} href={`#${k}`}>{b.sections[k]}</a>)}
+      </nav>
+      <h2 id="logo" style={{ marginTop: 56 }}>{b.sections.logo}</h2>
       <div className="brand-kit">
         {brandAssets.assets.map((a) => (
           <figure className="card brand-asset" key={a.file}>
@@ -791,57 +814,35 @@ export function BrandKitPage({ lang }: { lang: Lang }) {
       </div>
       <h2 style={{ marginTop: 56 }}>{b.useTitle}</h2>
       <ul>{b.use.map((u) => <li key={u}>{u}</li>)}</ul>
-    </section>
-  );
-}
-
-/** Draft marks side by side, for picking one (artwork-brief.md acceptance checks). noindex. */
-export function BrandPage() {
-  return (
-    <section className="wrap section">
-      <h1>Marca: rascunhos</h1>
-      <p className="lede">Três direções do símbolo "balão com selo". A escolhida hoje é a <strong>{MARK.toUpperCase()}</strong>. Para trocar, mude <span className="mono">chosen</span> em <span className="mono">bipe-web/src/components/marks.json</span>.</p>
-      <div className="marks" style={{ marginTop: 32 }}>
-        {(Object.keys(MARKS) as MarkId[]).map((id) => (
-          <div className="card mark-board" key={id} style={id === MARK ? { outline: "2px solid var(--acai)" } : undefined}>
-            <strong className="display" style={{ fontSize: 28 }}>{id.toUpperCase()}</strong>
-            <div className="sizes">{[16, 24, 32, 48, 72].map((s) => <Mark id={id} size={s} key={s} />)}</div>
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>{[29, 60, 120].map((s) => <AppIcon id={id} size={s} key={s} />)}</div>
-            <Wordmark id={id} size={32} />
-            <div className="dark"><Mark id={id} size={32} /><span style={{ fontFamily: "var(--brand)", fontWeight: 900, fontSize: 28 }}>bipe</span></div>
-            <p style={{ margin: 0, display: "flex", gap: 6, alignItems: "center" }}>Ana Souza <Seal size={14} label="Verificado" /></p>
-          </div>
-        ))}
-      </div>
+      <h2 id="stores" style={{ marginTop: 56 }}>{b.sections.stores}</h2>
+      {stores.map((s) => (
+        <div key={s.href}>
+          <h3>{b.sets[s.device]}</h3>
+          <ImageRow images={files(s)} width={s.width} height={s.height} />
+        </div>
+      ))}
+      <h2 id="cards" style={{ marginTop: 56 }}>{b.sections.cards}</h2>
+      <ImageRow images={cards.map((c) => ({ href: c.image, alt: c.title }))} width={1200} height={630} />
+      <h2 id="social" style={{ marginTop: 56 }}>{b.sections.social}</h2>
+      {social.map((sets) => (
+        <div key={sets[0].device}>
+          <h3>{b.sets[sets[0].device]}</h3>
+          <ImageRow images={sets.flatMap(files)} width={sets[0].width} height={sets[0].height} />
+        </div>
+      ))}
     </section>
   );
 }
 
 /** Internal board (noindex): the sample cast and every phone scene, for review and screenshots. */
 /** Every route's link-preview card, for review (noindex). Cards are rendered by scripts/og.mjs at build time. */
-export function OgCardsPage({ cards }: { cards: { path: string; title: string; image: string }[] }) {
-  return (
-    <section className="wrap section">
-      <h1>Cartões de link</h1>
-      <p className="lede">A imagem que aparece no WhatsApp, iMessage e redes quando alguém compartilha uma página. {cards.length} cartões, gerados no build por <span className="mono">scripts/og.mjs</span>. O texto vem do título e da descrição da rota, ou de <span className="mono">og</span> na rota.</p>
-      <div className="grid" style={{ marginTop: 32 }}>
-        {cards.map((c) => (
-          <figure className="card" key={c.path} style={{ margin: 0, padding: 12 }}>
-            <a href={c.image}><img src={c.image} alt={c.title} width={1200} height={630} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block" }} /></a>
-            <figcaption className="small" style={{ marginTop: 8 }}><a href={c.path} className="mono">{c.path}</a></figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 export function CastPage() {
   const lang: Lang = "pt";
   return (
     <section className="wrap section">
       <h1>Elenco e cenas</h1>
-      <p className="lede">Pessoas de exemplo para as simulações do site. Todas são fictícias. Dados em <span className="mono">bipe-web/src/cast/cast.json</span>, regras de estilo em <span className="mono">STYLE.md</span>, fotos com <span className="mono">node scripts/cast.mjs</span>.</p>
+      <p className="lede">Pessoas de exemplo para as simulações do site. Todas são fictícias. Dados em <span className="mono">bipe-shared/product/cast.json</span>, regras de estilo em <span className="mono">STYLE.md</span>, fotos com <span className="mono">node scripts/cast.mjs</span>.</p>
       <div className="cast-grid">
         {cast.map((e) => (
           <div className="card cast-card" key={e.id}>
@@ -871,26 +872,3 @@ export function CastPage() {
   );
 }
 
-export function StorePanelsPage() {
-  // One row per set, in store order. The App Store search result shows the first three panels, so
-  // they get an outline: judge them as a row.
-  return (
-    <section className="wrap section">
-      <h1>Imagens da loja</h1>
-      {storeSets.length === 0 && <p className="muted">Nenhum painel.</p>}
-      {storeSets.map((s) => (
-        <div key={s.href} style={{ marginTop: 48 }}>
-          <h2>{s.label} · {s.locale} <span className="mono small muted">{s.width}x{s.height}</span></h2>
-          <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 12 }}>
-            {s.exports.map((e) => (
-              <figure key={e.file} style={{ margin: 0, flex: `0 0 ${s.width > s.height ? 420 : 200}px` }}>
-                <a href={s.href + e.file}><img src={s.href + e.file} alt={e.headline.replace(/\*/g, "")} width={s.width} height={s.height} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block", outline: e.order <= 3 ? "3px solid var(--acai)" : "none", outlineOffset: 3 }} /></a>
-                <figcaption className="small mono muted" style={{ marginTop: 8 }}>{e.file}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      ))}
-    </section>
-  );
-}

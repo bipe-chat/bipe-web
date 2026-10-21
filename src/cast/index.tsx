@@ -1,6 +1,7 @@
 // The sample cast for site simulations: fictional people, groups and institutions with photos.
-// Data and photo prompts: cast.json. Style rules: STYLE.md. Photos: scripts/cast.mjs.
-import data from "./cast.json";
+// Data and photo prompts: bipe-shared/product/cast.json (the iOS store screenshots use it too, bipe#454).
+// Style rules: STYLE.md. Photos: scripts/cast.mjs.
+import data from "@shared/product/cast.json";
 
 /** What the app would show about this account (bipe/docs/trust-levels.md, design/trust-ui.md). */
 /** `contact`: confirmed by QR in person (the seal with a QR corner). */

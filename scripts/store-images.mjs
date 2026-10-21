@@ -1,7 +1,7 @@
 // Renders the App Store, Google Play and Instagram images (bipe-chat/bipe#455, #463, #465): one captioned panel per
 // row of the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures that
-// bipe-ios/appstore/capture.sh makes. The panel parts (badge, headline, phone, callout, people, the
-// Brazil map) are in scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
+// bipe-ios/appstore/capture.sh makes. The panel parts (title, sub, phone with status bar) are in
+// scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
 // link-preview cards. Satori lays the panel out and resvg rasterises it, as in scripts/og.mjs, so the
 // output is the same on every machine and needs no browser.
 //
@@ -10,7 +10,8 @@
 //   pnpm store:images --device ig-story --locale pt-BR --listing social/posts.md
 //
 // Options (paths are relative to bipe-web):
-//   --device      iphone69 | ipad13 | play-phone | play-feature | ig-post | ig-story | ig-square (default iphone69)
+//   --device      iphone69 | play-phone | play-feature | ig-post | ig-story | ig-square (default iphone69).
+//                 No iPad: the store set is iPhone and Play only (bipe#419).
 //   --locale      pt-BR | en-US (default: every locale in appstore.md)
 //   --shared      bipe-shared clone; gives the parser and the listing (default ../bipe-shared)
 //   --listing     the listing file (default <shared>/product/appstore.md). Any file with a `## Screenshots`
@@ -19,12 +20,12 @@
 //   --ios         bipe-ios clone; gives devices.mjs and the captures (default ../bipe-ios)
 //   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default <ios>/appstore/raw)
 //   --appearance  light | dark (default light)
-//   --texture     mesh | grain | pattern for every panel (default: BRAND.byLayout, else BRAND.texture)
+//   --texture     mesh | pattern for every panel (default: BRAND.texture)
 //   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
 //   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots
 //                 for Play, out/social for Instagram, which is gitignored and never a store folder)
 //
-// Writes <out>/<device>/<locale>/NN-<slug>-WxH.png and manifest.json. Each PNG is RGB with no alpha
+// Writes <out>/<device>/<locale>/NN-<slug>-WxH.png (.jpg for social posts) and manifest.json. Each PNG is RGB with no alpha
 // channel at the exact store size. The builder stops on a missing, blank or wrong-size capture
 // and never writes a placeholder: a blank iPad set once passed the size checks in another app.
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
@@ -34,8 +35,11 @@ import { deflateSync, crc32 } from "node:zlib";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { fonts } from "./og.mjs";
-import { captureSlugs, panelNode, shotOf } from "./lib/panels.mjs";
+import { captureSlugs, illustrationBox, panelNode, shotOf } from "./lib/panels.mjs";
+import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
 import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
+import { encodeJpeg } from "./lib/raster.mjs";
+import { calloutSvg, overlay } from "./lib/callouts.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -143,13 +147,16 @@ function isBlank(dataUrl, width, height) {
 
 /**
  * Renders one panel on the brand backdrop (scripts/lib/backdrop.mjs) and returns RGB PNG bytes at
- * exactly width x height. Without `backdrop` the node must paint its own opaque background.
+ * exactly width x height, or JPEG bytes with format "jpeg" (social posts, lib/raster.mjs). Without `backdrop` the node must paint its own opaque background.
+ * `top` is SVG markup that paints over the panel (the callout layer, lib/callouts.mjs).
  */
-export async function renderPanel(node, width, height, backdrop) {
-  let svg = await satori(node, { width, height, fonts });
-  if (backdrop) svg = compose(svg, backdropSvg({ width, height, ...backdrop }));
+export async function renderPanel(node, width, height, backdrop, format = "png", top = "") {
+  let svg = overlay(await satori(node, { width, height, fonts }), top);
+  if (backdrop?.svg) svg = compose(svg, backdrop.svg);
+  else if (backdrop) svg = compose(svg, backdropSvg({ width, height, ...backdrop }));
   const img = new Resvg(svg, { fitTo: { mode: "width", value: width }, background: backdrop?.tone.base ?? "#000000" }).render();
   if (img.width !== width || img.height !== height) throw new Error(`rendered ${img.width}x${img.height}, expected ${width}x${height}`);
+  if (format === "jpeg") return encodeJpeg(img.pixels, width, height);
   const png = encodeRgbPng(img.pixels, width, height);
   const info = pngInfo(png);
   if (info.alpha || info.width !== width || info.height !== height) throw new Error("encoded PNG does not match the store rules");
@@ -157,9 +164,14 @@ export async function renderPanel(node, width, height, backdrop) {
 }
 
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
-export function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle }) {
+export async function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle, format, locale, strings }) {
   const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
-  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index });
+  // A panel with no capture shows the Brazil network on its own jabuticaba field, with no brand
+  // mark behind it (every such panel is about data in Brazil: dados-no-brasil, social text posts).
+  if (panel.feature === "-" && dev.kind !== "feature")
+    return renderPanel(node, dev.width, dev.height, { svg: brazilNetworkSvg({ width: dev.width, height: dev.height, box: illustrationBox(dev) }), tone: t }, format);
+  const top = strings ? await calloutSvg({ panel, dev, captures, locale, strings }) : "";
+  return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark }, format, top);
 }
 
 /** A capture file as the panels use it. Throws on a wrong size or a blank image. */
@@ -173,13 +185,13 @@ export function loadCapture(file, captureDev) {
   return { dataUrl, width: info.width, height: info.height, radius: captureDev.screenRadius, file };
 }
 
-/** The panel the feature graphic and panel 1 lead with: the hero, else the first panel. */
-const heroPanel = (panels) => panels.find((p) => p.layout === "hero") ?? panels[0];
+/** The panel the feature graphic shows: panel 1. */
+const heroPanel = (panels) => panels[0];
 
 // --- Run -----------------------------------------------------------------------------------------
 
-async function main() {
-  const opt = args(process.argv.slice(2));
+/** Renders one device set per locale; `opt` takes the CLI options above. Returns the manifests it wrote. */
+export async function renderSet(opt) {
   const rel = (p) => resolve(root, p);
   const shared = rel(opt.shared ?? "../bipe-shared");
   const { parseAppstore, LOCALES } = await import(pathToFileURL(join(shared, "tools/lib/appstore.mjs")).href);
@@ -197,11 +209,13 @@ async function main() {
   const locales = opt.locale ? [opt.locale] : LOCALES;
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
   const markPath = marks.paths[marks.chosen];
-  const texture = opt.texture; // unset: BRAND.byLayout, then BRAND.texture
+  const texture = opt.texture ?? BRAND.texture;
   const toneFor = opt.accent ? (i) => (i % 2 ? tone(opt.accent, "acai") : tone("acai", opt.accent)) : BRAND.tone;
 
+  const written = [];
   for (const locale of locales) {
     const panels = listing.screenshots[locale];
+    const strings = JSON.parse(readFileSync(join(shared, `strings/${locale === "pt-BR" ? "pt-BR" : "en"}.json`), "utf8")).strings;
     if (!panels?.length) throw new Error(`appstore.md has no screenshot table for ${locale}`);
 
     // Check every capture before anything is written, so a failed run leaves the old set in place.
@@ -219,10 +233,13 @@ async function main() {
 
     const dir = join(outRoot, dev.key, locale);
     mkdirSync(dir, { recursive: true });
-    for (const f of readdirSync(dir)) if (f.endsWith(".png") || f === "manifest.json") unlinkSync(join(dir, f));
+    for (const f of readdirSync(dir)) if (f.endsWith(".png") || f.endsWith(".jpg") || f === "manifest.json") unlinkSync(join(dir, f));
 
     const { width, height } = dev;
     const size = `${width}x${height}`;
+    // Social posts ship on the web, so they are JPEG; store panels stay PNG for App Store Connect.
+    const format = dev.platform === "social" ? "jpeg" : "png";
+    const ext = format === "jpeg" ? "jpg" : "png";
     const jobs = dev.kind === "feature"
       ? [{ panel: heroPanel(panels), slug: "feature-graphic" }]
       : panels.map((panel) => ({ panel, slug: panel.slug }));
@@ -232,18 +249,20 @@ async function main() {
       const subtitle = listing.platforms.ios?.locales[locale]?.subtitle ?? "";
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
-      const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.png`;
-      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture: texture ?? BRAND.byLayout[panel.layout] ?? BRAND.texture, index: i, subtitle }));
-      exports.push({ order: i + 1, slug, feature: panel.feature, file, headline: panel.headline, sub: panel.sub || null, layout: panel.layout || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
-      console.log(`${dev.key} ${locale} ${file}`);
+      const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.${ext}`;
+      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle, format, locale, strings }));
+      exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
+      if (!opt.quiet) console.log(`${dev.key} ${locale} ${file}`);
     }
     const manifest = { device: dev.key, label: dev.label, platform: dev.platform, ascDeviceType: dev.ascDeviceType ?? null, locale, appearance, width, height, exports };
     writeFileSync(join(dir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+    written.push(manifest);
   }
+  return written;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  main().catch((e) => {
+  renderSet(args(process.argv.slice(2))).catch((e) => {
     console.error(e.message);
     process.exit(1);
   });

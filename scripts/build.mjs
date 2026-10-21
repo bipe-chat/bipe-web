@@ -11,6 +11,7 @@ import { writeOgCard } from "./og.mjs";
 import { brandTone } from "./lib/backdrop.mjs";
 import { checkCodeLinks } from "./check-code-links.mjs";
 import { writeBrandAssets } from "./brand.mjs";
+import { writeBrandImages } from "./brand-images.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -18,6 +19,9 @@ const ssrOut = join(root, ".ssr");
 
 const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
 writeIcons(join(root, "public"), marks.paths[marks.chosen]);
+
+// Store panels and social posts for /sobre/marca/, before the bundles: src/store.ts reads their manifests.
+await writeBrandImages(root, join(root, ".brand-images"));
 
 rmSync(dist, { recursive: true, force: true });
 await build({
@@ -51,9 +55,9 @@ const cardTitle = (title) => title.replace(/^Bipe · /, "").replace(/ · Bipe$/,
 async function ogImageTags(route) {
   const name = ssr.ogImageName(route);
   // The card tone rotates by route, as the store panels rotate by panel (scripts/lib/backdrop.mjs).
-  await writeOgCard({ outPath: join(dist, "og", `${name}.png`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, family: ssr.ogFamily(route), tone: brandTone(ssr.routes.indexOf(route)) });
+  await writeOgCard({ outPath: join(dist, "og", `${name}.jpg`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, illustration: ssr.ogIllustration(route), tone: brandTone(ssr.routes.indexOf(route)) });
   return [
-    `<meta property="og:image" content="${site}/og/${name}.png">`,
+    `<meta property="og:image" content="${site}/og/${name}.jpg">`,
     '<meta property="og:image:type" content="image/png">',
     '<meta property="og:image:width" content="1200">',
     '<meta property="og:image:height" content="630">',
@@ -123,7 +127,7 @@ for (const [from, to] of Object.entries(ssr.redirects)) {
   writeFileSync(join(dist, from, "index.html"), `<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${site}${to}"><meta http-equiv="refresh" content="0; url=${to}"><script>location.replace("${to}" + location.hash)</script><a href="${to}">${site}${to}</a>\n`);
 }
 
-// Store panels for /elenco/loja/ (scripts/store-images.mjs): the files each manifest lists.
+// Store panels and social posts for /sobre/marca/ (scripts/brand-images.mjs): the files each manifest lists.
 for (const set of ssr.storeSets) {
   mkdirSync(join(dist, set.href), { recursive: true });
   for (const e of set.exports) copyFileSync(join(root, "src", set.dir, e.file), join(dist, set.href, e.file));
@@ -131,7 +135,7 @@ for (const set of ssr.storeSets) {
 
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
 writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
-writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /marca/\nDisallow: /elenco/\nDisallow: /cartoes/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
+writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /elenco/\nDisallow: /convite/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n`);
 rmSync(join(dist, ".vite"), { recursive: true, force: true });
 rmSync(ssrOut, { recursive: true, force: true });
 checkCodeLinks(dist, JSON.parse(readFileSync(join(root, "../bipe-shared/product/distribution.json"), "utf8")));

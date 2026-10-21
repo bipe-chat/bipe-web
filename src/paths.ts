@@ -1,4 +1,4 @@
-import { privacyRegister, type Lang, type Tentpole } from "./shared";
+import { accessibilityRegister, privacyRegister, type Lang, type Tentpole } from "./shared";
 
 export const base = (lang: Lang) => (lang === "pt" ? "/" : "/en/");
 export const paths = {
@@ -23,6 +23,7 @@ export const paths = {
   privacy: (lang: Lang) => (lang === "pt" ? "/privacidade/" : "/en/privacy/"),
   lgpd: (lang: Lang) => `${base(lang)}lgpd/`,
   whoCanRead: (lang: Lang) => `${base(lang)}${privacyRegister.slug[lang]}/`,
+  accessibility: (lang: Lang) => `${base(lang)}${accessibilityRegister.slug[lang]}/`,
   terms: (lang: Lang) => (lang === "pt" ? "/termos/" : "/en/terms/"),
   docs: (lang: Lang, slug = "") => `${base(lang)}docs/${slug ? `${slug}/` : ""}`,
 };

@@ -4,7 +4,7 @@ import { Layout } from "./Layout";
 import { paths } from "./paths";
 import { ogImageName, routes, type Route } from "./routes";
 import { chrome, surfaceStatus } from "./copy";
-import { breadcrumbs, footerGroups, links } from "./nav";
+import { breadcrumbs, footerGroups } from "./nav";
 import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn, tierPrice } from "./pages";
 
@@ -13,10 +13,10 @@ export { analyticsTags } from "./analytics";
 export { storeSets } from "./store";
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
 
-/** The section label for a route's share card footer: the same words as the site nav (src/nav.ts). */
-export function ogFamily(route: Route): string | undefined {
-  if (route.og?.family) return route.og.family;
-  return route.section ? links(route.lang)[route.section].label : undefined;
+/** The share card illustration: the Brazil network (scripts/lib/brazil-network.mjs) on the privacy pages. */
+export function ogIllustration(route: Route): "brazil" | undefined {
+  const brazil = (["pt", "en"] as Lang[]).flatMap((l) => [paths.privacy(l), paths.lgpd(l), paths.whoCanRead(l)]);
+  return brazil.includes(route.path) ? "brazil" : undefined;
 }
 
 import inviteCodes from "@shared/test-vectors/invite-codes.json";

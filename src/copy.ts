@@ -13,13 +13,15 @@ export const chrome = {
     allFeatures: "Todos os recursos",
     brand: {
       title: "Marca",
-      lede: "Logo, símbolo e cores do Bipe para matérias, apresentações e perfis. Baixe os arquivos abaixo.",
+      lede: "Logo, símbolo, cores e imagens do Bipe para matérias, apresentações e perfis. Baixe os arquivos abaixo.",
       link: "Marca e logo",
       assets: {
         "bipe-logo": "Logo", "bipe-logo-white": "Logo branco", "bipe-mark": "Símbolo", "bipe-mark-white": "Símbolo branco",
         "bipe-avatar": "Avatar quadrado", "bipe-app-icon": "Ícone do app",
       } as Record<string, string>,
       avatarNote: "Para perfis no GitHub e em redes, que cortam a imagem em quadrado ou círculo.",
+      sections: { logo: "Logo e símbolo", stores: "App Store e Google Play", cards: "Cartões de link", social: "Redes sociais" },
+      sets: { iphone69: "iPhone", "play-phone": "Celular Android", "play-feature": "Destaque do Google Play", "ig-post": "Post", "ig-story": "Story", "ig-square": "Post quadrado" } as Record<string, string>,
       colours: "Cores",
       plum: "Roxo Bipe", plumDark: "Roxo para fundo escuro",
       useTitle: "Uso",
@@ -231,13 +233,15 @@ export const chrome = {
     allFeatures: "All features",
     brand: {
       title: "Brand",
-      lede: "Bipe's logo, mark and colours for articles, slides and profiles. Download the files below.",
+      lede: "Bipe's logo, mark, colours and images for articles, slides and profiles. Download the files below.",
       link: "Brand and logo",
       assets: {
         "bipe-logo": "Logo", "bipe-logo-white": "White logo", "bipe-mark": "Mark", "bipe-mark-white": "White mark",
         "bipe-avatar": "Square avatar", "bipe-app-icon": "App icon",
       } as Record<string, string>,
       avatarNote: "For GitHub and social profiles, which crop the image to a square or a circle.",
+      sections: { logo: "Logo and mark", stores: "App Store and Google Play", cards: "Link previews", social: "Social media" },
+      sets: { iphone69: "iPhone", "play-phone": "Android phone", "play-feature": "Google Play feature graphic", "ig-post": "Post", "ig-story": "Story", "ig-square": "Square post" } as Record<string, string>,
       colours: "Colours",
       plum: "Bipe plum", plumDark: "Plum on dark backgrounds",
       useTitle: "Use",

@@ -1,6 +1,6 @@
 # Cast style guide
 
-The cast is the set of fictional people, groups and institutions in the site's phone simulations. This file gives the rules for adding a person, writing a photo prompt, and remaking a photo. The data is in `cast.json`. The photo prompt templates are in `cast.json` under `styles`, so the script and this guide use the same text.
+The cast is the set of fictional people, groups and institutions in the site's phone simulations. This file gives the rules for adding a person, writing a photo prompt, and remaking a photo. The data is in `bipe-shared/product/cast.json` (one source for the site and the iOS store screenshots). The photo prompt templates are in that file under `styles`, so the script and this guide use the same text.
 
 ## What the cast must do
 
@@ -66,7 +66,7 @@ makes every missing photo, three at a time.
 node scripts/cast.mjs caio --note "plain mustard-yellow t-shirt, no stripes"
 ```
 
-remakes one photo with an extra instruction for this run only. If the change must stay, edit `look` in `cast.json` instead.
+remakes one photo with an extra instruction for this run only. If the change must stay, edit `look` in `bipe-shared/product/cast.json` instead.
 
 ```bash
 node scripts/cast.mjs gabi --ref cast-originals/gabi/<file>.png --note "same woman, now outdoors"
