@@ -7,7 +7,7 @@ description: Manage the fictional people and phone scenes in bipe-web's marketin
 
 Sources of truth, all in `bipe-web/`:
 
-- `src/cast/cast.json`: every sample person, group and institution, plus the photo prompt templates (`styles`, `base`).
+- `../bipe-shared/product/cast.json`: every sample person, group and institution, plus the photo prompt templates (`styles`, `base`).
 - `src/cast/STYLE.md`: the rules. Read it before you add a person or write a `look`.
 - `src/cast/photos/<id>.jpg`: 256 px photos. A missing photo shows initials.
 - `scripts/cast.mjs`: makes photos with the ChatGPT app's bundled Codex CLI.
@@ -16,7 +16,7 @@ Sources of truth, all in `bipe-web/`:
 
 ## Add or remake a photo
 
-1. Edit `look` (and `style` if needed) for the entry in `cast.json`. Follow the `look` rules in STYLE.md.
+1. Edit `look` (and `style` if needed) for the entry in `../bipe-shared/product/cast.json` (a pull request in bipe-shared). Follow the `look` rules in STYLE.md.
 2. Run `node scripts/cast.mjs <id>` from `bipe-web/`. Use `--note "..."` for a one-off change and `--ref <png>` to keep the same person. Use `--missing` for every entry without a photo. Run it in the background: each photo takes about 70 seconds.
 3. Open every new `src/cast/photos/<id>.jpg` with the Read tool and check it against "Check every new photo" in STYLE.md. Remake it if it fails.
 4. If the script reports `moderation_blocked`, rewrite the `look` (plain, complete clothes; no bedroom or changing room for young women) and run it again. Do not retry the same prompt more than once.
@@ -25,7 +25,7 @@ The script needs `/Applications/ChatGPT.app` with a signed-in ChatGPT account. I
 
 ## Add a person, group or institution
 
-Add an entry to `cast.json` with every field in the STYLE.md table. Keep the photo mix in STYLE.md. Then make the photo as above. Never use a real person, company, bank, club or brand, and never MZ.
+Add an entry to `../bipe-shared/product/cast.json` with every field in the STYLE.md table. Keep the photo mix in STYLE.md. Then make the photo as above. Never use a real person, company, bank, club or brand, and never MZ.
 
 ## Add a scene
 

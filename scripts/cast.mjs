@@ -1,4 +1,4 @@
-// Makes profile photos for the sample cast (src/cast/cast.json) with the ChatGPT app's bundled
+// Makes profile photos for the sample cast (../bipe-shared/product/cast.json) with the ChatGPT app's bundled
 // Codex CLI and its built-in image_gen tool. It uses the ChatGPT login, not an API key.
 //
 //   node scripts/cast.mjs                    list every entry and whether it has a photo
@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const cast = JSON.parse(readFileSync(join(root, "src/cast/cast.json"), "utf8"));
+const cast = JSON.parse(readFileSync(join(root, "../bipe-shared/product/cast.json"), "utf8"));
 const photos = join(root, "src/cast/photos");
 const originals = join(root, "cast-originals");
 const codexHome = process.env.CODEX_HOME ?? join(homedir(), ".codex");

@@ -841,7 +841,7 @@ export function CastPage() {
   return (
     <section className="wrap section">
       <h1>Elenco e cenas</h1>
-      <p className="lede">Pessoas de exemplo para as simulações do site. Todas são fictícias. Dados em <span className="mono">bipe-web/src/cast/cast.json</span>, regras de estilo em <span className="mono">STYLE.md</span>, fotos com <span className="mono">node scripts/cast.mjs</span>.</p>
+      <p className="lede">Pessoas de exemplo para as simulações do site. Todas são fictícias. Dados em <span className="mono">bipe-shared/product/cast.json</span>, regras de estilo em <span className="mono">STYLE.md</span>, fotos com <span className="mono">node scripts/cast.mjs</span>.</p>
       <div className="cast-grid">
         {cast.map((e) => (
           <div className="card cast-card" key={e.id}>

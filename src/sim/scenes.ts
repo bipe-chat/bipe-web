@@ -1,5 +1,5 @@
 // Phone scenes for the site: one per trust state, the chat list, the trust profile, and one or more per
-// feature page (bipe#176). People come from the cast (src/cast/cast.json). Card text comes from the app
+// feature page (bipe#176). People come from the cast (bipe-shared/product/cast.json). Card text comes from the app
 // strings through t(); labels the app has no string for yet are site copy in chrome[lang].sim.
 // Scam warnings are never written here: ScenePhone runs every incoming message through the
 // reference detector, the same as the app. Messages are sample data in pt-BR; the English page
