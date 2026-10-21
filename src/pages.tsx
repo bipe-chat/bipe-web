@@ -759,12 +759,35 @@ export function HelpPage({ lang }: { lang: Lang }) {
 }
 
 /** Logo downloads (/sobre/marca/). The files are rendered at build time by scripts/brand.mjs from brand-assets.json. */
-export function BrandKitPage({ lang }: { lang: Lang }) {
+/** One row of downloadable images: each links to the full file, with its size under it. */
+function ImageRow({ images, width, height }: { images: { href: string; alt: string }[]; width: number; height: number }) {
+  return (
+    <div className="brand-images">
+      {images.map((i) => (
+        <figure key={i.href} style={{ flexBasis: width > height ? 360 : 180 }}>
+          <a href={i.href} download><img src={i.href} alt={i.alt} width={width} height={height} loading="lazy" /></a>
+          <figcaption className="small mono muted">{width}x{height} {i.href.split(".").pop()?.toUpperCase()}</figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: string; title: string; image: string }[] }) {
   const b = chrome[lang].brand;
+  const stores = storeSets.filter((s) => s.group === "loja");
+  // The Instagram store posts and the social-only posts of one format share a row.
+  const social = [...new Set(storeSets.filter((s) => s.group !== "loja").map((s) => s.device))]
+    .map((device) => storeSets.filter((s) => s.group !== "loja" && s.device === device));
+  const files = (s: (typeof storeSets)[number]) => s.exports.map((e) => ({ href: s.href + e.file, alt: e.title }));
   return (
     <section className="wrap section">
       <h1>{b.title}</h1>
       <p className="lede">{b.lede}</p>
+      <nav className="brand-nav" aria-label={b.title}>
+        {(["logo", "stores", "cards", "social"] as const).map((k) => <a key={k} href={`#${k}`}>{b.sections[k]}</a>)}
+      </nav>
+      <h2 id="logo" style={{ marginTop: 56 }}>{b.sections.logo}</h2>
       <div className="brand-kit">
         {brandAssets.assets.map((a) => (
           <figure className="card brand-asset" key={a.file}>
@@ -791,28 +814,28 @@ export function BrandKitPage({ lang }: { lang: Lang }) {
       </div>
       <h2 style={{ marginTop: 56 }}>{b.useTitle}</h2>
       <ul>{b.use.map((u) => <li key={u}>{u}</li>)}</ul>
+      <h2 id="stores" style={{ marginTop: 56 }}>{b.sections.stores}</h2>
+      {stores.map((s) => (
+        <div key={s.href}>
+          <h3>{b.sets[s.device]}</h3>
+          <ImageRow images={files(s)} width={s.width} height={s.height} />
+        </div>
+      ))}
+      <h2 id="cards" style={{ marginTop: 56 }}>{b.sections.cards}</h2>
+      <ImageRow images={cards.map((c) => ({ href: c.image, alt: c.title }))} width={1200} height={630} />
+      <h2 id="social" style={{ marginTop: 56 }}>{b.sections.social}</h2>
+      {social.map((sets) => (
+        <div key={sets[0].device}>
+          <h3>{b.sets[sets[0].device]}</h3>
+          <ImageRow images={sets.flatMap(files)} width={sets[0].width} height={sets[0].height} />
+        </div>
+      ))}
     </section>
   );
 }
 
 /** Internal board (noindex): the sample cast and every phone scene, for review and screenshots. */
 /** Every route's link-preview card, for review (noindex). Cards are rendered by scripts/og.mjs at build time. */
-export function OgCardsPage({ cards }: { cards: { path: string; title: string; image: string }[] }) {
-  return (
-    <section className="wrap section">
-      <h1>Cartões de link</h1>
-      <p className="lede">A imagem que aparece no WhatsApp, iMessage e redes quando alguém compartilha uma página. {cards.length} cartões, gerados no build por <span className="mono">scripts/og.mjs</span>. O texto vem do título e da descrição da rota, ou de <span className="mono">og</span> na rota.</p>
-      <div className="grid" style={{ marginTop: 32 }}>
-        {cards.map((c) => (
-          <figure className="card" key={c.path} style={{ margin: 0, padding: 12 }}>
-            <a href={c.image}><img src={c.image} alt={c.title} width={1200} height={630} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block" }} /></a>
-            <figcaption className="small" style={{ marginTop: 8 }}><a href={c.path} className="mono">{c.path}</a></figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 export function CastPage() {
   const lang: Lang = "pt";
@@ -849,26 +872,3 @@ export function CastPage() {
   );
 }
 
-export function StorePanelsPage() {
-  // One row per set, in store order. The App Store search result shows the first three panels, so
-  // they get an outline: judge them as a row.
-  return (
-    <section className="wrap section">
-      <h1>Imagens da loja</h1>
-      {storeSets.length === 0 && <p className="muted">Nenhum painel.</p>}
-      {storeSets.map((s) => (
-        <div key={s.href} style={{ marginTop: 48 }}>
-          <h2>{s.label} · {s.locale} <span className="mono small muted">{s.width}x{s.height}</span></h2>
-          <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 12 }}>
-            {s.exports.map((e) => (
-              <figure key={e.file} style={{ margin: 0, flex: `0 0 ${s.width > s.height ? 420 : 200}px` }}>
-                <a href={s.href + e.file}><img src={s.href + e.file} alt={e.title} width={s.width} height={s.height} loading="lazy" style={{ width: "100%", height: "auto", borderRadius: 8, display: "block", outline: e.order <= 3 ? "3px solid var(--acai)" : "none", outlineOffset: 3 }} /></a>
-                <figcaption className="small mono muted" style={{ marginTop: 8 }}>{e.file}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      ))}
-    </section>
-  );
-}

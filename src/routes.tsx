@@ -9,7 +9,7 @@ import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
-import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OgCardsPage, OrganisationsPage, CastPage, StorePanelsPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OrganisationsPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -162,21 +162,13 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   {
     path: paths.brand(lang), alt: paths.brand(other(lang)), lang, section: "about",
     title: `${chrome[lang].brand.title} · Bipe`, description: chrome[lang].brand.lede,
-    body: () => <BrandKitPage lang={lang} />,
+    // Every indexed page's link-preview card in this language (scripts/og.mjs).
+    body: () => <BrandKitPage lang={lang} cards={routes.filter((r) => !r.noindex && r.lang === lang).map((r) => ({ path: r.path, title: r.title, image: `/og/${ogImageName(r)}.jpg` }))} />,
   },
 ]).concat({
-  path: "/cartoes/", alt: null, lang: "pt", noindex: true,
-  title: "Cartões de link (interno) · Bipe", description: "A imagem que aparece quando alguém compartilha cada página.",
-  body: () => <OgCardsPage cards={routes.map((r) => ({ path: r.path, title: r.title, image: `/og/${ogImageName(r)}.jpg` }))} />,
-}, {
   path: "/elenco/", alt: null, lang: "pt", noindex: true,
   title: "Elenco e cenas (interno) · Bipe", description: "Pessoas de exemplo e cenas das simulações do site.",
   body: () => <CastPage />,
-}, {
-  // Panels from scripts/store-images.mjs (bipe#455), when the app repos are cloned next to this one.
-  path: "/elenco/loja/", alt: null, lang: "pt", noindex: true,
-  title: "Imagens da loja (interno) · Bipe", description: "Os painéis da App Store e do Google Play, por aparelho e idioma.",
-  body: () => <StorePanelsPage />,
 }, {
   // Target of the Caddy rewrite for /@handle.
   path: "/perfil/", alt: null, lang: "pt", noindex: true,
