@@ -16,6 +16,7 @@ import productJson from "@shared/product/product.json";
 import compareJson from "@shared/product/compare.json";
 import dataJson from "@shared/product/data.json";
 import privacyJson from "@shared/product/privacy.json";
+import accessibilityJson from "@shared/product/accessibility.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import * as pixLib from "@shared/tools/lib/pix.mjs";
 import type { FigureId, SceneId } from "./sim/scenes";
@@ -198,6 +199,24 @@ export const privacyRegister = privacyJson as unknown as {
   nav: string; title: string; lede: string; explainTitle: string; explain: { heading: string; body: string }[]; rule: string;
   tableTitle: string; tableLede: string; levelLabels: Record<PrivacyLevel, string>; limitsTitle: string; limits: string[];
   faqTitle: string; faq: { q: string; a: string }[]; more: string; summaryTitle: string; summaryLink: string;
+}>;
+
+export type A11yPlatform = "ios" | "android" | "web";
+export type A11yLevel = "yes" | "partial" | "no" | "na";
+export type A11yStage = "next" | "studying";
+/** Accessibility register (bipe-shared/product/accessibility.json, bipe#491): /acessibilidade/. Roadmap issues are internal and never render. */
+export const accessibilityRegister = accessibilityJson as unknown as {
+  date: string;
+  slug: Copy<string>;
+  platforms: A11yPlatform[];
+  levels: A11yLevel[];
+  items: ({ id: string; status: Record<A11yPlatform, A11yLevel>; next: string[] } & Copy<{ name: string; body: string }>)[];
+  roadmap: ({ id: string; stage: A11yStage; issues: number[] } & Copy<{ name: string; body: string }>)[];
+} & Copy<{
+  nav: string; title: string; description: string; lede: string; rulesTitle: string; rules: string[];
+  tableTitle: string; tableLede: string; featureLabel: string; platformLabels: Record<A11yPlatform, string>; levelLabels: Record<A11yLevel, string>;
+  roadmapTitle: string; roadmapLede: string; stageLabels: Record<A11yStage, string>;
+  limitsTitle: string; limits: string[]; reportTitle: string; report: string; reportLink: string;
 }>;
 
 type Channel = { status: "available" | "waitlist"; channel: string; url: string | null; minOS?: string } & Copy<{ label: string; note: string }>;
