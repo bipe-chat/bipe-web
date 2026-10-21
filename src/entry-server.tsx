@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server";
 import { Layout } from "./Layout";
 import { paths } from "./paths";
 import { ogImageName, routes, type Route } from "./routes";
-import { chrome } from "./copy";
+import { chrome, surfaceStatus } from "./copy";
 import { breadcrumbs, footerGroups, links } from "./nav";
 import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn, tierPrice } from "./pages";
@@ -129,7 +129,7 @@ export function renderMarkdown(route: Route): string {
     });
     out.push(`${copy.cta} ${abs(paths.help(lang))}`, "");
   } else if (feature) {
-    out.push(`iPhone: ${c.status[feature.status.ios]}; Android: ${c.status[feature.status.android]}`, "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
+    out.push(surfaceStatus(lang, feature).join("; "), "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
     for (const t of product.tentpoles.filter((x) => x.features.includes(feature.id))) out.push(`${c.partOf} [${t[lang].name}](${abs(paths.tentpole(lang, t))})`, "");
   } else if (route.path === paths.business(lang)) {
     out.push(`(${product.business[lang].label})`, "");

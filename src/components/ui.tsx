@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { chrome } from "../copy";
+import { chrome, surfaceStatus } from "../copy";
 import { paths } from "../paths";
 import { distribution, scamStringKey, t, type Lang, type Feature, type ScamKind } from "../shared";
 
@@ -93,11 +93,10 @@ export function FeatureIcon({ f }: { f: Feature }) {
   return <span className="icon-tile"><Icon name={f.icon} size={22} /></span>;
 }
 
-/** Status per platform as plain text, no pill. A policy feature has no platform status to show. */
+/** Status per surface (iPhone, Android, site, server) as plain text, no pill. A policy feature has no platform status to show. */
 export function PlatformStatus({ lang, f }: { lang: Lang; f: Feature }) {
-  const c = chrome[lang];
   if (f.status.ios === "policy" && f.status.android === "policy") return null;
-  return <p className="small muted">iPhone: {c.status[f.status.ios]} · Android: {c.status[f.status.android]}</p>;
+  return <p className="small muted">{surfaceStatus(lang, f).join(" · ")}</p>;
 }
 
 /** Mirrors BipeScamWarningView (bipe-ios): caution card under the message. */
