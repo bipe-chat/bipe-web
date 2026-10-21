@@ -23,7 +23,7 @@ export type Route = {
   noReferrer?: boolean;
   /** Load no Umami tracker on this page (ADR 0098): email tokens and staff pages. */
   noAnalytics?: boolean;
-  /** Name of the link-preview PNG under /og/ (scripts/og.mjs). Default: from the path. Every route gets a card. */
+  /** Name of the link-preview JPEG under /og/ (scripts/og.mjs). Default: from the path. Every route gets a card. */
   ogCard?: string;
   /** Card text when it differs from the page title and description. */
   og?: { title?: string; description?: string };
@@ -167,7 +167,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
 ]).concat({
   path: "/cartoes/", alt: null, lang: "pt", noindex: true,
   title: "Cartões de link (interno) · Bipe", description: "A imagem que aparece quando alguém compartilha cada página.",
-  body: () => <OgCardsPage cards={routes.map((r) => ({ path: r.path, title: r.title, image: `/og/${ogImageName(r)}.png` }))} />,
+  body: () => <OgCardsPage cards={routes.map((r) => ({ path: r.path, title: r.title, image: `/og/${ogImageName(r)}.jpg` }))} />,
 }, {
   path: "/elenco/", alt: null, lang: "pt", noindex: true,
   title: "Elenco e cenas (interno) · Bipe", description: "Pessoas de exemplo e cenas das simulações do site.",
@@ -257,7 +257,7 @@ function homeJsonLd(lang: Lang, abs: (p: string) => string): object[] {
   ];
 }
 
-/** Where a route's link-preview card is served: `/og/home.png` for `/`, else `/og/<path with dashes>.png`. */
+/** Where a route's link-preview card is served: `/og/home.jpg` for `/`, else `/og/<path with dashes>.jpg`. */
 export function ogImageName(route: Route): string {
   return route.ogCard ?? (route.path.replace(/^\/|\/$/g, "").replace(/\//g, "-") || "home");
 }

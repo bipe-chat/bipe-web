@@ -5,7 +5,6 @@
 //
 // Textures (bipe-chat/bipe#463):
 //   mesh     2 or 3 large radial blobs from the ramps, layered on the base step
-//   grain    mesh plus a fine feTurbulence noise layer at low opacity
 //   pattern  mesh plus the Bipe mark at large scale, cropped, tone on tone
 //
 // Ramps come only from bipe-tokens: açaí is `acai` in tokens/theme-light.json, and the expressive
@@ -23,9 +22,8 @@ export const RAMPS = {
   ...Object.fromEntries(Object.entries(JSON.parse(readFileSync(join(tokens, "bipe-expressive.json"), "utf8")).color.expressive).map(([k, v]) => [k, values(v)])),
 };
 
-export const TEXTURES = ["mesh", "grain", "pattern"];
+export const TEXTURES = ["mesh", "pattern"];
 const WHITE = "#FFFFFF";
-const GRAIN_OPACITY = 0.1;
 // Blobs never use a step lighter than 900, so white text keeps at least 5.25:1 under a blob.
 const BLOB_OPACITY = 0.85;
 
@@ -74,12 +72,11 @@ const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - 
 
 /**
  * The lowest contrast of the ink and the highlight against any colour the backdrop can show: the
- * base, each blob at full blob opacity, each mark, each with the white grain on top.
+ * base, each blob at full blob opacity, each mark.
  */
 export function toneContrast(t, texture, mark = false) {
   const fields = [t.base, ...t.blobs.map((b) => mixRgb(hexRgb(t.base), hexRgb(b), BLOB_OPACITY)), ...(texture === "pattern" ? t.mark : []), ...(mark ? [t.brandMark] : [])]
-    .map((c) => (typeof c === "string" ? hexRgb(c) : c))
-    .map((c) => (texture === "grain" ? mixRgb(c, [255, 255, 255], GRAIN_OPACITY) : c));
+    .map((c) => (typeof c === "string" ? hexRgb(c) : c));
   const min = (fg) => Math.min(...fields.map((f) => contrast(hexRgb(fg), f)));
   return { ink: min(t.ink), highlight: min(t.highlight) };
 }
@@ -92,7 +89,7 @@ export function checkTone(t, texture, mark = false) {
 }
 
 /** SVG markup for the backdrop of a width x height image. `variant` picks the blob and mark places. */
-export function backdropSvg({ width, height, texture = "grain", tone: t, markPath, variant = 0, mark = false }) {
+export function backdropSvg({ width, height, texture = "mesh", tone: t, markPath, variant = 0, mark = false }) {
   if (!TEXTURES.includes(texture)) throw new Error(`backdrop: unknown texture ${texture}`);
   checkTone(t, texture, mark);
   const side = Math.max(width, height);
@@ -115,17 +112,6 @@ export function backdropSvg({ width, height, texture = "grain", tone: t, markPat
       layers.push(`<path transform="translate(${x * width} ${y * height}) scale(${scale})" d="${markPath}" fill="${t.mark[i % t.mark.length]}" fill-opacity="0.6"/>`);
     });
   }
-  if (texture === "grain") {
-    // Two noise layers: light specks and dark specks, so the grain does not shift the tone.
-    defs.push(
-      `<filter id="bd_grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 2.2 0 0 0 -1.15"/></filter>`,
-      `<filter id="bd_grain_dark" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="19" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.2 0 0 0 -1.15"/></filter>`,
-    );
-    layers.push(
-      `<rect width="${width}" height="${height}" filter="url(#bd_grain)" opacity="${GRAIN_OPACITY}"/>`,
-      `<rect width="${width}" height="${height}" filter="url(#bd_grain_dark)" opacity="${GRAIN_OPACITY}"/>`,
-    );
-  }
   return `<defs>${defs.join("")}</defs>${layers.join("")}`;
 }
 
@@ -146,7 +132,7 @@ export function brandTone(i) {
 }
 
 /**
- * Default chosen (bipe#463): grain on every panel and card, tones from brandTone(), and the large
+ * Default chosen (bipe#463): mesh on every panel and card (MZ removed the grain on 21 Oct 2026: "be lean"; it also made each card about 1.3 MB), tones from brandTone(), and the large
  * tone-on-tone brand mark behind the content (MZ: "bring back the logo shape on all").
  */
-export const BRAND = { texture: "grain", tone: brandTone, mark: true };
+export const BRAND = { texture: "mesh", tone: brandTone, mark: true };
