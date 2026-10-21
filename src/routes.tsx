@@ -1,7 +1,7 @@
 import { STAFF_CONSOLE, staffPath } from "./admin/staff-pages";
 import type { ReactNode } from "react";
 import { chrome } from "./copy";
-import { compare, dataRegister, distribution, privacyRegister, product, publicRepos, type Lang } from "./shared";
+import { accessibilityRegister, compare, dataRegister, distribution, privacyRegister, product, publicRepos, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { identityTentpoles, type Section } from "./nav";
 import { paths } from "./paths";
@@ -9,6 +9,7 @@ import { ScamsPage, ScamTypePage, scams, scamsJsonLd } from "./pages/ScamsPage";
 import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
+import { AccessibilityPage, accessibilityMarkdown } from "./pages/AccessibilityPage";
 import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OrganisationsPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -142,6 +143,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     title: `${dataRegister[lang].title} · Bipe`, description: dataRegister[lang].lede,
     markdown: lgpdMarkdown(lang),
     body: () => <LegalPage md={lgpdMarkdown(lang)} />,
+  },
+  {
+    path: paths.accessibility(lang), alt: paths.accessibility(other(lang)), lang,
+    title: `${accessibilityRegister[lang].title} · Bipe`, description: accessibilityRegister[lang].description,
+    markdown: accessibilityMarkdown(lang),
+    body: () => <AccessibilityPage lang={lang} />,
   },
   ...docs.map((d): Route => ({
     path: paths.docs(lang, d.slug[lang]), alt: paths.docs(other(lang), d.slug[other(lang)]), lang,

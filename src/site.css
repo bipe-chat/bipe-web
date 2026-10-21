@@ -614,3 +614,15 @@ a.staff-tile:hover { border-color: var(--acai); }
 .who-partial strong { color: var(--cpd-color-text-trust-neutral); }
 .who-no strong { color: var(--cpd-color-text-trust-verified); }
 .who-more p { color: var(--muted); margin-top: 32px; }
+/* Accessibility (/acessibilidade/): each level in words, the colour only repeats it. */
+.a11y-card h3 { font-size: 18px; margin: 0 0 12px; }
+.a11y-status { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 20px; margin: 0 0 14px; font-size: 14px; }
+.a11y-status dt { color: var(--muted); }
+.a11y-status dd { margin: 0; font-weight: 600; }
+.a11y-yes dd { color: var(--cpd-color-text-trust-verified); }
+.a11y-partial dd, .a11y-no dd { color: var(--cpd-color-text-trust-caution); }
+.a11y-na dd { color: var(--muted); font-weight: 400; }
+.a11y-roadmap { padding-left: 1.4em; margin: 24px 0 0; }
+.a11y-roadmap li { margin-bottom: 20px; }
+.a11y-roadmap h3 { margin: 0; }
+.a11y-roadmap p { margin: 2px 0 0; }
