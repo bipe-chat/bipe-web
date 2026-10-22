@@ -1,5 +1,5 @@
 // Site chrome copy only (navigation, labels). Product copy lives in bipe-shared/product.
-import type { Lang, Status } from "./shared";
+import { SURFACES, type Feature, type Lang, type Status, type Surface } from "./shared";
 import type { SceneId } from "./sim/scenes";
 
 export const chrome = {
@@ -8,6 +8,7 @@ export const chrome = {
     other: { lang: "en" as Lang, label: "English" },
     skip: "Pular para o conteúdo",
     status: { testing: "No app de testes", built: "Em desenvolvimento", planned: "Em breve", policy: "Sempre" } satisfies Record<Status, string>,
+    surfaces: { ios: "iPhone", android: "Android", web: "Site", server: "Servidor" } satisfies Record<Surface, string>,
     more: "Ver como funciona",
     allFeatures: "Todos os recursos",
     brand: {
@@ -227,6 +228,7 @@ export const chrome = {
     other: { lang: "pt" as Lang, label: "Português" },
     skip: "Skip to content",
     status: { testing: "In the test app", built: "In development", planned: "Coming soon", policy: "Always" } satisfies Record<Status, string>,
+    surfaces: { ios: "iPhone", android: "Android", web: "Web", server: "Server" } satisfies Record<Surface, string>,
     more: "See how it works",
     allFeatures: "All features",
     brand: {
@@ -408,3 +410,9 @@ export const chrome = {
     },
   },
 };
+
+/** Status per surface ("iPhone: Em breve"), from the parity ledger. A surface that is n/a for the feature is left out. */
+export function surfaceStatus(lang: Lang, f: Feature): string[] {
+  const c = chrome[lang];
+  return SURFACES.flatMap((s) => (f.status[s] === "n/a" ? [] : [`${c.surfaces[s]}: ${c.status[f.status[s] as Status]}`]));
+}

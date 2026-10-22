@@ -13,6 +13,7 @@ import stringsEn from "@shared/strings/en.json";
 import stringsPt from "@shared/strings/pt-BR.json";
 import distributionJson from "@shared/product/distribution.json";
 import productJson from "@shared/product/product.json";
+import parityJson from "@shared/product/parity.json";
 import compareJson from "@shared/product/compare.json";
 import dataJson from "@shared/product/data.json";
 import privacyJson from "@shared/product/privacy.json";
@@ -64,6 +65,11 @@ export const accountRules = accountsJson as { recoveryLinkMinutes: number; email
 
 export type Lang = "pt" | "en";
 export type Status = "testing" | "built" | "planned" | "policy";
+/** The four surfaces of the parity ledger (ADR 0092). web is bipe-web, server is bipe-api and infra. */
+export type Surface = "ios" | "android" | "web" | "server";
+export const SURFACES: Surface[] = ["ios", "android", "web", "server"];
+/** n/a: the surface has no part in the feature (no web chat, device only). */
+export type SurfaceStatus = Status | "n/a";
 type Copy<T> = { pt: T; en: T };
 
 export type Tentpole = {
@@ -100,7 +106,8 @@ export type CompareApp = {
 export type Feature = {
   id: string;
   area: string;
-  status: { ios: Status; android: Status };
+  /** From bipe-shared/product/parity.json, the item with the same id (bipe#300). product.json has no status. */
+  status: { ios: Status; android: Status; web: SurfaceStatus; server: SurfaceStatus };
   slug: Copy<string>;
   /** Phone scenes and sims that show the feature in practice; the first sits beside the text (bipe#176). */
   figures?: FigureId[];
@@ -124,7 +131,19 @@ export type Audience = {
 
 export type PricingTierId = "small" | "company" | "institution" | "public";
 
-export const product = productJson as unknown as {
+// The status of each feature is its parity ledger item (bipe-shared/product/parity.json, ADR 0092).
+// A ledger surface is a status string or { status, evidence, reason }. Fails the build when a feature has no item.
+type LedgerSurface = SurfaceStatus | { status: SurfaceStatus };
+const ledger = new Map((parityJson as unknown as { items: ({ id: string } & Record<Surface, LedgerSurface>)[] }).items.map((i) => [i.id, i]));
+function featureStatus(id: string): Feature["status"] {
+  const item = ledger.get(id);
+  if (!item) throw new Error(`feature ${id} has no item in bipe-shared/product/parity.json`);
+  const s = (x: LedgerSurface) => (typeof x === "string" ? x : x.status);
+  return { ios: s(item.ios) as Status, android: s(item.android) as Status, web: s(item.web), server: s(item.server) };
+}
+const productData = productJson as unknown as { features: Omit<Feature, "status">[] };
+
+export const product = { ...productData, features: productData.features.map((f) => ({ ...f, status: featureStatus(f.id) })) } as unknown as {
   promise: Copy<{ title: string; lede: string }>;
   home: { features: string[] };
   realFake: Copy<{ title: string; lede: string; caption: string }>;
