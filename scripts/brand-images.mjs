@@ -18,8 +18,10 @@ const LOCALES = ["pt-BR"];
 
 export async function writeBrandImages(root, outDir) {
   rmSync(outDir, { recursive: true, force: true });
-  const product = JSON.parse(readFileSync(join(root, "../bipe-shared/product/product.json"), "utf8"));
-  const status = new Map(product.features.map((f) => [f.id, Object.values(f.status ?? {})]));
+  // The status of a feature is its parity ledger item (bipe-shared/product/parity.json, bipe#300): iOS and Android.
+  const ledger = JSON.parse(readFileSync(join(root, "../bipe-shared/product/parity.json"), "utf8"));
+  const surface = (v) => (typeof v === "string" ? v : v?.status);
+  const status = new Map(ledger.items.map((i) => [i.id, [surface(i.ios), surface(i.android)]]));
   for (const [group, { listing, devices }] of Object.entries(BRAND_SETS)) {
     for (const device of devices) for (const locale of LOCALES) {
       const manifests = await renderSet({ device, locale, out: join(outDir, group), quiet: true, ...(listing && { listing }) });
