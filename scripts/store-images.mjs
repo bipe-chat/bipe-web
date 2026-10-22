@@ -31,15 +31,15 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { deflateSync, crc32 } from "node:zlib";
+import { deflateSync } from "node:zlib";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { fonts } from "./og.mjs";
 import { captureSlugs, illustrationBox, panelNode, shotOf } from "./lib/panels.mjs";
 import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
 import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
-import { encodeJpeg } from "./lib/raster.mjs";
-import { calloutSvg, overlay } from "./lib/callouts.mjs";
+import { chunk, encodeJpeg } from "./lib/raster.mjs";
+import { calloutSvg, overlay, SPECS } from "./lib/callouts.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -72,15 +72,6 @@ function args(argv) {
 export function pngInfo(buf) {
   if (buf.length < 33 || buf.readUInt32BE(0) !== 0x89504e47 || buf.toString("latin1", 12, 16) !== "IHDR") throw new Error("not a PNG");
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20), colorType: buf[25], alpha: buf[25] === 4 || buf[25] === 6 };
-}
-
-function chunk(type, data) {
-  const head = Buffer.alloc(8);
-  head.writeUInt32BE(data.length, 0);
-  head.write(type, 4, "latin1");
-  const crc = Buffer.alloc(4);
-  crc.writeUInt32BE(crc32(Buffer.concat([head.subarray(4), data])) >>> 0, 0);
-  return Buffer.concat([head, data, crc]);
 }
 
 /**
@@ -164,13 +155,13 @@ export async function renderPanel(node, width, height, backdrop, format = "png",
 }
 
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
-export async function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle, format, locale, strings }) {
+export async function panelPng({ panel, dev, captures, markPath, tone: t, texture, index, subtitle, format, ctx }) {
   const node = panelNode({ panel, dev, captures, tone: t, markPath, subtitle });
   // A panel with no capture shows the Brazil network on its own jabuticaba field, with no brand
   // mark behind it (every such panel is about data in Brazil: dados-no-brasil, social text posts).
   if (panel.feature === "-" && dev.kind !== "feature")
     return renderPanel(node, dev.width, dev.height, { svg: brazilNetworkSvg({ width: dev.width, height: dev.height, box: illustrationBox(dev) }), tone: t }, format);
-  const top = strings ? await calloutSvg({ panel, dev, captures, locale, strings }) : "";
+  const top = ctx ? await calloutSvg({ panel, dev, captures, ctx }) : "";
   return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark }, format, top);
 }
 
@@ -208,6 +199,7 @@ export async function renderSet(opt) {
   const appearance = opt.appearance ?? "light";
   const locales = opt.locale ? [opt.locale] : LOCALES;
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
+  const cast = new Map(JSON.parse(readFileSync(join(shared, "product/cast.json"), "utf8")).cast.map((e) => [e.id, e]));
   const markPath = marks.paths[marks.chosen];
   const texture = opt.texture ?? BRAND.texture;
   const toneFor = opt.accent ? (i) => (i % 2 ? tone(opt.accent, "acai") : tone("acai", opt.accent)) : BRAND.tone;
@@ -216,6 +208,7 @@ export async function renderSet(opt) {
   for (const locale of locales) {
     const panels = listing.screenshots[locale];
     const strings = JSON.parse(readFileSync(join(shared, `strings/${locale === "pt-BR" ? "pt-BR" : "en"}.json`), "utf8")).strings;
+    const ctx = { locale, strings, cast };
     if (!panels?.length) throw new Error(`appstore.md has no screenshot table for ${locale}`);
 
     // Check every capture before anything is written, so a failed run leaves the old set in place.
@@ -226,7 +219,13 @@ export async function renderSet(opt) {
       for (const slug of need) {
         const file = join(rawRoot, captureDev.key, appearance, locale, `${slug}.png`);
         if (!existsSync(file)) { problems.push(`missing ${file}`); continue; }
-        try { captures.set(slug, loadCapture(file, captureDev)); } catch (e) { problems.push(e.message); }
+        try { captures.set(slug, loadCapture(file, captureDev)); } catch (e) { problems.push(e.message); continue; }
+        // A panel with callouts places them on the element list that capture.sh writes next to the capture.
+        const elements = file.replace(/\.png$/, ".elements.json");
+        if (panels.some((p) => shotOf(p) === slug && SPECS[p.slug])) {
+          if (existsSync(elements)) captures.get(slug).elements = JSON.parse(readFileSync(elements, "utf8"));
+          else problems.push(`missing ${elements}`);
+        }
       }
       if (problems.length) throw new Error(`store-images: ${dev.key} ${locale}: ${problems.length} capture problem(s). Run bipe-ios/appstore/capture.sh ${captureDev.key} ${appearance} --locale ${locale}.\n  ${problems.join("\n  ")}`);
     }
@@ -250,7 +249,7 @@ export async function renderSet(opt) {
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.${ext}`;
-      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle, format, locale, strings }));
+      writeFileSync(join(dir, file), await panelPng({ panel, dev, captures, markPath, tone: t, texture, index: i, subtitle, format, ctx }));
       exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
       if (!opt.quiet) console.log(`${dev.key} ${locale} ${file}`);
     }

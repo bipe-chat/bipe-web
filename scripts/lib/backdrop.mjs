@@ -23,9 +23,9 @@ export const RAMPS = {
   ...Object.fromEntries(Object.entries(JSON.parse(readFileSync(join(tokens, "bipe-expressive.json"), "utf8")).color.expressive).map(([k, v]) => [k, values(v)])),
 };
 
-// The caution amber of the app's scam warning (yellow in tokens/theme-light.json). The store callouts
-// draw the warning with it, so the enlarged card has the colours of the card in the phone.
-export const CAUTION = values(light.yellow);
+// App ramps for the store callouts (lib/callouts.mjs), so an enlarged element has the colours it has in
+// the phone: yellow is the caution amber of the scam warning, gray the text, açaí the buttons and badges.
+export const UI = Object.fromEntries(["yellow", "gray", "acai"].map((k) => [k, values(light[k])]));
 
 export const TEXTURES = ["mesh", "pattern"];
 const WHITE = "#FFFFFF";
