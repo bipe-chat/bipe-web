@@ -25,6 +25,7 @@ export const STAFF_CONSOLE = {
   crescimento: { title: "Funil", group: "Crescimento", path: "/admin/crescimento/" },
   convites: { title: "Convites", group: "Crescimento", path: "/admin/convites/" },
   visitas: { title: "Visitas", group: "Crescimento", path: "/admin/visitas/" },
+  propostas: { title: "Propostas", group: "Crescimento", path: "/admin/propostas/" },
   experimentos: { title: "Títulos", group: "Crescimento", path: "/admin/experimentos/" },
   espera: { title: "Lista de espera", group: "Operação", path: "/admin/lista-de-espera/" },
   problemas: { title: "Problemas", group: "Operação", issue: 367 },

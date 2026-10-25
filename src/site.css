@@ -514,6 +514,14 @@ a.staff-tile:hover { border-color: var(--acai); }
 .staff-bar-cell { width: 30%; min-width: 80px; }
 .staff-bar { display: block; height: 10px; border-radius: 5px; background: var(--acai); }
 .staff-table tr.warn td { background: var(--cpd-color-bg-trust-caution-subtle); }
+.staff-sitting { border-bottom: 1px solid var(--line); }
+.staff-sitting summary { padding: 10px 0; cursor: pointer; }
+.staff-sitting-head, .staff-sitting-meta { display: inline-flex; width: calc(100% - 1.2em); flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
+.staff-sitting-meta { display: flex; width: auto; padding-left: 1.2em; }
+.staff-sitting-head .num { margin-left: auto; font-variant-numeric: tabular-nums; }
+.staff-sitting-meta .mono { overflow-wrap: anywhere; }
+.staff-sitting[open] summary { padding-bottom: 4px; }
+.staff-sitting .staff-scroll { margin-bottom: 16px; }
 /* Phone and small tablet: the nav becomes one scrolling row above the page. */
 @media (max-width: 860px) {
   .staff-app { grid-template-columns: minmax(0, 1fr); gap: 0; }
