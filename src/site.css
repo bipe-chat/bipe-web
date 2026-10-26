@@ -84,9 +84,10 @@ h3 { font-family: var(--brand); font-weight: 800; font-size: 19px; margin: 0 0 6
 .proof a > span:last-child { display: flex; flex-direction: column; gap: 2px; }
 .proof a:hover strong { color: var(--acai); }
 .foot-end { display: flex; align-items: center; gap: 20px; }
-.foot-social { margin: 0; display: flex; align-items: center; gap: 12px; }
-.foot-social a { display: inline-flex; padding: 4px; }
-.foot-social a:hover { color: var(--acai); }
+/* Not "social": Safari content blockers (social filter lists) hide elements with that class name. */
+.foot-accounts { margin: 0; display: flex; align-items: center; gap: 12px; }
+.foot-accounts a { display: inline-flex; padding: 4px; }
+.foot-accounts a:hover { color: var(--acai); }
 .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); align-items: center; }
 .split.flip > :first-child { order: 2; }
 .figure-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: var(--gutter); margin-top: var(--gutter); }
