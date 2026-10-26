@@ -25,7 +25,9 @@ export type Line =
   | { card: "charge"; amount: string; description: Text; paidAt?: number }
   | { card: "poll"; question: Text; options: { label: Text; votes: number }[]; mine?: number; ask?: boolean }
   /** A request to join a group that takes only verified accounts (verified-groups). The result follows the person's trust. */
-  | { card: "join"; person: string };
+  | { card: "join"; person: string }
+  /** The fixed line at the top of a room with a bot: its name, its owner, and that it reads the messages (ADR 0181). */
+  | { card: "bot" };
 
 export type InboxRow = { with: string; savedAs?: string; trust?: Trust; preview: string; time: string; unread?: number };
 /** A message request (requests): apart from the chats, with accept and ignore. */
@@ -268,6 +270,15 @@ export const scenes = {
       { from: "debora", text: { pt: "Irmãos, agora o grupo aceita só quem tem selo verificado", en: "Irmãos, agora o grupo aceita só quem tem selo verificado (The group now takes only verified accounts)" } },
       { card: "join", person: "antonio" },
       { card: "join", person: "falsapastora" },
+    ],
+  },
+  "bot-marcado": {
+    kind: "chat", with: "trigobot",
+    lines: [
+      { card: "bot" },
+      { from: ME, text: { pt: "Oi, tem pão de queijo hoje?", en: "Oi, tem pão de queijo hoje? (Hi, any pão de queijo today?)" } },
+      { from: "trigobot", text: { pt: "Tem sim! Sai fornada nova às 16h. Quer reservar uma dúzia?", en: "Tem sim! Sai fornada nova às 16h. Quer reservar uma dúzia? (Yes! A fresh batch comes out at 4 pm. Reserve a dozen?)" } },
+      { from: ME, text: { pt: "Quero, vou buscar às 17h", en: "Quero, vou buscar às 17h (Yes, I will pick it up at 5 pm)" } },
     ],
   },
   convite: {

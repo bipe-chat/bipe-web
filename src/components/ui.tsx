@@ -8,7 +8,7 @@ export type IconName = "warning" | "check" | "person" | "send" | "apple" | "andr
   | "house" | "swap" | "barcode" | "cash" | "trend" | "dice" | "link" | "cursor" | "sim" | "lock" | "eye" | "gift"
   | "card" | "terminal" | "scooter" | "hourglass" | "badge" | "at" | "calendar" | "clock"
   | "devices" | "letters" | "person-question" | "qr" | "user-plus" | "eye-off" | "server" | "code" | "document" | "ticket"
-  | "pix-check" | "sticker" | "poll" | "group-badge" | "instagram" | "x";
+  | "pix-check" | "sticker" | "poll" | "group-badge" | "bot" | "instagram" | "x";
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const p = {
@@ -81,6 +81,7 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
     "pix-check": "M10 4l6 6-6 6-6-6 6-6Zm-2 6h4m2 8.5 2.5 2.5 4.5-5",
     sticker: "M5 4h14v9.5L13.5 20H5V4Zm14 9.5h-4a1.5 1.5 0 0 0-1.5 1.5v5M9.5 9v.01M14.5 9v.01",
     poll: "M6 20v-8m6 8V5m6 15v-9M3.5 20h17",
+    bot: "M7 8h10a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Zm5-4v4M9.5 12.5v.01m5-.01v.01M9.5 15.5h5M3 12v3m18-3v3",
     "group-badge": "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 9c0-3 2.7-5.5 6-5.5 1.5 0 2.9.5 3.9 1.3M16 11a3 3 0 1 0 0-6m-1 12 2 2 4-4.5",
   }[name];
   const filled = name === "apple" || name === "android" || name === "x";

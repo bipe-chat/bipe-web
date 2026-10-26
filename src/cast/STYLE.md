@@ -14,11 +14,12 @@ The cast is the set of fictional people, groups and institutions in the site's p
 | Field | Rule |
 |---|---|
 | `id` | Short lowercase slug. The photo file is `photos/<id>.jpg`. Never rename an id that a scene uses. |
-| `kind` | `person`, `group` or `institution`. |
+| `kind` | `person`, `group`, `institution` or `bot`. |
 | `name` | The verified or full legal-style name. For an unverified account, the name it chose: a scammer copies the real person's name. |
 | `short` | What friends call the person in chats ("Bia", "Seu Antônio"). The chat list shows this unless a scene sets `savedAs`. |
 | `handle` | Without the `@`. An external account uses `user:server`. `null` when the person has no handle. |
-| `trust` | `none`, `profile`, `pix`, `govbr`, `institution`, `company` (a business with a CNPJ seal, bipe#252), `external`, `suspended`. |
+| `trust` | `none`, `profile`, `pix`, `govbr`, `institution`, `company` (a business with a CNPJ seal, bipe#252), `external`, `suspended`, `bot` (ADR 0181). |
+| `owner` | Only for a bot: the id of the verified person or company that owns it. The bot handle ends in `bot`, and the bot uses its owner's name and photo only (ADR 0181). |
 | `about` | One line for the team: age, job, city, and the role in scenes. Shown only on `/elenco/`. |
 | `photo` | `{ style, look }`, or `{ copyOf: "<id>" }` to reuse another photo (scammers copy photos), or `null` for initials. |
 

@@ -409,6 +409,8 @@ img.avatar { object-fit: cover; background: var(--acai-wash); }
 .seal.off { color: var(--bipe-trust-caution-ink); position: relative; opacity: .85; }
 .seal.off::after { content: ""; position: absolute; left: -1px; right: -1px; top: 50%; height: 1.5px; background: currentColor; transform: rotate(-45deg); }
 .globe { color: var(--bipe-trust-neutral-ink); display: inline-flex; }
+/* ADR 0181: the bot mark, the same in every place the account appears. */
+.bot-mark { display: inline-block; font-size: 11px; font-weight: 600; line-height: 1; padding: 2px 6px; border-radius: 999px; vertical-align: middle; background: var(--bipe-trust-neutral-wash); color: var(--bipe-trust-neutral-ink); border: 1px solid var(--bipe-trust-neutral-line); }
 .caution-text { color: var(--bipe-trust-caution-ink); }
 /* HomeScreenRoomCell: 52pt avatar, 16pt gaps, 12pt vertical insets, name bodyLGSemibold, preview bodyMD in 2 lines. */
 .inbox-row { display: flex; gap: 16px; align-items: center; padding: 0 16px; }
