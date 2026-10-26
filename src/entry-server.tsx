@@ -86,7 +86,6 @@ export function renderMarkdown(route: Route): string {
     out.push(...list(product.home.proof), "");
     out.push(`## ${handle[lang].title}`, "", handle[lang].summary, "", ...handle[lang].points.map((p) => `- ${p}`), "", `[${c.more}](${abs(paths.tentpole(lang, handle))})`, "");
     out.push(`## ${c.home.featuresTitle}`, "", ...list(product.home.features), "");
-    out.push(`## ${c.home.businessTitle}`, "", ...list(product.home.business), "", `[${product.organisations[lang].nav}](${abs(paths.organisations(lang))})`, "");
     out.push(`## ${product.origin[lang].title}`, "", product.origin[lang].body, "", `[${c.about}](${abs(paths.about(lang))})`, "");
     out.push(`## ${c.home.joinTitle}`, "", c.waitlist.heroLead, "", `[${c.waitlist.submit}](${abs(paths.home(lang))}#convite)`, "", `[${c.home.hasInvite}](${abs(paths.download(lang))})`, "");
   } else if (route.path === paths.download(lang)) {

@@ -79,13 +79,6 @@ export function HomePage({ lang }: { lang: Lang }) {
         <p className="more-links"><MoreLink href={paths.features(lang)}>{c.allFeatures}</MoreLink></p>
       </section>
       <section className="wrap section">
-        <h2>{c.home.businessTitle}</h2>
-        <div className="grid" style={{ marginTop: 24 }}>
-          {product.home.business.map((id) => <FeatureCard lang={lang} f={byId(id)} key={id} />)}
-        </div>
-        <p className="more-links"><MoreLink href={paths.organisations(lang)}>{product.organisations[lang].nav}</MoreLink></p>
-      </section>
-      <section className="wrap section">
         <div className="origin">
           <span style={{ color: "var(--acai)" }}><Mark size={56} /></span>
           <div>
