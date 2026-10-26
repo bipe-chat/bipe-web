@@ -245,7 +245,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
 function homeJsonLd(lang: Lang, abs: (p: string) => string): object[] {
   const org = { "@type": "Organization", name: "Bipe", url: abs(paths.home(lang)), logo: abs("/brand/app-icon.png"),
     parentOrganization: { "@type": "Organization", name: distribution.steward.name, url: distribution.steward.url },
-    ...(publicRepos.length > 0 ? { sameAs: [distribution.source.org] } : {}) };
+    sameAs: [...distribution.social.accounts.map((a) => a.url), ...(publicRepos.length > 0 ? [distribution.source.org] : [])] };
   const os = [distribution.ios.status === "available" && "iOS", distribution.android.status === "available" && "Android"].filter(Boolean).join(", ");
   return [
     { "@context": "https://schema.org", ...org },

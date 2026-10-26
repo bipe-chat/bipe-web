@@ -58,6 +58,7 @@ export function Layout({ route }: { route: Route }) {
           </nav>
           <div className="foot-bottom">
             <p className="foot-note">{publicRepos.length > 0 ? c.footerNote.open : c.footerNote.closed} <a href={distribution.steward.url}>{distribution.steward.name}</a>{publicRepos.length > 0 && " (AGPL-3.0)"}.</p>
+            <p className="foot-social">{distribution.social.accounts.map((a) => <a key={a.id} href={a.url} rel="me" aria-label={`${a.name} ${a.handle}`}>{a.name}</a>)}</p>
             {route.alt && <a href={route.alt} hrefLang={otherLang} lang={otherLang}>{c.other.label}</a>}
           </div>
         </div>

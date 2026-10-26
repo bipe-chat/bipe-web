@@ -72,6 +72,13 @@ h3 { font-size: 19px; margin: 0 0 6px; }
 /* Layout blocks */
 .hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); align-items: center; padding-top: 64px; padding-bottom: 32px; }
 .section { padding-top: 72px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 0; }
+/* Home: the always-true promises in one row under the hero. */
+.proof { list-style: none; margin: 0; padding: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px 24px; border-top: 1px solid var(--line); }
+.proof a { display: flex; gap: 14px; align-items: flex-start; color: inherit; text-decoration: none; }
+.proof a > span:last-child { display: flex; flex-direction: column; gap: 2px; }
+.proof a:hover strong { color: var(--acai); }
+.foot-social { margin: 0; display: flex; gap: 16px; }
 .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); align-items: center; }
 .split.flip > :first-child { order: 2; }
 .figure-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: var(--gutter); margin-top: var(--gutter); }
