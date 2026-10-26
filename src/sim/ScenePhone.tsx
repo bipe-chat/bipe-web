@@ -21,6 +21,7 @@ export function TrustMark({ lang, trust, size = 14 }: { lang: Lang; trust: Trust
   if (trust === "company") return <CompanySeal size={size} label={t(lang, "bipe_badge_company")} />;
   if (trust === "suspended") return <span className="seal off" title={t(lang, "bipe_badge_suspended")}><Mark size={size} /></span>;
   if (trust === "external") return <span className="globe"><Icon name="globe" size={size} /></span>;
+  if (trust === "bot") return <span className="bot-mark">{chrome[lang].sim.bot.mark}</span>;
   return null;
 }
 
@@ -32,6 +33,7 @@ function subline(lang: Lang, e: CastEntry, trust: Trust) {
   if (trust === "institution") return `${t(lang, "bipe_badge_institution")} · CNPJ ${e.cnpj}`;
   if (trust === "company") return `${t(lang, "bipe_badge_company")} · CNPJ ${e.cnpj}`;
   if (trust === "suspended") return <span className="caution-text">{t(lang, "bipe_badge_suspended")}</span>;
+  if (trust === "bot" && e.owner) return c.sim.bot.of(label(who(e.owner)));
   return e.handle ? `@${e.handle}` : "";
 }
 
@@ -90,6 +92,8 @@ function Card({ lang, line, partner, savedAs, beat }: { lang: Lang; line: Exclud
       return <PollCard lang={lang} line={line} />;
     case "join":
       return <JoinCard lang={lang} id={line.person} />;
+    case "bot":
+      return <TrustCard level="neutral" icon="bot">{chrome[lang].sim.bot.reads(label(partner), label(who(partner.owner ?? partner.id)))}</TrustCard>;
   }
 }
 

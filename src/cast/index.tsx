@@ -4,18 +4,20 @@
 import data from "@shared/product/cast.json";
 
 /** What the app would show about this account (bipe/docs/trust-levels.md, design/trust-ui.md). */
-/** `contact`: confirmed by QR in person (the seal with a QR corner). */
-export type Trust = "none" | "profile" | "pix" | "govbr" | "contact" | "institution" | "company" | "external" | "suspended";
+/** `contact`: confirmed by QR in person (the seal with a QR corner). `bot`: a bot account with its owner (ADR 0181). */
+export type Trust = "none" | "profile" | "pix" | "govbr" | "contact" | "institution" | "company" | "external" | "suspended" | "bot";
 
 export type CastEntry = {
   id: string;
-  kind: "person" | "group" | "institution";
+  kind: "person" | "group" | "institution" | "bot";
   /** Verified or full name; for an unverified account, the name it chose. */
   name: string | null;
   /** The name friends use in chats. */
   short: string | null;
   handle: string | null;
   cnpj?: string;
+  /** For a bot: the cast id of the verified person or company that owns it (ADR 0181). */
+  owner?: string;
   members?: number;
   about: string;
   trust: Trust;

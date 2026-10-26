@@ -96,6 +96,7 @@ export const chrome = {
       "doacao-real": "Doação de verdade", "pousada-real": "Pousada de verdade", "internet-real": "Fatura de verdade",
       "agenda-marcar": "Marcar horário", "agenda-dono": "Agenda da empresa", "agenda-lembrete": "Lembrete do horário",
       catalogo: "Catálogo", pedido: "Pedido", orcamento: "Orçamento", "fila-virtual": "Fila virtual", "conferir-pix": "Conferir no Bipe",
+      "bot-marcado": "Bot marcado",
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
@@ -107,6 +108,8 @@ export const chrome = {
       joinNoSeal: "Este grupo aceita só contas verificadas, então o pedido não entrou.",
       newChat: "Nova conversa", scanTitle: "Ler QR code", scanHint: "Aponte a câmera para o QR code da pessoa.",
       bankFrom: (name: string) => `Pix para o Bipe, da conta de ${name}`,
+      // ADR 0181: the bot mark, the line under the name, and the fixed line at the top of the chat.
+      bot: { mark: "bot", of: (owner: string) => `Bot de ${owner}`, reads: (bot: string, owner: string) => `${bot}, Bot de ${owner}. Este bot lê as mensagens desta conversa.` },
       // Agenda scenes: sample values only. UI labels are bipe_agenda_* in bipe-shared/strings.
       agenda: {
         lockDay: "terça, 21 de outubro", now: "agora",
@@ -316,6 +319,7 @@ export const chrome = {
       "doacao-real": "Real donation", "pousada-real": "Real guesthouse", "internet-real": "Real bill",
       "agenda-marcar": "Book a time", "agenda-dono": "The business agenda", "agenda-lembrete": "Booking reminder",
       catalogo: "Catalog", pedido: "Order", orcamento: "Quote", "fila-virtual": "Virtual queue", "conferir-pix": "Check it in Bipe",
+      "bot-marcado": "Marked bot",
     } satisfies Record<SceneId, string>,
     sim: {
       accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll", ask: "Question",
@@ -326,6 +330,7 @@ export const chrome = {
       joinNoSeal: "This group takes only verified accounts, so the request did not go in.",
       newChat: "New chat", scanTitle: "Scan QR code", scanHint: "Point the camera at the person's QR code.",
       bankFrom: (name: string) => `Pix to Bipe, from ${name}'s account`,
+      bot: { mark: "bot", of: (owner: string) => `Bot of ${owner}`, reads: (bot: string, owner: string) => `${bot}, Bot of ${owner}. This bot reads the messages in this chat.` },
       agenda: {
         lockDay: "Tuesday, 21 October", now: "now",
         hours: (n: number) => `${n} hours`, minutes: (n: number) => `${n} minutes`,
