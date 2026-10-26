@@ -60,7 +60,7 @@ export function Layout({ route }: { route: Route }) {
           <div className="foot-bottom">
             <p className="foot-note">{publicRepos.length > 0 ? c.footerNote.open : c.footerNote.closed} <a href={distribution.steward.url}>{distribution.steward.name}</a>{publicRepos.length > 0 && " (AGPL-3.0)"}.</p>
             <div className="foot-end">
-              <p className="foot-social">{distribution.social.accounts.map((a) => <a key={a.id} href={a.url} rel="me" aria-label={`${a.name} ${a.handle}`} title={`${a.name} ${a.handle}`}><Icon name={a.id as IconName} size={a.id === "x" ? 18 : 20} /></a>)}</p>
+              <p className="foot-social">{distribution.social.accounts.map((a) => <a key={a.id} href={a.url} rel="me" aria-label={`${a.name} ${a.handle}`} title={`${a.name} ${a.handle}`}><Icon name={a.id as IconName} size={a.id === "instagram" ? 20 : 18} /></a>)}{publicRepos.length > 0 && <a href={distribution.source.org} aria-label="GitHub bipe-chat" title="GitHub bipe-chat"><Icon name="github" size={18} /></a>}</p>
               {route.alt && <a href={route.alt} hrefLang={otherLang} lang={otherLang}>{c.other.label}</a>}
             </div>
           </div>
