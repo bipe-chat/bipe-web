@@ -347,8 +347,18 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .missed-row strong { font-weight: 600; }
 .missed-row span { color: var(--muted); overflow-wrap: anywhere; }
 .missed-more { padding: 6px 10px; border-top: 1px solid var(--line); color: var(--acai); font-weight: 600; }
-.origin { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: center; }
-@media (max-width: 640px) { .origin { grid-template-columns: minmax(0, 1fr); } }
+/* Home: the invite and the steward in one card, on the same left edge as the sections above. */
+.closing { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--gutter); background: var(--surface); border-radius: var(--radius); padding: clamp(24px, 4vw, 48px); }
+.closing h2 { font-size: clamp(28px, 3.4vw, 36px); }
+.closing > div > p { margin: 12px 0 0; }
+.closing .closing-links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; }
+.closing-origin { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding-left: var(--gutter); border-left: 1px solid var(--line); }
+.closing-origin h3 { margin: 6px 0 0; font-size: 20px; }
+.closing .closing-origin p { margin: 0 0 6px; }
+@media (max-width: 760px) {
+  .closing { grid-template-columns: minmax(0, 1fr); }
+  .closing-origin { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: var(--gutter); }
+}
 
 /* Waitlist form */
 .waitlist { margin-top: 12px; }
