@@ -1,6 +1,7 @@
 import { STAFF_HOME, STAFF_INDEX } from "./admin/staff-pages";
 import { chrome } from "./copy";
 import { Wordmark } from "./components/brand";
+import { Icon, type IconName } from "./components/ui";
 import { breadcrumbs, footerGroups, header, headerCta, links } from "./nav";
 import { paths } from "./paths";
 import type { Route } from "./routes";
@@ -58,8 +59,10 @@ export function Layout({ route }: { route: Route }) {
           </nav>
           <div className="foot-bottom">
             <p className="foot-note">{publicRepos.length > 0 ? c.footerNote.open : c.footerNote.closed} <a href={distribution.steward.url}>{distribution.steward.name}</a>{publicRepos.length > 0 && " (AGPL-3.0)"}.</p>
-            <p className="foot-social">{distribution.social.accounts.map((a) => <a key={a.id} href={a.url} rel="me" aria-label={`${a.name} ${a.handle}`}>{a.name}</a>)}</p>
-            {route.alt && <a href={route.alt} hrefLang={otherLang} lang={otherLang}>{c.other.label}</a>}
+            <div className="foot-end">
+              <p className="foot-social">{distribution.social.accounts.map((a) => <a key={a.id} href={a.url} rel="me" aria-label={`${a.name} ${a.handle}`} title={`${a.name} ${a.handle}`}><Icon name={a.id as IconName} size={a.id === "x" ? 18 : 20} /></a>)}</p>
+              {route.alt && <a href={route.alt} hrefLang={otherLang} lang={otherLang}>{c.other.label}</a>}
+            </div>
           </div>
         </div>
       </footer>
