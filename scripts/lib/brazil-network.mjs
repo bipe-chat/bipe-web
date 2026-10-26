@@ -8,7 +8,7 @@
 // No dependency: the point sampling and the Delaunay triangulation (Bowyer-Watson) are below. A
 // seeded RNG makes every run with the same seed give the same image.
 //
-// Colours come only from bipe-tokens (via backdrop.mjs): jabuticaba for the dark field, pitanga
+// Colours come only from bipe-shared design/tokens.json (via backdrop.mjs): jabuticaba for the dark field, pitanga
 // for the light, and caju as a second, warmer light for the capitals.
 import { RAMPS } from "./backdrop.mjs";
 

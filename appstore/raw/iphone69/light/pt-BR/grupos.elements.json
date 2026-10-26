@@ -1,0 +1,424 @@
+{
+  "elements" : [
+    {
+      "frame" : [
+        0,
+        0,
+        440,
+        956
+      ],
+      "id" : "",
+      "label" : "Bipe",
+      "type" : 2
+    },
+    {
+      "frame" : [
+        0,
+        62,
+        440,
+        54
+      ],
+      "id" : "Grupos",
+      "label" : "",
+      "type" : 21
+    },
+    {
+      "frame" : [
+        20,
+        64,
+        148.33333333333334,
+        40
+      ],
+      "id" : "",
+      "label" : "Grupos",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        20,
+        64,
+        40,
+        40
+      ],
+      "id" : "home_screen-user_avatar",
+      "label" : "Configurações",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        72.000000000000014,
+        67.166666666666671,
+        96.3333333333333,
+        33.666666666666657
+      ],
+      "id" : "",
+      "label" : "Grupos",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        384,
+        66,
+        28,
+        36
+      ],
+      "id" : "home_screen-start_chat",
+      "label" : "Nova conversa",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        16,
+        128,
+        87.333335876464844,
+        32
+      ],
+      "id" : "",
+      "label" : "Não lidas",
+      "type" : 40
+    },
+    {
+      "frame" : [
+        111.33333587646484,
+        128,
+        86.333335876464844,
+        32
+      ],
+      "id" : "",
+      "label" : "Favoritos",
+      "type" : 40
+    },
+    {
+      "frame" : [
+        0,
+        172,
+        440,
+        88.666666666666629
+      ],
+      "id" : "home_screen-room_name:Família Lima",
+      "label" : "Família Lima, 10:58, Vô Antônio: Domingo tem almoço aqui em casa, Novas menções, Novas mensagens",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        84,
+        184,
+        98,
+        20.333333333333343
+      ],
+      "id" : "",
+      "label" : "Família Lima",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        387.66666666666669,
+        184,
+        36.333333333333314,
+        15.666666666666657
+      ],
+      "id" : "",
+      "label" : "10:58",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        206.5,
+        265.33333333333331,
+        38
+      ],
+      "id" : "",
+      "label" : "Vô Antônio: Domingo tem almoço aqui em casa",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        382.27499999999998,
+        210.27500000000001,
+        12.450000000000045,
+        12.449999999999989
+      ],
+      "id" : "at",
+      "label" : "Novas menções",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        404,
+        206.33333333333331,
+        20,
+        20
+      ],
+      "id" : "",
+      "label" : "Novas mensagens",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        0,
+        260.66666666666663,
+        440,
+        88.666666666666686
+      ],
+      "id" : "home_screen-room_name:Avisos do Bela Vista",
+      "label" : "Avisos do Bela Vista, 10:41, Enquete: Cor da fachada, Novas mensagens",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        84,
+        272.83333333333331,
+        159.33333333333331,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "Avisos do Bela Vista",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        392,
+        272.83333333333331,
+        32,
+        15.666666666666686
+      ],
+      "id" : "",
+      "label" : "10:41",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        295.16666666666663,
+        169.33333333333331,
+        18
+      ],
+      "id" : "",
+      "label" : "Enquete: Cor da fachada",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        412,
+        297.66666666666663,
+        12,
+        12
+      ],
+      "id" : "",
+      "label" : "Novas mensagens",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        0,
+        349.66666666666663,
+        440,
+        88.666666666666686
+      ],
+      "id" : "home_screen-room_name:Galera da faculdade",
+      "label" : "Galera da faculdade, 10:30, Bia: Sexta tem churrasco lá em casa, Novas mensagens",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        84,
+        361.5,
+        158.33333333333331,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "Galera da faculdade",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        390,
+        361.5,
+        34,
+        15.666666666666686
+      ],
+      "id" : "",
+      "label" : "10:30",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        383.83333333333331,
+        247.33333333333331,
+        18
+      ],
+      "id" : "",
+      "label" : "Bia: Sexta tem churrasco lá em casa",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        412,
+        386.33333333333331,
+        12,
+        12
+      ],
+      "id" : "",
+      "label" : "Novas mensagens",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        0,
+        438.33333333333331,
+        440,
+        88.666666666666686
+      ],
+      "id" : "home_screen-room_name:Comunidade Vida Nova",
+      "label" : "Comunidade Vida Nova, 10:15, Pastora Débora: Irmãos, agora o grupo aceita só quem tem selo verificado",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        84,
+        450.16666666666663,
+        185,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "Comunidade Vida Nova",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        392,
+        450.16666666666663,
+        32,
+        15.666666666666686
+      ],
+      "id" : "",
+      "label" : "10:15",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        472.49999999999994,
+        332,
+        38
+      ],
+      "id" : "",
+      "label" : "Pastora Débora: Irmãos, agora o grupo aceita só quem tem selo verificado",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        407,
+        116,
+        30,
+        757
+      ],
+      "id" : "",
+      "label" : "Barra de rolagem vertical, 1 página",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        407,
+        116,
+        30,
+        757
+      ],
+      "id" : "",
+      "label" : "Barra de rolagem vertical, 1 página",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        0,
+        0,
+        440,
+        956
+      ],
+      "id" : "Toolbar",
+      "label" : "Barra de Ferramentas",
+      "type" : 24
+    },
+    {
+      "frame" : [
+        0,
+        873,
+        440,
+        83
+      ],
+      "id" : "",
+      "label" : "Barra de Abas",
+      "type" : 22
+    },
+    {
+      "frame" : [
+        25,
+        877,
+        111.33333333333331,
+        54
+      ],
+      "id" : "",
+      "label" : "Conversas",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        129.33333333333334,
+        877,
+        111.33333333333334,
+        54
+      ],
+      "id" : "person.2",
+      "label" : "Grupos",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        166.66666666666669,
+        884.66666666666663,
+        37,
+        26
+      ],
+      "id" : "person.2.fill",
+      "label" : "Duas pessoas, preenchidas",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        233.66666666666666,
+        877,
+        111.33333333333334,
+        54
+      ],
+      "id" : "",
+      "label" : "Você",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        357,
+        873,
+        62,
+        62
+      ],
+      "id" : "magnifyingglass",
+      "label" : "Search",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        374,
+        890.66666666666663,
+        28,
+        26.666666666666629
+      ],
+      "id" : "magnifyingglass",
+      "label" : "Buscar",
+      "type" : 43
+    }
+  ],
+  "height" : 956,
+  "width" : 440
+}

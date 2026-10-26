@@ -1,6 +1,6 @@
 // Renders the App Store, Google Play and Instagram images (bipe-chat/bipe#455, #463, #465): one captioned panel per
-// row of the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures that
-// bipe-ios/appstore/capture.sh makes. The panel parts (title, sub, phone with status bar) are in
+// row of the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures in
+// appstore/raw (moved from bipe-ios, archived). The panel parts (title, sub, phone with status bar) are in
 // scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
 // link-preview cards. Satori lays the panel out and resvg rasterises it, as in scripts/og.mjs, so the
 // output is the same on every machine and needs no browser.
@@ -17,13 +17,12 @@
 //   --listing     the listing file (default <shared>/product/appstore.md). Any file with a `## Screenshots`
 //                 table works: social/posts.md holds the social-only posts. A `capture` column reuses a
 //                 store capture under another slug.
-//   --ios         bipe-ios clone; gives devices.mjs and the captures (default ../bipe-ios)
-//   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default <ios>/appstore/raw)
+//   --appstore    folder with devices.mjs and raw/ (default appstore)
+//   --raw         captures, as <raw>/<device>/<appearance>/<locale>/<slug>.png (default <appstore>/raw)
 //   --appearance  light | dark (default light)
 //   --texture     mesh | pattern for every panel (default: BRAND.texture)
 //   --accent      pitanga | jabuticaba | jenipapo: alternate açaí with this one ramp (default: brandTone, all three)
-//   --out         output root (default ../bipe-ios/appstore/screenshots for iOS, ../bipe-android/appstore/screenshots
-//                 for Play, out/social for Instagram, which is gitignored and never a store folder)
+//   --out         output root (default out/appstore for iOS and Play, out/social for Instagram; out/ is gitignored)
 //
 // Writes <out>/<device>/<locale>/NN-<slug>-WxH.png (.jpg for social posts) and manifest.json. Each PNG is RGB with no alpha
 // channel at the exact store size. The builder stops on a missing, blank or wrong-size capture
@@ -43,9 +42,8 @@ import { calloutSvg, overlay, SPECS } from "./lib/callouts.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// Targets that are not in bipe-ios/appstore/devices.mjs. Play has no capture tool yet, so the phone
-// panels use the iPhone captures (`captureFrom`) for layout checks only. They move to bipe-android
-// with the Android capture issue. The Instagram targets (bipe-chat/bipe#465) use the iPhone captures
+// Targets that are not in appstore/devices.mjs. Play has no capture tool yet, so the phone
+// panels use the iPhone captures (`captureFrom`) for layout checks only, until bipe-app has Android captures. The Instagram targets (bipe-chat/bipe#465) use the iPhone captures
 // too; the story keeps text out of the bands the IG bars cover (LAYOUT.story in lib/panels.mjs).
 const OTHER_DEVICES = {
   "play-phone": { label: "Play phone", platform: "android", kind: "play", width: 1080, height: 1920, captureFrom: "iphone69" },
@@ -54,7 +52,7 @@ const OTHER_DEVICES = {
   "ig-story": { label: "Instagram story", platform: "social", kind: "story", width: 1080, height: 1920, captureFrom: "iphone69" },
   "ig-square": { label: "Instagram square", platform: "social", kind: "square", width: 1080, height: 1080, captureFrom: "iphone69" },
 };
-const OUT = { ios: "../bipe-ios/appstore/screenshots", android: "../bipe-android/appstore/screenshots", social: "out/social" };
+const OUT = { ios: "out/appstore", android: "out/appstore", social: "out/social" };
 
 function args(argv) {
   const out = {};
@@ -187,15 +185,15 @@ export async function renderSet(opt) {
   const shared = rel(opt.shared ?? "../bipe-shared");
   const { parseAppstore, LOCALES } = await import(pathToFileURL(join(shared, "tools/lib/appstore.mjs")).href);
   const listing = parseAppstore(readFileSync(opt.listing ? rel(opt.listing) : join(shared, "product/appstore.md"), "utf8"));
-  const ios = rel(opt.ios ?? "../bipe-ios");
-  const { device: iosDevice } = await import(pathToFileURL(join(ios, "appstore/devices.mjs")).href);
+  const appstore = rel(opt.appstore ?? "appstore");
+  const { device: iosDevice } = await import(pathToFileURL(join(appstore, "devices.mjs")).href);
 
   const key = opt.device ?? "iphone69";
   const other = OTHER_DEVICES[key];
   const dev = other ? { key, ...other } : { platform: "ios", ...iosDevice(key) };
   const captureDev = other?.captureFrom ? iosDevice(other.captureFrom) : other ? null : dev;
   const outRoot = rel(opt.out ?? OUT[dev.platform]);
-  const rawRoot = opt.raw ? rel(opt.raw) : join(ios, "appstore/raw");
+  const rawRoot = opt.raw ? rel(opt.raw) : join(appstore, "raw");
   const appearance = opt.appearance ?? "light";
   const locales = opt.locale ? [opt.locale] : LOCALES;
   const marks = JSON.parse(readFileSync(join(root, "src/components/marks.json"), "utf8"));
@@ -220,14 +218,14 @@ export async function renderSet(opt) {
         const file = join(rawRoot, captureDev.key, appearance, locale, `${slug}.png`);
         if (!existsSync(file)) { problems.push(`missing ${file}`); continue; }
         try { captures.set(slug, loadCapture(file, captureDev)); } catch (e) { problems.push(e.message); continue; }
-        // A panel with callouts places them on the element list that capture.sh writes next to the capture.
+        // A panel with callouts places them on the element list that sits next to the capture.
         const elements = file.replace(/\.png$/, ".elements.json");
         if (panels.some((p) => shotOf(p) === slug && SPECS[p.slug])) {
           if (existsSync(elements)) captures.get(slug).elements = JSON.parse(readFileSync(elements, "utf8"));
           else problems.push(`missing ${elements}`);
         }
       }
-      if (problems.length) throw new Error(`store-images: ${dev.key} ${locale}: ${problems.length} capture problem(s). Run bipe-ios/appstore/capture.sh ${captureDev.key} ${appearance} --locale ${locale}.\n  ${problems.join("\n  ")}`);
+      if (problems.length) throw new Error(`store-images: ${dev.key} ${locale}: ${problems.length} capture problem(s). Add the captures to ${rawRoot}.\n  ${problems.join("\n  ")}`);
     }
 
     const dir = join(outRoot, dev.key, locale);

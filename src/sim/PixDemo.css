@@ -3,4 +3,4 @@
 .bank-head { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
 .bank-row { display: flex; justify-content: space-between; gap: 8px; }
 .bank-row strong { text-align: right; overflow-wrap: anywhere; }
-.bank-ok { display: flex; gap: 6px; align-items: center; color: var(--cpd-color-text-trust-verified); font-weight: 600; }
+.bank-ok { display: flex; gap: 6px; align-items: center; color: var(--bipe-trust-verified-ink); font-weight: 600; }

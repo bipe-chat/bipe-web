@@ -5,7 +5,6 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const LOCAL = { "compound-design-tokens": "bipe-tokens" };
 const PATTERN = /https:\/\/github\.com\/bipe-chat\/([A-Za-z0-9._-]+)(?:\/(?:blob|tree)\/main\/([^\s"'<>)#?]+))?/g;
 
 export function checkCodeLinks(dist, distribution) {
@@ -24,12 +23,12 @@ export function checkCodeLinks(dist, distribution) {
   for (const [url, [repo, path]] of links) {
     if (!open.has(repo)) { errors.push(`${url}: repo ${repo} is not public in distribution.json`); continue; }
     if (!path) continue;
-    const dir = join(dist, "..", "..", LOCAL[repo] ?? repo);
+    const dir = join(dist, "..", "..", repo);
     if (!existsSync(join(dir, ".git"))) { skipped.add(repo); continue; }
     try { execFileSync("git", ["-C", dir, "cat-file", "-e", `origin/main:${path}`], { stdio: "ignore" }); }
     catch { errors.push(`${url}: ${path} is not on origin/main of ${repo}`); }
   }
-  for (const repo of skipped) console.warn(`check-code-links: ../${LOCAL[repo] ?? repo} not cloned, its paths were not checked`);
+  for (const repo of skipped) console.warn(`check-code-links: ../${repo} not cloned, its paths were not checked`);
   if (errors.length) throw new Error(`Broken code links:\n${errors.join("\n")}`);
   console.log(`check-code-links: ${links.size} links ok`);
 }

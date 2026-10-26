@@ -1,8 +1,8 @@
 /* /golpes-no-brasil/ (src/pages/ScamsPage.tsx). Marks are SVG, text is HTML, so labels stay
    readable at phone width. One hue (açaí) per chart; gray for the rows a chart does not stress. */
-.scams { --mark: var(--acai); --mark-hover: var(--acai-deep); --mark-dim: var(--cpd-color-gray-800); --mark-dim-hover: var(--cpd-color-gray-1000); --grid: var(--cpd-color-gray-400); }
+.scams { --mark: var(--acai); --mark-hover: var(--acai-deep); --mark-dim: var(--bipe-gray-800); --mark-dim-hover: var(--bipe-gray-1000); --grid: var(--bipe-gray-400); }
 /* Dark: one step down the açaí ramp keeps the mark inside the dataviz lightness band (checked with validate_palette.js). */
-@media (prefers-color-scheme: dark) { .scams { --mark: var(--cpd-color-acai-900); --mark-hover: var(--cpd-color-acai-1100); --grid: var(--cpd-color-gray-500); } }
+@media (prefers-color-scheme: dark) { .scams { --mark: var(--bipe-acai-900); --mark-hover: var(--bipe-acai-1100); --grid: var(--bipe-gray-500); } }
 
 .scam-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 16px; margin-top: 40px; }
 .scam-stat { border-top: 2px solid var(--mark); padding-top: 14px; }

@@ -1,7 +1,7 @@
 // The callout layer of the store panels (bipe-chat/bipe#463): one or two elements of the screen, set
 // again larger on tilted cards over the phone, each with a connector to the element in the phone.
 //
-// Where: the UI test in bipe-ios lists every element on the screen with its frame
+// Where: the UI test that made the capture listed every element on the screen with its frame
 // (`<slug>.elements.json` next to the capture). An anchor names an element by its text, so a changed
 // screen moves the connector with it, and a missing element stops the build.
 // What: the card text comes from bipe-shared strings, the cast, or the label of an element on the
@@ -107,7 +107,7 @@ const INK = UI.gray[1400];
 const WHITE = "#FFFFFF";
 // The neutral card: the cream steps of caju (expressive, so fill only), as in the reference panels.
 const CARD = { fill: RAMPS.caju[200], rim: RAMPS.caju[100], line: UI.gray[400], ink: INK };
-const CARDS = { alert: { fill: UI.yellow[200], rim: UI.yellow[100], line: UI.yellow[500], ink: UI.yellow[1200] }, handle: { fill: UI.acai[1100], rim: UI.acai[1000], line: UI.acai[900], ink: WHITE } };
+const CARDS = { alert: { fill: UI.amber[200], rim: UI.amber[100], line: UI.amber[500], ink: UI.amber[1200] }, handle: { fill: UI.acai[1100], rim: UI.acai[1000], line: UI.acai[900], ink: WHITE } };
 
 // --- Elements ------------------------------------------------------------------------------------
 
@@ -150,10 +150,10 @@ const pill = (value, s, style = {}) => row({ padding: `${12 * s}px ${30 * s}px`,
 const CONTENT = {
   alert: ({ spec, ctx, s }) => row({ gap: 44 * s },
     h("svg", { width: 150 * s, height: 150 * s, viewBox: "0 0 24 24", style: { flexShrink: 0 } },
-      h("path", { d: WARNING, fill: "none", stroke: UI.yellow[1100], "stroke-width": 2.2, "stroke-linejoin": "round", "stroke-linecap": "round" })),
+      h("path", { d: WARNING, fill: "none", stroke: UI.amber[1100], "stroke-width": 2.2, "stroke-linejoin": "round", "stroke-linecap": "round" })),
     col({ gap: 10 * s },
       text({ fontSize: 98 * s, fontWeight: 900, letterSpacing: "-0.02em" }, textOf(spec.title, ctx)),
-      text({ fontSize: 50 * s, fontWeight: 600, color: UI.yellow[1100] }, textOf(spec.line, ctx)))),
+      text({ fontSize: 50 * s, fontWeight: 600, color: UI.amber[1100] }, textOf(spec.line, ctx)))),
   // A message request: photo, name and @, and the request's buttons as the screen labels them: the buttons
   // under the name, within 60 points (the last one is the primary action).
   person: ({ entry, ctx, s, anchor }) => {

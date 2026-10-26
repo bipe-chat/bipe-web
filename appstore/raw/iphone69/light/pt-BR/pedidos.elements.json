@@ -1,0 +1,402 @@
+{
+  "elements" : [
+    {
+      "frame" : [
+        0,
+        0,
+        440,
+        956
+      ],
+      "id" : "",
+      "label" : "Bipe",
+      "type" : 2
+    },
+    {
+      "frame" : [
+        0,
+        62,
+        440,
+        54
+      ],
+      "id" : "Conversas",
+      "label" : "",
+      "type" : 21
+    },
+    {
+      "frame" : [
+        20,
+        64,
+        191.66666666666666,
+        40
+      ],
+      "id" : "",
+      "label" : "Conversas",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        20,
+        64,
+        40,
+        40
+      ],
+      "id" : "home_screen-user_avatar",
+      "label" : "Configurações",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        72,
+        67.166666666666671,
+        139.66666666666666,
+        33.666666666666657
+      ],
+      "id" : "",
+      "label" : "Conversas",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        384,
+        66,
+        28,
+        36
+      ],
+      "id" : "home_screen-start_chat",
+      "label" : "Nova conversa",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        16,
+        132,
+        24,
+        24
+      ],
+      "id" : "xmark",
+      "label" : "Limpar filtros",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        48,
+        128,
+        166.33332824707031,
+        32
+      ],
+      "id" : "",
+      "label" : "Pedidos de conversa",
+      "type" : 40
+    },
+    {
+      "frame" : [
+        16,
+        184,
+        52,
+        52
+      ],
+      "id" : "home_screen-room_name:Joana Lima",
+      "label" : "",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        84,
+        184,
+        340,
+        38.333328247070312
+      ],
+      "id" : "home_screen-room_name:Joana Lima",
+      "label" : "Joana Lima, @joana.lima.2",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        184,
+        90.333333333333314,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "Joana Lima",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        204.33333333333331,
+        95.333333333333314,
+        18
+      ],
+      "id" : "",
+      "label" : "@joana.lima.2",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        236.33333333333331,
+        153,
+        34.333333333333314
+      ],
+      "id" : "home_screen-room_name:Joana Lima",
+      "label" : "Recusar",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        249,
+        236.33333333333331,
+        153,
+        34.333333333333314
+      ],
+      "id" : "home_screen-room_name:Joana Lima",
+      "label" : "Aceitar",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        16,
+        298.66666666666663,
+        52,
+        52
+      ],
+      "id" : "home_screen-room_name:Camila Duarte",
+      "label" : "",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        84,
+        298.66665649414062,
+        340,
+        38.333343505859375
+      ],
+      "id" : "home_screen-room_name:Camila Duarte",
+      "label" : "Camila Duarte, @camila.vagas",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        298.66666666666669,
+        112.66666666666666,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "Camila Duarte",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        319,
+        101,
+        18
+      ],
+      "id" : "",
+      "label" : "@camila.vagas",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        351,
+        153,
+        34.333333333333314
+      ],
+      "id" : "home_screen-room_name:Camila Duarte",
+      "label" : "Recusar",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        249,
+        351,
+        153,
+        34.333333333333314
+      ],
+      "id" : "home_screen-room_name:Camila Duarte",
+      "label" : "Aceitar",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        16,
+        413.33333333333331,
+        52,
+        52
+      ],
+      "id" : "home_screen-room_name:Atendimento Cartões",
+      "label" : "",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        84,
+        413.33334350585938,
+        340,
+        38.33331298828125
+      ],
+      "id" : "home_screen-room_name:Atendimento Cartões",
+      "label" : "Atendimento Cartões, @atendimento.cartoes",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        413.33333333333331,
+        169.33333333333331,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "Atendimento Cartões",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        433.66666666666663,
+        155,
+        18
+      ],
+      "id" : "",
+      "label" : "@atendimento.cartoes",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        84,
+        465.66666666666663,
+        153,
+        34.333333333333314
+      ],
+      "id" : "home_screen-room_name:Atendimento Cartões",
+      "label" : "Recusar",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        249,
+        465.66666666666663,
+        153,
+        34.333333333333314
+      ],
+      "id" : "home_screen-room_name:Atendimento Cartões",
+      "label" : "Aceitar",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        407,
+        116,
+        30,
+        757
+      ],
+      "id" : "",
+      "label" : "Barra de rolagem vertical, 1 página",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        407,
+        116,
+        30,
+        757
+      ],
+      "id" : "",
+      "label" : "Barra de rolagem vertical, 1 página",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        0,
+        0,
+        440,
+        956
+      ],
+      "id" : "Toolbar",
+      "label" : "Barra de Ferramentas",
+      "type" : 24
+    },
+    {
+      "frame" : [
+        0,
+        873,
+        440,
+        83
+      ],
+      "id" : "",
+      "label" : "Barra de Abas",
+      "type" : 22
+    },
+    {
+      "frame" : [
+        25,
+        877,
+        111.33333333333331,
+        54
+      ],
+      "id" : "",
+      "label" : "Conversas",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        129.33333333333334,
+        877,
+        111.33333333333334,
+        54
+      ],
+      "id" : "person.2",
+      "label" : "Grupos",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        166.66666666666669,
+        884.66666666666663,
+        37,
+        26
+      ],
+      "id" : "person.2.fill",
+      "label" : "Duas pessoas, preenchidas",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        233.66666666666666,
+        877,
+        111.33333333333334,
+        54
+      ],
+      "id" : "",
+      "label" : "Você",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        357,
+        873,
+        62,
+        62
+      ],
+      "id" : "magnifyingglass",
+      "label" : "Search",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        374,
+        890.66666666666663,
+        28,
+        26.666666666666629
+      ],
+      "id" : "magnifyingglass",
+      "label" : "Buscar",
+      "type" : 43
+    }
+  ],
+  "height" : 956,
+  "width" : 440
+}
