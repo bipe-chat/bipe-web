@@ -84,7 +84,7 @@ export function HomePage({ lang }: { lang: Lang }) {
             <h2>{c.home.joinTitle}</h2>
             <p className="muted">{c.waitlist.heroLead}</p>
             <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.home(lang) }} />
-            <p className="small closing-links"><a href={paths.download(lang)}>{c.home.hasInvite}</a><a href={paths.help(lang)}>{c.home.help}</a></p>
+            <p className="closing-links"><a className="button secondary compact" href={paths.download(lang)}>{c.home.hasInvite}</a><a className="small" href={paths.help(lang)}>{c.home.help}</a></p>
           </div>
           <div className="closing-origin">
             <span style={{ color: "var(--acai)" }}><Mark size={40} /></span>
@@ -279,7 +279,7 @@ export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
       ))}
       <section className="wrap section">
         <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
-          <h2 style={{ fontSize: 26 }}>{copy.cta}</h2>
+          <h2 className="sub">{copy.cta}</h2>
           <a className="button primary" href={paths.help(lang)}><Icon name="mail" />{chrome[lang].contact}</a>
         </div>
       </section>
@@ -355,21 +355,21 @@ export function BusinessPage({ lang }: { lang: Lang }) {
             <p className="eyebrow">{b.label}</p>
             <h1>{b.title}</h1>
             <p className="lede">{b.lede}</p>
-            <h2 style={{ fontSize: 24, marginTop: 36 }}>{why.heading}</h2>
+            <h2 className="sub" style={{ marginTop: 36 }}>{why.heading}</h2>
             <Points items={why.points} />
           </div>
           <BusinessFigure lang={lang} caption={b.figureCaption} />
         </div>
       </section>
       <section className="wrap section">
-        <h2 style={{ fontSize: 28 }}>{inbox.heading}</h2>
+        <h2>{inbox.heading}</h2>
         <ul className="points biz-points">{inbox.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
         <div className="figure-row"><Figure lang={lang} id="bizInbox" caption={c.caption} /></div>
       </section>
       <section className="wrap section">
         <div className="split">
           <div>
-            <h2 style={{ fontSize: 28 }}>{connect.heading}</h2>
+            <h2>{connect.heading}</h2>
             <ul className="points biz-points">{connect.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
           </div>
           <Figure lang={lang} id="bizArrive" caption={c.arriveCaption} />
@@ -379,7 +379,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
       <section className="wrap section">
         <div className="split">
           <div>
-            <h2 style={{ fontSize: 28 }}>{agenda.heading}</h2>
+            <h2>{agenda.heading}</h2>
             <ul className="points biz-points">{agenda.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>
           </div>
           <Figure lang={lang} id="agenda-dono" caption={c.agendaCaption} />
@@ -426,17 +426,17 @@ export function PricingPage({ lang }: { lang: Lang }) {
             <p className="lede">{p.lede}</p>
           </div>
           <div className="card">
-            <h2 style={{ fontSize: 24 }}>{p.principles.heading}</h2>
+            <h2 className="sub">{p.principles.heading}</h2>
             <Points items={p.principles.points} />
           </div>
         </div>
       </section>
       <section className="wrap narrow section">
-        <h2 style={{ fontSize: 28 }}>{p.why.heading}</h2>
+        <h2>{p.why.heading}</h2>
         <Points items={p.why.points} />
       </section>
       <section className="wrap section">
-        <h2 style={{ fontSize: 28, marginBottom: 24 }}>{p.tiersHeading}</h2>
+        <h2 style={{ marginBottom: 24 }}>{p.tiersHeading}</h2>
         <div className="tier-grid">
           {product.pricing.tiers.map((tier) => {
             const t = p.tiers[tier.id];
@@ -482,7 +482,7 @@ function MailCta({ lang, cta, label }: { lang: Lang; cta: string; label?: string
   return (
     <section className="wrap section">
       <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
-        <h2 style={{ fontSize: 26 }}>{cta}</h2>
+        <h2 className="sub">{cta}</h2>
         <a className="button primary" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{label ?? chrome[lang].contact}</a>
       </div>
     </section>
@@ -500,7 +500,7 @@ export function OrganisationsPage({ lang }: { lang: Lang }) {
             <p className="eyebrow">{p.label}</p>
             <h1>{p.title}</h1>
             <p className="lede">{p.lede}</p>
-            <h2 style={{ fontSize: 24, marginTop: 36 }}>{p.why.heading}</h2>
+            <h2 className="sub" style={{ marginTop: 36 }}>{p.why.heading}</h2>
             <Points items={p.why.points} />
           </div>
           <Figure lang={lang} id="instituicao" caption={p.figureCaption} />
@@ -519,7 +519,7 @@ export function OrganisationsPage({ lang }: { lang: Lang }) {
       <section className="wrap narrow section">
         <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
           <div style={{ flex: "1 1 280px" }}>
-            <h2 style={{ fontSize: 22 }}>{p.small.heading}</h2>
+            <h2 className="sub">{p.small.heading}</h2>
             <p style={{ color: "var(--muted)", fontSize: 15, marginTop: 8, marginBottom: 0 }}>{p.small.body}</p>
           </div>
           <a className="button secondary" href={paths.download(lang)}>{p.small.button}</a>
@@ -527,7 +527,7 @@ export function OrganisationsPage({ lang }: { lang: Lang }) {
       </section>
       <section className="wrap narrow section" id="form">
         <div className="card" style={{ padding: 32 }}>
-          <h2 style={{ fontSize: 26, marginBottom: 16 }}>{p.cta}</h2>
+          <h2 className="sub" style={{ marginBottom: 16 }}>{p.cta}</h2>
           <Island name="OrganisationForm" props={{ lang, copy: p.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
         </div>
       </section>
@@ -737,15 +737,16 @@ export function AboutPage({ lang }: { lang: Lang }) {
       <p className="lede">{a.lede}</p>
       {a.sections.map((s) => (
         <div key={s.heading} style={{ marginTop: 40 }}>
-          <h2 style={{ fontSize: 26, marginBottom: 10 }}>{s.heading}</h2>
+          <h2 className="sub" style={{ marginBottom: 10 }}>{s.heading}</h2>
           <p style={{ margin: 0 }}>{s.body}</p>
         </div>
       ))}
-      <p className="more-links" style={{ marginTop: 40 }}>
-        <MoreLink href={paths.organisations(lang)}>{product.organisations[lang].aboutLink}</MoreLink>
+      <p style={{ marginTop: 40 }}>{product.organisations[lang].aboutLink}</p>
+      <p className="more-links">
+        <MoreLink href={paths.organisations(lang)}>{product.organisations[lang].nav}</MoreLink>
         <MoreLink href={paths.brand(lang)}>{chrome[lang].brand.link}</MoreLink>
+        <MoreLink href={paths.help(lang)}>{chrome[lang].help.title}</MoreLink>
       </p>
-      <p style={{ marginTop: 16 }}><a href={paths.help(lang)}>{chrome[lang].help.title}</a></p>
     </section>
   );
 }
