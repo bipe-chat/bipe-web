@@ -18,6 +18,7 @@ Bipe is a Brazilian messenger on the open Matrix protocol. Conversations are sto
 
 - Every page of this site has a Markdown twin: add `index.md` to the path. Example: [/en/docs/domains/index.md](/en/docs/domains/index.md).
 - [/llms.txt](/llms.txt) lists every page, docs first.
+- [/llms-full.txt](/llms-full.txt) has the text of every page in one file, for agents that read the whole site at once.
 - Never use `bipe.chat` as a Matrix server name. Never send people to a `bipe.net.br` address: shared links are always on `bipe.chat`.
 - A Bipe user ID looks like `@a1b2c3d4e5f6:bipe.net.br`. The part before the colon is random. The `@handle` that people see is a separate layer in the Bipe API, not the Matrix ID.
 - The Portuguese pages are the reference text. This English text says the same.
