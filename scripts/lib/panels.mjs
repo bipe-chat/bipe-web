@@ -96,7 +96,7 @@ const RIM = ["#8E8E93", "#F2F2F7", "#C7C7CC", "#F2F2F7", "#8E8E93"];
 /**
  * The phone as [shadow, body], upright: a thin light metallic rim, a thin black bezel and the
  * screen, all continuous-corner paths (squircle.mjs) around the screen radius of the capture device
- * (bipe-ios/appstore/devices.mjs, `screenRadius`), and the side buttons. The capture sits inset in
+ * (appstore/devices.mjs, `screenRadius`), and the side buttons. The capture sits inset in
  * the bezel, clipped with the screen path (Satori writes CSS clip-path as an SVG clipPath; an <image>
  * inside an inline SVG does not render).
  */

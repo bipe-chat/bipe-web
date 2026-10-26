@@ -48,10 +48,7 @@ export function matrixId(e: CastEntry) {
   return local.includes(":") ? `@${local}` : `@${local}:bipe.net.br`;
 }
 
-/** Compound decorative colour 1 to 6, the same hash as the apps: sum of character codes mod 6. */
-export const decor = (e: CastEntry) => 1 + ([...matrixId(e)].reduce((sum, ch) => sum + (ch.codePointAt(0) ?? 0), 0) % 6);
-
-/** Mirrors PlaceholderAvatarImage (bipe-ios): photo, else the first letter on the decorative colour. */
+/** Mirrors AvatarView (bipe-app): photo, else the first letter in açaí ink on the açaí wash. */
 export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; savedAs?: string }) {
   const e = who(id);
   const src = photoUrl(e);
@@ -60,5 +57,5 @@ export function Avatar({ id, size = 34, savedAs }: { id: string; size?: number; 
   const shape = e.trust === "institution" || e.trust === "company" ? " org" : "";
   if (src) return <img className={`avatar${shape}`} src={src} alt="" width={size} height={size} style={style} loading="lazy" decoding="async" />;
   const base = e.name || savedAs ? label(e, savedAs) : matrixId(e).replace(/^\W+/, "");
-  return <div className={`avatar${shape} d${decor(e)}`} style={style}>{base.charAt(0).toUpperCase()}</div>;
+  return <div className={`avatar${shape}`} style={style}>{base.charAt(0).toUpperCase()}</div>;
 }

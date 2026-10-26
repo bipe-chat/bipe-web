@@ -7,3 +7,4 @@ scripts/deploy.env
 cast-originals
 out
 .brand-images
+.generated

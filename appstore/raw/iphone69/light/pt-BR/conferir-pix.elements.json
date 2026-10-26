@@ -1,0 +1,270 @@
+{
+  "elements" : [
+    {
+      "frame" : [
+        0,
+        0,
+        440,
+        956
+      ],
+      "id" : "",
+      "label" : "Bipe",
+      "type" : 2
+    },
+    {
+      "frame" : [
+        0,
+        62,
+        440,
+        54
+      ],
+      "id" : "Conferir Pix",
+      "label" : "",
+      "type" : 21
+    },
+    {
+      "frame" : [
+        24,
+        66,
+        76.333333333333329,
+        36
+      ],
+      "id" : "",
+      "label" : "Fechar",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        173.33333333333331,
+        73.666666666666657,
+        93,
+        20.666666666666671
+      ],
+      "id" : "",
+      "label" : "Conferir Pix",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        20,
+        116,
+        400,
+        41
+      ],
+      "id" : "",
+      "label" : "Código Pix",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        176,
+        99.666666666666657,
+        15.666666666666657
+      ],
+      "id" : "",
+      "label" : "Nome no código",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        195.66666666666666,
+        143,
+        20.333333333333343
+      ],
+      "id" : "",
+      "label" : "RAFAEL OLIVEIRA",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        220,
+        333,
+        33.666666666666657
+      ],
+      "id" : "",
+      "label" : "Este nome foi escrito por quem fez o código. Confira o nome que aparece no app do banco antes de pagar.",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        291.66666666666663,
+        31,
+        15.666666666666629
+      ],
+      "id" : "",
+      "label" : "Valor",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        311.33333333333326,
+        84,
+        20.333333333333371
+      ],
+      "id" : "",
+      "label" : "R$ 850,00",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        369.66666666666663,
+        38.666666666666657,
+        15.666666666666686
+      ],
+      "id" : "",
+      "label" : "E-mail",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        389.33333333333331,
+        200,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "rafa.bikes@example.com",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        447.66666666666669,
+        42.666666666666657,
+        15.666666666666686
+      ],
+      "id" : "",
+      "label" : "Cidade",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        40,
+        467.33333333333337,
+        145,
+        20.333333333333314
+      ],
+      "id" : "",
+      "label" : "BELO HORIZONTE",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        20,
+        541.66666666666674,
+        400,
+        68.333333333333371
+      ],
+      "id" : "",
+      "label" : "Antes de pagar, confira o nome de quem recebe no app do banco.",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        38.039999999999999,
+        555.70666666666671,
+        19.920000000000002,
+        19.920000000000073
+      ],
+      "id" : "checkmark.circle",
+      "label" : "Selecionado",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        38.040000915527344,
+        554.66668701171875,
+        346.95999145507812,
+        42.33331298828125
+      ],
+      "id" : "",
+      "label" : "Antes de pagar, confira o nome de quem recebe no app do banco.",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        20,
+        610,
+        400,
+        33.666666666666629
+      ],
+      "id" : "",
+      "label" : "A conferência acontece só no seu celular.",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        20,
+        661.33333333333337,
+        400,
+        48
+      ],
+      "id" : "",
+      "label" : "Enviar para uma conversa",
+      "type" : 9
+    },
+    {
+      "frame" : [
+        38.039999999999999,
+        676.75666666666666,
+        19.920000000000002,
+        17.153333333333421
+      ],
+      "id" : "arrowshape.turn.up.right",
+      "label" : "Avançar",
+      "type" : 43
+    },
+    {
+      "frame" : [
+        38.040000915527344,
+        674.33331298828125,
+        228.95999145507812,
+        20.33331298828125
+      ],
+      "id" : "",
+      "label" : "Enviar para uma conversa",
+      "type" : 48
+    },
+    {
+      "frame" : [
+        407,
+        116,
+        30,
+        778
+      ],
+      "id" : "",
+      "label" : "Barra de rolagem vertical, 1 página",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        407,
+        116,
+        30,
+        778
+      ],
+      "id" : "",
+      "label" : "Barra de rolagem vertical, 1 página",
+      "type" : 1
+    },
+    {
+      "frame" : [
+        0,
+        0,
+        440,
+        956
+      ],
+      "id" : "Toolbar",
+      "label" : "Barra de Ferramentas",
+      "type" : 24
+    }
+  ],
+  "height" : 956,
+  "width" : 440
+}

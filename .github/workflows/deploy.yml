@@ -31,10 +31,6 @@ jobs:
         with:
           repository: bipe-chat/bipe-shared
           path: bipe-shared
-      - uses: actions/checkout@v4
-        with:
-          repository: bipe-chat/compound-design-tokens
-          path: bipe-tokens
       - uses: pnpm/action-setup@v4
         with:
           package_json_file: bipe-web/package.json

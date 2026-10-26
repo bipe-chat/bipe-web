@@ -1,7 +1,7 @@
 // Renders the store panels and the social posts for /sobre/marca/ (bipe-chat/bipe#466) with
 // scripts/store-images.mjs, into .brand-images/<group>/<device>/<locale>/. src/store.ts reads the
 // manifests at build time and scripts/build.mjs copies the PNGs into dist/. The captures come from
-// bipe-ios/appstore/raw; a missing or blank capture stops the build, as in store-images.mjs.
+// appstore/raw; a missing or blank capture stops the build, as in store-images.mjs.
 import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { renderSet } from "./store-images.mjs";
@@ -13,7 +13,7 @@ export const BRAND_SETS = {
   posts: { listing: "social/posts.md", devices: ["ig-post", "ig-story", "ig-square"] },
 };
 const SHOWN = new Set(["built", "testing", "policy"]);
-// The store has pt-BR captures only. Add a locale here when bipe-ios/appstore/raw has its captures.
+// The store has pt-BR captures only. Add a locale here when appstore/raw has its captures.
 const LOCALES = ["pt-BR"];
 
 export async function writeBrandImages(root, outDir) {

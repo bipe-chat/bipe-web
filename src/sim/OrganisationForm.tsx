@@ -79,7 +79,7 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
       </label>
       <label>{c.cnpj}
         <input name="cnpj" maxLength={32} inputMode="text" autoComplete="off" aria-invalid={cnpjBad} onChange={() => setCnpjBad(false)} />
-        {cnpjBad && <span className="small" role="alert" style={{ color: "var(--cpd-color-text-critical-primary)", fontWeight: 400 }}>{c.cnpjInvalid}</span>}
+        {cnpjBad && <span className="small" role="alert" style={{ color: "var(--bipe-red-900)", fontWeight: 400 }}>{c.cnpjInvalid}</span>}
       </label>
       <label>{c.name}<input name="name" required maxLength={120} autoComplete="name" /></label>
       <label>{c.role}<input name="role" maxLength={120} autoComplete="organization-title" /></label>
@@ -109,7 +109,7 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
       {/* Honeypot: people never see or fill it. */}
       <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" className="visually-hidden" />
       <div><button className="button primary" type="submit" disabled={state === "sending"}>{c.submit}</button></div>
-      {state === "error" && <p className="small" role="alert" style={{ color: "var(--cpd-color-text-critical-primary)" }}>{c.error}</p>}
+      {state === "error" && <p className="small" role="alert" style={{ color: "var(--bipe-red-900)" }}>{c.error}</p>}
       <p className="small muted">{c.note} <a href={privacy}>{privacyLabel}</a></p>
     </form>
   );

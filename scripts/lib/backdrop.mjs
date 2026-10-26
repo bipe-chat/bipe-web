@@ -7,25 +7,21 @@
 //   mesh     2 or 3 large radial blobs from the ramps, layered on the base step
 //   pattern  mesh plus the Bipe mark at large scale, cropped, tone on tone
 //
-// Ramps come only from bipe-tokens: açaí is `acai` in tokens/theme-light.json, and the expressive
-// ramps (pitanga, caju, jabuticaba, jenipapo) are tokens/bipe-expressive.json. The expressive ramps are for
-// marketing backgrounds only: never text, borders or trust states (bipe-tokens BIPE.md, change 6).
+// Ramps come only from bipe-shared design/tokens.json (light theme): açaí, and the expressive ramps
+// (pitanga, caju, jabuticaba, jenipapo). The expressive ramps are for marketing backgrounds only: never
+// text, borders or trust states (bipe-shared design/README.md).
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const tokens = join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-tokens/tokens");
-const values = (family) => Object.fromEntries(Object.entries(family).map(([step, t]) => [step, t.value.toUpperCase()]));
+const ramps = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-shared/design/tokens.json"), "utf8")).ramps;
+const light = (name) => ramps[name].light;
 export const ACCENTS = ["pitanga", "caju", "jabuticaba", "jenipapo"];
-const light = JSON.parse(readFileSync(join(tokens, "theme-light.json"), "utf8")).color;
-export const RAMPS = {
-  acai: values(light.acai),
-  ...Object.fromEntries(Object.entries(JSON.parse(readFileSync(join(tokens, "bipe-expressive.json"), "utf8")).color.expressive).map(([k, v]) => [k, values(v)])),
-};
+export const RAMPS = Object.fromEntries(["acai", ...ACCENTS].map((k) => [k, light(k)]));
 
 // App ramps for the store callouts (lib/callouts.mjs), so an enlarged element has the colours it has in
-// the phone: yellow is the caution amber of the scam warning, gray the text, açaí the buttons and badges.
-export const UI = Object.fromEntries(["yellow", "gray", "acai"].map((k) => [k, values(light[k])]));
+// the phone: amber is the caution colour of the scam warning, gray the text, açaí the buttons and badges.
+export const UI = Object.fromEntries(["amber", "gray", "acai"].map((k) => [k, light(k)]));
 
 export const TEXTURES = ["mesh", "pattern"];
 const WHITE = "#FFFFFF";

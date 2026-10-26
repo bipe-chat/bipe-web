@@ -1,4 +1,4 @@
-/* The /empresas/ minis (src/sim/BusinessMinis.tsx). Colours only from bipe-tokens variables (site.css :root). */
+/* The /empresas/ minis (src/sim/BusinessMinis.tsx). Colours only from the --bipe-* variables (site.css :root). */
 .biz-points { max-width: 46em; }
 .biz-points li { color: var(--muted); font-size: 16px; }
 .biz-stage { width: 100%; min-width: 0; font-family: var(--app); }
@@ -40,7 +40,7 @@
 .desk-msg.customer { align-self: flex-start; background: var(--surface); }
 .desk-msg.agent { align-self: flex-end; background: var(--acai-wash); color: var(--text); }
 .desk-msg.card { background: none; padding: 0; width: 240px; max-width: 85%; }
-.desk-event { align-self: center; font-size: 12px; color: var(--cpd-color-text-trust-verified); font-weight: 600; display: inline-flex; gap: 4px; align-items: center; animation: rise .3s ease-out both; }
+.desk-event { align-self: center; font-size: 12px; color: var(--bipe-trust-verified-ink); font-weight: 600; display: inline-flex; gap: 4px; align-items: center; animation: rise .3s ease-out both; }
 .desk-ask { border: 1px solid var(--line); border-radius: 12px; padding: 9px 10px; display: flex; flex-direction: column; gap: 6px; background: var(--bg); font-size: 13px; }
 .desk-ask-head { display: flex; gap: 5px; align-items: center; color: var(--acai); font-weight: 600; font-size: 11px; }
 .desk-ask-option { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 5px 8px; }
@@ -63,7 +63,7 @@
 .desk-card dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; margin: 0; padding: 0 12px 10px; font-size: 13px; }
 .desk-card dt { color: var(--muted); }
 .desk-card dd { margin: 0; }
-.desk-notes { margin: 0 12px; padding: 10px; border-radius: 10px; background: var(--cpd-color-bg-trust-caution-subtle); color: var(--text); font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
+.desk-notes { margin: 0 12px; padding: 10px; border-radius: 10px; background: var(--bipe-trust-caution-wash); color: var(--text); font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
 .desk-notes strong { font-size: 12px; }
 .desk-notes strong .muted { font-weight: 400; }
 .desk-notes ul { margin: 0; padding-left: 16px; }

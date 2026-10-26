@@ -2,7 +2,7 @@
 // whole phone is scaled with CSS zoom, so every value can be copied 1:1 from the SwiftUI source
 // (bipe-ios: TimelineItemBubbledStylerView, RoomHeaderView, MessageComposer, HomeScreenRoomCell).
 import type { CSSProperties, ReactNode } from "react";
-import { Avatar, decor, label, who } from "../cast";
+import { Avatar, label, who } from "../cast";
 import { t, type Lang } from "../shared";
 import { useClock } from "./clock";
 import { Icon, type IconName } from "./ui";
@@ -155,7 +155,7 @@ export function Bubble({ lang, out = false, run = "single", sender, savedAs, mar
       {head && e && (
         <div className="sender-head">
           <Avatar id={e.id} size={32} savedAs={savedAs} />
-          <span className={`sender-name d${decor(e)}`}>{label(e, savedAs)}</span>
+          <span className="sender-name">{label(e, savedAs)}</span>
           {mark}
         </div>
       )}
