@@ -78,12 +78,16 @@ export function renderMarkdown(route: Route): string {
   const feature = product.features.find((f) => paths.feature(lang, f) === route.path);
   const audience = product.audiences.find((a) => paths.audience(lang, a) === route.path);
   if (route.path === paths.home(lang)) {
-    out.push(`## ${c.home.featuresTitle}`, "");
-    for (const id of product.home.features) {
+    const list = (ids: string[]) => ids.map((id) => {
       const f = product.features.find((f) => f.id === id)!;
-      out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}): ${f[lang].body}`);
-    }
-    out.push("", `## ${product.origin[lang].title}`, "", product.origin[lang].body, "", `[${c.about}](${abs(paths.about(lang))})`, "");
+      return `- [${f[lang].name}](${abs(paths.feature(lang, f))}): ${f[lang].body}`;
+    });
+    const handle = product.tentpoles.find((t) => t.id === "handle")!;
+    out.push(...list(product.home.proof), "");
+    out.push(`## ${handle[lang].title}`, "", handle[lang].summary, "", ...handle[lang].points.map((p) => `- ${p}`), "", `[${c.more}](${abs(paths.tentpole(lang, handle))})`, "");
+    out.push(`## ${c.home.featuresTitle}`, "", ...list(product.home.features), "");
+    out.push(`## ${c.home.businessTitle}`, "", ...list(product.home.business), "", `[${product.organisations[lang].nav}](${abs(paths.organisations(lang))})`, "");
+    out.push(`## ${product.origin[lang].title}`, "", product.origin[lang].body, "", `[${c.about}](${abs(paths.about(lang))})`, "");
     out.push(`## ${c.home.joinTitle}`, "", c.waitlist.heroLead, "", `[${c.waitlist.submit}](${abs(paths.home(lang))}#convite)`, "", `[${c.home.hasInvite}](${abs(paths.download(lang))})`, "");
   } else if (route.path === paths.download(lang)) {
     out.push(`## ${c.onboarding.title}`, "", c.onboarding.lead, "", ...c.onboarding.steps.map((step, i) => `${i + 1}. ${step}`), "", c.onboarding.codeNote, "");

@@ -45,6 +45,8 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
 export function HomePage({ lang }: { lang: Lang }) {
   const c = chrome[lang];
   const lead = product.tentpoles[0];
+  const handle = product.tentpoles.find((tp) => tp.id === "handle")!;
+  const byId = (id: string) => product.features.find((f) => f.id === id)!;
   return (
     <>
       <section className="wrap hero">
@@ -52,17 +54,36 @@ export function HomePage({ lang }: { lang: Lang }) {
           <h1 id="hero-title">{product.promise[lang].title}</h1>
           {lang === "pt" && HEADLINE.active && <script dangerouslySetInnerHTML={{ __html: assignScript() }} />}
           <p className="lede">{product.promise[lang].lede}</p>
-          <a className="button primary" href={paths.download(lang)}>{c.home.try}</a>
+          <p className="hero-actions">
+            <a className="button primary" href={paths.download(lang)}>{c.home.try}</a>
+            <a className="button secondary" href={paths.features(lang)}>{c.allFeatures}</a>
+          </p>
           <p className="small muted" style={{ marginTop: 14 }}>{c.home.testing}</p>
         </div>
         <Demo lang={lang} tp={lead} index={0} />
       </section>
+      <section className="wrap">
+        <ul className="proof">
+          {product.home.proof.map((id) => {
+            const f = byId(id);
+            return <li key={id}><a href={paths.feature(lang, f)}><FeatureIcon f={f} /><span><strong>{f[lang].name}</strong><span className="small muted">{f[lang].body}</span></span></a></li>;
+          })}
+        </ul>
+      </section>
+      <section className="wrap section"><TentpoleSection lang={lang} tp={handle} flip /></section>
       <section className="wrap section">
         <h2>{c.home.featuresTitle}</h2>
         <div className="grid" style={{ marginTop: 24 }}>
-          {product.home.features.map((id) => <FeatureCard lang={lang} f={product.features.find((f) => f.id === id)!} key={id} />)}
+          {product.home.features.map((id) => <FeatureCard lang={lang} f={byId(id)} key={id} />)}
         </div>
         <p className="more-links"><MoreLink href={paths.features(lang)}>{c.allFeatures}</MoreLink></p>
+      </section>
+      <section className="wrap section">
+        <h2>{c.home.businessTitle}</h2>
+        <div className="grid" style={{ marginTop: 24 }}>
+          {product.home.business.map((id) => <FeatureCard lang={lang} f={byId(id)} key={id} />)}
+        </div>
+        <p className="more-links"><MoreLink href={paths.organisations(lang)}>{product.organisations[lang].nav}</MoreLink></p>
       </section>
       <section className="wrap section">
         <div className="origin">

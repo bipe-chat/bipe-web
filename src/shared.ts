@@ -145,7 +145,7 @@ const productData = productJson as unknown as { features: Omit<Feature, "status"
 
 export const product = { ...productData, features: productData.features.map((f) => ({ ...f, status: featureStatus(f.id) })) } as unknown as {
   promise: Copy<{ title: string; lede: string }>;
-  home: { features: string[] };
+  home: { proof: string[]; features: string[]; business: string[] };
   realFake: Copy<{ title: string; lede: string; caption: string }>;
   headlineTest: { experiment: string; active: boolean; arms: ({ id: string; angle: string } & Copy<string>)[] };
   sides: Side[];
@@ -248,6 +248,7 @@ export const distribution = distributionJson as unknown as {
   source: { org: string; repos: SourceRepo[]; code?: CodeLink[] };
   contact: string;
   steward: { name: string; url: string };
+  social: { accounts: { id: string; name: string; handle: string; url: string }[] };
 };
 /** The side a tentpole belongs to, or undefined (groups sit outside the frame). */
 export const sideOf = (tp: Tentpole): Side | undefined => product.sides.find((s) => s.tentpoles.includes(tp.id));
