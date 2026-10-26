@@ -48,8 +48,8 @@ export function WhoCanReadPage({ lang }: { lang: Lang }) {
         <ul>{c.limits.map((x) => <li key={x}>{x}</li>)}</ul>
         <h2 style={{ marginTop: 40 }}>{c.faqTitle}</h2>
         {c.faq.map((f) => <div key={f.q}><h3>{f.q}</h3><p>{f.a}</p></div>)}
-        <Markdown md={c.more} className="who-more" />
       </section>
+      <Markdown md={c.more} className="who-more" />
     </>
   );
 }
