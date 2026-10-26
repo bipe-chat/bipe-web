@@ -61,7 +61,7 @@
 .scam-ticks + .scam-col .scam-cap { left: 0; transform: translateY(-4px); }
 .scam-col:last-child .scam-cap { left: auto; right: 0; transform: translateY(-4px); }
 /* Library of golpes (bipe#175): group headings on the hub, the outside-Bipe list, the limit box on a type page. */
-.scam-group { font-size: 15px; text-transform: none; color: var(--muted); margin: 36px 0 4px; font-family: var(--brand); font-weight: 600; }
+.scam-group { font-size: 15px; text-transform: none; color: var(--muted); margin: 36px 0 4px; font-weight: 600; }
 .scam-limit-box { margin-top: 24px; border-left: 3px solid var(--line); padding-left: 16px; }
 .scam-limit-box h3 { font-size: 18px; margin: 0 0 6px; }
 .scam-limit-box p { margin: 0; }
