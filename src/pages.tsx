@@ -78,22 +78,21 @@ export function HomePage({ lang }: { lang: Lang }) {
         </div>
         <p className="more-links"><MoreLink href={paths.features(lang)}>{c.allFeatures}</MoreLink></p>
       </section>
-      <section className="wrap section">
-        <div className="origin">
-          <span style={{ color: "var(--acai)" }}><Mark size={56} /></span>
+      <section className="wrap section" id="convite">
+        <div className="closing">
           <div>
-            <h2 style={{ fontSize: 28 }}>{product.origin[lang].title}</h2>
-            <p className="muted" style={{ margin: "8px 0 0", maxWidth: "40em" }}>{product.origin[lang].body}</p>
+            <h2>{c.home.joinTitle}</h2>
+            <p className="muted">{c.waitlist.heroLead}</p>
+            <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.home(lang) }} />
+            <p className="small closing-links"><a href={paths.download(lang)}>{c.home.hasInvite}</a><a href={paths.help(lang)}>{c.home.help}</a></p>
+          </div>
+          <div className="closing-origin">
+            <span style={{ color: "var(--acai)" }}><Mark size={40} /></span>
+            <h3>{product.origin[lang].title}</h3>
+            <p className="muted small">{product.origin[lang].body}</p>
             <MoreLink href={paths.about(lang)}>{c.about}</MoreLink>
           </div>
         </div>
-      </section>
-      <section className="wrap narrow section" id="convite">
-        <h2>{c.home.joinTitle}</h2>
-        <p>{c.waitlist.heroLead}</p>
-        <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.home(lang) }} />
-        <p><a href={paths.download(lang)}>{c.home.hasInvite}</a></p>
-        <p className="small"><a href={paths.help(lang)}>{c.home.help}</a></p>
       </section>
     </>
   );
