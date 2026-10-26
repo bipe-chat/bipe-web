@@ -301,40 +301,50 @@ export function DownloadPage({ lang }: { lang: Lang }) {
   const c = chrome[lang];
   const { ios, android } = distribution;
   return (
-    <section className="wrap section">
-      <h1>{c.downloadTitle}</h1>
-      <p className="lede">{c.downloadLede}</p>
-      <div id="convite" style={{ marginBottom: 40 }}>
-        <h2>{c.onboarding.title}</h2>
-        <p>{c.onboarding.lead}</p>
-        <ol>{c.onboarding.steps.map((step) => <li key={step}>{step}</li>)}</ol>
-        <p className="small muted">{c.onboarding.codeNote}</p>
-        <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.download(lang) }} />
-      </div>
-      <div className="download-grid">
-        <div className="card platform">
-          <h2>{c.iosTitle}</h2>
-          <p>{ios[lang].note} {c.needs} {ios.minOS}.</p>
-          <ol style={{ color: "var(--muted)", fontSize: 15, paddingLeft: 20 }}>{c.testflightSteps.map((s) => <li key={s}>{s}</li>)}</ol>
-          {ios.url && <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a>}
+    <>
+      <section className="wrap section">
+        <h1>{c.downloadTitle}</h1>
+        <p className="lede">{c.downloadLede}</p>
+        <h2 className="sub" style={{ marginTop: 40 }}>{c.onboarding.title}</h2>
+        <ol className="step-cards">{c.onboarding.steps.map((step, i) => <li className="card" key={step}><span className="step-n display">{i + 1}</span>{step}</li>)}</ol>
+        <p className="small muted" style={{ marginTop: 12 }}>{c.onboarding.codeNote}</p>
+      </section>
+      <section className="wrap">
+        <div className="download-grid">
+          <div className="card platform">
+            <h2>{c.iosTitle}</h2>
+            <p className="muted">{ios[lang].note} {c.needs} {ios.minOS}.</p>
+            <ol className="muted">{c.testflightSteps.map((s) => <li key={s}>{s}</li>)}</ol>
+            {ios.url && <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a>}
+          </div>
+          <div className="card platform" id="android">
+            <h2>{c.androidTitle}</h2>
+            <p className="muted">{android[lang].note}</p>
+            {android.status === "available" && android.url
+              ? <a className="button primary" href={android.url}><Icon name="android" />{android[lang].label}</a>
+              : <Island name="WaitlistForm" props={{ lang, platform: "android", source: paths.download(lang) }} />}
+          </div>
         </div>
-        <div className="card platform" id="android">
-          <h2>{c.androidTitle}</h2>
-          <p>{android[lang].note}</p>
-          {android.status === "available" && android.url
-            ? <a className="button primary" href={android.url}><Icon name="android" />{android[lang].label}</a>
-            : <Island name="WaitlistForm" props={{ lang, platform: "android", source: paths.download(lang) }} />}
+      </section>
+      <section className="wrap section" id="convite">
+        <div className="closing">
+          <div>
+            <h2>{c.home.joinTitle}</h2>
+            <p className="muted">{c.waitlist.heroLead}</p>
+            <Island name="WaitlistForm" props={{ lang, platform: "auto", source: paths.download(lang) }} />
+          </div>
+          <div className="closing-origin">
+            <h3>{c.home.help}</h3>
+            <MoreLink href={paths.help(lang)}>{c.help.title}</MoreLink>
+            {publicRepos.length > 0 && <>
+              <h3 style={{ marginTop: 16 }}>{c.sourceTitle}</h3>
+              <p className="muted small">{c.sourceLede}</p>
+              <MoreLink href={`${paths.technology(lang)}#source`}>{product.technical[lang].nav}</MoreLink>
+            </>}
+          </div>
         </div>
-      </div>
-      <p style={{ marginTop: 24 }}><a href={paths.help(lang)}>{c.home.help}</a></p>
-      {publicRepos.length > 0 && (
-        <div id="source" style={{ marginTop: 56 }}>
-          <h2>{c.sourceTitle}</h2>
-          <p>{c.sourceLede}</p>
-          <ul>{publicRepos.map((r) => <li key={r.id}><a href={r.url}>{r[lang]}</a></li>)}</ul>
-        </div>
-      )}
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -506,29 +516,25 @@ export function OrganisationsPage({ lang }: { lang: Lang }) {
           <Figure lang={lang} id="instituicao" caption={p.figureCaption} />
         </div>
       </section>
-      <section className="wrap section">
-        <div className="grid">
-          {[p.ask, p.steward].map((s) => (
-            <div className="card" key={s.heading}>
-              <h3 style={{ fontSize: 20 }}>{s.heading}</h3>
-              <p style={{ color: "var(--muted)", fontSize: 15, marginTop: 12, marginBottom: 0 }}>{s.body}</p>
+      <section className="wrap section" id="form">
+        <div className="split top">
+          <div className="stack">
+            {[p.ask, p.steward].map((s) => (
+              <div className="card" key={s.heading}>
+                <h2 className="sub">{s.heading}</h2>
+                <p className="muted" style={{ marginTop: 12, marginBottom: 0 }}>{s.body}</p>
+              </div>
+            ))}
+            <div className="card">
+              <h2 className="sub">{p.small.heading}</h2>
+              <p className="muted" style={{ marginTop: 12 }}>{p.small.body}</p>
+              <a className="button secondary compact" href={paths.download(lang)}>{p.small.button}</a>
             </div>
-          ))}
-        </div>
-      </section>
-      <section className="wrap narrow section">
-        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
-          <div style={{ flex: "1 1 280px" }}>
-            <h2 className="sub">{p.small.heading}</h2>
-            <p style={{ color: "var(--muted)", fontSize: 15, marginTop: 8, marginBottom: 0 }}>{p.small.body}</p>
           </div>
-          <a className="button secondary" href={paths.download(lang)}>{p.small.button}</a>
-        </div>
-      </section>
-      <section className="wrap narrow section" id="form">
-        <div className="card" style={{ padding: 32 }}>
-          <h2 className="sub" style={{ marginBottom: 16 }}>{p.cta}</h2>
-          <Island name="OrganisationForm" props={{ lang, copy: p.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
+          <div className="card" style={{ padding: 32 }}>
+            <h2 className="sub" style={{ marginBottom: 16 }}>{p.cta}</h2>
+            <Island name="OrganisationForm" props={{ lang, copy: p.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
+          </div>
         </div>
       </section>
     </>
@@ -569,7 +575,7 @@ export function TechnologyPage({ lang }: { lang: Lang }) {
       {publicRepos.length > 0 && (
         <div className="side" id="source">
           <h2>{c.sourceTitle}</h2>
-          <ul>{publicRepos.map((r) => <li key={r.id}><a href={r.url}>{r[lang]}</a></li>)}</ul>
+          <div className="grid even" style={{ marginTop: 16 }}>{publicRepos.map((r) => <a className="card repo" href={r.url} key={r.id}><Icon name="code" size={18} />{r[lang]}</a>)}</div>
         </div>
       )}
     </section>
@@ -754,20 +760,22 @@ export function AboutPage({ lang }: { lang: Lang }) {
 export function HelpPage({ lang }: { lang: Lang }) {
   const c = chrome[lang].help;
   const account = product.features.find((f) => f.id === "new-phone")!;
+  const ways = [[paths.download(lang), c.download], [paths.feature(lang, account), c.account], [paths.lgpd(lang), c.data], [paths.organisations(lang), c.organisations]];
   return (
-    <section className="wrap narrow section">
+    <section className="wrap section">
       <h1>{c.title}</h1>
       <p className="lede">{c.lede}</p>
-      <p>{c.message}</p>
-      <p className="small muted">{c.safety}</p>
-      <Island name="HelpForm" props={{ lang, copy: c.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
-      <h2 style={{ marginTop: 40 }}>{c.linksTitle}</h2>
-      <ul>
-        <li><a href={paths.download(lang)}>{c.download}</a></li>
-        <li><a href={paths.feature(lang, account)}>{c.account}</a></li>
-        <li><a href={paths.lgpd(lang)}>{c.data}</a></li>
-        <li><a href={paths.organisations(lang)}>{c.organisations}</a></li>
-      </ul>
+      <div className="split top" style={{ marginTop: 40 }}>
+        <div className="card" style={{ padding: 32 }}>
+          <p style={{ marginTop: 0 }}>{c.message}</p>
+          <p className="small muted" style={{ marginBottom: 24 }}>{c.safety}</p>
+          <Island name="HelpForm" props={{ lang, copy: c.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
+        </div>
+        <div>
+          <h2 className="sub">{c.linksTitle}</h2>
+          <ul className="link-list">{ways.map(([href, label]) => <li key={href}><a href={href}>{label}<span aria-hidden="true">→</span></a></li>)}</ul>
+        </div>
+      </div>
     </section>
   );
 }

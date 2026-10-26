@@ -284,6 +284,22 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 
 /* Download */
 .download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; margin-top: 32px; }
+.download-grid .platform { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.download-grid .platform p, .download-grid .platform ol { margin: 0 0 12px; }
+.download-grid .platform ol { padding-left: 20px; font-size: 15px; }
+.download-grid .platform > .button { margin-top: auto; }
+/* Numbered steps in a row (download page). */
+.step-cards { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; }
+.step-cards li { display: flex; flex-direction: column; gap: 8px; }
+.step-n { font-size: 28px; color: var(--acai); line-height: 1; }
+/* Two columns that start at the top (forms beside their context). */
+.split.top { align-items: start; }
+.stack { display: grid; gap: 16px; }
+.link-list { list-style: none; margin: 12px 0 0; padding: 0; }
+.link-list a { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.link-list a:hover { color: var(--acai); }
+a.card.repo { display: flex; align-items: center; gap: 12px; padding: 16px 20px; color: var(--text); }
+a.card.repo svg { color: var(--acai); flex: none; }
 .platform h2 { margin-bottom: 8px; }
 
 /* Brand kit */
@@ -360,6 +376,7 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .closing .closing-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 24px; }
 .closing-origin { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding-left: var(--gutter); border-left: 1px solid var(--line); }
 .closing-origin h3 { margin: 6px 0 0; font-size: 20px; }
+.closing-origin h3:first-child { margin-top: 0; }
 .closing .closing-origin p { margin: 0 0 6px; }
 @media (max-width: 760px) {
   .closing { grid-template-columns: minmax(0, 1fr); }
@@ -632,7 +649,7 @@ a.staff-tile:hover { border-color: var(--acai); }
 .who-yes strong { color: var(--bipe-trust-caution-ink); }
 .who-partial strong { color: var(--bipe-trust-neutral-ink); }
 .who-no strong { color: var(--bipe-trust-verified-ink); }
-.who-more p { color: var(--muted); margin-top: 32px; }
+.who-more p { color: var(--muted); margin: 0 0 8px; }
 /* Accessibility (/acessibilidade/): each level in words, the colour only repeats it. */
 .a11y-card h3 { font-size: 18px; margin: 0 0 12px; }
 .a11y-status { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 20px; margin: 0 0 14px; font-size: 14px; }
