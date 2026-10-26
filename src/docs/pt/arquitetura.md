@@ -51,7 +51,7 @@ O aviso de golpe roda no celular, depois de decifrar. A mensagem não sai do apa
 | Matrix Authentication Service | Login, sessões, tokens (OIDC) |
 | API do Bipe | Cadastro com convite, @, achar contatos, recuperação, perfil público, checagem de CNPJ, selos |
 | Sygnal | Envia notificações pelos serviços da Apple e do Google |
-| LiveKit | Chamadas de voz e vídeo (MatrixRTC) |
+| LiveKit | Chamadas de voz e vídeo (MatrixRTC) e o TURN em `turn.bipe.net.br` |
 | Element Web | App na web, em `chat.bipe.net.br` |
 | Postgres | Bancos de dados do Synapse, do MAS e da API do Bipe |
 | Caddy | TLS e roteamento de todos os endereços |
@@ -64,7 +64,7 @@ Um repositório guarda o que os apps e o site têm em comum: nomes reservados, p
 
 ## Hospedagem
 
-Os servidores ficam no Brasil, em empresas brasileiras. As conversas e as contas ficam guardadas lá.
+Os servidores ficam no Brasil, em empresas brasileiras. As conversas e as contas ficam guardadas lá. O servidor de chamadas e o TURN também ficam no Brasil. Nenhuma chamada passa por um serviço fora do Brasil.
 
 ## Site
 
