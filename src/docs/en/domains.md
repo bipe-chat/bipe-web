@@ -28,7 +28,8 @@ If `bipe.chat` stops working, chat keeps working. Only the site and new link pre
 | `account.bipe.net.br` | Sign-in and accounts (Matrix Authentication Service) | Apps |
 | `api.bipe.net.br` | Bipe API: sign-up, invites, @handles, recovery, verification | Apps and the site |
 | `push.bipe.net.br` | Push gateway (Sygnal). Only `/_matrix/push/*` | The homeserver |
-| `rtc.bipe.net.br` | Voice and video calls (LiveKit) | Apps |
+| `rtc.bipe.net.br` | Voice and video calls (LiveKit) | Apps and browsers |
+| `turn.bipe.net.br` | Call relay (LiveKit TURN) for networks that block direct traffic | Apps and browsers |
 | `chat.bipe.net.br` | Web client (Element Web) | Browsers |
 | `admin.bipe.net.br` | Staff console | Bipe staff only |
 

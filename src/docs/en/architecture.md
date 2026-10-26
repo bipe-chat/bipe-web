@@ -51,7 +51,7 @@ Scam warnings run on the phone, after decryption. The message does not leave the
 | Matrix Authentication Service | Sign-in, sessions, tokens (OIDC) |
 | Bipe API | Sign-up with invites, @handles, contact discovery, recovery, public profiles, CNPJ checks, badges |
 | Sygnal | Push gateway to Apple and Google push services |
-| LiveKit | Voice and video calls (MatrixRTC) |
+| LiveKit | Voice and video calls (MatrixRTC) and TURN on `turn.bipe.net.br` |
 | Element Web | Web client on `chat.bipe.net.br` |
 | Postgres | Databases for Synapse, MAS and the Bipe API |
 | Caddy | TLS and routing for every host |
@@ -64,7 +64,7 @@ One repository holds what the apps and the site share: reserved names, scam patt
 
 ## Hosting
 
-The servers run in Brazil, with Brazilian companies. Conversations and accounts are stored there.
+The servers run in Brazil, with Brazilian companies. Conversations and accounts are stored there. The call server and TURN also run in Brazil. No call goes through a service outside Brazil.
 
 ## Site
 
