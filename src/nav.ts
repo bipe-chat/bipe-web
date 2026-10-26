@@ -23,6 +23,7 @@ export function links(lang: Lang) {
     compare: { href: paths.compare(lang), label: compare[lang].nav },
     technology: { href: paths.technology(lang), label: product.technical[lang].nav },
     docs: { href: paths.docs(lang), label: c.docs },
+    llms: { href: "/llms.txt", label: c.llms },
     download: { href: paths.download(lang), label: c.download },
     audiences: { href: paths.audiences(lang), label: product.audiencesHub[lang].nav },
     business: { href: paths.business(lang), label: product.business[lang].nav },
@@ -54,7 +55,7 @@ export const headerCta = "download" satisfies LinkId;
 export const footer = [
   { group: "product", links: ["tentpoles", "features", "download"] }, // What does it do, and how do I get it?
   { group: "for", links: ["audiences", "business", "pricing"] }, // Is it for me?
-  { group: "learn", links: ["scams", "technology", "docs", "compare", "source"] }, // How does it work, can I check it?
+  { group: "learn", links: ["scams", "technology", "docs", "llms", "compare", "source"] }, // How does it work, can I check it?
   { group: "bipe", links: ["about", "brand", "organisations", "accessibility", "contact"] }, // Who is behind it?
   { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];

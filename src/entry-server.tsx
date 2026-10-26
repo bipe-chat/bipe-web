@@ -217,12 +217,27 @@ export function renderJsonLd(route: Route): string {
   return [...(route.jsonLd?.(abs) ?? []), ...crumbs].map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`).join("\n");
 }
 
+const isDoc = (r: Route) => r.path.startsWith(paths.docs(r.lang));
+/** Indexed pages in llms order: docs first (how Bipe works, for agents), then pt, then en. */
+const llmsGroups = (): { title: string; routes: Route[] }[] => [
+  { title: "Docs", routes: routes.filter((r) => isDoc(r) && !r.noindex) },
+  ...(["pt", "en"] as Lang[]).map((lang) => ({
+    title: lang === "pt" ? "Português" : "English",
+    routes: routes.filter((r) => r.lang === lang && !r.noindex && !isDoc(r)),
+  })),
+];
+const llmsHead = () => ["# Bipe", "", `> ${product.promise.en.lede}`, "", `${chrome.en.steward} ${distribution.steward.name}: ${distribution.steward.url}`, ""];
+
 export function llmsTxt(): string {
-  const lines = ["# Bipe", "", `> ${product.promise.en.lede}`, "", `${chrome.en.steward} ${distribution.steward.name}: ${distribution.steward.url}`, ""];
-  // Docs first: how Bipe works (domains, architecture, links), for agents.
-  const isDoc = (r: Route) => r.path.startsWith(paths.docs(r.lang));
-  lines.push("## Docs", "");
-  for (const r of routes.filter((x) => isDoc(x) && !x.noindex)) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
+  const lines = llmsHead();
+  lines.push(
+    "Every page has a Markdown twin: add `index.md` to its URL. pt-BR is the main language, English is under /en/.",
+    `The full text of every page is in one file: ${abs("/llms-full.txt")}`,
+    "",
+  );
+  const [docs, ...langs] = llmsGroups();
+  lines.push(`## ${docs.title}`, "");
+  for (const r of docs.routes) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
   lines.push("");
   // The code (ADR 0028): repos, then deep links to the files behind each feature. Only public repos.
   if (publicRepos.length > 0) {
@@ -232,12 +247,19 @@ export function llmsTxt(): string {
     if (files.length > 0) lines.push("", "### Code map", "", ...files.map((f) => `- [${f.en}](${f.url})`));
     lines.push("");
   }
-  for (const lang of ["pt", "en"] as Lang[]) {
-    lines.push(`## ${lang === "pt" ? "Português" : "English"}`, "");
-    for (const r of routes.filter((x) => x.lang === lang && !x.noindex && !isDoc(x))) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
+  for (const g of langs) {
+    lines.push(`## ${g.title}`, "");
+    for (const r of g.routes) lines.push(`- [${r.title}](${abs(r.path)}index.md): ${r.description}`);
     lines.push("");
   }
   return lines.join("\n");
+}
+
+/** llms-full.txt: the Markdown twin of every indexed page in one file, in llms.txt order, each under its URL. */
+export function llmsFullTxt(): string {
+  const parts = [llmsHead().join("\n")];
+  for (const r of llmsGroups().flatMap((g) => g.routes)) parts.push(`---\n\nURL: ${abs(r.path)}\n\n${renderMarkdown(r).trim()}\n`);
+  return parts.join("\n");
 }
 
 export function sitemap(): string {
