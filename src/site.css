@@ -1,7 +1,8 @@
 /* Colours come only from bipe-shared design/tokens.json (light, dark and high contrast follow the system).
-   Site text uses Nunito. In-app minis (phone screens, business minis) use the system font, like the apps (ADR 0020). */
+   Titles use Nunito (rounded). Body text, nav and footer use Inter. In-app minis (phone screens, business minis) use the system font, like the apps (ADR 0020). */
 @import "@colors";
 @import "@fontsource-variable/nunito/wght.css";
+@import "@fontsource-variable/inter/wght.css";
 
 :root {
   --bg: var(--bipe-background);
@@ -16,6 +17,7 @@
   --on-acai: var(--bipe-ink-on-accent);
   --ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --brand: "Nunito Variable", var(--ui);
+  --body: "Inter Variable", var(--ui);
   --app: -apple-system, BlinkMacSystemFont, var(--ui);
   --radius: 20px;
   --gutter: 32px; /* one gap for every two-column layout (hero, splits, figure grids, compare, real vs fake) and stacked figures, so column edges line up page-wide. Small card grids keep 16px. */
@@ -25,7 +27,7 @@
 * { box-sizing: border-box; }
 ::selection { background-color: var(--acai); color: var(--on-acai); }
 html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 var(--brand); }
+body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 var(--body); }
 a { color: var(--acai); }
 img, svg { display: block; }
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
@@ -66,7 +68,7 @@ h1 { font-size: clamp(36px, 6vw, 60px); }
 h2 { font-size: clamp(28px, 4vw, 40px); }
 /* The only other h2 size: headings inside a card, a list area or a reading page. */
 h2.sub, .area h2, .compare-row h2, .platform h2, .legal h2 { font-size: 24px; }
-h3 { font-size: 19px; margin: 0 0 6px; }
+h3 { font-family: var(--brand); font-weight: 800; font-size: 19px; margin: 0 0 6px; }
 .lede { font-size: clamp(18px, 2.2vw, 21px); color: var(--muted); margin: 20px 0 0; max-width: 34em; }
 .status-line { margin: 0 0 14px; }
 .muted { color: var(--muted); }
