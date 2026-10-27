@@ -424,7 +424,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
 /** The price of a tier: its amount once set after the pilot (ADR 0075), else the pilot line. */
 export function tierPrice(lang: Lang, tier: (typeof product.pricing.tiers)[number]): string {
   const p = product.pricing[lang];
-  if (tier.amount === undefined) return p.pilotPrice;
+  if (tier.amount === undefined) return tier.pilotFree ? p.pilotFreePrice : p.pilotPrice;
   if (tier.amount === 0) return p.freePrice;
   return `R$ ${tier.amount.toLocaleString("pt-BR")}`;
 }
