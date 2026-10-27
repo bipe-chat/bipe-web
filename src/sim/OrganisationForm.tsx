@@ -8,7 +8,8 @@ export const ORGANISATION_KINDS = ["company", "institution", "association", "pub
 export const CUSTOMER_BANDS = ["lt_100", "100_1k", "1k_10k", "10k_100k", "gt_100k"] as const;
 export const CHANNELS = ["whatsapp_app", "whatsapp_api", "sms", "email", "phone", "own_app", "other"] as const;
 export const SPEND_BANDS = ["zero", "lt_500", "500_2k", "2k_10k", "10k_50k", "gt_50k", "unknown"] as const;
-type Kind = (typeof ORGANISATION_KINDS)[number];
+export type OrganisationKind = (typeof ORGANISATION_KINDS)[number];
+type Kind = OrganisationKind;
 export type OrganisationFormCopy = {
   organisation: string; name: string; email: string; role: string; cnpj: string; cnpjInvalid: string;
   kind: string; kinds: Record<Kind, string>;
@@ -29,6 +30,11 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
   const [kind, setKind] = useState<Kind | "">("");
   const [cnpjBad, setCnpjBad] = useState(false);
   const asks = kind !== "partner";
+  // An organisation audience page links here with `?tipo=<kind>` (paths.organisationForm, bipe#790).
+  useEffect(() => {
+    const k = new URLSearchParams(window.location.search).get("tipo");
+    if (k && (ORGANISATION_KINDS as readonly string[]).includes(k)) setKind(k as Kind);
+  }, []);
   // The note replaces a tall form, so the page gets shorter under the reader. Bring the note into view and focus it.
   const doneRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
