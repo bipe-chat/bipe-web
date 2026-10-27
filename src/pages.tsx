@@ -14,7 +14,7 @@ import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
 import { WhoCanReadSummary } from "./pages/PrivacyPage";
 import { storeSets } from "./store";
-import { codeLinks, compare, distribution, privacyRegister, product, publicRepo, publicRepos, type Audience, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
+import { codeLinks, compare, distribution, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
   const id = tp.demos[index];
@@ -241,6 +241,10 @@ export function AudiencesPage({ lang }: { lang: Lang }) {
           <h3>{product.business[lang].nav}</h3>
           <p>{product.business[lang].title}</p>
         </a>
+        <a className="card feature" href={paths.organisations(lang)}>
+          <h3>{product.organisations[lang].nav}</h3>
+          <p>{product.organisations[lang].card.line}</p>
+        </a>
       </div>
     </section>
   );
@@ -410,6 +414,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
         <p style={{ marginTop: 24 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
       </section>
       <section className="wrap section"><CodeList lang={lang} ids={["business-bridge", "business-inbox"]} /></section>
+      <OrganisationAudienceCards lang={lang} />
       <MailCta lang={lang} cta={b.cta} />
     </>
   );
@@ -481,6 +486,7 @@ export function PricingPage({ lang }: { lang: Lang }) {
           </div>
         </div>
       </section>
+      <OrganisationAudienceCards lang={lang} />
       <MailCta lang={lang} cta={product.business[lang].cta} label={p.ctaForm} />
     </>
   );
@@ -516,6 +522,7 @@ export function OrganisationsPage({ lang }: { lang: Lang }) {
           <Figure lang={lang} id="instituicao" caption={p.figureCaption} />
         </div>
       </section>
+      <OrganisationAudienceCards lang={lang} />
       <section className="wrap section" id="form">
         <div className="split top">
           <div className="stack">
@@ -536,6 +543,77 @@ export function OrganisationsPage({ lang }: { lang: Lang }) {
             <Island name="OrganisationForm" props={{ lang, copy: p.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
           </div>
         </div>
+      </section>
+    </>
+  );
+}
+
+/** One card per organisation audience page (bipe#790), on /organizacoes/, /empresas/ and /precos/. */
+function OrganisationAudienceCards({ lang }: { lang: Lang }) {
+  return (
+    <section className="wrap section">
+      <h2>{product.organisations[lang].audiencesHeading}</h2>
+      <div className="grid" style={{ marginTop: 24 }}>
+        {product.organisationAudiences.map((a) => (
+          <a className="card feature" href={paths.organisationAudience(lang, a)} key={a.id}>
+            <h3>{a[lang].name}</h3>
+            <p>{a[lang].headline}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+const STATUS_ORDER: Status[] = ["testing", "built", "planned"];
+
+/** The status of a section's features, best of iOS and Android, so a planned feature never reads as shipped. Policy features are left out. */
+function StatusLine({ lang, features }: { lang: Lang; features: Feature[] }) {
+  const best = (f: Feature) => STATUS_ORDER.find((s) => f.status.ios === s || f.status.android === s);
+  const groups = STATUS_ORDER.map((s) => ({ s, fs: features.filter((f) => best(f) === s) })).filter((g) => g.fs.length > 0);
+  if (!groups.length) return null;
+  return (
+    <p className="small muted" style={{ marginTop: 16 }}>
+      {groups.map((g, i) => (
+        <span key={g.s}>{i > 0 && " · "}{chrome[lang].status[g.s]}: {g.fs.map((f, j) => <span key={f.id}>{j > 0 && ", "}<a href={paths.feature(lang, f)}>{f[lang].name}</a></span>)}</span>
+      ))}
+    </p>
+  );
+}
+
+/** An organisation audience page (bipe#790): a need per section, carried by feature cards with their status, and a CTA to the form with the kind preselected. */
+export function OrganisationAudiencePage({ lang, a }: { lang: Lang; a: OrganisationAudience }) {
+  const copy = a[lang];
+  return (
+    <>
+      <section className="wrap narrow section">
+        <p className="eyebrow">{product.organisations[lang].label}</p>
+        <h1>{copy.headline}</h1>
+        <p className="lede">{copy.lede}</p>
+        <p className="small muted">{copy.note}</p>
+      </section>
+      {a.sections.map((s, i) => {
+        const features = s.features.map((id) => product.features.find((f) => f.id === id)!);
+        const text = (
+          <>
+            <h2>{copy.sections[i].heading}</h2>
+            <p className="muted" style={{ maxWidth: "40em" }}>{copy.sections[i].body}</p>
+          </>
+        );
+        return (
+          <section className="wrap section" id={s.id} key={s.id}>
+            {s.scene ? <div className="split"><div>{text}</div><Island name="SceneSim" props={{ lang, id: s.scene, caption: chrome[lang].sceneCaption }} /></div> : text}
+            {features.length > 0 && <div className="grid" style={{ marginTop: 24 }}>{features.map((f) => <FeatureCard lang={lang} f={f} key={f.id} />)}</div>}
+            <StatusLine lang={lang} features={features} />
+          </section>
+        );
+      })}
+      <section className="wrap section">
+        <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
+          <h2 className="sub">{copy.cta}</h2>
+          <a className="button primary" href={paths.organisationForm(lang, a.kind)}><Icon name="mail" />{chrome[lang].contact}</a>
+        </div>
+        <p style={{ marginTop: 24 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
       </section>
     </>
   );

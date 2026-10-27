@@ -1,4 +1,4 @@
-import type { OrganisationFormCopy } from "./sim/OrganisationForm";
+import type { OrganisationFormCopy, OrganisationKind } from "./sim/OrganisationForm";
 import type { IconName } from "./components/ui";
 // The site's only door into bipe-shared. Registries, strings and product copy come from there;
 // the scam, handle and name logic is the reference implementation every app must match.
@@ -129,6 +129,14 @@ export type Audience = {
   sections: { id: string; features: string[]; scene?: SceneId }[];
 } & Copy<{ name: string; title: string; headline: string; lede: string; sections: { heading: string; body: string }[]; note: string; cta: string; ctaSubject: string }>;
 
+/** An organisation audience page (/organizacoes/<slug>/, bipe#790): built from feature pages; `kind` preselects the organisation form. */
+export type OrganisationAudience = {
+  id: string;
+  kind: OrganisationKind;
+  slug: Copy<string>;
+  sections: { id: string; features: string[]; scene?: SceneId }[];
+} & Copy<{ name: string; title: string; headline: string; lede: string; sections: { heading: string; body: string }[]; note: string; cta: string }>;
+
 export type PricingTierId = "small" | "company" | "institution" | "public";
 
 // The status of each feature is its parity ledger item (bipe-shared/product/parity.json, ADR 0092).
@@ -174,8 +182,9 @@ export const product = { ...productData, features: productData.features.map((f) 
   organisations: Copy<{
     nav: string; label: string; title: string; lede: string; why: { heading: string; points: string[] }; figureCaption: string;
     ask: { heading: string; body: string }; steward: { heading: string; body: string }; small: { heading: string; body: string; button: string };
-    cta: string; aboutLink: string; card: { title: string; line: string }; form: OrganisationFormCopy;
+    cta: string; aboutLink: string; card: { title: string; line: string }; form: OrganisationFormCopy; audiencesHeading: string;
   }>;
+  organisationAudiences: OrganisationAudience[];
   technical: Copy<{ nav: string; title: string; lede: string }> & { groups: TechGroup[] };
   redirects: Record<string, string>;
 };
