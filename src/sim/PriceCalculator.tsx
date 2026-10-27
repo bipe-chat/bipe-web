@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Icon } from "../components/ui";
-import type { CalculatorCopy, CalculatorOrg, CalculatorPreset, Lang, PriceProposal, WhatsAppRates } from "../shared";
+import type { CalculatorCopy, CalculatorOrg, CalculatorPreset, Lang, PriceProposal } from "../shared";
 
-/** Marginal tiers: each rate applies only to the messages inside its band (Meta's volume tiers). */
+/** Marginal tiers: each rate applies only to the units inside its band. */
 export function tiered(count: number, tiers: [number, number][]): number {
   return tiers.reduce((sum, [from, rate], i) => {
     const to = tiers[i + 1]?.[0] ?? Infinity;
@@ -10,92 +10,78 @@ export function tiered(count: number, tiers: [number, number][]): number {
   }, 0);
 }
 
-export type Usage = { marketing: number; utility: number; authentication: number; service: number; numbers: number; bspPercent: number; bspMonthly: number };
-
-/** One month on the WhatsApp Business Platform in Brazil, before taxes. */
-export function whatsappBill(u: Usage, r: WhatsAppRates) {
-  const free = r.serviceFreePerNumber * Math.max(1, u.numbers);
-  const lines = {
-    marketing: u.marketing * r.marketing,
-    utility: tiered(u.utility, r.utility),
-    authentication: tiered(u.authentication, r.authentication),
-    service: Math.max(0, u.service - free) * r.service,
-  };
-  const meta = lines.marketing + lines.utility + lines.authentication + lines.service;
-  const bsp = (meta * u.bspPercent) / 100 + u.bspMonthly;
-  return { lines, free, meta, bsp, total: meta + bsp };
+/** The Instituição price per year for a number of people served (ADR 0206), between the minimum and the cap. */
+export function institutionYearly(people: number, p: PriceProposal): number {
+  return Math.min(p.institution.capYearly, Math.max(p.minMonthly * 12, tiered(people, p.institution.tiers)));
 }
 
-/** One month and one year on Bipe at the proposed amounts (ADR 0083, ADR 0125). `moved`: a small business with too many agents pays as a company. */
-export function bipeBill(org: CalculatorOrg, seats: number, band: number, p: PriceProposal) {
-  const company = p.company.monthly + Math.max(0, seats - 1) * p.company.extraSeat;
-  if (org === "small" && seats <= p.smallSeats) return { month: 0, year: 0, annual: null, moved: false };
-  if (org === "small" || org === "company") return { month: company, year: company * 12, annual: company * p.company.annualMonths, moved: org === "small" };
-  if (org === "nonprofit") {
-    const m = company * p.nonprofitFactor;
-    return { month: m, year: m * 12, annual: m * p.company.annualMonths, moved: false };
-  }
-  const yearly = p.institutionBands[band]!.yearly * (org === "public" ? p.publicBodyFactor : 1);
-  return { month: yearly / 12, year: yearly, annual: null, moved: false };
-}
-
-const ORGS: CalculatorOrg[] = ["small", "company", "nonprofit", "institution", "public"];
-/** Stops of the messages slider: all messages of the month. The slider keeps the mix of message types and scales each type. */
-const MESSAGE_STEPS = [1000, 2000, 5000, 10000, 20000, 50000, 80000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000];
-const TYPES = ["marketing", "utility", "authentication", "service"] as const;
-const MAX_SEATS = 30;
-const fill = (s: string, ...v: string[]) => v.reduce((out, x, i) => out.replace(`%${i + 1}$s`, x), s);
+export type BipePlan = "free" | "company" | "institution";
 
 /**
- * The calculator on /precos/ (bipe#812): an organisation's WhatsApp bill from Meta's rate card next to Bipe's proposed price.
- * Rates, amounts and copy come from `pricing` in bipe-shared product.json; nothing is sent anywhere.
- * Presets (example organisations) and three sliders (messages, agents, people served) come first, with the mix of message
- * types, the plan and the saving. Every preset shows the same controls; the plan line says which of them sets the price.
- * The full calculation opens below and edits the same state. No dropdowns: sliders and chips only.
+ * Bipe's price under ADR 0206: free up to the free limits; above them, the lower of Empresa (up to company.maxSeats agents)
+ * and Instituição; half for public bodies, NGOs, churches and associations.
  */
-export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { lang: Lang; copy: CalculatorCopy; rates: WhatsAppRates; proposal: PriceProposal; presets: CalculatorPreset[] }) {
-  const usage = (x: CalculatorPreset, base: Usage): Usage => ({ ...base, ...Object.fromEntries(TYPES.map((k) => [k, Math.round(x.messages * x.mix[k])])) });
+export function bipePrice(org: CalculatorOrg, seats: number, people: number, p: PriceProposal) {
+  if (seats <= p.free.agents && people <= p.free.people) return { plan: "free" as BipePlan, month: 0, year: 0, annual: null, choice: false };
+  const factor = org === "half" ? p.halfFactor : 1;
+  const institution = institutionYearly(people, p);
+  const choice = seats <= p.company.maxSeats;
+  const companyMonth = p.company.monthly + Math.max(0, seats - 1) * p.company.extraSeat;
+  if (choice && companyMonth * 12 <= institution) {
+    return { plan: "company" as BipePlan, month: companyMonth * factor, year: companyMonth * 12 * factor, annual: companyMonth * p.company.annualMonths * factor, choice };
+  }
+  return { plan: "institution" as BipePlan, month: (institution / 12) * factor, year: institution * factor, annual: null, choice };
+}
+
+const SEAT_STEPS = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30, 50, 100, 200, 500];
+const PEOPLE_STEPS = [100, 250, 500, 800, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000];
+const SPEND_STEPS = [0, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
+const ORGS: CalculatorOrg[] = ["company", "half"];
+const fill = (s: string, ...v: string[]) => v.reduce((out, x, i) => out.replace(`%${i + 1}$s`, x), s);
+/** The slider stop for a value: the first stop at or above it, so a preset value between stops sits on the next one. */
+const stopOf = (steps: number[], n: number) => {
+  const i = steps.findIndex((s) => s >= n);
+  return i === -1 ? steps.length - 1 : i;
+};
+
+/**
+ * The estimator on /precos/ (bipe#812, ADR 0206): what Bipe costs an organisation, by agents and people served.
+ * Presets (example organisations), sliders and chips only. An optional slider takes what the organisation spends today
+ * and shows the difference, without naming any platform. The detail shows the curve and the yearly amounts.
+ * Rules, amounts and copy come from `pricing` in bipe-shared product.json; nothing is sent anywhere.
+ */
+export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang: Lang; copy: CalculatorCopy; proposal: PriceProposal; presets: CalculatorPreset[] }) {
   const first = presets[0]!;
   const [preset, setPreset] = useState<string | null>(first.id);
-  const [u, setU] = useState<Usage>(usage(first, { marketing: 0, utility: 0, authentication: 0, service: 0, numbers: 1, bspPercent: 0, bspMonthly: 0 }));
   const [org, setOrg] = useState<CalculatorOrg>(first.org);
-  const [seats, setSeats] = useState(first.seats ?? 1);
-  const [band, setBand] = useState(first.band ?? 0);
+  const [seats, setSeats] = useState(first.seats);
+  const [people, setPeople] = useState(first.people);
+  const [spend, setSpend] = useState(first.spend);
   const pick = (x: CalculatorPreset) => {
     setPreset(x.id);
-    setU(usage(x, u));
     setOrg(x.org);
-    if (x.seats) setSeats(x.seats);
-    if (x.band !== undefined) setBand(x.band);
+    setSeats(x.seats);
+    setPeople(x.people);
+    setSpend(x.spend);
   };
-  const total = TYPES.reduce((t, k) => t + u[k], 0);
-  // A new total keeps the share of each type. With no messages yet, they count as utility.
-  const setTotal = (n: number) => {
-    setPreset(null);
-    setU(total ? { ...u, ...Object.fromEntries(TYPES.map((k) => [k, Math.round((u[k] * n) / total)])) } : { ...u, utility: n });
-  };
+  const manual = <T,>(set: (v: T) => void) => (v: T) => { setPreset(null); set(v); };
+
   const locale = lang === "pt" ? "pt-BR" : "en-US";
-  const brl = (n: number) => n.toLocaleString(locale, { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  const date = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
-  const w = whatsappBill(u, rates);
-  const b = bipeBill(org, seats, band, proposal);
-  const num = (key: keyof Usage, label: string, hint?: string, max?: number) => (
-    <label>{label}
-      <input type="number" inputMode="numeric" min={0} max={max} step={1} value={u[key]}
-        onChange={(e) => { setPreset(null); setU({ ...u, [key]: Math.max(0, Number(e.currentTarget.value) || 0) }); }} />
-      {hint && <span className="small muted" style={{ fontWeight: 400 }}>{hint}</span>}
+  const brl = (n: number, cents = false) => n.toLocaleString(locale, { style: "currency", currency: "BRL", minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 3 : 0 });
+  const num = (n: number) => n.toLocaleString(locale);
+  const b = bipePrice(org, seats, people, p);
+  const plan = b.plan === "free" ? fill(c.plans.free, num(p.free.agents), num(p.free.people))
+    : b.plan === "company" ? fill(c.plans.company, brl(p.company.monthly), brl(p.company.extraSeat))
+    : c.plans.institution;
+  const saving = spend - b.month;
+
+  const slider = (label: string, value: string, steps: number[], current: number, set: (n: number) => void) => (
+    <label>
+      <span className="calc-slider-label"><span>{label}</span><strong>{value}</strong></span>
+      <input type="range" min={0} max={steps.length - 1} step={1} value={stopOf(steps, current)} onChange={(e) => set(steps[Number(e.currentTarget.value)]!)} />
     </label>
   );
-  const line = (label: string, value: number, strong = false) => (
-    <div className={`calc-line${strong ? " strong" : ""}`}><span>{label}</span><span>{brl(value)}</span></div>
-  );
-
-  const s = c.simple;
-  const found = MESSAGE_STEPS.findIndex((n) => n >= total);
-  const step = found === -1 ? MESSAGE_STEPS.length - 1 : found;
-  const shares = TYPES.filter((k) => u[k] > 0).map((k) => ({ k, share: total ? u[k] / total : 0 }));
-  const saving = w.total - b.month;
-  const plan = fill(c.plans[org], ...(org === "small" ? [String(proposal.smallSeats)] : [brl(proposal.company.monthly), brl(proposal.company.extraSeat)]));
+  const tiers = p.institution.tiers;
 
   return (
     <div className="calc-wrap">
@@ -107,92 +93,60 @@ export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { l
           ))}
         </div>
         <div className="calc-sliders">
-          <label>
-            <span className="calc-slider-label"><span>{s.messages}</span><strong>{total.toLocaleString(locale)}</strong></span>
-            <input type="range" min={0} max={MESSAGE_STEPS.length - 1} step={1} value={step}
-              onChange={(e) => setTotal(MESSAGE_STEPS[Number(e.currentTarget.value)]!)} />
-          </label>
-          <div className="calc-mix">
-            <span className="small muted">{s.mix}</span>
-            <div className="calc-mix-bar" aria-hidden="true">
-              {shares.map(({ k, share }) => <span key={k} className={`mix-${k}`} style={{ width: `${share * 100}%` }} />)}
-            </div>
-            <p className="small muted calc-mix-legend">
-              {shares.map(({ k, share }, i) => <span key={k}>{i > 0 && " · "}<i className={`dot mix-${k}`} />{c.lines[k]} {Math.round(share * 100)}%</span>)}
-            </p>
+          <div className="calc-orgs" role="group" aria-label={c.org}>
+            {ORGS.map((o) => (
+              <button type="button" key={o} className={`calc-chip${org === o ? " on" : ""}`} aria-pressed={org === o} onClick={() => manual(setOrg)(o)}>{c.orgs[o]}</button>
+            ))}
           </div>
-          <label>
-            <span className="calc-slider-label"><span>{s.seats}</span><strong>{seats}</strong></span>
-            <input type="range" min={1} max={MAX_SEATS} step={1} value={Math.min(seats, MAX_SEATS)}
-              onChange={(e) => { setPreset(null); setSeats(Number(e.currentTarget.value)); }} />
-          </label>
-          <label>
-            <span className="calc-slider-label"><span>{s.people}</span><strong>{c.peopleBands[band]}</strong></span>
-            <input type="range" min={0} max={c.peopleBands.length - 1} step={1} value={band}
-              onChange={(e) => { setPreset(null); setBand(Number(e.currentTarget.value)); }} />
-          </label>
-          <p className="small muted calc-plan">{plan}</p>
+          {slider(c.seats, num(seats), SEAT_STEPS, seats, manual(setSeats))}
+          {slider(c.people, num(people), PEOPLE_STEPS, people, manual(setPeople))}
+          {slider(c.spend, spend ? brl(spend) : c.spendNone, SPEND_STEPS, spend, manual(setSpend))}
         </div>
         <div className="calc-result" aria-live="polite">
-          {saving > 0 ? (
-            <>
-              <p className="calc-save-label">{s.save}</p>
-              <p className="calc-save display">{brl(saving)} <span>{s.perMonth}</span></p>
-              <p className="muted">{fill(s.perYear, brl(saving * 12))}</p>
-            </>
-          ) : <p className="calc-save-label">{s.cheaper}</p>}
-          <p className="small muted">{fill(s.compare, brl(w.total), brl(b.month))}</p>
+          <p className="calc-save display">{brl(b.month)} <span>{c.month}</span></p>
+          <p className="muted">{fill(c.year, brl(b.year))}</p>
+          {b.annual !== null && <p className="small muted">{fill(c.annual, brl(b.annual))}</p>}
+          <p className="small muted">{plan}</p>
+          {org === "half" && b.plan !== "free" && <p className="small muted">{c.plans.half}</p>}
+          {b.choice && b.plan !== "free" && <p className="small muted">{c.plans.lower}</p>}
+          {spend > 0 && (saving > 0
+            ? <p className="calc-save-label">{fill(c.save, brl(saving))}</p>
+            : <p className="small muted">{fill(c.compare, brl(spend), brl(b.month))}</p>)}
           <p className="small calc-proposal">{c.proposal}</p>
         </div>
-        <p className="small muted calc-assumption">{preset ? c.presetNotes[preset] : s.assumption}</p>
+        <p className="small muted calc-assumption">{preset ? c.presetNotes[preset] : c.lede}</p>
       </div>
       <details className="calc-detail">
-        <summary>{s.detail}</summary>
-    <div className="calc">
-      <div className="card org-form calc-side">
-        <h3>{c.whatsapp}</h3>
-        {num("marketing", c.fields.marketing, c.fields.marketingHint)}
-        {num("utility", c.fields.utility, c.fields.utilityHint)}
-        {num("authentication", c.fields.authentication)}
-        {num("service", c.fields.service, c.fields.serviceHint)}
-        {num("numbers", c.fields.numbers)}
-        {num("bspPercent", c.fields.bspPercent, undefined, 1000)}
-        {num("bspMonthly", c.fields.bspMonthly)}
-        <div className="calc-lines" aria-live="polite">
-          {line(c.lines.marketing, w.lines.marketing)}
-          {line(c.lines.utility, w.lines.utility)}
-          {line(c.lines.authentication, w.lines.authentication)}
-          {line(c.lines.service, w.lines.service)}
-          <p className="small muted">{fill(c.lines.serviceFree, w.free.toLocaleString(locale))}</p>
-          {line(c.lines.meta, w.meta)}
-          {line(c.lines.bsp, w.bsp)}
-          {line(c.lines.total, w.total, true)}
-          {line(c.lines.year, w.total * 12)}
+        <summary>{c.detail}</summary>
+        <div className="calc">
+          <div className="card calc-side">
+            <h3>{c.curveHeading}</h3>
+            <p className="small muted">{fill(c.curveLede, brl(p.minMonthly), brl(p.institution.capYearly))}</p>
+            <div className="calc-lines">
+              {tiers.map(([from, rate], i) => {
+                const to = tiers[i + 1]?.[0];
+                return (
+                  <div className="calc-line" key={from}>
+                    <span>{!to ? fill(c.curveAbove, num(from)) : from === 0 ? fill(c.curveFrom, num(to)) : fill(c.curveBetween, num(from), num(to))}</span>
+                    <span>{fill(c.curveRate, brl(rate, true))}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="card calc-side">
+            <h3>{c.tableHeading}</h3>
+            <table className="calc-table">
+              <thead><tr><th>{c.tablePeople}</th><th>{c.tableInstitution}</th><th>{c.tableHalf}</th></tr></thead>
+              <tbody>
+                {p.table.map((n) => {
+                  const y = institutionYearly(n, p);
+                  return <tr key={n}><td>{num(n)}</td><td>{brl(y)}</td><td>{brl(y * p.halfFactor)}</td></tr>;
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <div className="card org-form calc-side">
-        <h3>{c.bipe}</h3>
-        <div className="calc-orgs" role="group" aria-label={c.org}>
-          <span className="small muted">{c.org}</span>
-          {ORGS.map((o) => (
-            <button type="button" key={o} className={`calc-chip${org === o ? " on" : ""}`} aria-pressed={org === o} onClick={() => { setPreset(null); setOrg(o); }}>{c.orgs[o]}</button>
-          ))}
-        </div>
-        <p className="small muted">{plan}</p>
-        <div className="calc-lines" aria-live="polite">
-          {line(c.lines.bipeMonth, b.month, true)}
-          {line(c.lines.bipeYear, b.year)}
-          {b.annual !== null && <p className="small muted">{fill(c.lines.bipeAnnual, brl(b.annual))}</p>}
-          {b.moved && <p className="small muted">{c.lines.smallMoved}</p>}
-          <p className="small muted">{c.lines.bipeSame}</p>
-        </div>
-        <p className="small calc-proposal">{c.proposal}</p>
-      </div>
-      <div className="calc-notes small muted">
-        <p>{fill(c.notes[0]!, date(rates.effective), date(rates.checked))} <a href={rates.source}>{c.sourceLink}</a></p>
-        {c.notes.slice(1).map((n) => <p key={n}>{n}</p>)}
-      </div>
-    </div>
       </details>
     </div>
   );

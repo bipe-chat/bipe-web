@@ -429,6 +429,10 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .card p.calc-save span { font-size: 18px; color: var(--muted); }
 .calc-assumption { grid-column: 1 / -1; margin: 0; }
 .calc-detail { margin-top: 16px; }
+.calc-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; margin-top: 8px; }
+.calc-table th, .calc-table td { text-align: right; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+.calc-table th:first-child, .calc-table td:first-child { text-align: left; }
+.calc-table th { font-weight: 600; color: var(--muted); }
 .calc-detail summary { cursor: pointer; font-weight: 600; color: var(--acai); }
 .calc { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px; margin-top: 24px; }
 .calc-side { align-content: start; }
