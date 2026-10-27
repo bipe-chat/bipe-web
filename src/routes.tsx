@@ -167,6 +167,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     body: () => <AboutPage lang={lang} />,
   },
   {
+    path: paths.banner(lang), alt: paths.banner(other(lang)), lang, section: "about",
+    title: `${chrome[lang].brand.maker.title} · Bipe`, description: chrome[lang].brand.maker.lede,
+    noAnalytics: true,
+    body: () => <Island name="BannerMaker" props={{ lang }} />,
+  },
+  {
     path: paths.brand(lang), alt: paths.brand(other(lang)), lang, section: "about",
     title: `${chrome[lang].brand.title} · Bipe`, description: chrome[lang].brand.lede,
     // Every indexed page's link-preview card in this language (scripts/og.mjs).

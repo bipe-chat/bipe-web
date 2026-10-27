@@ -807,8 +807,13 @@ export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: strin
       <h1>{b.title}</h1>
       <p className="lede">{b.lede}</p>
       <nav className="brand-nav" aria-label={b.title}>
+        <a href={paths.banner(lang)}>{b.maker.title}</a>
         {(["logo", "stores", "cards", "social"] as const).map((k) => <a key={k} href={`#${k}`}>{b.sections[k]}</a>)}
       </nav>
+      <div className="card brand-maker-card">
+        <div><h2 className="sub">{b.maker.title}</h2><p>{b.maker.lede}</p></div>
+        <MoreLink href={paths.banner(lang)}>{b.maker.open}</MoreLink>
+      </div>
       <h2 id="logo" style={{ marginTop: 56 }}>{b.sections.logo}</h2>
       <div className="brand-kit">
         {brandAssets.assets.map((a) => (

@@ -20,6 +20,7 @@ export const paths = {
   about: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre" : "about"}/`,
   help: (lang: Lang) => `${base(lang)}${lang === "pt" ? "ajuda" : "help"}/`,
   brand: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre/marca" : "about/brand"}/`,
+  banner: (lang: Lang) => `${paths.brand(lang)}banner/`,
   privacy: (lang: Lang) => (lang === "pt" ? "/privacidade/" : "/en/privacy/"),
   lgpd: (lang: Lang) => `${base(lang)}lgpd/`,
   whoCanRead: (lang: Lang) => `${base(lang)}${privacyRegister.slug[lang]}/`,

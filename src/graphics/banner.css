@@ -1,0 +1,57 @@
+.crumbs + [data-island="BannerMaker"] .banner-page { padding-top: 16px; }
+.banner-workspace { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 32px; margin-top: 36px; align-items: start; }
+.banner-controls { display: grid; gap: 24px; min-width: 0; }
+.banner-workspace fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 10px; }
+.banner-workspace legend { font-weight: 700; font-size: 15px; margin-bottom: 12px; padding: 0; }
+.banner-workspace :is(input, select, textarea, button) { font: inherit; }
+.banner-workspace :is(input:not([type="checkbox"]), select, textarea) { display: block; width: 100%; min-width: 0; font-size: 14px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.banner-workspace textarea { resize: vertical; line-height: 1.5; }
+.banner-workspace :is(button, input, select, textarea):focus-visible { outline: 2px solid var(--acai); outline-offset: 3px; }
+.banner-workspace button { cursor: pointer; }
+.banner-workspace button:disabled { cursor: wait; opacity: .6; }
+.banner-workspace label:not(.banner-check) { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px; font-size: 14px; }
+.banner-workspace label > .muted { font-size: 12px; }
+.banner-workspace fieldset > p { margin: 0; }
+.banner-segments { display: flex; gap: 4px; padding: 4px; background: var(--surface); border-radius: 12px; }
+.banner-segments button { flex: 1; min-width: 0; padding: 9px 5px; font-size: 13px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); }
+.banner-segments button[aria-pressed="true"] { background: var(--bg); border-color: var(--line); color: var(--text); font-weight: 600; }
+.banner-palettes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+.banner-swatch { border: 1px solid transparent; border-radius: 9px; padding: 5px 2px; background: transparent; color: var(--muted); display: grid; gap: 6px; justify-items: center; }
+.banner-swatch > span:last-child { font-size: 10px; letter-spacing: -.02em; }
+.banner-swatch[aria-pressed="true"] { border-color: var(--acai); color: var(--text); }
+.banner-swatch-art { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; color: var(--bipe-ink-on-accent); }
+.banner-text-button { color: var(--acai); font-size: 14px !important; background: transparent; border: 0; padding: 6px 0; text-align: left; justify-self: start; text-decoration: underline; text-underline-offset: 3px; }
+.banner-check { display: flex; align-items: center; gap: 9px; font-size: 14px; }
+.banner-check input { accent-color: var(--acai); width: 17px; height: 17px; margin: 0; }
+.banner-size { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.banner-output { position: sticky; top: 24px; min-width: 0; }
+.banner-preview-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.banner-stage { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 28px; margin: 18px 0 14px; min-height: 240px; display: grid; place-items: center; }
+.banner-stage.is-portrait { height: 450px; }
+.banner-art { position: relative; width: 100%; overflow: hidden; display: grid; place-items: center; }
+.banner-stage.is-portrait .banner-art { width: min(100%, calc(390px * var(--art-ratio))); }
+.banner-art img { width: 100%; height: 100%; object-fit: contain; }
+.banner-guide { position: absolute; pointer-events: none; border: 1px dashed var(--bipe-ink-on-accent); box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--bipe-gray-1400) 35%, transparent); }
+.banner-guide-note { margin-top: 8px; }
+.banner-export { margin-top: 24px; display: grid; gap: 16px; }
+.banner-export-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.banner-export .button { justify-content: center; font-size: 16px; }
+.banner-export > .mono { text-align: center; margin-top: -8px; }
+.banner-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; margin-top: 18px; }
+.banner-feedback { min-height: 1.5em; margin: 12px 0 0; }
+.brand-maker-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px; }
+.brand-maker-card p { margin-top: 8px; max-width: 40em; }
+.brand-maker-card .button { flex: none; }
+@media (max-width: 860px) {
+  .banner-workspace { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .banner-output { position: static; grid-row: 1; }
+  .banner-stage { padding: 18px; min-height: 180px; }
+  .banner-stage.is-portrait { height: 380px; }
+  .banner-stage.is-portrait .banner-art { width: min(100%, calc(340px * var(--art-ratio))); }
+  .banner-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .brand-maker-card { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 520px) {
+  .banner-controls { grid-template-columns: minmax(0, 1fr); }
+  .banner-stage { padding: 12px; min-height: 150px; }
+}

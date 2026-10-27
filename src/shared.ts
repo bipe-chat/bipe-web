@@ -2,6 +2,7 @@ import type { OrganisationFormCopy } from "./sim/OrganisationForm";
 import type { IconName } from "./components/ui";
 // The site's only door into bipe-shared. Registries, strings and product copy come from there;
 // the scam, handle and name logic is the reference implementation every app must match.
+import designTokens from "@shared/design/tokens.json";
 import familyTerms from "@shared/registries/family-terms.json";
 import handles from "@shared/registries/handles.json";
 import homoglyphs from "@shared/registries/homoglyphs.json";
@@ -292,3 +293,8 @@ export const scamStringKey: Record<ScamKind, string> = {
   newNumber: "bipe_scam_warning_new_number",
   urgency: "bipe_scam_warning_urgency",
 };
+
+/** Fixed light palette for exported artwork, independent of the editor theme. */
+export const brandRamps = Object.fromEntries(
+  (["acai", "pitanga", "caju", "jabuticaba", "jenipapo"] as const).map((name) => [name, designTokens.ramps[name].light]),
+) as Record<string, Record<string, string>>;
