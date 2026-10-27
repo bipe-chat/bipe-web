@@ -454,7 +454,7 @@ export function PricingPage({ lang }: { lang: Lang }) {
       <section className="wrap section" id="calculadora">
         <h2>{p.calculator.heading}</h2>
         <p className="muted" style={{ maxWidth: "40em" }}>{p.calculator.lede}</p>
-        <Island name="PriceCalculator" props={{ lang, copy: p.calculator, rates: product.pricing.whatsapp, proposal: product.pricing.proposal }} />
+        <Island name="PriceCalculator" props={{ lang, copy: p.calculator, rates: product.pricing.whatsapp, proposal: product.pricing.proposal, presets: product.pricing.calculatorPresets }} />
       </section>
       <section className="wrap section">
         <h2 style={{ marginBottom: 24 }}>{p.tiersHeading}</h2>

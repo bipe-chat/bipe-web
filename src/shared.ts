@@ -145,6 +145,10 @@ export type PriceProposal = {
   adr: string; smallSeats: number; company: { monthly: number; extraSeat: number; annualMonths: number };
   nonprofitFactor: number; publicBodyFactor: number; institutionBands: { upTo: number | null; yearly: number }[];
 };
+export type CalculatorPreset = {
+  id: string; messages: number; mix: Record<"marketing" | "utility" | "authentication" | "service", number>;
+  org: CalculatorOrg; seats?: number; band?: number;
+};
 export type CalculatorOrg = "small" | "company" | "nonprofit" | "institution" | "public";
 export type CalculatorCopy = {
   heading: string; lede: string; whatsapp: string; bipe: string; org: string; seats: string; people: string;
@@ -152,7 +156,8 @@ export type CalculatorCopy = {
   orgs: Record<CalculatorOrg, string>; peopleBands: string[];
   lines: Record<"marketing" | "utility" | "authentication" | "service" | "serviceFree" | "meta" | "bsp" | "total" | "year" | "bipeMonth" | "bipeYear" | "bipeAnnual" | "bipeSame" | "smallMoved", string>;
   proposal: string; notes: string[]; sourceLink: string; link: string;
-  simple: Record<"messages" | "seats" | "save" | "perMonth" | "perYear" | "cheaper" | "compare" | "assumption" | "detail", string>;
+  presetsLabel: string; presets: Record<string, string>;
+  simple: Record<"messages" | "seats" | "save" | "perMonth" | "perYear" | "cheaper" | "compare" | "assumption" | "detail" | "mix", string>;
 };
 
 export type PricingTierId = "small" | "company" | "institution" | "public";
@@ -194,6 +199,8 @@ export const product = { ...productData, features: productData.features.map((f) 
     whatsapp: WhatsAppRates;
     /** Proposed amounts (ADR 0083, ADR 0125), not approved prices. */
     proposal: PriceProposal;
+    /** Example organisations above the sliders (bipe#812). */
+    calculatorPresets: CalculatorPreset[];
   } & Copy<{
     nav: string; link: string; title: string; lede: string;
     principles: { heading: string; points: string[] }; why: { heading: string; points: string[] };
