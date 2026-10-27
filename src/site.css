@@ -421,6 +421,7 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .mix-service { background: var(--muted); }
 .calc-sliders label { display: grid; gap: 10px; font-weight: 600; }
 .calc-slider-label { display: flex; justify-content: space-between; gap: 12px; }
+.calc-hint { font-weight: 400; margin-top: -4px; }
 .calc-slider-label strong { font-variant-numeric: tabular-nums; }
 .calc-sliders input[type=range] { width: 100%; accent-color: var(--acai); }
 .calc-result p { margin: 0 0 6px; }
