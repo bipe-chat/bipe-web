@@ -10,7 +10,7 @@ import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
 import { AccessibilityPage, accessibilityMarkdown } from "./pages/AccessibilityPage";
-import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OrganisationsPage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
+import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OrganisationsPage, OrganisationAudiencePage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
   path: string;
@@ -99,6 +99,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     og: { title: product.organisations[lang].card.title, description: product.organisations[lang].card.line },
     body: () => <OrganisationsPage lang={lang} />,
   },
+  ...product.organisationAudiences.map((a): Route => ({
+    path: paths.organisationAudience(lang, a), alt: paths.organisationAudience(other(lang), a), lang, section: "about",
+    title: `${a[lang].title} · Bipe`, description: a[lang].lede, crumb: a[lang].name, og: { title: a[lang].headline },
+    body: () => <OrganisationAudiencePage lang={lang} a={a} />,
+  })),
   {
     path: paths.technology(lang), alt: paths.technology(other(lang)), lang,
     title: `${product.technical[lang].nav} · Bipe`, description: product.technical[lang].lede,

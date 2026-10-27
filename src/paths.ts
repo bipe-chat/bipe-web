@@ -17,6 +17,12 @@ export const paths = {
   scams: (lang: Lang) => (lang === "pt" ? "/golpes-no-brasil/" : "/en/scams-in-brazil/"),
   scamType: (lang: Lang, t: { slug: { pt: string; en: string } }) => `${lang === "pt" ? "/golpes-no-brasil/" : "/en/scams-in-brazil/"}${t.slug[lang]}/`,
   organisations: (lang: Lang) => `${base(lang)}${lang === "pt" ? "organizacoes" : "organisations"}/`,
+  organisationAudience: (lang: Lang, a: { slug: { pt: string; en: string } }) => `${base(lang)}${lang === "pt" ? "organizacoes" : "organisations"}/${a.slug[lang]}/`,
+  /** The organisation form with its kind preselected (`?tipo=`) and the page that links it (`?de=`), read by OrganisationForm (bipe#792). */
+  organisationForm: (lang: Lang, kind?: string, from?: string) => {
+    const q = new URLSearchParams({ ...(kind ? { tipo: kind } : {}), ...(from ? { de: from } : {}) }).toString();
+    return `${base(lang)}${lang === "pt" ? "organizacoes" : "organisations"}/${q ? `?${q}` : ""}#form`;
+  },
   about: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre" : "about"}/`,
   help: (lang: Lang) => `${base(lang)}${lang === "pt" ? "ajuda" : "help"}/`,
   brand: (lang: Lang) => `${base(lang)}${lang === "pt" ? "sobre/marca" : "about/brand"}/`,
