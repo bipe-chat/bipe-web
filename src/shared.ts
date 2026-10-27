@@ -152,6 +152,7 @@ export type CalculatorCopy = {
   orgs: Record<CalculatorOrg, string>; peopleBands: string[];
   lines: Record<"marketing" | "utility" | "authentication" | "service" | "serviceFree" | "meta" | "bsp" | "total" | "year" | "bipeMonth" | "bipeYear" | "bipeAnnual" | "bipeSame" | "smallMoved", string>;
   proposal: string; notes: string[]; sourceLink: string; link: string;
+  simple: Record<"messages" | "seats" | "save" | "perMonth" | "perYear" | "cheaper" | "compare" | "assumption" | "detail", string>;
 };
 
 export type PricingTierId = "small" | "company" | "institution" | "public";

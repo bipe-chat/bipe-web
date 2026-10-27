@@ -39,16 +39,20 @@ export function bipeBill(org: CalculatorOrg, seats: number, band: number, p: Pri
 }
 
 const ORGS: CalculatorOrg[] = ["small", "company", "nonprofit", "institution", "public"];
+/** Stops of the messages slider. It sets utility messages only, Meta's cheapest rate, so the saving shown is the lowest one. */
+const MESSAGE_STEPS = [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000];
+const MAX_SEATS = 30;
 const fill = (s: string, ...v: string[]) => v.reduce((out, x, i) => out.replace(`%${i + 1}$s`, x), s);
 
 /**
  * The calculator on /precos/ (bipe#812): an organisation's WhatsApp bill from Meta's rate card next to Bipe's proposed price.
  * Rates, amounts and copy come from `pricing` in bipe-shared product.json; nothing is sent anywhere.
+ * Two sliders (messages, agents) and the saving come first; the full calculation opens below and edits the same state.
  */
 export function PriceCalculator({ lang, copy: c, rates, proposal }: { lang: Lang; copy: CalculatorCopy; rates: WhatsAppRates; proposal: PriceProposal }) {
-  const [u, setU] = useState<Usage>({ marketing: 2000, utility: 10000, authentication: 0, service: 3000, numbers: 1, bspPercent: 0, bspMonthly: 0 });
+  const [u, setU] = useState<Usage>({ marketing: 0, utility: 50000, authentication: 0, service: 0, numbers: 1, bspPercent: 0, bspMonthly: 0 });
   const [org, setOrg] = useState<CalculatorOrg>("company");
-  const [seats, setSeats] = useState(3);
+  const [seats, setSeats] = useState(2);
   const [band, setBand] = useState(0);
   const locale = lang === "pt" ? "pt-BR" : "en-US";
   const brl = (n: number) => n.toLocaleString(locale, { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -67,7 +71,40 @@ export function PriceCalculator({ lang, copy: c, rates, proposal }: { lang: Lang
     <div className={`calc-line${strong ? " strong" : ""}`}><span>{label}</span><span>{brl(value)}</span></div>
   );
 
+  const s = c.simple;
+  const step = Math.max(0, MESSAGE_STEPS.findIndex((n) => n >= u.utility));
+  const saving = w.total - b.month;
+
   return (
+    <div className="calc-wrap">
+      <div className="card calc-simple">
+        <div className="calc-sliders">
+          <label>
+            <span className="calc-slider-label"><span>{s.messages}</span><strong>{u.utility.toLocaleString(locale)}</strong></span>
+            <input type="range" min={0} max={MESSAGE_STEPS.length - 1} step={1} value={step}
+              onChange={(e) => setU({ ...u, utility: MESSAGE_STEPS[Number(e.currentTarget.value)]! })} />
+          </label>
+          <label>
+            <span className="calc-slider-label"><span>{s.seats}</span><strong>{seats}</strong></span>
+            <input type="range" min={1} max={MAX_SEATS} step={1} value={Math.min(seats, MAX_SEATS)} disabled={org === "institution" || org === "public"}
+              onChange={(e) => setSeats(Number(e.currentTarget.value))} />
+          </label>
+        </div>
+        <div className="calc-result" aria-live="polite">
+          {saving > 0 ? (
+            <>
+              <p className="calc-save-label">{s.save}</p>
+              <p className="calc-save display">{brl(saving)} <span>{s.perMonth}</span></p>
+              <p className="muted">{fill(s.perYear, brl(saving * 12))}</p>
+            </>
+          ) : <p className="calc-save-label">{s.cheaper}</p>}
+          <p className="small muted">{fill(s.compare, brl(w.total), brl(b.month))}</p>
+          <p className="small calc-proposal">{c.proposal}</p>
+        </div>
+        <p className="small muted calc-assumption">{s.assumption}</p>
+      </div>
+      <details className="calc-detail">
+        <summary>{s.detail}</summary>
     <div className="calc">
       <div className="card org-form calc-side">
         <h3>{c.whatsapp}</h3>
@@ -121,6 +158,8 @@ export function PriceCalculator({ lang, copy: c, rates, proposal }: { lang: Lang
         <p>{fill(c.notes[0]!, date(rates.effective), date(rates.checked))} <a href={rates.source}>{c.sourceLink}</a></p>
         {c.notes.slice(1).map((n) => <p key={n}>{n}</p>)}
       </div>
+    </div>
+      </details>
     </div>
   );
 }
