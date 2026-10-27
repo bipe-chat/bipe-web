@@ -415,7 +415,7 @@ export function BusinessPage({ lang }: { lang: Lang }) {
       </section>
       <section className="wrap section"><CodeList lang={lang} ids={["business-bridge", "business-inbox"]} /></section>
       <OrganisationAudienceCards lang={lang} />
-      <MailCta lang={lang} cta={b.cta} />
+      <MailCta lang={lang} cta={b.cta} from={paths.business(lang)} />
     </>
   );
 }
@@ -487,19 +487,19 @@ export function PricingPage({ lang }: { lang: Lang }) {
         </div>
       </section>
       <OrganisationAudienceCards lang={lang} />
-      <MailCta lang={lang} cta={product.business[lang].cta} label={p.ctaForm} />
+      <MailCta lang={lang} cta={product.business[lang].cta} label={p.ctaForm} from={paths.pricing(lang)} />
     </>
   );
 }
 
 
-/** Closing call to action on /empresas/ and /precos/: a link to the organisation form. */
-function MailCta({ lang, cta, label }: { lang: Lang; cta: string; label?: string }) {
+/** Closing call to action on /empresas/ and /precos/: a link to the organisation form, as a company, with the page it came from. */
+function MailCta({ lang, cta, label, from }: { lang: Lang; cta: string; label?: string; from: string }) {
   return (
     <section className="wrap section">
       <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
         <h2 className="sub">{cta}</h2>
-        <a className="button primary" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{label ?? chrome[lang].contact}</a>
+        <a className="button primary" href={paths.organisationForm(lang, "company", from)}><Icon name="mail" />{label ?? chrome[lang].contact}</a>
       </div>
     </section>
   );
@@ -611,7 +611,7 @@ export function OrganisationAudiencePage({ lang, a }: { lang: Lang; a: Organisat
       <section className="wrap section">
         <div className="card" style={{ padding: 32, display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
           <h2 className="sub">{copy.cta}</h2>
-          <a className="button primary" href={paths.organisationForm(lang, a.kind)}><Icon name="mail" />{chrome[lang].contact}</a>
+          <a className="button primary" href={paths.organisationForm(lang, a.kind, paths.organisationAudience(lang, a))}><Icon name="mail" />{chrome[lang].contact}</a>
         </div>
         <p style={{ marginTop: 24 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
       </section>
