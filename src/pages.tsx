@@ -411,7 +411,8 @@ export function BusinessPage({ lang }: { lang: Lang }) {
             </div>
           ))}
         </div>
-        <p style={{ marginTop: 24 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
+        <p style={{ marginTop: 24 }}><MoreLink href={`${paths.pricing(lang)}#calculadora`}>{product.pricing[lang].calculator.link}</MoreLink></p>
+        <p style={{ marginTop: 8 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
       </section>
       <section className="wrap section"><CodeList lang={lang} ids={["business-bridge", "business-inbox"]} /></section>
       <OrganisationAudienceCards lang={lang} />
@@ -449,6 +450,11 @@ export function PricingPage({ lang }: { lang: Lang }) {
       <section className="wrap narrow section">
         <h2>{p.why.heading}</h2>
         <Points items={p.why.points} />
+      </section>
+      <section className="wrap section" id="calculadora">
+        <h2>{p.calculator.heading}</h2>
+        <p className="muted" style={{ maxWidth: "40em" }}>{p.calculator.lede}</p>
+        <Island name="PriceCalculator" props={{ lang, copy: p.calculator, rates: product.pricing.whatsapp, proposal: product.pricing.proposal }} />
       </section>
       <section className="wrap section">
         <h2 style={{ marginBottom: 24 }}>{p.tiersHeading}</h2>
