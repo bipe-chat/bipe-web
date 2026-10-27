@@ -3,11 +3,16 @@ import { ORGANISATION_FORM_URL } from "../config";
 import { normalizeCnpj, type Lang } from "../shared";
 
 type State = "idle" | "sending" | "done" | "error";
+// The same rule as `landing_path` in the Starlings organisations form: a site path, else nothing.
+const SITE_PATH = /^\/[a-z0-9/_-]{0,199}$/;
 // The enums of OrganisationRequest in bipe-shared/api/openapi.yaml.
 export const ORGANISATION_KINDS = ["company", "institution", "association", "public_body", "partner", "other"] as const;
 export const CUSTOMER_BANDS = ["lt_100", "100_1k", "1k_10k", "10k_100k", "gt_100k"] as const;
 export const CHANNELS = ["whatsapp_app", "whatsapp_api", "sms", "email", "phone", "own_app", "other"] as const;
 export const SPEND_BANDS = ["zero", "lt_500", "500_2k", "2k_10k", "10k_50k", "gt_50k", "unknown"] as const;
+export const INTENTS = ["pilot", "question", "partnership"] as const;
+export const TIMEFRAMES = ["now", "quarter", "year", "exploring"] as const;
+type Intent = (typeof INTENTS)[number];
 export type OrganisationKind = (typeof ORGANISATION_KINDS)[number];
 type Kind = OrganisationKind;
 export type OrganisationFormCopy = {
@@ -16,24 +21,39 @@ export type OrganisationFormCopy = {
   customers: string; customersBands: Record<(typeof CUSTOMER_BANDS)[number], string>;
   channels: string; channelOptions: Record<(typeof CHANNELS)[number], string>;
   spend: string; spendBands: Record<(typeof SPEND_BANDS)[number], string>; spendNote: string;
-  message: string; submit: string; done: string; error: string; note: string;
+  intent: string; intents: Record<Intent, string>; useCase: string; pain: string;
+  timeframe: string; timeframes: Record<(typeof TIMEFRAMES)[number], string>;
+  message: string; submit: string; done: string; doneByIntent: Record<Intent, string>; error: string; note: string;
 };
 
 /**
  * Posts to the `organisations` form of the Bipe workspace on Starlings (bipe#273, ADR 0126, bipe#410).
  * Starlings answers 202 for every well-formed request and files it as a lead. The fields are OrganisationRequest.
  * The customer and spend questions are for organisations that want to use Bipe; a partner skips them.
+ * Attribution (bipe#792): `landing_path` is the page that sent the visitor, from `?de=` (paths.organisationForm)
+ * or a same-site referrer; `?tipo=` preselects the kind, and an audience page also preselects the pilot intent.
  * Copy: `organisations.form` in product.json.
  */
 export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lang: Lang; copy: OrganisationFormCopy; privacy: string; privacyLabel: string }) {
   const [state, setState] = useState<State>("idle");
   const [kind, setKind] = useState<Kind | "">("");
+  const [intent, setIntent] = useState<Intent | "">("");
+  const [landing, setLanding] = useState("");
   const [cnpjBad, setCnpjBad] = useState(false);
   const asks = kind !== "partner";
-  // An organisation audience page links here with `?tipo=<kind>` (paths.organisationForm, bipe#790).
+  // An organisation audience page links here with `?tipo=<kind>&de=<path>` (paths.organisationForm, bipe#790, bipe#792).
   useEffect(() => {
-    const k = new URLSearchParams(window.location.search).get("tipo");
-    if (k && (ORGANISATION_KINDS as readonly string[]).includes(k)) setKind(k as Kind);
+    const q = new URLSearchParams(window.location.search);
+    const k = q.get("tipo");
+    if (k && (ORGANISATION_KINDS as readonly string[]).includes(k)) {
+      setKind(k as Kind);
+      setIntent(k === "partner" ? "partnership" : "pilot");
+    }
+    const referrer = (() => {
+      try { const u = new URL(document.referrer); return u.origin === window.location.origin ? u.pathname : ""; } catch { return ""; }
+    })();
+    const from = q.get("de") ?? referrer;
+    setLanding(SITE_PATH.test(from) ? from : "");
   }, []);
   // The note replaces a tall form, so the page gets shorter under the reader. Bring the note into view and focus it.
   const doneRef = useRef<HTMLParagraphElement>(null);
@@ -64,6 +84,9 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
             spend_band: field("spend_band") || undefined,
             spend_note: field("spend_note") || undefined,
           }),
+          intent: field("intent") || undefined,
+          use_case: field("use_case") || undefined, pain: field("pain") || undefined,
+          timeframe: field("timeframe") || undefined, landing_path: landing || undefined,
           message: field("message") || undefined, lang, website: field("website"),
         }),
       });
@@ -73,7 +96,7 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
     }
   }
 
-  if (state === "done") return <p ref={doneRef} tabIndex={-1} className="waitlist-done" role="status">{c.done}</p>;
+  if (state === "done") return <p ref={doneRef} tabIndex={-1} className="waitlist-done" role="status">{intent ? c.doneByIntent[intent] : c.done}</p>;
   return (
     <form className="org-form" onSubmit={submit}>
       <label>{c.organisation}<input name="organisation" required maxLength={200} autoComplete="organization" /></label>
@@ -81,6 +104,12 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
         <select name="kind" required value={kind} onChange={(e) => setKind(e.currentTarget.value as Kind)}>
           <option value="" disabled />
           {ORGANISATION_KINDS.map((k) => <option key={k} value={k}>{c.kinds[k]}</option>)}
+        </select>
+      </label>
+      <label>{c.intent}
+        <select name="intent" value={intent} onChange={(e) => setIntent(e.currentTarget.value as Intent)}>
+          <option value="" />
+          {INTENTS.map((i) => <option key={i} value={i}>{c.intents[i]}</option>)}
         </select>
       </label>
       <label>{c.cnpj}
@@ -109,6 +138,14 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
             </select>
           </label>
           <label>{c.spendNote}<textarea name="spend_note" rows={2} maxLength={500} /></label>
+          <label>{c.useCase}<textarea name="use_case" rows={2} maxLength={500} /></label>
+          <label>{c.pain}<textarea name="pain" rows={2} maxLength={500} /></label>
+          <label>{c.timeframe}
+            <select name="timeframe" defaultValue="">
+              <option value="" />
+              {TIMEFRAMES.map((t) => <option key={t} value={t}>{c.timeframes[t]}</option>)}
+            </select>
+          </label>
         </>
       )}
       <label>{c.message}<textarea name="message" rows={4} maxLength={2000} /></label>
