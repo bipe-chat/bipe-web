@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Icon } from "../components/ui";
 import type { CalculatorCopy, CalculatorOrg, CalculatorPreset, Lang, PriceProposal, WhatsAppRates } from "../shared";
 
 /** Marginal tiers: each rate applies only to the messages inside its band (Meta's volume tiers). */
@@ -48,8 +49,9 @@ const fill = (s: string, ...v: string[]) => v.reduce((out, x, i) => out.replace(
 /**
  * The calculator on /precos/ (bipe#812): an organisation's WhatsApp bill from Meta's rate card next to Bipe's proposed price.
  * Rates, amounts and copy come from `pricing` in bipe-shared product.json; nothing is sent anywhere.
- * Presets (example organisations) and two sliders (messages, agents) come first, with the mix of message types and the saving.
- * The full calculation opens below and edits the same state.
+ * Presets (example organisations) and three sliders (messages, agents, people served) come first, with the mix of message
+ * types, the plan and the saving. Every preset shows the same controls; the plan line says which of them sets the price.
+ * The full calculation opens below and edits the same state. No dropdowns: sliders and chips only.
  */
 export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { lang: Lang; copy: CalculatorCopy; rates: WhatsAppRates; proposal: PriceProposal; presets: CalculatorPreset[] }) {
   const usage = (x: CalculatorPreset, base: Usage): Usage => ({ ...base, ...Object.fromEntries(TYPES.map((k) => [k, Math.round(x.messages * x.mix[k])])) });
@@ -73,11 +75,10 @@ export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { l
     setU(total ? { ...u, ...Object.fromEntries(TYPES.map((k) => [k, Math.round((u[k] * n) / total)])) } : { ...u, utility: n });
   };
   const locale = lang === "pt" ? "pt-BR" : "en-US";
-  const brl = (n: number) => n.toLocaleString(locale, { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const brl = (n: number) => n.toLocaleString(locale, { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 0 });
   const date = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
   const w = whatsappBill(u, rates);
   const b = bipeBill(org, seats, band, proposal);
-  const byBand = org === "institution" || org === "public";
   const num = (key: keyof Usage, label: string, hint?: string, max?: number) => (
     <label>{label}
       <input type="number" inputMode="numeric" min={0} max={max} step={1} value={u[key]}
@@ -94,6 +95,7 @@ export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { l
   const step = found === -1 ? MESSAGE_STEPS.length - 1 : found;
   const shares = TYPES.filter((k) => u[k] > 0).map((k) => ({ k, share: total ? u[k] / total : 0 }));
   const saving = w.total - b.month;
+  const plan = fill(c.plans[org], ...(org === "small" ? [String(proposal.smallSeats)] : [brl(proposal.company.monthly), brl(proposal.company.extraSeat)]));
 
   return (
     <div className="calc-wrap">
@@ -101,7 +103,7 @@ export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { l
         <div className="calc-presets" role="group" aria-label={c.presetsLabel}>
           <span className="small muted">{c.presetsLabel}</span>
           {presets.map((x) => (
-            <button type="button" key={x.id} className={`calc-chip${preset === x.id ? " on" : ""}`} aria-pressed={preset === x.id} onClick={() => pick(x)}>{c.presets[x.id]}</button>
+            <button type="button" key={x.id} className={`calc-chip${preset === x.id ? " on" : ""}`} aria-pressed={preset === x.id} onClick={() => pick(x)}><Icon name={x.icon} size={16} />{c.presets[x.id]}</button>
           ))}
         </div>
         <div className="calc-sliders">
@@ -119,20 +121,17 @@ export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { l
               {shares.map(({ k, share }, i) => <span key={k}>{i > 0 && " · "}<i className={`dot mix-${k}`} />{c.lines[k]} {Math.round(share * 100)}%</span>)}
             </p>
           </div>
-          {byBand ? (
-            <label>
-              <span className="calc-slider-label"><span>{c.people}</span></span>
-              <select className="calc-select" value={band} onChange={(e) => { setPreset(null); setBand(Number(e.currentTarget.value)); }}>
-                {c.peopleBands.map((label, i) => <option key={label} value={i}>{label}</option>)}
-              </select>
-            </label>
-          ) : (
-            <label>
-              <span className="calc-slider-label"><span>{s.seats}</span><strong>{seats}</strong></span>
-              <input type="range" min={1} max={MAX_SEATS} step={1} value={Math.min(seats, MAX_SEATS)}
-                onChange={(e) => { setPreset(null); setSeats(Number(e.currentTarget.value)); }} />
-            </label>
-          )}
+          <label>
+            <span className="calc-slider-label"><span>{s.seats}</span><strong>{seats}</strong></span>
+            <input type="range" min={1} max={MAX_SEATS} step={1} value={Math.min(seats, MAX_SEATS)}
+              onChange={(e) => { setPreset(null); setSeats(Number(e.currentTarget.value)); }} />
+          </label>
+          <label>
+            <span className="calc-slider-label"><span>{s.people}</span><strong>{c.peopleBands[band]}</strong></span>
+            <input type="range" min={0} max={c.peopleBands.length - 1} step={1} value={band}
+              onChange={(e) => { setPreset(null); setBand(Number(e.currentTarget.value)); }} />
+          </label>
+          <p className="small muted calc-plan">{plan}</p>
         </div>
         <div className="calc-result" aria-live="polite">
           {saving > 0 ? (
@@ -145,7 +144,7 @@ export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { l
           <p className="small muted">{fill(s.compare, brl(w.total), brl(b.month))}</p>
           <p className="small calc-proposal">{c.proposal}</p>
         </div>
-        <p className="small muted calc-assumption">{s.assumption}</p>
+        <p className="small muted calc-assumption">{preset ? c.presetNotes[preset] : s.assumption}</p>
       </div>
       <details className="calc-detail">
         <summary>{s.detail}</summary>
@@ -173,22 +172,13 @@ export function PriceCalculator({ lang, copy: c, rates, proposal, presets }: { l
       </div>
       <div className="card org-form calc-side">
         <h3>{c.bipe}</h3>
-        <label>{c.org}
-          <select value={org} onChange={(e) => { setPreset(null); setOrg(e.currentTarget.value as CalculatorOrg); }}>
-            {ORGS.map((o) => <option key={o} value={o}>{c.orgs[o]}</option>)}
-          </select>
-        </label>
-        {byBand ? (
-          <label>{c.people}
-            <select value={band} onChange={(e) => { setPreset(null); setBand(Number(e.currentTarget.value)); }}>
-              {c.peopleBands.map((label, i) => <option key={label} value={i}>{label}</option>)}
-            </select>
-          </label>
-        ) : (
-          <label>{c.seats}
-            <input type="number" inputMode="numeric" min={1} step={1} value={seats} onChange={(e) => { setPreset(null); setSeats(Math.max(1, Number(e.currentTarget.value) || 1)); }} />
-          </label>
-        )}
+        <div className="calc-orgs" role="group" aria-label={c.org}>
+          <span className="small muted">{c.org}</span>
+          {ORGS.map((o) => (
+            <button type="button" key={o} className={`calc-chip${org === o ? " on" : ""}`} aria-pressed={org === o} onClick={() => { setPreset(null); setOrg(o); }}>{c.orgs[o]}</button>
+          ))}
+        </div>
+        <p className="small muted">{plan}</p>
         <div className="calc-lines" aria-live="polite">
           {line(c.lines.bipeMonth, b.month, true)}
           {line(c.lines.bipeYear, b.year)}

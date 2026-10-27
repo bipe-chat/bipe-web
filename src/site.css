@@ -406,10 +406,12 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .calc-simple { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 32px; align-items: center; padding: 32px; }
 .calc-sliders { display: grid; gap: 28px; }
 .calc-presets { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.calc-chip { font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer; }
+.calc-chip { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer; }
 .calc-chip.on { background: var(--acai); border-color: var(--acai); color: #fff; }
 .calc-chip:focus-visible { outline: 2px solid var(--acai); outline-offset: 2px; }
 .calc-mix { display: grid; gap: 8px; }
+.calc-plan { margin: -12px 0 0; }
+.calc-orgs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .calc-mix-bar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--line); }
 .calc-mix-legend { margin: 0; }
 .calc-mix-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; }
@@ -417,7 +419,6 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .mix-utility { background: color-mix(in srgb, var(--acai) 55%, var(--bg)); }
 .mix-authentication { background: color-mix(in srgb, var(--acai) 30%, var(--text)); }
 .mix-service { background: var(--muted); }
-.calc-select { font: inherit; font-size: 16px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
 .calc-sliders label { display: grid; gap: 10px; font-weight: 600; }
 .calc-slider-label { display: flex; justify-content: space-between; gap: 12px; }
 .calc-slider-label strong { font-variant-numeric: tabular-nums; }
