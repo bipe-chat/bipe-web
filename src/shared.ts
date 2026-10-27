@@ -137,27 +137,22 @@ export type OrganisationAudience = {
   sections: { id: string; features: string[]; scene?: SceneId }[];
 } & Copy<{ name: string; title: string; headline: string; lede: string; sections: { heading: string; body: string }[]; note: string; cta: string }>;
 
-export type WhatsAppRates = {
-  checked: string; effective: string; source: string;
-  marketing: number; utility: [number, number][]; authentication: [number, number][]; service: number; serviceFreePerNumber: number;
-};
+/** Bipe's price rules (ADR 0206). Tiers: [first person of the band, BRL per person per year]. */
 export type PriceProposal = {
-  adr: string; smallSeats: number; company: { monthly: number; extraSeat: number; annualMonths: number };
-  nonprofitFactor: number; publicBodyFactor: number; institutionBands: { upTo: number | null; yearly: number }[];
+  adr: string; free: { agents: number; people: number }; minMonthly: number;
+  company: { monthly: number; extraSeat: number; annualMonths: number; maxSeats: number };
+  institution: { tiers: [number, number][]; capYearly: number }; halfFactor: number; table: number[];
 };
-export type CalculatorPreset = {
-  id: string; messages: number; mix: Record<"marketing" | "utility" | "authentication" | "service", number>;
-  org: CalculatorOrg; seats?: number; band?: number; icon: IconName;
-};
-export type CalculatorOrg = "small" | "company" | "nonprofit" | "institution" | "public";
+/** company: any company or institution; half: public bodies, NGOs, churches and associations. */
+export type CalculatorOrg = "company" | "half";
+export type CalculatorPreset = { id: string; icon: IconName; org: CalculatorOrg; seats: number; people: number; spend: number };
 export type CalculatorCopy = {
-  heading: string; lede: string; whatsapp: string; bipe: string; org: string; seats: string; people: string;
-  fields: Record<"marketing" | "marketingHint" | "utility" | "utilityHint" | "authentication" | "service" | "serviceHint" | "numbers" | "bspPercent" | "bspMonthly", string>;
-  orgs: Record<CalculatorOrg, string>; peopleBands: string[];
-  lines: Record<"marketing" | "utility" | "authentication" | "service" | "serviceFree" | "meta" | "bsp" | "total" | "year" | "bipeMonth" | "bipeYear" | "bipeAnnual" | "bipeSame" | "smallMoved", string>;
-  proposal: string; notes: string[]; sourceLink: string; link: string;
-  presetsLabel: string; presets: Record<string, string>; presetNotes: Record<string, string>; plans: Record<CalculatorOrg, string>;
-  simple: Record<"messages" | "seats" | "people" | "save" | "perMonth" | "perYear" | "cheaper" | "compare" | "assumption" | "detail" | "mix", string>;
+  heading: string; lede: string; presetsLabel: string; presets: Record<string, string>; presetNotes: Record<string, string>;
+  org: string; orgs: Record<CalculatorOrg, string>; seats: string; people: string; spend: string; spendNone: string;
+  month: string; year: string; annual: string; save: string; compare: string;
+  plans: Record<"free" | "company" | "institution" | "half" | "lower", string>;
+  proposal: string; detail: string; curveHeading: string; curveLede: string; curveFrom: string; curveBetween: string; curveAbove: string; curveRate: string;
+  tableHeading: string; tablePeople: string; tableInstitution: string; tableHalf: string; link: string;
 };
 
 export type PricingTierId = "small" | "company" | "institution" | "public";
@@ -196,9 +191,7 @@ export const product = { ...productData, features: productData.features.map((f) 
     /** `amount` in BRL is set only after the pilot (ADR 0075). No amount: the page shows `pilotPrice`. */
     /** `pilotFree`: the pilot costs nothing for this tier (public bodies); the others pay half in the pilot. */
     tiers: { id: PricingTierId; amount?: number; cta: "app" | "form"; pilotFree?: boolean }[];
-    /** Meta's Brazil rate card for the calculator (bipe#812). Tiers: [first message count of the band, BRL rate]. */
-    whatsapp: WhatsAppRates;
-    /** Proposed amounts (ADR 0083, ADR 0125), not approved prices. */
+    /** Proposed price rules and amounts (ADR 0206), not approved prices. */
     proposal: PriceProposal;
     /** Example organisations above the sliders (bipe#812). */
     calculatorPresets: CalculatorPreset[];
@@ -206,7 +199,7 @@ export const product = { ...productData, features: productData.features.map((f) 
     nav: string; link: string; title: string; lede: string;
     principles: { heading: string; points: string[] }; why: { heading: string; points: string[] };
     tiersHeading: string; freePrice: string; pilotPrice: string; pilotFreePrice: string; ctaApp: string; ctaForm: string;
-    tiers: Record<PricingTierId, { name: string; who: string; billing: string; points: string[] }>;
+    tiers: Record<PricingTierId, { name: string; who: string; billing: string; points: string[]; price?: string }>;
     nonprofit: string; tools: { heading: string; body: string }; pilot: { heading: string; points: string[] };
     calculator: CalculatorCopy;
   }>;
