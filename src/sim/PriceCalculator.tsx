@@ -34,7 +34,7 @@ export function bipePrice(org: CalculatorOrg, seats: number, people: number, p: 
 }
 
 const SEAT_STEPS = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30, 50, 100, 200, 500];
-const PEOPLE_STEPS = [100, 250, 500, 800, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000];
+const PEOPLE_STEPS = [100, 300, 500, 800, 1000, 2000, 3000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000];
 const SPEND_STEPS = [0, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
 const ORGS: CalculatorOrg[] = ["company", "half"];
 const fill = (s: string, ...v: string[]) => v.reduce((out, x, i) => out.replace(`%${i + 1}$s`, x), s);
@@ -45,7 +45,7 @@ const stopOf = (steps: number[], n: number) => {
 };
 
 /**
- * The estimator on /precos/ (bipe#812, ADR 0206): what Bipe costs an organisation, by agents and people served.
+ * The estimator on /precos/ (bipe#812, ADR 0206): what Bipe costs an organisation, by agents and active customers on Bipe.
  * Presets (example organisations), sliders and chips only. An optional slider takes what the organisation spends today
  * and shows the difference, without naming any platform. The detail shows the curve and the yearly amounts.
  * Rules, amounts and copy come from `pricing` in bipe-shared product.json; nothing is sent anywhere.
@@ -75,10 +75,11 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
     : c.plans.institution;
   const saving = spend - b.month;
 
-  const slider = (label: string, value: string, steps: number[], current: number, set: (n: number) => void) => (
+  const slider = (label: string, value: string, steps: number[], current: number, set: (n: number) => void, hint?: string) => (
     <label>
       <span className="calc-slider-label"><span>{label}</span><strong>{value}</strong></span>
       <input type="range" min={0} max={steps.length - 1} step={1} value={stopOf(steps, current)} onChange={(e) => set(steps[Number(e.currentTarget.value)]!)} />
+      {hint && <span className="small muted calc-hint">{hint}</span>}
     </label>
   );
   const tiers = p.institution.tiers;
@@ -99,7 +100,7 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
             ))}
           </div>
           {slider(c.seats, num(seats), SEAT_STEPS, seats, manual(setSeats))}
-          {slider(c.people, num(people), PEOPLE_STEPS, people, manual(setPeople))}
+          {slider(c.people, num(people), PEOPLE_STEPS, people, manual(setPeople), c.peopleHint)}
           {slider(c.spend, spend ? brl(spend) : c.spendNone, SPEND_STEPS, spend, manual(setSpend))}
         </div>
         <div className="calc-result" aria-live="polite">

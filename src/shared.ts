@@ -148,7 +148,7 @@ export type CalculatorOrg = "company" | "half";
 export type CalculatorPreset = { id: string; icon: IconName; org: CalculatorOrg; seats: number; people: number; spend: number };
 export type CalculatorCopy = {
   heading: string; lede: string; presetsLabel: string; presets: Record<string, string>; presetNotes: Record<string, string>;
-  org: string; orgs: Record<CalculatorOrg, string>; seats: string; people: string; spend: string; spendNone: string;
+  org: string; orgs: Record<CalculatorOrg, string>; seats: string; people: string; peopleHint: string; spend: string; spendNone: string;
   month: string; year: string; annual: string; save: string; compare: string;
   plans: Record<"free" | "company" | "institution" | "half" | "lower", string>;
   proposal: string; detail: string; curveHeading: string; curveLede: string; curveFrom: string; curveBetween: string; curveAbove: string; curveRate: string;
