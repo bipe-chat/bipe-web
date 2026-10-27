@@ -194,7 +194,8 @@ export const product = { ...productData, features: productData.features.map((f) 
     /** Feature ids of the tools that are free on every plan. */
     tools: string[];
     /** `amount` in BRL is set only after the pilot (ADR 0075). No amount: the page shows `pilotPrice`. */
-    tiers: { id: PricingTierId; amount?: number; cta: "app" | "form" }[];
+    /** `pilotFree`: the pilot costs nothing for this tier (public bodies); the others pay half in the pilot. */
+    tiers: { id: PricingTierId; amount?: number; cta: "app" | "form"; pilotFree?: boolean }[];
     /** Meta's Brazil rate card for the calculator (bipe#812). Tiers: [first message count of the band, BRL rate]. */
     whatsapp: WhatsAppRates;
     /** Proposed amounts (ADR 0083, ADR 0125), not approved prices. */
@@ -204,7 +205,7 @@ export const product = { ...productData, features: productData.features.map((f) 
   } & Copy<{
     nav: string; link: string; title: string; lede: string;
     principles: { heading: string; points: string[] }; why: { heading: string; points: string[] };
-    tiersHeading: string; freePrice: string; pilotPrice: string; ctaApp: string; ctaForm: string;
+    tiersHeading: string; freePrice: string; pilotPrice: string; pilotFreePrice: string; ctaApp: string; ctaForm: string;
     tiers: Record<PricingTierId, { name: string; who: string; billing: string; points: string[] }>;
     nonprofit: string; tools: { heading: string; body: string }; pilot: { heading: string; points: string[] };
     calculator: CalculatorCopy;
