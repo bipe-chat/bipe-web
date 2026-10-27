@@ -25,7 +25,6 @@ export function BannerMaker({ lang }: { lang: Lang }) {
   const c = chrome[lang].brand.maker;
   const initial = defaultBanner(product.promise[lang].title);
   const [doc, setDoc] = useState(initial);
-  const [restored, setRestored] = useState(false);
   const [saved, setSaved] = useState(false);
   const [notice, setNotice] = useState("");
   const [guides, setGuides] = useState(false);
@@ -44,39 +43,38 @@ export function BannerMaker({ lang }: { lang: Lang }) {
   const label = formatLabel(doc, lang, c.custom);
   const outputScale = canDouble(doc) ? scale : 1;
 
+  function saveDraft(value: BannerDoc) {
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(value)); setSaved(true); }
+    catch { setSaved(false); setNotice(c.storage); }
+  }
   function patch(next: Partial<BannerDoc>) {
-    setDoc((current) => ({ ...current, ...next }));
-    setSaved(false); setFeedback(""); setShareLink("");
+    const updated = { ...doc, ...next };
+    setDoc(updated); setNotice(""); setFeedback(""); setShareLink("");
+    // This small document is saved in the input event, before a reload or
+    // navigation can discard it. A debounce lost the last edits on reload.
+    saveDraft(updated);
     // Once edited, reload the saved draft instead of the original shared link.
     if (window.location.hash.startsWith("#design=")) history.replaceState(null, "", window.location.pathname + window.location.search);
   }
   useEffect(() => {
     const fallback = defaultBanner(product.promise[lang].title);
     const restore = () => {
+      let next = fallback;
       if (window.location.hash.startsWith("#design=")) {
         const linked = bannerFromHash(window.location.hash, fallback);
-        setDoc(linked ?? fallback); setNotice(linked ? "" : c.invalid);
+        next = linked ?? fallback; setNotice(linked ? "" : c.invalid);
       } else {
         try {
           const raw = localStorage.getItem(DRAFT_KEY);
-          if (raw) setDoc(parseBanner(JSON.parse(raw), fallback) ?? fallback);
+          if (raw) next = parseBanner(JSON.parse(raw), fallback) ?? fallback;
         } catch { /* A malformed or inaccessible draft does not prevent editing. */ }
       }
-      setRestored(true);
+      setDoc(next); saveDraft(next);
     };
     restore();
     window.addEventListener("hashchange", restore);
     return () => window.removeEventListener("hashchange", restore);
-  }, [lang, c.invalid]);
-
-  useEffect(() => {
-    if (!restored) return;
-    const timer = setTimeout(() => {
-      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(doc)); setSaved(true); }
-      catch { setNotice(c.storage); }
-    }, 350);
-    return () => clearTimeout(timer);
-  }, [doc, restored, c.storage]);
+  }, [lang, c.invalid, c.storage]);
 
   useEffect(() => {
     let cancelled = false;
@@ -114,7 +112,7 @@ export function BannerMaker({ lang }: { lang: Lang }) {
     catch { setShareLink(url.href); }
   }
   function reset() {
-    patch(initial); setNotice("");
+    patch(initial);
     // A reload after starting over should not restore the old shared design.
     if (window.location.hash.startsWith("#design=")) history.replaceState(null, "", window.location.pathname);
   }
