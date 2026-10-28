@@ -143,17 +143,22 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
           <div className="card calc-side">
             <h3>{c.curveHeading}</h3>
             <p className="small muted">{fill(c.curveLede, brl(p.customers.capYearly))}</p>
-            <div className="calc-lines">
-              {[[0, 0] as [number, number], ...tiers].map(([from, rate], i, all) => {
-                const to = all[i + 1]?.[0];
-                return (
-                  <div className="calc-line" key={from}>
-                    <span>{!to ? fill(c.curveAbove, num(from)) : from === 0 ? fill(c.curveFrom, num(to)) : fill(c.curveBetween, num(from), num(to))}</span>
-                    <span>{fill(c.curveRate, brl(rate, true))}</span>
-                  </div>
-                );
-              })}
-            </div>
+            <table className="calc-tiers">
+              <thead>
+                <tr><th scope="col">{c.curveColBand}</th><th scope="col">{c.curveColRate}</th></tr>
+              </thead>
+              <tbody>
+                {[[0, 0] as [number, number], ...tiers].map(([from, rate], i, all) => {
+                  const to = all[i + 1]?.[0];
+                  return (
+                    <tr key={from}>
+                      <td>{!to ? fill(c.curveAbove, num(from)) : from === 0 ? fill(c.curveFrom, num(to)) : fill(c.curveBetween, num(from), num(to))}</td>
+                      <td>{brl(rate, true)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
             <h3 style={{ marginTop: 20 }}>{c.agentsHeading}</h3>
             <p className="small muted">{fill(c.agentsLine, brl(p.agents.monthly))}</p>
           </div>
