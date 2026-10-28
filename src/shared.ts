@@ -154,7 +154,7 @@ export type CalculatorCopy = {
   resultLabel: string; month: string; yearLine: string;
   rows: Record<"customers" | "agents" | "above" | "half" | "free" | "total", string>;
   compareHeading: string; today: string; save: string; saveYear: string; more: string;
-  proposal: string; detail: string; curveHeading: string; curveLede: string; curveFrom: string; curveBetween: string; curveAbove: string; curveRate: string;
+  proposal: string; detail: string; curveHeading: string; curveLede: string; curveFrom: string; curveBetween: string; curveAbove: string; curveColBand: string; curveColRate: string;
   agentsHeading: string; agentsLine: string;
   tableHeading: string; tablePeople: string; tableInstitution: string; tableHalf: string; link: string;
 };

@@ -451,6 +451,10 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .calc-lines { display: grid; gap: 6px; margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--line); }
 .calc-lines .small { margin: 0 0 4px; }
 .calc-line { display: flex; justify-content: space-between; gap: 16px; font-variant-numeric: tabular-nums; }
+.calc-tiers { width: 100%; margin-top: 12px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.calc-tiers th { text-align: left; font-size: 13px; font-weight: 600; color: var(--muted); padding: 0 0 8px; border-bottom: 1px solid var(--line); }
+.calc-tiers td { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.calc-tiers th:last-child, .calc-tiers td:last-child { text-align: right; white-space: nowrap; padding-left: 16px; }
 .calc-line.strong { font-weight: 700; font-size: 20px; }
 .calc-notes { grid-column: 1 / -1; }
 .calc-notes p { margin: 0 0 6px; }

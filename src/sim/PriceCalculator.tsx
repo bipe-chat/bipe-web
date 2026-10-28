@@ -113,7 +113,7 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
         <div className="calc-result" aria-live="polite">
           <p className="calc-eyebrow">{c.resultLabel}</p>
           <p className="calc-price display">{brl(b.month)} <span>{c.month}</span></p>
-          <p className="small muted calc-year">{fill(c.yearLine, brl(b.year), brl(b.annual))}</p>
+          <p className="small muted calc-year">{fill(c.yearLine, brl(b.annual))}</p>
           <div className="calc-rows">
             {b.year === 0
               ? row(fill(c.rows.free, num(p.agents.free), num(p.customers.free)), "", brl(0))
@@ -143,17 +143,22 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
           <div className="card calc-side">
             <h3>{c.curveHeading}</h3>
             <p className="small muted">{fill(c.curveLede, brl(p.customers.capYearly))}</p>
-            <div className="calc-lines">
-              {[[0, 0] as [number, number], ...tiers].map(([from, rate], i, all) => {
-                const to = all[i + 1]?.[0];
-                return (
-                  <div className="calc-line" key={from}>
-                    <span>{!to ? fill(c.curveAbove, num(from)) : from === 0 ? fill(c.curveFrom, num(to)) : fill(c.curveBetween, num(from), num(to))}</span>
-                    <span>{fill(c.curveRate, brl(rate, true))}</span>
-                  </div>
-                );
-              })}
-            </div>
+            <table className="calc-tiers">
+              <thead>
+                <tr><th scope="col">{c.curveColBand}</th><th scope="col">{c.curveColRate}</th></tr>
+              </thead>
+              <tbody>
+                {[[0, 0] as [number, number], ...tiers].map(([from, rate], i, all) => {
+                  const to = all[i + 1]?.[0];
+                  return (
+                    <tr key={from}>
+                      <td>{!to ? fill(c.curveAbove, num(from)) : from === 0 ? fill(c.curveFrom, num(to)) : fill(c.curveBetween, num(from), num(to))}</td>
+                      <td>{brl(rate, true)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
             <h3 style={{ marginTop: 20 }}>{c.agentsHeading}</h3>
             <p className="small muted">{fill(c.agentsLine, brl(p.agents.monthly))}</p>
           </div>
