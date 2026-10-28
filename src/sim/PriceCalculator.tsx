@@ -113,7 +113,7 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
         <div className="calc-result" aria-live="polite">
           <p className="calc-eyebrow">{c.resultLabel}</p>
           <p className="calc-price display">{brl(b.month)} <span>{c.month}</span></p>
-          <p className="small muted calc-year">{fill(c.yearLine, brl(b.year), brl(b.annual))}</p>
+          <p className="small muted calc-year">{fill(c.yearLine, brl(b.annual))}</p>
           <div className="calc-rows">
             {b.year === 0
               ? row(fill(c.rows.free, num(p.agents.free), num(p.customers.free)), "", brl(0))
