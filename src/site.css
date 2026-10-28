@@ -403,33 +403,42 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .org-form label.check input { width: auto; accent-color: var(--acai); }
 /* Price calculator on /precos/ (src/sim/PriceCalculator.tsx, bipe#812) */
 .calc-wrap { margin-top: 24px; }
-.calc-simple { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 32px; align-items: center; padding: 32px; }
-.calc-sliders { display: grid; gap: 28px; }
-.calc-presets { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.calc-chip { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer; }
+.calc-simple { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px 40px; align-items: start; padding: 32px; }
+.calc-eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.calc-presets { grid-column: 1 / -1; display: grid; gap: 10px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.calc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.calc-chip { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer; }
 .calc-chip.on { background: var(--acai); border-color: var(--acai); color: #fff; }
 .calc-chip:focus-visible { outline: 2px solid var(--acai); outline-offset: 2px; }
-.calc-mix { display: grid; gap: 8px; }
-.calc-plan { margin: -12px 0 0; }
-.calc-sliders label.calc-check { display: flex; align-items: center; gap: 10px; font-weight: 400; cursor: pointer; }
-.calc-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--acai); flex: none; }
-.calc-mix-bar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--line); }
-.calc-mix-legend { margin: 0; }
-.calc-mix-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; }
-.mix-marketing { background: var(--acai); }
-.mix-utility { background: color-mix(in srgb, var(--acai) 55%, var(--bg)); }
-.mix-authentication { background: color-mix(in srgb, var(--acai) 30%, var(--text)); }
-.mix-service { background: var(--muted); }
-.calc-sliders label { display: grid; gap: 10px; font-weight: 600; }
+.calc-assumption { margin: 0; max-width: 70ch; }
+.calc-sliders { display: grid; gap: 22px; }
+.calc-sliders label { display: grid; gap: 8px; font-weight: 600; }
 .calc-slider-label { display: flex; justify-content: space-between; gap: 12px; }
-.calc-hint { font-weight: 400; margin-top: -4px; }
 .calc-slider-label strong { font-variant-numeric: tabular-nums; }
+.calc-hint { font-weight: 400; margin-top: -2px; }
 .calc-sliders input[type=range] { width: 100%; accent-color: var(--acai); }
-.calc-result p { margin: 0 0 6px; }
-.card .calc-save-label { font-weight: 600; color: var(--text); }
-.card p.calc-save { font-size: clamp(34px, 7vw, 52px); line-height: 1.1; color: var(--acai); font-variant-numeric: tabular-nums; }
-.card p.calc-save span { font-size: 18px; color: var(--muted); }
-.calc-assumption { grid-column: 1 / -1; margin: 0; }
+.calc-sliders label.calc-check { display: flex; align-items: flex-start; gap: 10px; font-weight: 400; cursor: pointer; }
+.calc-check input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--acai); flex: none; }
+.calc-group { margin-top: 10px; padding-top: 22px; border-top: 1px solid var(--line); }
+.calc-result { display: grid; gap: 4px; padding: 24px; border-radius: 16px; background: color-mix(in srgb, var(--acai) 8%, transparent); }
+.card p.calc-price { margin: 4px 0 0; font-size: clamp(40px, 7vw, 56px); line-height: 1.05; color: var(--acai); font-variant-numeric: tabular-nums; }
+.card p.calc-price span { font-size: 18px; color: var(--muted); white-space: nowrap; }
+@media (max-width: 640px) { .calc-simple { padding: 20px; } .calc-result { padding: 18px; margin: 0 -6px; } .card p.calc-price { font-size: 40px; } }
+.card p.calc-year { margin: 0 0 12px; }
+.calc-rows { display: grid; border-top: 1px solid var(--line); }
+.calc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.calc-row > span { display: grid; gap: 2px; }
+.calc-row strong { font-weight: 600; white-space: nowrap; }
+.calc-row.total { border-bottom: 0; font-weight: 700; }
+.calc-row.total strong { font-weight: 700; }
+.calc-compare { display: grid; gap: 8px; margin-top: 18px; }
+.calc-bar { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 10px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.calc-bar i { display: block; height: 12px; border-radius: 999px; background: color-mix(in srgb, var(--text) 30%, transparent); }
+.calc-bar.bipe i { background: var(--acai); }
+.calc-bar span { color: var(--muted); }
+.card p.calc-saving { margin: 6px 0 0; font-size: 20px; font-weight: 700; color: var(--text); }
+.card p.calc-saving span { display: block; font-size: 14px; font-weight: 400; color: var(--muted); }
+.card p.calc-proposal { margin: 16px 0 0; }
 .calc-detail { margin-top: 16px; }
 .calc-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; margin-top: 8px; }
 .calc-table th, .calc-table td { text-align: right; padding: 6px 4px; border-bottom: 1px solid var(--line); }
@@ -443,7 +452,6 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .calc-lines .small { margin: 0 0 4px; }
 .calc-line { display: flex; justify-content: space-between; gap: 16px; font-variant-numeric: tabular-nums; }
 .calc-line.strong { font-weight: 700; font-size: 20px; }
-.calc-proposal { margin: 8px 0 0; color: var(--acai); font-weight: 600; }
 .calc-notes { grid-column: 1 / -1; }
 .calc-notes p { margin: 0 0 6px; }
 .waitlist-done { margin-top: 12px; color: var(--acai); font-weight: 600; }
