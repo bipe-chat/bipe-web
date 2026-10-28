@@ -133,6 +133,12 @@ for (const set of ssr.storeSets) {
   for (const e of set.exports) copyFileSync(join(root, "src", set.dir, e.file), join(dist, set.href, e.file));
 }
 
+// The price rules and the estimator's presets and pt-BR copy, for the simulator slide of the deck at /proposta/deck/
+// (bipe-infra). One source: pricing in bipe-shared product.json (ADR 0206).
+{
+  const pricing = JSON.parse(readFileSync(join(root, "../bipe-shared/product/product.json"), "utf8")).pricing;
+  writeFileSync(join(dist, "precos.json"), JSON.stringify({ proposal: pricing.proposal, presets: pricing.calculatorPresets, copy: pricing.pt.calculator }));
+}
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
 writeFileSync(join(dist, "llms-full.txt"), ssr.llmsFullTxt());
 writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
