@@ -2,13 +2,11 @@
 
 Bipe runs on the open Matrix protocol, with native apps and servers in Brazil. This page shows each part and what it does.
 
-_Updated 13 October 2026._
-
 ## Overview
 
 | Layer | Parts |
 |---|---|
-| Apps | iPhone (SwiftUI) and Android (Kotlin, Jetpack Compose), forks of Element X. Rust core: matrix-rust-sdk |
+| Apps | iPhone (SwiftUI) and Android (Kotlin, Jetpack Compose), one app of Bipe's own. Rust core: matrix-rust-sdk |
 | On the device | End-to-end encryption, scam warnings, name checks |
 | Servers | Synapse, Matrix Authentication Service, Bipe API, Sygnal, LiveKit, Postgres, Caddy |
 | Site | Static pages on `bipe.chat`, with a Markdown twin per page |
@@ -29,7 +27,7 @@ Bipe has three name layers:
 
 There is no handle search and no directory. A handle lookup is exact, and needs a signed-in account.
 
-Phone numbers stay hidden. Each person chooses who can find them by phone number: everyone, only their contacts, or nobody. The default is only their contacts.
+Nobody sees another person's number through Bipe. The app shows you your own linked number. It shows another person's number only when that number is already in your address book. Each person chooses who can find them by phone number: everyone, only their contacts, or nobody. The default is only their contacts.
 
 ## Sign-in and recovery
 
@@ -49,7 +47,7 @@ Scam warnings run on the phone, after decryption. The message does not leave the
 |---|---|
 | Synapse | Matrix homeserver: rooms, messages, sync |
 | Matrix Authentication Service | Sign-in, sessions, tokens (OIDC) |
-| Bipe API | Sign-up with invites, @handles, contact discovery, recovery, public profiles, CNPJ checks, badges |
+| Bipe API | Sign-up with invites, @handles, contact discovery, recovery, public profiles, CNPJ checks, badges, company catalogue, agenda and queue |
 | Sygnal | Push gateway to Apple and Google push services |
 | LiveKit | Voice and video calls (MatrixRTC) and TURN on `turn.bipe.net.br` |
 | Element Web | Web client on `chat.bipe.net.br` |
@@ -74,20 +72,16 @@ The servers run in Brazil, with Brazilian companies. Conversations and accounts 
 
 The code is open, under AGPL-3.0, at [github.com/bipe-chat](https://github.com/bipe-chat).
 
-- [bipe-ios](https://github.com/bipe-chat/bipe-ios) and [bipe-android](https://github.com/bipe-chat/bipe-android): the apps
-- [bipe-shared](https://github.com/bipe-chat/bipe-shared): rules, app text, the [API contract](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml) and test cases
-- [bipe-api](https://github.com/bipe-chat/bipe-api): the Bipe API
-- [bipe-web](https://github.com/bipe-chat/bipe-web): this site
-- [bipe-ml](https://github.com/bipe-chat/bipe-ml): the scam model that runs on the phone
-- [bipe-business](https://github.com/bipe-chat/bipe-business): bridge and inbox for companies
-- [compound-design-tokens](https://github.com/bipe-chat/compound-design-tokens): colours and styles
+{{repos}}
+
+The API contract is in [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml).
 
 ## Upstream
 
-- [Element X iOS](https://github.com/element-hq/element-x-ios) and [Element X Android](https://github.com/element-hq/element-x-android)
 - [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk)
 - [Synapse](https://github.com/element-hq/synapse)
 - [Matrix Authentication Service](https://github.com/element-hq/matrix-authentication-service)
 - [Sygnal](https://github.com/matrix-org/sygnal)
 - [LiveKit](https://github.com/livekit/livekit)
+- [Element Web](https://github.com/element-hq/element-web)
 - [Compound design tokens](https://github.com/element-hq/compound-design-tokens)

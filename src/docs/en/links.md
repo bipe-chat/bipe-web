@@ -2,8 +2,6 @@
 
 The links people share open the Bipe app when it is installed. Without the app, a page on bipe.chat explains the next step. This page gives each link's format and the API calls that need no sign-in.
 
-_Updated 13 October 2026._
-
 ## Profile link
 
 ```
@@ -47,15 +45,9 @@ The Bipe API sends two kinds of email link. The token is after `#`, so the brows
 
 ## Public API
 
-Base URL: `https://api.bipe.net.br`. These calls need no sign-in. Each one has a rate limit per IP address. Every other call needs a Matrix access token from a signed-in Bipe account.
+Base URL: `https://api.bipe.net.br`. These calls need no sign-in. Every other call needs a Matrix access token from a signed-in Bipe account.
 
-| Call | Answer |
-|---|---|
-| `GET /v1/profiles/{handle}` | The published public profile: name, bio, photo URL. Nothing when the profile is off |
-| `GET /v1/profiles/{handle}/photo` | The profile photo (JPEG) |
-| `GET /v1/invites/{code}` | Whether an invite code can still be used, and the inviter's handle |
-| `GET /v1/handles/{handle}/availability` | Whether a handle is free. It never says who holds it |
-| `POST /v1/waitlist` | Joins the waitlist for a platform that has no build yet |
+{{public-api}}
 
 Browsers can call the API only from `https://bipe.chat`.
 

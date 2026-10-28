@@ -2,8 +2,6 @@
 
 The data stays in Brazil, and so does the address of the service. Bipe uses two domains with two jobs: `bipe.net.br` runs the service, `bipe.chat` carries the links that people share.
 
-_Updated 13 October 2026._
-
 ## The two domains
 
 | Domain | Registry | Job |
