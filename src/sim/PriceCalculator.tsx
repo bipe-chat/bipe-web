@@ -32,7 +32,6 @@ export function bipePrice(org: CalculatorOrg, seats: number, people: number, p: 
 const SEAT_STEPS = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30, 50, 100, 200, 500];
 const PEOPLE_STEPS = [100, 300, 500, 800, 1000, 2000, 3000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000];
 const SPEND_STEPS = [0, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
-const ORGS: CalculatorOrg[] = ["company", "half"];
 const fill = (s: string, ...v: string[]) => v.reduce((out, x, i) => out.replace(`%${i + 1}$s`, x), s);
 /** The slider stop for a value: the first stop at or above it, so a preset value between stops sits on the next one. */
 const stopOf = (steps: number[], n: number) => {
@@ -42,7 +41,7 @@ const stopOf = (steps: number[], n: number) => {
 
 /**
  * The estimator on /precos/ (bipe#812, ADR 0206): what Bipe costs an organisation: active customers on Bipe plus extra agents.
- * Presets (example organisations), sliders and chips only. An optional slider takes what the organisation spends today
+ * Presets (example organisations), sliders and one half-price checkbox. An optional slider takes what the organisation spends today
  * and shows the difference, without naming any platform. The detail shows the curve and the yearly amounts.
  * Rules, amounts and copy come from `pricing` in bipe-shared product.json; nothing is sent anywhere.
  */
@@ -87,11 +86,10 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
           ))}
         </div>
         <div className="calc-sliders">
-          <div className="calc-orgs" role="group" aria-label={c.org}>
-            {ORGS.map((o) => (
-              <button type="button" key={o} className={`calc-chip${org === o ? " on" : ""}`} aria-pressed={org === o} onClick={() => manual(setOrg)(o)}>{c.orgs[o]}</button>
-            ))}
-          </div>
+          <label className="calc-check">
+            <input type="checkbox" checked={org === "half"} onChange={(e) => manual(setOrg)(e.currentTarget.checked ? "half" : "company")} />
+            <span>{c.orgs.half}</span>
+          </label>
           {slider(c.seats, num(seats), SEAT_STEPS, seats, manual(setSeats))}
           {slider(c.people, num(people), PEOPLE_STEPS, people, manual(setPeople), c.peopleHint)}
           {slider(c.spend, spend ? brl(spend) : c.spendNone, SPEND_STEPS, spend, manual(setSpend))}
