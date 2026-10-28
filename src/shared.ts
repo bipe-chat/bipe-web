@@ -137,11 +137,12 @@ export type OrganisationAudience = {
   sections: { id: string; features: string[]; scene?: SceneId }[];
 } & Copy<{ name: string; title: string; headline: string; lede: string; sections: { heading: string; body: string }[]; note: string; cta: string }>;
 
-/** Bipe's price rules (ADR 0206). Tiers: [first person of the band, BRL per person per year]. */
+/** Bipe's price rules (ADR 0206): two meters that add up. Tiers: [first customer of the band, BRL per customer per year]. */
 export type PriceProposal = {
-  adr: string; free: { agents: number; people: number }; minMonthly: number;
-  company: { monthly: number; extraSeat: number; annualMonths: number; maxSeats: number };
-  institution: { tiers: [number, number][]; capYearly: number }; halfFactor: number; table: number[];
+  adr: string;
+  customers: { free: number; tiers: [number, number][]; capYearly: number };
+  agents: { free: number; monthly: number; chargedUpTo: number };
+  halfFactor: number; annualMonths: number; table: number[];
 };
 /** company: any company or institution; half: public bodies, NGOs, churches and associations. */
 export type CalculatorOrg = "company" | "half";
@@ -150,8 +151,9 @@ export type CalculatorCopy = {
   heading: string; lede: string; presetsLabel: string; presets: Record<string, string>; presetNotes: Record<string, string>;
   org: string; orgs: Record<CalculatorOrg, string>; seats: string; people: string; peopleHint: string; spend: string; spendNone: string;
   month: string; year: string; annual: string; save: string; compare: string;
-  plans: Record<"free" | "company" | "institution" | "half" | "lower", string>;
+  plans: Record<"free" | "customers" | "agents" | "half", string>;
   proposal: string; detail: string; curveHeading: string; curveLede: string; curveFrom: string; curveBetween: string; curveAbove: string; curveRate: string;
+  agentsHeading: string; agentsLine: string;
   tableHeading: string; tablePeople: string; tableInstitution: string; tableHalf: string; link: string;
 };
 
