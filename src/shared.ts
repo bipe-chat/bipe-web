@@ -20,6 +20,8 @@ import privacyJson from "@shared/product/privacy.json";
 import accessibilityJson from "@shared/product/accessibility.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import * as pixLib from "@shared/tools/lib/pix.mjs";
+import * as publicRoutesLib from "@shared/tools/lib/public-routes.mjs";
+import openapiYaml from "@shared/api/openapi.yaml?raw";
 import type { FigureId, SceneId } from "./sim/scenes";
 
 export type ScamKind = "extortion" | "pixCode" | "boleto" | "remoteApp" | "pinRequest" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
@@ -45,6 +47,10 @@ export const normalizeCnpj = lib.normalizeCnpj as (input: string) => string | nu
 export type PixCode = { status: "valid" | "badCrc" | "malformed"; dynamic: boolean; key: string | null; keyType: string | null; name: string | null; city: string | null; amount: string | null; info: string | null };
 /** The Conferir no Bipe check of shared text (pix-check, test-vectors/pix-check.json). */
 export const pixCheck = pixLib.pixCheck as (text: string, reg: Registries) => { code: PixCode | null; keys: { value: string; types: string[] }[]; warning: ScamKind | null };
+
+/** The API routes that take no access token (security: [] in api/openapi.yaml), in contract order. The docs page lists them. */
+export type PublicRoute = { method: string; path: string; en: string; pt: string };
+export const publicRoutes = (publicRoutesLib.publicRoutes as (yaml: string) => PublicRoute[])(openapiYaml);
 
 export const reg = {
   reserved: reservedNames,

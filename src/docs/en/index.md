@@ -2,8 +2,6 @@
 
 How Bipe works: the domains, the servers, the apps and the public links. Written for people and for AI agents.
 
-_Updated 13 October 2026._
-
 ## Pages
 
 - [Domains](/en/docs/domains/): bipe.net.br runs the service, bipe.chat carries the links. Why there are two, and which host does what.
@@ -12,7 +10,7 @@ _Updated 13 October 2026._
 
 ## In one paragraph
 
-Bipe is a Brazilian messenger on the open Matrix protocol. Conversations are stored on servers in Brazil, run by Brazilian companies. The Matrix server name is `bipe.net.br`, a `.br` domain run by NIC.br in Brazil. The public site and the links that people share are on `bipe.chat`. The iPhone and Android apps are native forks of Element X. Federation is closed: the Bipe server does not exchange messages with other Matrix servers.
+Bipe is a Brazilian messenger on the open Matrix protocol. Conversations are stored on servers in Brazil, run by Brazilian companies. The Matrix server name is `bipe.net.br`, a `.br` domain run by NIC.br in Brazil. The public site and the links that people share are on `bipe.chat`. The iPhone and Android apps are native, and Bipe makes them. Federation is closed: the Bipe server does not exchange messages with other Matrix servers.
 
 ## For AI agents
 

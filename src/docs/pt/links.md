@@ -2,8 +2,6 @@
 
 Os links que as pessoas compartilham abrem o app do Bipe quando ele está instalado. Sem o app, uma página no bipe.chat explica o próximo passo. Esta página mostra o formato de cada link e as chamadas da API que não pedem login.
 
-_Atualizado em 13 de outubro de 2026._
-
 ## Link de perfil
 
 ```
@@ -47,15 +45,9 @@ A API do Bipe manda dois tipos de link por e-mail. O token vem depois do `#`, en
 
 ## API pública
 
-Endereço base: `https://api.bipe.net.br`. Estas chamadas não pedem login. Cada uma tem limite de pedidos por endereço IP. Todas as outras pedem um token de acesso Matrix de uma conta do Bipe com login.
+Endereço base: `https://api.bipe.net.br`. Estas chamadas não pedem login. Todas as outras pedem um token de acesso Matrix de uma conta do Bipe com login.
 
-| Chamada | Resposta |
-|---|---|
-| `GET /v1/profiles/{arroba}` | O perfil público publicado: nome, bio, endereço da foto. Nada quando o perfil está desligado |
-| `GET /v1/profiles/{arroba}/photo` | A foto do perfil (JPEG) |
-| `GET /v1/invites/{código}` | Se um código de convite ainda vale, e o @ de quem convidou |
-| `GET /v1/handles/{arroba}/availability` | Se um @ está livre. Nunca diz quem tem o @ |
-| `POST /v1/waitlist` | Entra na lista de espera de uma plataforma que ainda não tem app |
+{{public-api}}
 
 No navegador, só o `https://bipe.chat` pode chamar a API.
 

@@ -2,8 +2,6 @@
 
 Os dados ficam no Brasil, e o endereço do serviço também. O Bipe usa dois domínios, cada um com uma função: o `bipe.net.br` roda o serviço, o `bipe.chat` leva os links que as pessoas compartilham.
 
-_Atualizado em 13 de outubro de 2026._
-
 ## Os dois domínios
 
 | Domínio | Registro | Função |

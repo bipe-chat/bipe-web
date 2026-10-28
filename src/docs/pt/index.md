@@ -2,8 +2,6 @@
 
 Como o Bipe funciona: os domínios, os servidores, os apps e os links públicos. Escrita para pessoas e para agentes de IA.
 
-_Atualizado em 13 de outubro de 2026._
-
 ## Páginas
 
 - [Domínios](/docs/dominios/): o bipe.net.br roda o serviço, o bipe.chat leva os links. Por que são dois, e o que cada endereço faz.
@@ -12,7 +10,7 @@ _Atualizado em 13 de outubro de 2026._
 
 ## Em um parágrafo
 
-O Bipe é um app de mensagens brasileiro sobre o protocolo aberto Matrix. As conversas ficam em servidores no Brasil, de empresas brasileiras. O nome do servidor Matrix é `bipe.net.br`, um domínio `.br`, administrado pelo NIC.br no Brasil. O site e os links que as pessoas compartilham ficam no `bipe.chat`. Os apps de iPhone e Android são nativos, feitos a partir do Element X. A federação é fechada: o servidor do Bipe não troca mensagens com outros servidores Matrix.
+O Bipe é um app de mensagens brasileiro sobre o protocolo aberto Matrix. As conversas ficam em servidores no Brasil, de empresas brasileiras. O nome do servidor Matrix é `bipe.net.br`, um domínio `.br`, administrado pelo NIC.br no Brasil. O site e os links que as pessoas compartilham ficam no `bipe.chat`. Os apps de iPhone e Android são nativos e feitos pelo Bipe. A federação é fechada: o servidor do Bipe não troca mensagens com outros servidores Matrix.
 
 ## Para agentes de IA
 

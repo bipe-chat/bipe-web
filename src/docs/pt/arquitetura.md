@@ -2,13 +2,11 @@
 
 O Bipe roda sobre o protocolo aberto Matrix, com apps nativos e servidores no Brasil. Esta página mostra cada parte e o que ela faz.
 
-_Atualizado em 13 de outubro de 2026._
-
 ## Visão geral
 
 | Camada | Partes |
 |---|---|
-| Apps | iPhone (SwiftUI) e Android (Kotlin, Jetpack Compose), feitos a partir do Element X. Núcleo em Rust: matrix-rust-sdk |
+| Apps | iPhone (SwiftUI) e Android (Kotlin, Jetpack Compose), um app só do Bipe. Núcleo em Rust: matrix-rust-sdk |
 | No aparelho | Criptografia de ponta a ponta, aviso de golpe, checagem de nome |
 | Servidores | Synapse, Matrix Authentication Service, API do Bipe, Sygnal, LiveKit, Postgres, Caddy |
 | Site | Páginas estáticas no `bipe.chat`, cada uma também em Markdown |
@@ -29,7 +27,7 @@ O Bipe tem três camadas de nome:
 
 Não existe busca de @ nem lista de usuários. A consulta de um @ é exata e pede uma conta com login.
 
-O número de telefone fica escondido. Cada pessoa escolhe quem pode achar ela pelo número: todo mundo, só os contatos ou ninguém. O padrão é só os contatos.
+Ninguém vê o número de outra pessoa pelo Bipe. O app mostra para você o seu próprio número vinculado. O número de outra pessoa só aparece quando ele já está na sua agenda. Cada pessoa escolhe quem pode achar ela pelo número: todo mundo, só os contatos ou ninguém. O padrão é só os contatos.
 
 ## Login e recuperação
 
@@ -49,7 +47,7 @@ O aviso de golpe roda no celular, depois de decifrar. A mensagem não sai do apa
 |---|---|
 | Synapse | Servidor Matrix: salas, mensagens, sincronização |
 | Matrix Authentication Service | Login, sessões, tokens (OIDC) |
-| API do Bipe | Cadastro com convite, @, achar contatos, recuperação, perfil público, checagem de CNPJ, selos |
+| API do Bipe | Cadastro com convite, @, achar contatos, recuperação, perfil público, checagem de CNPJ, selos, catálogo, agenda e fila das empresas |
 | Sygnal | Envia notificações pelos serviços da Apple e do Google |
 | LiveKit | Chamadas de voz e vídeo (MatrixRTC) e o TURN em `turn.bipe.net.br` |
 | Element Web | App na web, em `chat.bipe.net.br` |
@@ -74,20 +72,16 @@ O `bipe.chat` é HTML estático, gerado com React e Vite antes de ir para o ar. 
 
 O código é aberto, com licença AGPL-3.0, em [github.com/bipe-chat](https://github.com/bipe-chat).
 
-- [bipe-ios](https://github.com/bipe-chat/bipe-ios) e [bipe-android](https://github.com/bipe-chat/bipe-android): os apps
-- [bipe-shared](https://github.com/bipe-chat/bipe-shared): regras, textos dos apps, [contrato da API](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml) e casos de teste
-- [bipe-api](https://github.com/bipe-chat/bipe-api): a API do Bipe
-- [bipe-web](https://github.com/bipe-chat/bipe-web): este site
-- [bipe-ml](https://github.com/bipe-chat/bipe-ml): o modelo de golpes que roda no celular
-- [bipe-business](https://github.com/bipe-chat/bipe-business): ponte e caixa de entrada para empresas
-- [compound-design-tokens](https://github.com/bipe-chat/compound-design-tokens): cores e estilos
+{{repos}}
+
+O contrato da API está em [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml).
 
 ## Projetos de origem
 
-- [Element X iOS](https://github.com/element-hq/element-x-ios) e [Element X Android](https://github.com/element-hq/element-x-android)
 - [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk)
 - [Synapse](https://github.com/element-hq/synapse)
 - [Matrix Authentication Service](https://github.com/element-hq/matrix-authentication-service)
 - [Sygnal](https://github.com/matrix-org/sygnal)
 - [LiveKit](https://github.com/livekit/livekit)
+- [Element Web](https://github.com/element-hq/element-web)
 - [Compound design tokens](https://github.com/element-hq/compound-design-tokens)
