@@ -411,7 +411,8 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .calc-chip:focus-visible { outline: 2px solid var(--acai); outline-offset: 2px; }
 .calc-mix { display: grid; gap: 8px; }
 .calc-plan { margin: -12px 0 0; }
-.calc-orgs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.calc-sliders label.calc-check { display: flex; align-items: center; gap: 10px; font-weight: 400; cursor: pointer; }
+.calc-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--acai); flex: none; }
 .calc-mix-bar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--line); }
 .calc-mix-legend { margin: 0; }
 .calc-mix-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; }
