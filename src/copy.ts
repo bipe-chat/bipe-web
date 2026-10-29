@@ -187,6 +187,12 @@ export const chrome = {
       invalid: "Esse convite não vale mais. Pode ter sido usado, cancelado ou ter vencido.",
       askNew: "Peça outro convite para quem te mandou.",
     },
+    // Pack links from the app (bipe ADR 0205): /s/<room ID>.
+    stickerPack: {
+      title: "Um pacote de stickers para o Bipe",
+      lead: (add: string) => `Esse é um link de pacote de stickers do Bipe. Com o app instalado, o link abre o pacote no app. Lá, toque em "${add}".`,
+      noApp: "Ainda não tem o Bipe? O app está em fase de testes. Instale no seu celular e abra o link de novo:",
+    },
     // Email links from the API (ADR 0057): /confirmar-email/#<token> and /recuperar/#<token>.
     readOther: "Read in English",
     confirmEmail: {

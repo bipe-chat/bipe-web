@@ -1,7 +1,7 @@
 import { STAFF_CONSOLE, staffPath } from "./admin/staff-pages";
 import type { ReactNode } from "react";
 import { chrome } from "./copy";
-import { accessibilityRegister, compare, dataRegister, distribution, privacyRegister, product, publicRepos, type Lang } from "./shared";
+import { accessibilityRegister, compare, dataRegister, distribution, privacyRegister, product, publicRepos, t as str, type Lang } from "./shared";
 import { Island } from "./island-registry";
 import { identityTentpoles, type Section } from "./nav";
 import { paths } from "./paths";
@@ -191,6 +191,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/convite/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "convite",
   title: "Convite para o Bipe", description: chrome.pt.invite.lead,
   body: () => <Island name="InviteLanding" props={{}} />,
+}, {
+  // Target of the Caddy rewrite for /s/<room ID> (pack links, bipe ADR 0205).
+  path: "/s/", alt: null, lang: "pt", noindex: true, noReferrer: true,
+  title: `${chrome.pt.stickerPack.title} · Bipe`, description: chrome.pt.stickerPack.lead(str("pt", "bipe_sticker_pack_add")),
+  body: () => <Island name="StickerPackLanding" props={{}} />,
 }, {
   // Email links from the API (ADR 0057). The token is in the fragment, so no Caddy rewrite.
   path: "/confirmar-email/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,

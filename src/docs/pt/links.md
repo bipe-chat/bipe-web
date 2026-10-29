@@ -27,6 +27,18 @@ O código tem de 12 a 20 caracteres: `A-Z`, `a-z`, `0-9` e `-`. O código é um 
 - O botão de instalar copia o link do convite. No app, o botão "Colar" da tela inicial usa esse link. Um link da Google Play leva `referrer=convite/<código>`, que o app lê na primeira abertura.
 - A prévia do link nunca mostra o código.
 
+## Link de pacote de stickers
+
+```
+https://bipe.chat/s/<ID da sala>
+```
+
+O ID da sala do pacote vai codificado para URL, por exemplo `/s/%21abc%3Abipe.net.br`. O app cria esse link quando a pessoa toca em "Compartilhar pacote".
+
+- Com o app instalado, o link abre o pacote no app. A pessoa vê o nome, o @ de quem fez e os stickers, e toca em "Adicionar pacote".
+- Sem o app, a página mostra o botão para instalar. A página não lê o pacote.
+- A sala do pacote é pública e não tem criptografia. Ela guarda só os stickers e não tem mensagens.
+
 ## Links de e-mail
 
 A API do Bipe manda dois tipos de link por e-mail. O token vem depois do `#`, então o navegador nunca manda ele para o servidor.
@@ -40,7 +52,7 @@ A API do Bipe manda dois tipos de link por e-mail. O token vem depois do `#`, en
 
 | Arquivo | Plataforma |
 |---|---|
-| `https://bipe.chat/.well-known/apple-app-site-association` | iPhone. ID do app `chat.bipe.app`. Caminhos `/@*`, `/convite/*`, `/recuperar/*` |
+| `https://bipe.chat/.well-known/apple-app-site-association` | iPhone. ID do app `chat.bipe.app`. Caminhos `/@*`, `/convite/*`, `/s/*`, `/recuperar/*` |
 | `https://bipe.chat/.well-known/assetlinks.json` | Android. Pacote `chat.bipe.app` |
 
 ## API pública

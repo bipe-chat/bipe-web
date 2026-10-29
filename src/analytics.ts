@@ -4,7 +4,7 @@
 import { UMAMI_WEBSITE_ID } from "./config";
 import type { Route } from "./routes";
 
-const clean = `function(u){if(!u)return u;try{var x=new URL(u,location.href);x.pathname=x.pathname.replace(/^\\/convite\\/[^/]+\\/?/,"/convite/").replace(/^\\/@[^/]+/,"/@");var q=new URLSearchParams();x.searchParams.forEach(function(v,k){if(/^utm_/.test(k))q.set(k,v)});x.search=q.toString();x.hash="";return x.origin+x.pathname+x.search}catch(e){return ""}}`;
+const clean = `function(u){if(!u)return u;try{var x=new URL(u,location.href);x.pathname=x.pathname.replace(/^\\/convite\\/[^/]+\\/?/,"/convite/").replace(/^\\/@[^/]+/,"/@").replace(/^\\/s\\/[^/]+\\/?/,"/s/");var q=new URLSearchParams();x.searchParams.forEach(function(v,k){if(/^utm_/.test(k))q.set(k,v)});x.search=q.toString();x.hash="";return x.origin+x.pathname+x.search}catch(e){return ""}}`;
 
 export function analyticsTags(route: Route): string {
   if (route.noAnalytics) return "";
