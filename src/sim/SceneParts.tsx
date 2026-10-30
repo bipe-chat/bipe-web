@@ -245,3 +245,147 @@ export function StickerPicker({ lang }: { lang: Lang }) {
 export function ReadOnlyBar({ lang }: { lang: Lang }) {
   return <div className="composer readonly">{chrome[lang].sim.readOnly}</div>;
 }
+
+/** The call line in the timeline (ADR 0186): kind of call and its length, or a missed call. */
+export function CallLine({ lang, line }: { lang: Lang; line: Extract<Line, { card: "call" }> }) {
+  const kind = t(lang, line.video ? "bipe_call_video" : "bipe_call_voice");
+  return (
+    <div className={`call-line${line.missed ? " missed" : ""}`}>
+      <Icon name={line.video ? "video" : "call"} size={16} />
+      <span>{line.missed ? t(lang, "bipe_call_missed") : `${kind} · ${t(lang, "bipe_call_duration", String(line.minutes ?? 1))}`}</span>
+    </div>
+  );
+}
+
+/** A voice message: play button, waveform, length, and the sender's transcript under it (ADR 0023). */
+export function VoiceBody({ lang, length, transcript }: { lang: Lang; length: string; transcript: string }) {
+  const bars = [6, 10, 14, 9, 16, 12, 7, 13, 18, 11, 8, 15, 10, 6, 12, 9, 14, 7];
+  return (
+    <span className="voice">
+      <span className="voice-player">
+        <span className="voice-play" title={t(lang, "bipe_app_voice_play")}>▶</span>
+        <span className="voice-wave">{bars.map((h, i) => <i key={i} style={{ height: h }} />)}</span>
+        <span className="voice-length">{length}</span>
+      </span>
+      <span className="voice-transcript"><strong>{t(lang, "bipe_voice_transcript_title")}</strong> {transcript}</span>
+    </span>
+  );
+}
+
+/** A shared location: a map from Bipe's own map server (ADR 0131), drawn here as a sketch, with its label. */
+export function LocationBody({ lang, place, until }: { lang: Lang; place: string; until?: string }) {
+  return (
+    <span className="location">
+      <svg className="location-map" viewBox="0 0 220 120" role="img" aria-label={place}>
+        <rect width="220" height="120" className="map-land" />
+        <circle cx="120" cy="58" r="30" className="map-park" />
+        <path d="M0 40h220M0 92h220M60 0v120M170 0v120M0 120 220 0" className="map-road" />
+        <path d="M120 64c-7-9-11-15-11-20a11 11 0 0 1 22 0c0 5-4 11-11 20Z" className="map-pin" />
+        <circle cx="120" cy="44" r="4" className="map-pin-dot" />
+        <text x="214" y="114" textAnchor="end" className="map-credit">© OpenStreetMap</text>
+      </svg>
+      <span className="location-label">
+        <strong>{until ? t(lang, "bipe_app_location_live_title") : t(lang, "bipe_app_location_pinned")}</strong>
+        <span className="sub">{until ? `${place} · ${t(lang, "bipe_app_location_live_until", until)}` : place}</span>
+      </span>
+    </span>
+  );
+}
+
+type SettingsRow = { key: string; title: string; footer?: string; kind: string; planned?: unknown; flag?: unknown };
+type SettingsGroup = { key: string; title: string; sections: { key: string; title?: string; footer?: string; rows: SettingsRow[] }[] };
+
+/** Settings sections as the app draws them, from the one settings registry (bipe-shared registries/settings.json). */
+export function SettingsList({ lang, groups, group, sections, on = [], beat }: { lang: Lang; groups: SettingsGroup[]; group: string; sections: string[]; on?: string[]; beat: number }) {
+  const g = groups.find((x) => x.key === group);
+  if (!g) throw new Error(`settings group ${group} is not in bipe-shared registries/settings.json`);
+  return (
+    <>
+      {sections.slice(0, Math.max(1, beat)).map((key) => {
+        const s = g.sections.find((x) => x.key === key);
+        if (!s) throw new Error(`settings section ${group}.${key} is not in bipe-shared registries/settings.json`);
+        const rows = s.rows.filter((r) => !r.planned && !r.flag);
+        return (
+          <div className="settings-section msg" key={key}>
+            {s.title && <div className="settings-head">{t(lang, s.title)}</div>}
+            <div className="settings-rows">
+              {/* A row title with a placeholder names the phone's biometric: the sample phone is an iPhone with Face ID. */}
+              {rows.map((r) => (
+                <div className={`settings-row kind-${r.kind}`} key={r.key}>
+                  <span>{t(lang, r.title, "Face ID")}</span>
+                  {r.kind === "switch" && <span className={`switch${on.includes(r.key) ? " on" : ""}`} />}
+                  {(r.kind === "link" || r.kind === "url") && <span className="chevron">›</span>}
+                </div>
+              ))}
+            </div>
+            {(s.footer || rows.find((r) => r.footer)) && <p className="sub settings-foot">{t(lang, s.footer ?? rows.find((r) => r.footer)!.footer!)}</p>}
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+/** The app lock (ADR 0137): the 8 PIN dots fill in. */
+export function AppLockScreen({ lang, beat }: { lang: Lang; beat: number }) {
+  const filled = beat >= 1 ? 8 : 0;
+  return (
+    <div className="app-lock">
+      <Icon name="lock" size={40} />
+      <strong>{t(lang, "bipe_app_lock_title")}</strong>
+      <span className="pin-dots">{Array.from({ length: 8 }, (_, i) => <i key={i} className={i < filled ? "on" : ""} />)}</span>
+      <span className="sub">{t(lang, "bipe_app_lock_biometric", "Face ID")}</span>
+    </div>
+  );
+}
+
+/** The account switcher (ADR 0086, ADR 0135): each account on this phone, the first one active, then add one. */
+export function AccountSwitcher({ lang, ids, beat }: { lang: Lang; ids: string[]; beat: number }) {
+  return (
+    <>
+      {ids.slice(0, Math.max(1, beat)).map((id, i) => {
+        const e = who(id);
+        return (
+          <div className="contact-row msg" key={id}>
+            <Avatar id={id} size={40} />
+            <div className="contact-main">
+              <span className="name">{label(e)} <TrustMark lang={lang} trust={e.trust} size={14} /></span>
+              {e.handle && <span className="sub">@{e.handle}</span>}
+            </div>
+            {i === 0 && <Icon name="check" size={18} />}
+          </div>
+        );
+      })}
+      {beat > ids.length && <div className="contact-row msg"><span className="link">{t(lang, "bipe_account_add")}</span></div>}
+    </>
+  );
+}
+
+/** Theft protection (ADR 0044): the guardians you chose, and the people who chose you, with the mark action. */
+export function Guardians({ lang, guardians, guarding, beat }: { lang: Lang; guardians: string[]; guarding: string[]; beat: number }) {
+  const row = (id: string, action?: string) => {
+    const e = who(id);
+    return (
+      <div className="contact-row msg" key={id}>
+        <Avatar id={id} size={40} />
+        <div className="contact-main"><span className="name">{label(e)} <TrustMark lang={lang} trust={e.trust} size={14} /></span></div>
+        {action && <span className="danger-text">{action}</span>}
+      </div>
+    );
+  };
+  return (
+    <>
+      <p className="sub msg">{t(lang, "bipe_theft_intro")}</p>
+      <div className="settings-head msg">{t(lang, "bipe_theft_guardians_section")}</div>
+      {guardians.map((id) => row(id))}
+      <div className="contact-row msg"><span className="link">{t(lang, "bipe_theft_add_guardian")}</span></div>
+      <p className="sub msg">{t(lang, "bipe_theft_guardians_footer")}</p>
+      {beat >= 2 && (
+        <>
+          <div className="settings-head msg">{t(lang, "bipe_theft_guarding_section")}</div>
+          {guarding.map((id) => row(id, t(lang, "bipe_theft_mark_action")))}
+        </>
+      )}
+    </>
+  );
+}

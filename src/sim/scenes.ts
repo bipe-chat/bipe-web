@@ -12,6 +12,10 @@ export type Line =
   | { from: string; text: Text }
   /** A text sticker from STICKERS in SceneParts.tsx. */
   | { from: string; sticker: string }
+  /** A voice message with the sender's transcript (ADR 0023). The scam check reads the transcript of an incoming one. */
+  | { from: string; voice: string; transcript: Text }
+  /** A shared location (ADR 0131). `until`: live location, shared until that time (MSC3489). */
+  | { from: string; location: Text; until?: string }
   | { card: "unverified"; age: Text }
   | { card: "external" | "securityChange" | "suspended" | "mismatch" }
   | { card: "nickname" }
@@ -27,7 +31,11 @@ export type Line =
   /** A request to join a group that takes only verified accounts (verified-groups). The result follows the person's trust. */
   | { card: "join"; person: string }
   /** The fixed line at the top of a room with a bot: its name, its owner, and that it reads the messages (ADR 0181). */
-  | { card: "bot" };
+  | { card: "bot" }
+  /** The call line in the timeline (ADR 0186): a call that ended, with its length, or a missed call. */
+  | { card: "call"; video?: boolean; minutes?: number; missed?: boolean }
+  /** A warning from the app strings: `key` (with `args`) is the body, `title` an optional title key. */
+  | { card: "alert"; level: "caution" | "danger"; key: string; args?: string[]; title?: string; titleArgs?: string[] };
 
 export type InboxRow = { with: string; savedAs?: string; trust?: Trust; preview: string; time: string; unread?: number };
 /** A message request (requests): apart from the chats, with accept and ignore. */
@@ -57,7 +65,15 @@ export type Scene =
   | { kind: "quote"; with: string }
   | { kind: "queue"; with: string }
   /** Conferir no Bipe (pix-check): a Pix code shared from another app, then the check result. */
-  | { kind: "pixCheck"; from: string; text: Text; code: string };
+  | { kind: "pixCheck"; from: string; text: Text; code: string }
+  /** Settings sections straight from bipe-shared registries/settings.json (ADR 0112). `on`: the switches shown on. */
+  | { kind: "settings"; group: string; sections: string[]; on?: string[] }
+  /** The app lock screen (ADR 0137): the PIN dots fill, then the app opens. */
+  | { kind: "appLock" }
+  /** The account switcher on the Você tab (ADR 0086, ADR 0135): the accounts on this phone, the first one active. */
+  | { kind: "accounts"; ids: string[] }
+  /** Theft protection (ADR 0044): your guardians, then the accounts you protect. */
+  | { kind: "guardians"; guardians: string[]; guarding: string[] };
 
 export const ME = "me";
 
@@ -563,6 +579,66 @@ export const scenes = {
     text: { pt: "Segue o Pix da bike, copia e cola", en: "Segue o Pix da bike, copia e cola (Here is the Pix code for the bike, copy and paste)" },
     code: "00020126440014br.gov.bcb.pix0122rafa.blkes@example.com5204000053039865406850.005802BR5915RAFAEL OLIVEIRA6014BELO HORIZONTE62070503***63044B2D",
   },
+  // Calls (ADR 0186): the call line in the timeline after a video call.
+  chamada: {
+    kind: "chat", with: "joana", savedAs: "Mãe",
+    lines: [
+      { from: "joana", text: { pt: "Filha, tá podendo falar? Quero te mostrar a horta", en: "Filha, tá podendo falar? Quero te mostrar a horta (Can you talk? I want to show you the garden)" } },
+      { from: ME, text: { pt: "Tô sim, mãe. Te ligo por vídeo", en: "Tô sim, mãe. Te ligo por vídeo (Sure, I will video call you)" } },
+      { card: "call", video: true, minutes: 14 },
+      { from: "joana", text: { pt: "Que bom te ver! Beijo", en: "Que bom te ver! Beijo (So good to see you! Kisses)" } },
+    ],
+  },
+  // Voice messages with the sender's transcript (ADR 0023). Transcripts are sample data in pt-BR, like messages.
+  "audio-texto": {
+    kind: "chat", with: "rafa",
+    lines: [
+      { from: ME, text: { pt: "Rafa, a bike ainda tá disponível?", en: "Rafa, a bike ainda tá disponível? (Is the bike still available?)" } },
+      { from: "rafa", voice: "0:18", transcript: { pt: "Tá sim! Revisei ontem, troquei a corrente e os freios. Pode vir ver amanhã de manhã", en: "Tá sim! Revisei ontem, troquei a corrente e os freios. Pode vir ver amanhã de manhã (Yes! I serviced it yesterday, new chain and brakes. Come and see it tomorrow morning)" } },
+      { from: ME, text: { pt: "Combinado, passo às 10h", en: "Combinado, passo às 10h (Deal, I will come at 10)" } },
+    ],
+  },
+  // The scam check reads the transcript of an incoming voice message, and the app keeps the audio (ADR 0164).
+  "audio-golpe": {
+    kind: "chat", with: "golpista",
+    lines: [
+      { card: "unverified", age: { pt: "2 dias", en: "2 days" } },
+      { from: "golpista", voice: "0:24", transcript: "Oi filha, troquei de número. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo" },
+      { card: "app", key: "bipe_voice_kept_scam" },
+    ],
+  },
+  // Live location (ADR 0131, MSC3489): maps come from Bipe's own map server.
+  localizacao: {
+    kind: "chat", with: "rafa",
+    lines: [
+      { from: ME, text: { pt: "Cheguei na praça. Você tá onde?", en: "Cheguei na praça. Você tá onde? (I am at the square. Where are you?)" } },
+      { from: "rafa", location: { pt: "Praça da Liberdade", en: "Praça da Liberdade" }, until: "18:30" },
+      { from: "rafa", text: { pt: "Tô no banco perto da fonte, de camiseta azul", en: "Tô no banco perto da fonte, de camiseta azul (On the bench by the fountain, blue T-shirt)" } },
+    ],
+  },
+  // Photo match (ADR 0049): a stranger uses the photo of someone in your chats.
+  "foto-copiada": {
+    kind: "chat", with: "golpista",
+    lines: [
+      { card: "alert", level: "caution", key: "bipe_warning_photo_match", args: ["Mãe"] },
+      { card: "unverified", age: { pt: "2 dias", en: "2 days" } },
+      { from: "golpista", text: "Oi filha, troquei de número. Essa é minha conta nova aqui" },
+    ],
+  },
+  // Theft mark (ADR 0044, ADR 0051): a guardian marked the account as stolen.
+  roubo: {
+    kind: "chat", with: "fernanda", trust: "suspended",
+    lines: [
+      { card: "alert", level: "danger", title: "bipe_theft_banner_title", key: "bipe_theft_banner_body", args: ["Fernanda"] },
+      { from: "fernanda", text: { pt: "Oi! Tô sem acesso ao banco, me faz um Pix de 300 que te devolvo amanhã", en: "Oi! Tô sem acesso ao banco, me faz um Pix de 300 que te devolvo amanhã (I cannot get into my bank, Pix me 300 and I will pay you back tomorrow)" } },
+      { card: "alert", level: "caution", key: "bipe_theft_message_marker" },
+    ],
+  },
+  guardioes: { kind: "guardians", guardians: ["joana", "rafa"], guarding: ["joana"] },
+  trava: { kind: "appLock" },
+  "sua-conta": { kind: "settings", group: "account", sections: ["pin", "theft", "accounts", "leave"], on: ["appLock", "biometricUnlock"] },
+  "seus-dados": { kind: "settings", group: "privacy", sections: ["data"] },
+  "duas-contas": { kind: "accounts", ids: ["gabi", "gabidesign"] },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;

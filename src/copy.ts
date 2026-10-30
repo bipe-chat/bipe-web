@@ -97,6 +97,9 @@ export const chrome = {
       "agenda-marcar": "Marcar horário", "agenda-dono": "Agenda da empresa", "agenda-lembrete": "Lembrete do horário",
       catalogo: "Catálogo", pedido: "Pedido", orcamento: "Orçamento", "fila-virtual": "Fila virtual", "conferir-pix": "Conferir no Bipe",
       "bot-marcado": "Bot marcado",
+      chamada: "Chamada de vídeo", "audio-texto": "Áudio com texto", "audio-golpe": "Golpe por áudio", localizacao: "Localização em tempo real",
+      "foto-copiada": "Foto copiada", roubo: "Celular roubado", guardioes: "Guardiões", trava: "App bloqueado", "sua-conta": "Sua conta",
+      "seus-dados": "Seus dados", "duas-contas": "Duas contas",
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
@@ -326,6 +329,9 @@ export const chrome = {
       "agenda-marcar": "Book a time", "agenda-dono": "The business agenda", "agenda-lembrete": "Booking reminder",
       catalogo: "Catalog", pedido: "Order", orcamento: "Quote", "fila-virtual": "Virtual queue", "conferir-pix": "Check it in Bipe",
       "bot-marcado": "Marked bot",
+      chamada: "Video call", "audio-texto": "Voice with text", "audio-golpe": "Voice message scam", localizacao: "Live location",
+      "foto-copiada": "Copied photo", roubo: "Stolen phone", guardioes: "Guardians", trava: "App locked", "sua-conta": "Your account",
+      "seus-dados": "Your data", "duas-contas": "Two accounts",
     } satisfies Record<SceneId, string>,
     sim: {
       accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll", ask: "Question",
