@@ -33,10 +33,9 @@ The code has 12 to 20 characters: `A-Z`, `a-z`, `0-9` and `-`. The code is a sec
 https://bipe.chat/s/<room ID>
 ```
 
-The pack room ID is URL-encoded, for example `/s/%21abc%3Abipe.net.br`. The app makes this link when the person taps "Share pack".
+The pack room ID is URL-encoded, for example `/s/%21abc%3Abipe.net.br`. The earlier Bipe app made this link from its "Share pack" button. The current app does not make these links, but the old links still open this page.
 
-- With the app installed, the link opens the pack in the app. The person sees the name, the handle of the person who made it and the stickers, and taps "Add pack".
-- Without the app, the page shows the install button. The page does not read the pack.
+- The page shows the button to install Bipe. The page does not read the pack.
 - The pack room is public and has no encryption. It holds only the stickers and has no messages.
 
 ## Email links

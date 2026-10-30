@@ -5,7 +5,7 @@ Como o Bipe funciona: os domínios, os servidores, os apps e os links públicos.
 ## Páginas
 
 - [Domínios](/docs/dominios/): o bipe.net.br roda o serviço, o bipe.chat leva os links. Por que são dois, e o que cada endereço faz.
-- [Arquitetura](/docs/arquitetura/): Matrix, servidores, apps, criptografia, contas e regras compartilhadas.
+- [Arquitetura](/docs/arquitetura/): Matrix, servidores, apps, criptografia, chamadas, mapas, contas e regras compartilhadas.
 - [Links e API pública](/docs/links/): links de perfil, convite e recuperação, e as chamadas da API que não pedem login.
 
 ## Em um parágrafo

@@ -5,7 +5,7 @@ How Bipe works: the domains, the servers, the apps and the public links. Written
 ## Pages
 
 - [Domains](/en/docs/domains/): bipe.net.br runs the service, bipe.chat carries the links. Why there are two, and which host does what.
-- [Architecture](/en/docs/architecture/): Matrix, the servers, the apps, encryption, accounts and the shared rules.
+- [Architecture](/en/docs/architecture/): Matrix, the servers, the apps, encryption, calls, maps, accounts and the shared rules.
 - [Links and public API](/en/docs/links/): profile, invite and recovery links, and the API calls that need no sign-in.
 
 ## In one paragraph
