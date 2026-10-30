@@ -722,3 +722,39 @@ a.staff-tile:hover { border-color: var(--acai); }
 .a11y-roadmap li { margin-bottom: 20px; }
 .a11y-roadmap h3 { margin: 0; }
 .a11y-roadmap p { margin: 2px 0 0; }
+
+/* Scenes for calls, voice, location, settings, app lock and theft protection (src/sim/SceneParts.tsx). */
+.danger-text { color: var(--bipe-trust-danger-ink); font-size: 14px; font-weight: 600; }
+.call-line { display: flex; gap: 8px; align-items: center; justify-content: center; margin: 0 auto; width: fit-content; padding: 6px 12px; border-radius: 999px; background: var(--bipe-trust-neutral-wash); color: var(--bipe-trust-neutral-ink); font-size: 13px; }
+.call-line.missed { background: var(--bipe-trust-danger-wash); color: var(--bipe-trust-danger-ink); }
+.voice { display: grid; gap: 6px; min-width: 200px; }
+.voice-player { display: flex; gap: 8px; align-items: center; }
+.voice-play { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--bipe-accent-ink); color: var(--on-acai); font-size: 11px; }
+.voice-wave { display: flex; gap: 2px; align-items: center; flex: 1; height: 20px; }
+.voice-wave i { display: block; width: 3px; border-radius: 2px; background: currentColor; opacity: .55; }
+.voice-length { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.voice-transcript { font-size: 14px; line-height: 19px; }
+.voice-transcript strong { display: block; font-size: 12px; color: var(--muted); font-weight: 600; }
+.location { display: grid; gap: 6px; width: 220px; max-width: 100%; }
+.location-map { display: block; width: 100%; height: auto; border-radius: 8px; }
+.map-land { fill: var(--bipe-trust-neutral-wash); }
+.map-park { fill: var(--bipe-trust-verified-wash); }
+.map-road { stroke: var(--bg); stroke-width: 6; fill: none; }
+.map-pin { fill: var(--bipe-accent-ink); }
+.map-pin-dot { fill: var(--bg); }
+.map-credit { font-size: 8px; fill: var(--muted); }
+.location-label { display: grid; font-size: 14px; }
+.settings-section { display: grid; gap: 6px; }
+.settings-head { font-size: 13px; color: var(--muted); text-transform: none; padding: 8px 0 0; }
+.settings-rows { border-radius: 12px; background: var(--bipe-trust-neutral-wash); overflow: hidden; }
+.settings-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; font-size: 15px; border-bottom: .5px solid var(--line); }
+.settings-row:last-child { border-bottom: 0; }
+.settings-row.kind-action span:first-child { color: var(--bipe-accent-ink); }
+.settings-row.kind-destructive span:first-child { color: var(--bipe-trust-danger-ink); }
+.settings-row .chevron { color: var(--muted); font-size: 20px; }
+.settings-foot { padding: 0 14px; }
+.app-lock { display: grid; justify-items: center; gap: 14px; padding: 72px 16px 0; text-align: center; color: var(--text); }
+.app-lock > svg { color: var(--bipe-accent-ink); }
+.pin-dots { display: flex; gap: 10px; }
+.pin-dots i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.pin-dots i.on { background: var(--text); border-color: var(--text); }

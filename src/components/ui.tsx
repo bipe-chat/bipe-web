@@ -8,7 +8,8 @@ export type IconName = "warning" | "check" | "person" | "send" | "apple" | "andr
   | "house" | "swap" | "barcode" | "cash" | "trend" | "dice" | "link" | "cursor" | "sim" | "lock" | "eye" | "gift"
   | "card" | "terminal" | "scooter" | "hourglass" | "badge" | "at" | "calendar" | "clock"
   | "devices" | "letters" | "person-question" | "qr" | "user-plus" | "eye-off" | "server" | "code" | "document" | "ticket"
-  | "pix-check" | "sticker" | "poll" | "group-badge" | "bot" | "instagram" | "x" | "linkedin" | "github" | "reddit";
+  | "pix-check" | "sticker" | "poll" | "group-badge" | "bot"
+  | "video" | "pin" | "image" | "keypad" | "download" | "instagram" | "x" | "linkedin" | "github" | "reddit";
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const p = {
@@ -40,6 +41,11 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
     group: "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 9c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5m1-9a3 3 0 1 0 0-6m2.5 15H21c0-2.6-1.7-4.6-4-5.2",
     // Scam types on /golpes-no-brasil/ (ScamsPage.tsx scamIcon).
     phone: "M8 3h8a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 16 21H8a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 8 3Zm3 15h2",
+    video: "M4 7h11a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Zm12 4 5-3v8l-5-3",
+    pin: "M12 21c-4.5-5.2-7-8.9-7-12a7 7 0 0 1 14 0c0 3.1-2.5 6.8-7 12Zm0-9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
+    image: "M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm-1 13 5-5 4 4 2.5-2.5L20 17M15.5 9.5a1.5 1.5 0 1 0 0-.1",
+    keypad: "M4.7 5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M10.7 5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M16.7 5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M4.7 10.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M10.7 10.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M16.7 10.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M4.7 16a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M10.7 16a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M16.7 16a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0M10.7 21.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0-2.6 0",
+    download: "M12 4v11m-5-5 5 5 5-5M5 20h14",
     call: "M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z",
     bag: "M5 8h14l-1 12H6L5 8Zm4 0V6.5a3 3 0 0 1 6 0V8",
     key: "M8 11a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm2.8 1.2L20 3m-4 4 2.5 2.5M14 9l1.5 1.5",

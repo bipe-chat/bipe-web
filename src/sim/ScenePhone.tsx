@@ -7,7 +7,8 @@ import { Bubble, Phone, runs, TabBar } from "../components/phone";
 import { reg, scamWarningKind, t, type Lang } from "../shared";
 import { ME, REAL_VS_FAKE, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type Line, type Scene, type SceneId } from "./scenes";
 import { PixCard } from "./PixCard";
-import { ChargeCard, Contacts, JoinCard, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, StickerPicker, VerifyPix } from "./SceneParts";
+import { AccountSwitcher, AppLockScreen, CallLine, ChargeCard, Contacts, Guardians, JoinCard, LocationBody, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, SettingsList, StickerPicker, VerifyPix, VoiceBody } from "./SceneParts";
+import settingsJson from "@shared/registries/settings.json";
 import { Stage } from "./Stage";
 import { AgendaDay, AgendaReminder, BookFlow } from "./AgendaParts";
 import { CatalogView, OrderFlow, QueueView, QuoteChat } from "./BusinessToolParts";
@@ -94,6 +95,10 @@ function Card({ lang, line, partner, savedAs, beat }: { lang: Lang; line: Exclud
       return <JoinCard lang={lang} id={line.person} />;
     case "bot":
       return <TrustCard level="neutral" icon="bot">{chrome[lang].sim.bot.reads(label(partner), label(who(partner.owner ?? partner.id)))}</TrustCard>;
+    case "call":
+      return <CallLine lang={lang} line={line} />;
+    case "alert":
+      return <TrustCard level={line.level} icon={line.level === "danger" ? "warning" : "shield"} title={line.title && t(lang, line.title, ...(line.titleArgs ?? []))}>{t(lang, line.key, ...(line.args ?? []))}</TrustCard>;
   }
 }
 
@@ -107,10 +112,13 @@ function ChatBody({ lang, scene, beat }: { lang: Lang; scene: Extract<Scene, { k
       {lines.map((line, i) => {
         if (!("from" in line)) return <div className="msg card-item" key={i}><Card lang={lang} line={line} partner={partner} savedAs={scene.savedAs} beat={beat} /></div>;
         if ("sticker" in line) return <div className="msg" key={i}><div className={`bubble-row ${line.from === ME ? "out" : "in"} single`}><span className="sticker-art big s1">{line.sticker}</span></div></div>;
-        const body = text(line.text, lang);
+        const body = "voice" in line ? <VoiceBody lang={lang} length={line.voice} transcript={text(line.transcript, lang)} />
+          : "location" in line ? <LocationBody lang={lang} place={text(line.location, lang)} until={line.until} />
+          : text(line.text, lang);
         if (line.from === ME) return <div className="msg" key={i}><Bubble lang={lang} out run={run[i]}>{body}</Bubble></div>;
-        // Incoming messages go through the reference detector, the same as in the app.
-        const kind = scamWarningKind(typeof line.text === "string" ? line.text : line.text.pt, reg);
+        // Incoming messages, and the transcript of incoming voice messages, go through the reference detector, the same as in the app.
+        const checked = "voice" in line ? line.transcript : "text" in line ? line.text : null;
+        const kind = checked && scamWarningKind(typeof checked === "string" ? checked : checked.pt, reg);
         const sender = who(line.from);
         return (
           <div className="msg" key={i}>
@@ -190,6 +198,10 @@ export function sceneSteps(s: Scene): number {
     case "agendaDay": case "agendaReminder": case "queue": return 3;
     case "catalog": case "pixCheck": return 2;
     case "order": case "quote": return 4;
+    case "settings": return s.sections.length;
+    case "appLock": return 1;
+    case "accounts": return s.ids.length + 1;
+    case "guardians": return 2;
   }
 }
 
@@ -245,6 +257,20 @@ export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: Scen
       return <QuoteChat lang={lang} id={scene.with} beat={beat} />;
     case "queue":
       return <QueueView lang={lang} id={scene.with} beat={beat} />;
+    case "settings": {
+      const g = (settingsJson as unknown as { groups: { key: string; title: string }[] }).groups.find((x) => x.key === scene.group);
+      return (
+        <Phone lang={lang} layout="form" head={g ? t(lang, g.title) : ""}>
+          <SettingsList lang={lang} groups={(settingsJson as unknown as { groups: Parameters<typeof SettingsList>[0]["groups"] }).groups} group={scene.group} sections={scene.sections} on={scene.on} beat={beat} />
+        </Phone>
+      );
+    }
+    case "appLock":
+      return <Phone lang={lang} layout="list" head="" footer={<div />}><AppLockScreen lang={lang} beat={beat} /></Phone>;
+    case "accounts":
+      return <Phone lang={lang} layout="form" head={t(lang, "bipe_app_account_switcher_title")} footer={<TabBar lang={lang} active="you" />}><AccountSwitcher lang={lang} ids={scene.ids} beat={beat} /></Phone>;
+    case "guardians":
+      return <Phone lang={lang} layout="form" head={t(lang, "bipe_theft_title")}><Guardians lang={lang} guardians={scene.guardians} guarding={scene.guarding} beat={beat} /></Phone>;
     case "chat": {
       const trust = scene.trust ?? who(scene.with).trust;
       const footer = scene.footer === "readOnly" ? <ReadOnlyBar lang={lang} /> : scene.footer === "stickers" ? <StickerPicker lang={lang} /> : undefined;
