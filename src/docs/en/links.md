@@ -27,6 +27,18 @@ The code has 12 to 20 characters: `A-Z`, `a-z`, `0-9` and `-`. The code is a sec
 - The install button copies the invite link. In the app, the "Paste" button on the start screen uses that link. A Google Play link carries `referrer=convite/<code>`, which the app reads when it first opens.
 - A link preview never shows the code.
 
+## Sticker pack link
+
+```
+https://bipe.chat/s/<room ID>
+```
+
+The pack room ID is URL-encoded, for example `/s/%21abc%3Abipe.net.br`. The app makes this link when the person taps "Share pack".
+
+- With the app installed, the link opens the pack in the app. The person sees the name, the handle of the person who made it and the stickers, and taps "Add pack".
+- Without the app, the page shows the install button. The page does not read the pack.
+- The pack room is public and has no encryption. It holds only the stickers and has no messages.
+
 ## Email links
 
 The Bipe API sends two kinds of email link. The token is after `#`, so the browser never sends it to the server.
@@ -40,7 +52,7 @@ The Bipe API sends two kinds of email link. The token is after `#`, so the brows
 
 | File | Platform |
 |---|---|
-| `https://bipe.chat/.well-known/apple-app-site-association` | iPhone. App ID `chat.bipe.app`. Paths `/@*`, `/convite/*`, `/recuperar/*` |
+| `https://bipe.chat/.well-known/apple-app-site-association` | iPhone. App ID `chat.bipe.app`. Paths `/@*`, `/convite/*`, `/s/*`, `/recuperar/*` |
 | `https://bipe.chat/.well-known/assetlinks.json` | Android. Package `chat.bipe.app` |
 
 ## Public API

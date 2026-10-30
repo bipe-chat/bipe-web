@@ -9,6 +9,7 @@ import inviteCodes from "@shared/registries/invite-codes.json";
 import accountsJson from "@shared/registries/accounts.json";
 import reservedNames from "@shared/registries/reserved-names.json";
 import scamPatterns from "@shared/registries/scam-patterns.json";
+import stickersJson from "@shared/registries/stickers.json";
 import stringsEn from "@shared/strings/en.json";
 import stringsPt from "@shared/strings/pt-BR.json";
 import distributionJson from "@shared/product/distribution.json";
@@ -51,6 +52,9 @@ export const pixCheck = pixLib.pixCheck as (text: string, reg: Registries) => { 
 /** The API routes that take no access token (security: [] in api/openapi.yaml), in contract order. The docs page lists them. */
 export type PublicRoute = { method: string; path: string; en: string; pt: string };
 export const publicRoutes = (publicRoutesLib.publicRoutes as (yaml: string) => PublicRoute[])(openapiYaml);
+
+/** Pack links (bipe ADR 0205): this base plus the URL-encoded room ID. */
+export const stickerPackLinkBase: string = stickersJson.packLinkBase;
 
 export const reg = {
   reserved: reservedNames,

@@ -1,5 +1,5 @@
-// Landing pages for links shared from the app. Caddy rewrites /@handle to /perfil/ and
-// /convite/<code> to /convite/, so both read the real path in the browser. With the app installed,
+// Landing pages for links shared from the app. Caddy rewrites /@handle to /perfil/,
+// /convite/<code> to /convite/ and /s/<room ID> to /s/, so each reads the real path in the browser. With the app installed,
 // universal links (.well-known/apple-app-site-association) open the app before these pages load.
 import { useEffect, useState, type MouseEvent } from "react";
 import { encode } from "uqr";
@@ -9,7 +9,7 @@ import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { CompanySeal } from "../components/brand";
 import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
-import { distribution, extractInviteCodeRef, reg, t, type Lang } from "../shared";
+import { distribution, extractInviteCodeRef, reg, stickerPackLinkBase, t, type Lang } from "../shared";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
 export function extractInviteCode(text: string): string | null {
@@ -229,6 +229,40 @@ export function InviteLanding(_: Record<string, never>) {
           <p className="small muted">{platform === "ios" && `${c.notTestFlight} `}{c.oneUse}</p>
         </div>
         {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
+      </div>
+    </section>
+  );
+}
+
+/** A Matrix room ID from a pack link path /s/<room ID> (URL-encoded). The page only builds the QR from it. */
+export function stickerPackRoomId(pathname: string): string | null {
+  const m = pathname.match(/^\/s\/([^/]+)\/?$/);
+  if (!m) return null;
+  let id: string;
+  try { id = decodeURIComponent(m[1]); } catch { return null; }
+  return id.startsWith("!") && id.length > 1 && id.length <= 255 && !/[\s/]/.test(id) ? id : null;
+}
+
+/** Pack link page (bipe ADR 0205). With the app installed, the app link opens sticker-pack before this page loads.
+ *  The page reads no pack data: the pack room is readable only through the Matrix API with an account. */
+export function StickerPackLanding(_: Record<string, never>) {
+  const c = chrome.pt.stickerPack;
+  const [roomId, setRoomId] = useState<string | null>(null);
+  const [platform, setPlatform] = useState<Platform>("ios");
+  useEffect(() => {
+    setPlatform(detectPlatform());
+    setRoomId(stickerPackRoomId(location.pathname));
+  }, []);
+  return (
+    <section className="wrap narrow section">
+      <h1>{c.title}</h1>
+      <p className="lede">{c.lead(t("pt", "bipe_sticker_pack_add"))}</p>
+      <div className="link-card">
+        <div>
+          <p>{c.noApp}</p>
+          <PlatformInstall platform={platform} />
+        </div>
+        {platform === "other" && roomId && <LinkQr url={`${stickerPackLinkBase}${encodeURIComponent(roomId)}`} />}
       </div>
     </section>
   );
