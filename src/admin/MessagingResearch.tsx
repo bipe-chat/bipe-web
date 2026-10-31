@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { MessagingResearch as Research, ResearchFeature, ResearchStatus } from "../../../bipe-shared/api/internal-research";
 import { StaffShell } from "./staff-ui";
+import { scrollBehavior } from "../platform";
 import "./research.css";
 
 type View = "matrix" | "platforms" | "strategy" | "evidence";
@@ -51,7 +52,7 @@ export function ResearchContent({ data }: { data: Research }) {
   const unknowns = data.features.reduce((n, row) => n + Object.values(row.platforms).filter((c) => c.status === "unknown").length, 0);
   const jump = (id: string, target: View) => {
     setView(target);
-    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: scrollBehavior(), block: "start" }));
   };
   const refs = (ids: string[]) => <span className="research-refs">{ids.map((id) => {
     const s = sources.get(id);
