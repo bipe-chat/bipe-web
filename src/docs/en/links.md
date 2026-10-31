@@ -38,6 +38,19 @@ The pack room ID is URL-encoded, for example `/s/%21abc%3Abipe.net.br`. The earl
 - The page shows the button to install Bipe. The page does not read the pack.
 - The pack room is public and has no encryption. It holds only the stickers and has no messages.
 
+## Reseller mark link
+
+```
+https://bipe.chat/marca/#<code>
+```
+
+A brand with a verified CNPJ seal makes this link in the app and sends it to a reseller (Work, Reseller marks). The code has 16 characters: `A-Z`, `a-z`, `0-9`, `-` and `_`. It works once.
+
+- The code is after `#`, so the browser never sends it to the server. The page sends it nowhere.
+- The page shows the code, a copy button and the steps in the app. The app shows the brand before the reseller accepts.
+- A link that has no valid code shows a short message.
+- The page sends no referrer. A link preview never shows the code.
+
 ## Email links
 
 The Bipe API sends two kinds of email link. The token is after `#`, so the browser never sends it to the server.

@@ -37,6 +37,7 @@ If `bipe.chat` stops working, chat keeps working. Only the site and new link pre
 - The site, in Portuguese at `/` and in English at `/en/`.
 - Profile links: `bipe.chat/@handle`.
 - Invite links: `bipe.chat/convite/<code>`.
+- Reseller mark links: `bipe.chat/marca/#<code>`.
 - Email links for recovery and email confirmation.
 - Terms and privacy.
 - The files that let the apps open these links: `/.well-known/apple-app-site-association` (iPhone) and `/.well-known/assetlinks.json` (Android).

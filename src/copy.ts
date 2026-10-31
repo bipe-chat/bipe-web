@@ -196,6 +196,22 @@ export const chrome = {
       lead: (add: string) => `Esse é um link de pacote de stickers do Bipe. Com o app instalado, o link abre o pacote no app. Lá, toque em "${add}".`,
       noApp: "Ainda não tem o Bipe? O app está em fase de testes. Instale no seu celular e abra o link de novo:",
     },
+    // Brand mark invite links from the app (bipe ADR 0162): /marca/#<code>. Step labels come from bipe-shared strings.
+    brandMark: {
+      title: "Selo de revenda no Bipe",
+      lead: "Uma marca quer mostrar no Bipe que você revende para ela. Este link traz o código do selo. O selo só vale se você aceitar no app.",
+      steps: (work: string, marks: string, field: string, check: string) => [
+        "Abra o Bipe na sua conta de trabalho.",
+        `Toque em "${work}" e depois em "${marks}".`,
+        `Cole este link ou o código em "${field}" e toque em "${check}". O app mostra a marca antes de você aceitar.`,
+      ],
+      yourCode: "Código do selo:",
+      copy: "Copiar código", copied: "Copiado", copyFailed: "Segure o código para copiar",
+      life: (days: number) => `O código vale uma vez e vence ${days} dias depois de a marca criar.`,
+      customer: "Recebeu este link de alguém que vende para você? O selo aparece no Bipe, ao lado do nome dessa pessoa, e o app confere o selo com a marca.",
+      noApp: "Ainda não tem o Bipe? O app está em fase de testes. Instale no seu celular:",
+      invalidTitle: "Este link não tem um código de selo",
+    },
     // Email links from the API (ADR 0057): /confirmar-email/#<token> and /recuperar/#<token>.
     readOther: "Read in English",
     confirmEmail: {
@@ -390,6 +406,21 @@ export const chrome = {
       brazil: [["Your data", "in Brazil"], ["Servers", "from Brazilian companies"], ["Law", "Brazilian, with the LGPD"], ["Support", "in Portuguese"]],
     },
     readOther: "Ler em português",
+    brandMark: {
+      title: "Reseller mark on Bipe",
+      lead: "A brand wants to show on Bipe that you resell for it. This link carries the mark's code. The mark counts only after you accept it in the app.",
+      steps: (work: string, marks: string, field: string, check: string) => [
+        "Open Bipe on your work account.",
+        `Tap "${work}", then "${marks}".`,
+        `Paste this link or the code into "${field}" and tap "${check}". The app shows the brand before you accept.`,
+      ],
+      yourCode: "Mark code:",
+      copy: "Copy code", copied: "Copied", copyFailed: "Press and hold the code to copy it",
+      life: (days: number) => `The code works once and expires ${days} days after the brand made it.`,
+      customer: "Got this link from someone who sells to you? The mark shows on Bipe next to their name, and the app checks it with the brand.",
+      noApp: "No Bipe yet? The app is in testing. Install it on your phone:",
+      invalidTitle: "This link has no mark code",
+    },
     confirmEmail: {
       title: "Confirm email",
       lead: "Confirm the email you added to Bipe.",

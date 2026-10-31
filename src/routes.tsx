@@ -196,7 +196,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/s/", alt: null, lang: "pt", noindex: true, noReferrer: true,
   title: `${chrome.pt.stickerPack.title} · Bipe`, description: chrome.pt.stickerPack.lead(str("pt", "bipe_sticker_pack_add")),
   body: () => <Island name="StickerPackLanding" props={{}} />,
-}, {
+}, ...(["pt", "en"] as Lang[]).map((lang): Route => ({
+  // Brand mark invite links from the app (bipe ADR 0162): /marca/#<code>. The code is in the fragment, so no Caddy rewrite.
+  path: paths.brandMark(lang), alt: paths.brandMark(other(lang)), lang, noindex: true, noReferrer: true,
+  title: `${chrome[lang].brandMark.title} · Bipe`, description: chrome[lang].brandMark.lead,
+  body: () => <Island name="BrandMarkLanding" props={{ lang }} />,
+})), {
   // Email links from the API (ADR 0057). The token is in the fragment, so no Caddy rewrite.
   path: "/confirmar-email/", alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true,
   title: `${chrome.pt.confirmEmail.title} · Bipe`, description: chrome.pt.confirmEmail.lead,
