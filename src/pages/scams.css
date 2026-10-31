@@ -7,9 +7,9 @@
 .scam-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 16px; margin-top: 40px; }
 .scam-stat { border-top: 2px solid var(--mark); padding-top: 14px; }
 /* Hero numbers are display text, so they take the title face (AGENTS.md). Chart labels and values keep --ui. */
-.scam-value { font: 850 clamp(32px, 4vw, 44px)/1.05 var(--brand); letter-spacing: -.02em; margin: 0; color: var(--text); text-wrap: balance; }
-.scam-label { margin: 8px 0 0; font-size: 16px; }
-.scam-source { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+.scam-value { font: 850 clamp(2rem, 4vw, 2.75rem)/1.05 var(--brand); letter-spacing: -.02em; margin: 0; color: var(--text); text-wrap: balance; }
+.scam-label { margin: 8px 0 0; font-size: 1rem; }
+.scam-source { margin: 8px 0 0; font-size: 0.8125rem; color: var(--muted); }
 .scam-source a { color: inherit; }
 
 .scam-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: var(--gutter); margin-top: 20px; }
@@ -26,27 +26,27 @@
 .scam-grid { position: absolute; inset: 0 0 0 3.6em; width: calc(100% - 3.6em); overflow: visible; }
 /* Out of grid flow: as a grid item it takes the first column slot and pushes the last column to a second row. */
 .scam-ticks { position: absolute; inset: 0; }
-.scam-ticks span { position: absolute; left: 0; transform: translateY(50%); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scam-ticks span { position: absolute; left: 0; transform: translateY(50%); font-size: 0.6875rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .scam-grid line { stroke: var(--grid); stroke-width: 1; }
 .scam-col { position: relative; height: 100%; display: flex; justify-content: center; }
 .scam-col .scam-mark { width: min(24px, 70%); }
 .scam-col:hover .scam-mark rect { fill: var(--mark-hover); }
-.scam-cap { position: absolute; left: 50%; transform: translate(-50%, -4px); font-size: 13px; color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.scam-axis { padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 2px; margin-top: 6px; font-size: 12px; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.scam-cap { position: absolute; left: 50%; transform: translate(-50%, -4px); font-size: 0.8125rem; color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.scam-axis { padding-left: 3.6em; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 2px; margin-top: 6px; font-size: 0.75rem; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
 .scam-axis span { min-width: 0; overflow-wrap: anywhere; }
 
 /* Bars: categories */
 .scam-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.scam-bar-label { display: block; font-size: 15px; margin-bottom: 4px; }
+.scam-bar-label { display: block; font-size: 0.9375rem; margin-bottom: 4px; }
 .scam-bar { display: flex; align-items: center; gap: 8px; height: 16px; }
 .scam-bar-track { display: block; height: 16px; min-width: 2px; }
-.scam-bar-value { font-size: 14px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.scam-bar-value { font-size: 0.875rem; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .scam-bars li.dim .scam-mark rect { fill: var(--mark-dim); }
 .scam-bars li:hover .scam-mark rect { fill: var(--mark-hover); }
 .scam-bars li.dim:hover .scam-mark rect { fill: var(--mark-dim-hover); }
 
-.scam-table summary { cursor: pointer; font-size: 14px; color: var(--acai); }
-.scam-table table { border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+.scam-table summary { cursor: pointer; font-size: 0.875rem; color: var(--acai); }
+.scam-table table { border-collapse: collapse; margin-top: 8px; font-size: 0.875rem; }
 .scam-table th, .scam-table td { padding: 4px 16px 4px 0; text-align: left; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
 .scam-table th { font-weight: 400; color: var(--muted); }
 
@@ -55,29 +55,29 @@
 .scam-more, .scam-advice { padding-left: 20px; display: grid; gap: 12px; }
 .scam-more .scam-source { margin-top: 2px; }
 .scam-methods { display: grid; gap: 24px; margin-top: 28px; }
-.scam-methods h3 { margin: 0 0 8px; font-size: 20px; }
+.scam-methods h3 { margin: 0 0 8px; font-size: 1.25rem; }
 .scam-methods p { margin: 0; }
 .scam-methods .scam-source { margin-top: 8px; }
 .scam-ticks + .scam-col .scam-cap { left: 0; transform: translateY(-4px); }
 .scam-col:last-child .scam-cap { left: auto; right: 0; transform: translateY(-4px); }
 /* Library of golpes (bipe#175): group headings on the hub, the outside-Bipe list, the limit box on a type page. */
-.scam-group { font-size: 15px; text-transform: none; color: var(--muted); margin: 36px 0 4px; font-weight: 600; }
+.scam-group { font-size: 0.9375rem; text-transform: none; color: var(--muted); margin: 36px 0 4px; font-weight: 600; }
 .scam-limit-box { margin-top: 24px; border-left: 3px solid var(--line); padding-left: 16px; }
-.scam-limit-box h3 { font-size: 18px; margin: 0 0 6px; }
+.scam-limit-box h3 { font-size: 1.125rem; margin: 0 0 6px; }
 .scam-limit-box p { margin: 0; }
 /* Type, outside and protect cards (a protect card is itself the link): the whole card follows its .stretch link (type page, or the official page for outside golpes); source links sit above it. */
 .scam-types { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
 .scam-type { position: relative; display: flex; flex-direction: column; gap: 10px; border: 1px solid transparent; transition: border-color .15s; }
 .scam-type:hover, .scam-type:focus-within { border-color: var(--acai); }
-.scam-type h3, .scam-type h4 { margin: 4px 0 0; font: 850 21px/1.2 var(--brand); letter-spacing: -.01em; }
+.scam-type h3, .scam-type h4 { margin: 4px 0 0; font: 850 1.3125rem/1.2 var(--brand); letter-spacing: -.01em; }
 .scam-type h3 a, .scam-type h4 a { color: var(--text); text-decoration: none; }
 .scam-type a.stretch::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
 .scam-type a.stretch:focus-visible { outline: none; }
-.scam-type:has(a.stretch:focus-visible) { outline: 2px solid var(--acai); outline-offset: 2px; }
-.scam-type > p { margin: 0; font-size: 15px; }
+.scam-type:has(a.stretch:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.scam-type > p { margin: 0; font-size: 0.9375rem; }
 .scam-type-stat { border-top: 1px solid var(--line); padding-top: 10px; }
-.scam-type .scam-type-stat p { margin: 0; font-size: 14px; color: var(--text); }
-.scam-type-stat strong { font-size: 17px; color: var(--acai); font-variant-numeric: tabular-nums; }
-.scam-type-stat .scam-source { position: relative; z-index: 1; margin-top: 4px; font-size: 12px; }
-.scam-type .scam-type-more { margin-top: auto; padding-top: 4px; color: var(--acai); font-weight: 600; font-size: 14px; }
+.scam-type .scam-type-stat p { margin: 0; font-size: 0.875rem; color: var(--text); }
+.scam-type-stat strong { font-size: 1.0625rem; color: var(--acai); font-variant-numeric: tabular-nums; }
+.scam-type-stat .scam-source { position: relative; z-index: 1; margin-top: 4px; font-size: 0.75rem; }
+.scam-type .scam-type-more { margin-top: auto; padding-top: 4px; color: var(--acai); font-weight: 600; font-size: 0.875rem; }
 .scam-type-more a { color: inherit; text-decoration: none; }

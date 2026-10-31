@@ -406,8 +406,8 @@ export function BusinessPage({ lang }: { lang: Lang }) {
         <div className="grid">
           {rest.map((s) => (
             <div className="card" key={s.heading}>
-              <h3 style={{ fontSize: 20 }}>{s.heading}</h3>
-              <ul className="points" style={{ marginTop: 12 }}>{s.points.map((p) => <li key={p} style={{ color: "var(--muted)", fontSize: 15 }}><Icon name="check" size={16} />{p}</li>)}</ul>
+              <h3 style={{ fontSize: "1.25rem" }}>{s.heading}</h3>
+              <ul className="points" style={{ marginTop: 12 }}>{s.points.map((p) => <li key={p} style={{ color: "var(--muted)", fontSize: "0.9375rem" }}><Icon name="check" size={16} />{p}</li>)}</ul>
             </div>
           ))}
         </div>
@@ -463,11 +463,11 @@ export function PricingPage({ lang }: { lang: Lang }) {
             const t = p.tiers[tier.id];
             return (
               <div className="card tier" key={tier.id}>
-                <h3 style={{ fontSize: 22 }}>{t.name}</h3>
+                <h3 style={{ fontSize: "1.375rem" }}>{t.name}</h3>
                 <p>{t.who}</p>
                 <p className="tier-price display">{t.price ?? tierPrice(lang, tier)}</p>
                 <p>{t.billing}</p>
-                <ul className="points" style={{ marginTop: 16 }}>{t.points.map((x) => <li key={x} style={{ fontSize: 15 }}><Icon name="check" size={16} />{x}</li>)}</ul>
+                <ul className="points" style={{ marginTop: 16 }}>{t.points.map((x) => <li key={x} style={{ fontSize: "0.9375rem" }}><Icon name="check" size={16} />{x}</li>)}</ul>
                 {tier.cta === "app"
                   ? <a className="button secondary compact tier-cta" href={paths.download(lang)}>{p.ctaApp}</a>
                   : <a className="button primary compact tier-cta" href={`${paths.organisations(lang)}#form`}><Icon name="mail" />{p.ctaForm}</a>}
@@ -480,15 +480,15 @@ export function PricingPage({ lang }: { lang: Lang }) {
       <section className="wrap section">
         <div className="grid">
           <div className="card">
-            <h3 style={{ fontSize: 20 }}>{p.tools.heading}</h3>
+            <h3 style={{ fontSize: "1.25rem" }}>{p.tools.heading}</h3>
             <p style={{ marginTop: 12 }}>{p.tools.body}</p>
             <div className="more-links">
               {tools.map((f) => <MoreLink key={f.id} href={paths.feature(lang, f)}>{f[lang].name}{f.status.ios === "planned" && f.status.android === "planned" ? ` (${chrome[lang].status.planned})` : ""}</MoreLink>)}
             </div>
           </div>
           <div className="card">
-            <h3 style={{ fontSize: 20 }}>{p.pilot.heading}</h3>
-            <ul className="points" style={{ marginTop: 12 }}>{p.pilot.points.map((x) => <li key={x} style={{ color: "var(--muted)", fontSize: 15 }}><Icon name="check" size={16} />{x}</li>)}</ul>
+            <h3 style={{ fontSize: "1.25rem" }}>{p.pilot.heading}</h3>
+            <ul className="points" style={{ marginTop: 12 }}>{p.pilot.points.map((x) => <li key={x} style={{ color: "var(--muted)", fontSize: "0.9375rem" }}><Icon name="check" size={16} />{x}</li>)}</ul>
           </div>
         </div>
       </section>

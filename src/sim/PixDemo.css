@@ -1,6 +1,6 @@
 /* Bank-app panel in the Pix demo: what the payer's bank shows after pasting the code. */
-.bank-sheet { border-radius: 14px; background: var(--surface); padding: 10px 12px; font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
-.bank-head { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.bank-sheet { border-radius: 14px; background: var(--surface); padding: 10px 12px; font-size: 0.8125rem; display: flex; flex-direction: column; gap: 6px; }
+.bank-head { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
 .bank-row { display: flex; justify-content: space-between; gap: 8px; }
 .bank-row strong { text-align: right; overflow-wrap: anywhere; }
 .bank-ok { display: flex; gap: 6px; align-items: center; color: var(--bipe-trust-verified-ink); font-weight: 600; }

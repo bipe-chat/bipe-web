@@ -70,7 +70,6 @@
 .research-source-list li:target { background: var(--wash); }
 .research-source-list p { margin: .4rem 0; }
 .research-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.research :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (max-width: 1000px) { .research-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } .research-search { grid-column: 1 / -1; } }
 @media (max-width: 650px) { .research-stats { grid-template-columns: 1fr 1fr; } .research-stats > div { padding: .9rem; } .research-profiles { grid-template-columns: 1fr; } .research-tabs button { padding: .65rem .6rem; font-size: .85rem; } .research-controls { grid-template-columns: 1fr; } .research-meta button { margin-left: 0; } .research-table th:first-child { width: 190px; } }
 @media (prefers-reduced-motion: reduce) { .research { scroll-behavior: auto; } }

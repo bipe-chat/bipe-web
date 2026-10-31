@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ORGANISATION_FORM_URL } from "../config";
+import { scrollBehavior } from "../platform";
 import { normalizeCnpj, type Lang } from "../shared";
 
 type State = "idle" | "sending" | "done" | "error";
@@ -59,7 +60,7 @@ export function OrganisationForm({ lang, copy: c, privacy, privacyLabel }: { lan
   const doneRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     if (state !== "done") return;
-    doneRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    doneRef.current?.scrollIntoView({ block: "center", behavior: scrollBehavior() });
     doneRef.current?.focus({ preventScroll: true });
   }, [state]);
 
