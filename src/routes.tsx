@@ -192,6 +192,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   title: "Convite para o Bipe", description: chrome.pt.invite.lead,
   body: () => <Island name="InviteLanding" props={{}} />,
 }, {
+  // Target of the Caddy rewrite for /g/<code> (group links, bipe ADR 0184).
+  path: "/g/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "convite",
+  title: "Link de grupo do Bipe", description: chrome.pt.invite.lead,
+  body: () => <Island name="InviteLanding" props={{ group: true }} />,
+}, {
   // Target of the Caddy rewrite for /s/<room ID> (pack links, bipe ADR 0205).
   path: "/s/", alt: null, lang: "pt", noindex: true, noReferrer: true,
   title: `${chrome.pt.stickerPack.title} · Bipe`, description: chrome.pt.stickerPack.lead(str("pt", "bipe_sticker_pack_add")),

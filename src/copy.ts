@@ -190,6 +190,14 @@ export const chrome = {
       invalid: "Esse convite não vale mais. Pode ter sido usado, cancelado ou ter vencido.",
       askNew: "Peça outro convite para quem te mandou.",
     },
+    // Group links from the app (bipe ADR 0184): /g/<code>. The steps are the invite page's.
+    groupLink: {
+      title: "Você recebeu um link de grupo do Bipe",
+      yourCode: "Código do link, para usar no app do Bipe depois de instalar:",
+      oneUse: "Ele vale só no Bipe.",
+      copiesLink: "O botão copia o link do grupo. No app, toque em \"Colar\" para entrar com ele.",
+      existingOnly: "Este link é para quem já tem o Bipe. Para criar sua conta, você precisa de um convite.",
+    },
     // Pack links from the app (bipe ADR 0205): /s/<room ID>.
     stickerPack: {
       title: "Um pacote de stickers para o Bipe",
