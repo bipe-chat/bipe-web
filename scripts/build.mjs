@@ -142,7 +142,7 @@ for (const set of ssr.storeSets) {
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
 writeFileSync(join(dist, "llms-full.txt"), ssr.llmsFullTxt());
 writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
-writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /elenco/\nDisallow: /convite/\nDisallow: /s/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n# For AI agents: ${site}/llms.txt (index) and ${site}/llms-full.txt (full text)\n`);
+writeFileSync(join(dist, "robots.txt"), `User-agent: *\nDisallow: /elenco/\nDisallow: /convite/\nDisallow: /g/\nDisallow: /s/\nDisallow: /confirmar-email/\nDisallow: /recuperar/\nSitemap: ${site}/sitemap.xml\n# For AI agents: ${site}/llms.txt (index) and ${site}/llms-full.txt (full text)\n`);
 rmSync(join(dist, ".vite"), { recursive: true, force: true });
 rmSync(ssrOut, { recursive: true, force: true });
 checkCodeLinks(dist, JSON.parse(readFileSync(join(root, "../bipe-shared/product/distribution.json"), "utf8")));

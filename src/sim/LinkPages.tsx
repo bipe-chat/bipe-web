@@ -1,5 +1,5 @@
 // Landing pages for links shared from the app. Caddy rewrites /@handle to /perfil/,
-// /convite/<code> to /convite/ and /s/<room ID> to /s/, so each reads the real path in the browser. With the app installed,
+// /convite/<code> to /convite/, /g/<code> to /g/ and /s/<room ID> to /s/, so each reads the real path in the browser. With the app installed,
 // universal links (.well-known/apple-app-site-association) open the app before these pages load.
 import { useEffect, useState, type MouseEvent } from "react";
 import { encode } from "uqr";
@@ -31,6 +31,10 @@ async function copyText(text: string): Promise<boolean> {
 
 /** Invite page (bipe#197): the store link keeps the invite through the install. Google Play hands `referrer` to the app
  *  (Play Install Referrer); the APK and TestFlight cannot, so the button also copies the invite link for the app's "Colar". */
+/** A group link code (bipe ADR 0184) is copied as a /g/ link. The app takes either code at sign-up, so the Play
+ *  referrer keeps the convite/ form the app reads. */
+type LinkPath = "convite" | "g";
+
 function storeUrl(url: string, inviteCode?: string): string {
   if (!inviteCode || new URL(url).hostname !== "play.google.com") return url;
   const u = new URL(url);
@@ -38,25 +42,25 @@ function storeUrl(url: string, inviteCode?: string): string {
   return u.toString();
 }
 
-function copyInviteThenOpen(inviteCode: string | undefined) {
+function copyInviteThenOpen(inviteCode: string | undefined, path: LinkPath = "convite") {
   if (!inviteCode) return undefined;
   return async (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const href = e.currentTarget.href;
-    await copyText(`${location.origin}/convite/${inviteCode}`);
+    await copyText(`${location.origin}/${path}/${inviteCode}`);
     location.href = href;
   };
 }
 
 /** The Android test build is an APK from distribution.json; no button while it is not available. */
-function AndroidDownloadButton({ lang = "pt", inviteCode }: { lang?: Lang; inviteCode?: string }) {
+function AndroidDownloadButton({ lang = "pt", inviteCode, path }: { lang?: Lang; inviteCode?: string; path?: LinkPath }) {
   const { android } = distribution;
-  return android.status === "available" && android.url ? <a className="button primary" href={storeUrl(android.url, inviteCode)} onClick={copyInviteThenOpen(inviteCode)}><Icon name="android" />{android[lang].label}</a> : null;
+  return android.status === "available" && android.url ? <a className="button primary" href={storeUrl(android.url, inviteCode)} onClick={copyInviteThenOpen(inviteCode, path)}><Icon name="android" />{android[lang].label}</a> : null;
 }
 
-export function InstallButton({ lang = "pt", inviteCode }: { lang?: Lang; inviteCode?: string }) {
+export function InstallButton({ lang = "pt", inviteCode, path }: { lang?: Lang; inviteCode?: string; path?: LinkPath }) {
   const { ios } = distribution;
-  return ios.url ? <a className="button primary" href={ios.url} onClick={copyInviteThenOpen(inviteCode)}><Icon name="apple" />{ios[lang].label}</a> : null;
+  return ios.url ? <a className="button primary" href={ios.url} onClick={copyInviteThenOpen(inviteCode, path)}><Icon name="apple" />{ios[lang].label}</a> : null;
 }
 
 /** The button for the visitor's phone; both badges on a computer. Availability comes from distribution.json. */
@@ -167,12 +171,29 @@ export function ProfileLanding(_: Record<string, never>) {
   );
 }
 
-export function InviteLanding(_: Record<string, never>) {
+/** The preview of a group link (bipe ADR 0184): GET /v1/group-links/{code}. Never member names. */
+type GroupPreview = { name?: string; members: number; inviter?: string; signsUp: boolean };
+
+function readGroupPreview(p: Record<string, unknown>): GroupPreview | null {
+  if (p.valid !== true || typeof p.members !== "number") return null;
+  return {
+    name: typeof p.name === "string" ? p.name : undefined,
+    members: p.members,
+    inviter: typeof p.inviter_name === "string" ? p.inviter_name : undefined,
+    signsUp: p.signs_up === true,
+  };
+}
+
+/** /convite/<code>, and /g/<code> with group: the same steps, with the group's name and count on top. */
+export function InviteLanding({ group = false }: { group?: boolean }) {
   const c = chrome.pt.invite;
+  const g = chrome.pt.groupLink;
+  const path: LinkPath = group ? "g" : "convite";
   const [code, setCode] = useState<string | null>(null);
   const [platform, setPlatform] = useState<Platform>("ios");
   const [valid, setValid] = useState<boolean | null>(null);
   const [inviter, setInviter] = useState<string | null>(null);
+  const [groupInfo, setGroupInfo] = useState<GroupPreview | null>(null);
   const [copyLabel, setCopyLabel] = useState(c.copy);
 
   useEffect(() => {
@@ -181,39 +202,43 @@ export function InviteLanding(_: Record<string, never>) {
     setCode(found);
     if (!found) return setValid(false);
     // The code is a secret the inviter shared. The page sends it only to api.bipe.net.br.
-    fetch(`${API_URL}/v1/invites/${encodeURIComponent(found)}`, { referrerPolicy: "no-referrer" })
+    fetch(`${API_URL}/v1/${group ? "group-links" : "invites"}/${encodeURIComponent(found)}`, { referrerPolicy: "no-referrer" })
       .then((r) => (r.ok ? r.json() : null))
       .then((p) => {
         if (!p) return; // API down or rate-limited: keep the steps visible.
         setValid(p.valid === true);
-        if (p.valid && typeof p.inviter_handle === "string" && new RegExp(reg.handles.pattern).test(p.inviter_handle)) setInviter(p.inviter_handle);
+        if (group) setGroupInfo(readGroupPreview(p));
+        else if (p.valid && typeof p.inviter_handle === "string" && new RegExp(reg.handles.pattern).test(p.inviter_handle)) setInviter(p.inviter_handle);
       })
       .catch(() => {});
-  }, []);
+  }, [group]);
 
+  const title = group ? (groupInfo?.name ? t("pt", "bipe_group_link_preview_title", groupInfo.name) : g.title) : inviter ? c.titleFrom(inviter) : c.title;
   if (valid === false) {
     return (
       <section className="wrap narrow section">
-        <h1>{c.title}</h1>
-        <p className="lede">{c.invalid}</p>
-        <p>{c.askNew}</p>
+        <h1>{group ? g.title : c.title}</h1>
+        <p className="lede">{group ? t("pt", "bipe_group_link_open_invalid") : c.invalid}</p>
+        {!group && <p>{c.askNew}</p>}
       </section>
     );
   }
   return (
     <section className="wrap narrow section">
-      <h1>{inviter ? c.titleFrom(inviter) : c.title}</h1>
-      <p className="lede">{c.lead}</p>
+      <h1>{title}</h1>
+      {groupInfo?.inviter && <p>{t("pt", "bipe_group_link_open_invited_by", groupInfo.inviter)}</p>}
+      {groupInfo && <p>{t("pt", "bipe_app_room_link_members", String(groupInfo.members))}</p>}
+      <p className="lede">{groupInfo && !groupInfo.signsUp ? g.existingOnly : c.lead}</p>
       {platform === "ios" && (
         <ol className="steps">
-          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton inviteCode={code ?? undefined} /></div>{code && <p className="small muted">{c.copiesLink}</p>}</li>
+          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton inviteCode={code ?? undefined} path={path} /></div>{code && <p className="small muted">{group ? g.copiesLink : c.copiesLink}</p>}</li>
           <li>{c.iosSteps[1]}</li>
           <li>{c.iosSteps[2]}</li>
         </ol>
       )}
       {platform === "android" && (
         <ol className="steps">
-          <li>{c.androidSteps[0]}<div style={{ marginTop: 10 }}><AndroidDownloadButton inviteCode={code ?? undefined} /></div>{code && <p className="small muted">{c.copiesLink}</p>}</li>
+          <li>{c.androidSteps[0]}<div style={{ marginTop: 10 }}><AndroidDownloadButton inviteCode={code ?? undefined} path={path} /></div>{code && <p className="small muted">{group ? g.copiesLink : c.copiesLink}</p>}</li>
           <li>{c.androidSteps[1]}</li>
         </ol>
       )}
@@ -221,14 +246,14 @@ export function InviteLanding(_: Record<string, never>) {
       {/* Below the steps: people typed this code into TestFlight's Redeem box when it came first. */}
       <div className="link-card">
         <div>
-          <p>{c.yourCode}</p>
+          <p>{group ? g.yourCode : c.yourCode}</p>
           <div className="actions">
             <output className="mono invite-code">{code ?? "····-····-····"}</output>
             <button type="button" className="button secondary" disabled={!code} onClick={async () => setCopyLabel((await copyText(code!)) ? c.copied : c.copyFailed)}>{copyLabel}</button>
           </div>
-          <p className="small muted">{platform === "ios" && `${c.notTestFlight} `}{c.oneUse}</p>
+          <p className="small muted">{platform === "ios" && `${c.notTestFlight} `}{group ? g.oneUse : c.oneUse}</p>
         </div>
-        {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
+        {platform === "other" && code && <LinkQr url={`${location.origin}/${path}/${code}`} />}
       </div>
     </section>
   );
