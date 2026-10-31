@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import { HandleSim } from "./sim/HandleSim";
-import { InviteLanding, ProfileLanding, StickerPackLanding } from "./sim/LinkPages";
+import { BrandMarkLanding, InviteLanding, ProfileLanding, StickerPackLanding } from "./sim/LinkPages";
 import { ConfirmEmailLanding, RecoverLanding } from "./sim/AccountLinks";
 import { WaitlistForm } from "./sim/WaitlistForm";
 import { OrganisationForm } from "./sim/OrganisationForm";
@@ -13,7 +13,7 @@ import { PixDemo } from "./sim/PixDemo";
 import { ApiMini, ArriveMini, InboxMini } from "./sim/BusinessMinis";
 import { NotFound } from "./sim/NotFound";
 
-export const ISLANDS = { SceneReel, IdentitySim, HandleSim, ProfileLanding, InviteLanding, StickerPackLanding, ConfirmEmailLanding, RecoverLanding, WaitlistForm, OrganisationForm, PriceCalculator, HelpForm, SceneSim, TrustLevels, RealVsFake, StaffApp, PixDemo, InboxMini, ApiMini, ArriveMini, NotFound } as const satisfies Record<string, ComponentType<any>>;
+export const ISLANDS = { SceneReel, IdentitySim, HandleSim, ProfileLanding, InviteLanding, StickerPackLanding, BrandMarkLanding, ConfirmEmailLanding, RecoverLanding, WaitlistForm, OrganisationForm, PriceCalculator, HelpForm, SceneSim, TrustLevels, RealVsFake, StaffApp, PixDemo, InboxMini, ApiMini, ArriveMini, NotFound } as const satisfies Record<string, ComponentType<any>>;
 export type IslandName = keyof typeof ISLANDS;
 
 /** Server-rendered component that the client hydrates with the same props. */

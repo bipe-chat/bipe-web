@@ -9,7 +9,8 @@ import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { CompanySeal } from "../components/brand";
 import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
-import { distribution, extractInviteCodeRef, reg, stickerPackLinkBase, t, type Lang } from "../shared";
+import { brandMarkRules, distribution, extractInviteCodeRef, reg, stickerPackLinkBase, t, type Lang } from "../shared";
+import { paths } from "../paths";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
 export function extractInviteCode(text: string): string | null {
@@ -264,6 +265,77 @@ export function StickerPackLanding(_: Record<string, never>) {
         </div>
         {platform === "other" && roomId && <LinkQr url={`${stickerPackLinkBase}${encodeURIComponent(roomId)}`} />}
       </div>
+    </section>
+  );
+}
+
+/** A brand mark invite code from a /marca/#<code> fragment: 16 base64url characters, the same rule as
+ *  bipe-api brandMarkCode. Null for anything else. */
+export function brandMarkCodeFromHash(hash: string): string | null {
+  let raw: string;
+  try { raw = decodeURIComponent(hash.replace(/^#/, "")).trim(); } catch { return null; }
+  return /^[A-Za-z0-9_-]{16}$/.test(raw) ? raw : null;
+}
+
+/** Brand mark invite page (bipe ADR 0162, bipe#872). The app gives the brand PUBLIC_SITE_URL/marca/#<code> for a reseller.
+ *  The code is a single-use secret in the fragment: the browser never sends it to bipe.chat, the analytics hook drops the
+ *  fragment, and the page sends it nowhere. The invite preview in the API needs a signed-in account, so the page shows the
+ *  steps and the code, and the app shows the brand before the reseller accepts. */
+export function BrandMarkLanding({ lang }: { lang: Lang }) {
+  const c = chrome[lang].brandMark;
+  const [code, setCode] = useState<string | null>(null);
+  const [read, setRead] = useState(false);
+  const [platform, setPlatform] = useState<Platform>("ios");
+  const [copyLabel, setCopyLabel] = useState(c.copy);
+  useEffect(() => {
+    setPlatform(detectPlatform());
+    setCode(brandMarkCodeFromHash(location.hash));
+    setRead(true);
+  }, []);
+  const otherLang: Lang = lang === "pt" ? "en" : "pt";
+  const langLink = (
+    <p className="small muted" style={{ marginTop: 40 }}>
+      <a href={`${paths.brandMark(otherLang)}${code ? `#${code}` : ""}`} hrefLang={otherLang === "pt" ? "pt-BR" : "en"} lang={otherLang === "pt" ? "pt-BR" : "en"}>{chrome[lang].readOther}</a>
+    </p>
+  );
+
+  if (read && !code) {
+    return (
+      <section className="wrap narrow section">
+        <h1>{c.invalidTitle}</h1>
+        <p className="lede">{t(lang, "bipe_brand_marks_code_invalid")}</p>
+        <p>{c.customer}</p>
+        {langLink}
+      </section>
+    );
+  }
+  const steps = c.steps(t(lang, "bipe_tab_work"), t(lang, "bipe_brand_marks_title"), t(lang, "bipe_brand_marks_code_field"), t(lang, "bipe_brand_marks_check"));
+  return (
+    <section className="wrap narrow section">
+      <h1>{c.title}</h1>
+      <p className="lede">{c.lead}</p>
+      <ol className="steps">
+        {steps.map((s) => <li key={s}>{s}</li>)}
+      </ol>
+      <div className="link-card">
+        <div>
+          <p>{c.yourCode}</p>
+          <div className="actions">
+            <output className="mono invite-code">{code ?? "················"}</output>
+            <button type="button" className="button secondary" disabled={!code} onClick={async () => setCopyLabel((await copyText(code!)) ? c.copied : c.copyFailed)}>{copyLabel}</button>
+          </div>
+          <p className="small muted">{c.life(brandMarkRules.inviteDays)}</p>
+          <p className="small muted">{t(lang, "bipe_brand_marks_brand_sees")} {t(lang, "bipe_brand_marks_brand_not_sees")}</p>
+        </div>
+      </div>
+      <p>{c.customer}</p>
+      <div className="link-card">
+        <div>
+          <p>{c.noApp}</p>
+          {platform === "ios" ? <div className="actions"><InstallButton lang={lang} /></div> : <DownloadButtons lang={lang} />}
+        </div>
+      </div>
+      {langLink}
     </section>
   );
 }
