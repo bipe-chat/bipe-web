@@ -19,11 +19,24 @@ import compareJson from "@shared/product/compare.json";
 import dataJson from "@shared/product/data.json";
 import privacyJson from "@shared/product/privacy.json";
 import accessibilityJson from "@shared/product/accessibility.json";
+import tokensJson from "@shared/design/tokens.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import * as pixLib from "@shared/tools/lib/pix.mjs";
 import * as publicRoutesLib from "@shared/tools/lib/public-routes.mjs";
 import openapiYaml from "@shared/api/openapi.yaml?raw";
 import type { FigureId, SceneId } from "./sim/scenes";
+
+/**
+ * The app palettes in picker order, açaí first, and the chat background (ADR 0213): the places of its blobs and
+ * marks and the Bipe mark path. The colours are the --bipe-chat-* variables, themed per palette by data-palette.
+ */
+export const appPalettes: string[] = Object.keys(tokensJson.appThemes.palettes);
+export const chatBackground: {
+  blobOpacity: number;
+  blobs: { x: number; y: number; radius: number; tone: string }[];
+  marks: { x: number; y: number; side: number; opacity: number; tone: string }[];
+} = tokensJson.appThemes.chatBackground;
+export const markPath: string = tokensJson.appThemes.icon.path;
 
 export type ScamKind = "extortion" | "pixCode" | "boleto" | "remoteApp" | "pinRequest" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
 export type Registries = {

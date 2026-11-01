@@ -3,8 +3,8 @@ import { Avatar, label, who, type CastEntry, type Trust } from "../cast";
 import { CompanySeal, Mark, Seal } from "../components/brand";
 import { chrome } from "../copy";
 import { Icon, ScamWarningCard, TrustCard } from "../components/ui";
-import { Bubble, Phone, runs, TabBar } from "../components/phone";
-import { reg, scamWarningKind, t, type Lang } from "../shared";
+import { Bubble, Phone, PhonePalette, runs, TabBar } from "../components/phone";
+import { appPalettes, reg, scamWarningKind, t, type Lang } from "../shared";
 import { ME, REAL_VS_FAKE, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type Line, type Scene, type SceneId } from "./scenes";
 import { PixCard } from "./PixCard";
 import { AccountSwitcher, AppLockScreen, CallLine, ChargeCard, Contacts, Guardians, JoinCard, LocationBody, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, SettingsList, StickerPicker, VerifyPix, VoiceBody } from "./SceneParts";
@@ -205,8 +205,26 @@ export function sceneSteps(s: Scene): number {
   }
 }
 
+/**
+ * The app palette of a scene (ADR 0213): fixed per scene id, so a page shows the same colours on every build,
+ * and spread over all the palettes, as the store panels are. Default chosen; a scene can get its own later.
+ */
+export function scenePalette(id: SceneId): string {
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return appPalettes[h % appPalettes.length];
+}
+
 /** One scene on the phone, up to `beat`. Pass a large beat for the finished, static state. */
-export function ScenePhone({ lang, id, beat = Infinity }: { lang: Lang; id: SceneId; beat?: number }) {
+export function ScenePhone(props: { lang: Lang; id: SceneId; beat?: number }) {
+  return (
+    <PhonePalette.Provider value={scenePalette(props.id)}>
+      <SceneBody {...props} />
+    </PhonePalette.Provider>
+  );
+}
+
+function SceneBody({ lang, id, beat = Infinity }: { lang: Lang; id: SceneId; beat?: number }) {
   const scene: Scene = scenes[id];
   const sim = chrome[lang].sim;
   switch (scene.kind) {

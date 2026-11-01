@@ -195,11 +195,15 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 @media (max-width: 360px) { .phone { --phone-zoom: .64; } }
 /* Display Zoom: the screen contents render 1.15x larger, as on an iPhone with Display Zoom set to
    "Larger Text" (a 350pt-wide layout). Status bar and home indicator stay at hardware size. */
-.screen > :not(.statusbar, .home-indicator) { zoom: 1.15; }
+.screen > :not(.statusbar, .home-indicator, .chat-bg) { zoom: 1.15; }
+/* Inside a phone the açaí variables are the app accent, so buttons follow the scene palette as in the app (ADR 0213). Trust colours keep their own tokens. */
+.phone { --acai: var(--bipe-accent-fill); --acai-deep: var(--bipe-accent-fill-pressed); --acai-wash: var(--bipe-accent-wash); }
+/* The app chat background (ADR 0213), behind everything on the chat screen. */
+.chat-bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
 /* The phone is a picture: no selection, no image drag, no long-press menu. */
 .phone * { pointer-events: none; -webkit-user-drag: none; }
-.screen { --bubble-in: var(--bipe-gray-300); --bubble-out: var(--bipe-gray-400); flex: 1; min-width: 0; min-height: 0; background: var(--bg); color: var(--text); font-family: var(--app); font-size: 17px; line-height: 22px; letter-spacing: -.41px; overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
-@media (prefers-color-scheme: dark) { .screen { --bubble-in: var(--bipe-gray-400); --bubble-out: var(--bipe-gray-500); } }
+.screen { --bubble-in: var(--bipe-gray-300); --bubble-out: var(--bipe-bubble-own); isolation: isolate; flex: 1; min-width: 0; min-height: 0; background: var(--bg); color: var(--text); font-family: var(--app); font-size: 17px; line-height: 22px; letter-spacing: -.41px; overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
+@media (prefers-color-scheme: dark) { .screen { --bubble-in: var(--bipe-gray-400); } }
 /* iPhone 16 Pro: 62pt top safe area, 125x37pt Dynamic Island 11pt from the top. */
 .statusbar { height: 62px; flex: none; display: grid; grid-template-columns: 1fr 125px 1fr; grid-template-rows: 37px; align-items: center; padding-top: 11px; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .statusbar .clock, .statusbar .sysicons { justify-self: center; }
