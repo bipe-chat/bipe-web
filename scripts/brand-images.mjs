@@ -8,7 +8,7 @@ import { renderSet } from "./store-images.mjs";
 
 /** Group -> listing (relative to bipe-web, null for bipe-shared/product/appstore.md) and devices. */
 export const BRAND_SETS = {
-  loja: { listing: null, devices: ["iphone69", "play-phone", "play-feature"] },
+  loja: { listing: null, devices: ["iphone69", "asc-header", "play-phone", "play-feature"] },
   social: { listing: null, devices: ["ig-post", "ig-story", "ig-square"] },
   posts: { listing: "social/posts.md", devices: ["ig-post", "ig-story", "ig-square"] },
 };

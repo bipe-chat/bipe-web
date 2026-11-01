@@ -16,7 +16,6 @@ export const OG_SIZE = { width: 1200, height: 630 };
 /** Gutter wide enough that a square centre crop (WhatsApp, iMessage) keeps the title. */
 const PAD = 72;
 const WHITE = "#FFFFFF";
-const RULE = "rgba(255,255,255,0.22)";
 
 const require = createRequire(import.meta.url);
 const fontDir = join(dirname(require.resolve("@fontsource/nunito/package.json")), "files");
@@ -40,24 +39,24 @@ function titleSize(text) {
 /** A block of text clamped to N lines with an ellipsis. */
 const clamp = (lines, style, text) => h("div", { style: { display: "block", lineClamp: lines, overflow: "hidden", textOverflow: "ellipsis", ...style } }, text);
 
-function card({ markPath, title, description, illustration }) {
+function card({ markPath, title, description, illustration, ink }) {
   const { width, height } = OG_SIZE;
   return h("div", {
     // No background: compose() puts the brand backdrop (scripts/lib/backdrop.mjs) under the card.
-    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: PAD, color: WHITE, fontFamily: "Nunito", position: "relative" },
+    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: PAD, color: ink.ink, fontFamily: "Nunito", position: "relative" },
   },
     h("div", { style: { display: "flex", alignItems: "center", gap: 18 } },
-      h("svg", { width: 64, height: 64, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: WHITE })),
+      h("svg", { width: 64, height: 64, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: ink.ink })),
       h("div", { style: { display: "flex", fontSize: 58, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
     ),
     // With an illustration (the Brazil network on the right half) the text keeps to the left half.
     h("div", { style: { display: "flex", flexDirection: "column", gap: 22, width: illustration ? 560 : 880 } },
       // The clamp hides overflow, so the line box must hold the descenders of the last line.
       clamp(3, { fontSize: titleSize(title), fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.08, paddingBottom: "0.08em" }, title),
-      description ? clamp(title.length > 30 ? 1 : 2, { fontSize: 34, fontWeight: 600, lineHeight: 1.3, color: "rgba(255,255,255,0.88)" }, description) : null,
+      description ? clamp(title.length > 30 ? 1 : 2, { fontSize: 34, fontWeight: 600, lineHeight: 1.3, color: ink.sub }, description) : null,
     ),
     // Footer: the address only. No upper-case section label (MZ: no eyebrows).
-    h("div", { style: { display: "flex", justifyContent: "flex-end", alignItems: "center", borderTop: `2px solid ${RULE}`, paddingTop: 22, fontSize: 26, fontWeight: 800, width: illustration ? 560 : "100%" } },
+    h("div", { style: { display: "flex", justifyContent: "flex-end", alignItems: "center", borderTop: `2px solid ${ink.rule}`, paddingTop: 22, fontSize: 26, fontWeight: 800, width: illustration ? 560 : "100%" } },
       h("div", { style: { display: "flex" } }, "bipe.chat"),
     ),
   );
@@ -71,7 +70,9 @@ export { h };
  */
 export async function writeOgCard({ outPath, markPath, title, description, illustration, texture = BRAND.texture, tone = BRAND.tone(0) }) {
   const back = illustration === "brazil" ? brazilNetworkSvg({ ...OG_SIZE }) : backdropSvg({ ...OG_SIZE, texture, tone, markPath, mark: BRAND.mark });
-  const svg = compose(await satori(card({ markPath, title, description, illustration }), { ...OG_SIZE, fonts }), back);
+  // The Brazil network has its own dark field, so its card keeps white text whatever the tone.
+  const ink = illustration === "brazil" ? { ink: WHITE, sub: "rgba(255,255,255,0.88)", rule: "rgba(255,255,255,0.22)" } : tone;
+  const svg = compose(await satori(card({ markPath, title, description, illustration, ink }), { ...OG_SIZE, fonts }), back);
   const img = new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width }, background: tone.base }).render();
   writeFileSync(outPath, encodeJpeg(img.pixels, img.width, img.height));
 }

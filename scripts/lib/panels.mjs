@@ -2,10 +2,12 @@
 // The text comes from the `## Screenshots` table in bipe-shared/product/appstore.md (`title`, `sub`).
 //
 // A panel, after Telegram and Signal: a short centred title, one subtitle sentence under it, and one
-// large upright phone, centred, at 85% of the panel width (at 75% the whole phone fits above the edge), its top under the subtitle and its
-// bottom cut by the panel edge, at the same place on every panel. The phone is an iPhone: a thin
-// metallic rim and a thin black bezel with continuous corners, side buttons, the Dynamic Island and the status bar (9:41, signal, Wi-Fi,
-// battery), drawn here because the captures have none. The backdrop is scripts/lib/backdrop.mjs.
+// large upright phone, centred, its top under the subtitle. On the store sets the whole phone shows,
+// bottom bezel included, with a margin under it (MZ, 1 November 2026, after Telegram); the Instagram
+// sets keep the phone cut by the panel edge. The phone is at the same place on every panel. The phone is an iPhone: a thin
+// metallic rim and a thin black bezel with continuous corners, side buttons and the status bar (9:41, signal, Wi-Fi,
+// battery), drawn here because the captures have none. No Dynamic Island (MZ, 1 November 2026: it says nothing
+// about the app, and Apple's 2027 design drops it). The backdrop is scripts/lib/backdrop.mjs.
 import { h } from "../og.mjs";
 import { squirclePath } from "./squircle.mjs";
 
@@ -29,19 +31,29 @@ export const captureSlugs = (panel) => (panel.feature === "-" ? [] : [shotOf(pan
 // type has the same proportion on every device. `frameTop` is the same on every panel and leaves
 // room for a 1-line title and a 2-line sub. `frame` is the phone width with its bezel.
 const LAYOUT = {
-  // The sub is 60% of the title (MZ: the subtitle read like a caption). The phone is 1180 units
-  // wide so that its bottom bezel and bottom corners fall off the panel: the screen runs out of
-  // the bottom edge, about 180 units deep on every panel.
-  phone: { top: 150, copy: 1120, title: 104, sub: 62, gap: 24, frameTop: 560, frame: 1180, bezel: 16, rim: 8, island: true },
-  // Play phone: 1080x1920 is shorter than the iPhone.
-  play: { top: 120, copy: 1120, title: 96, sub: 58, gap: 22, frameTop: 520, frame: 1000, bezel: 15, rim: 6, island: true },
+  // The sub is 60% of the title (MZ: the subtitle read like a caption). The store sizes went up about
+  // 10% on 1 November 2026 (MZ: "a touch larger"); the copy is wider so the subs keep two lines. `bottom` is the margin under
+  // the whole phone: the frame width is the largest that leaves it (at most `frame`), so the bottom
+  // bezel and corners show. Without `bottom` the phone is `frame` wide and runs off the edge.
+  phone: { top: 150, copy: 1200, title: 114, sub: 70, gap: 24, frameTop: 560, frame: 1180, bottom: 170, bezel: 16, rim: 8 },
+  // Play: no device frame (Google advises against device imagery, and it counts for promotion
+  // eligibility), so the screen alone, as wide as the iPhone screen, running off the bottom edge.
+  play: { top: 120, copy: 1200, title: 106, sub: 64, gap: 22, frameTop: 520, frame: 950, bezel: 0, rim: 0, buttons: "none" },
   // Instagram (bipe-chat/bipe#465), all 1080 wide. The story keeps text out of the bands the IG bars
   // cover: the top 250 px and the bottom 340 px (306 and 416 units). Only the phone runs into them.
-  post: { top: 120, copy: 1120, title: 96, sub: 58, gap: 22, frameTop: 510, frame: 900, bezel: 14, rim: 6, island: true },
-  square: { top: 100, copy: 1120, title: 88, sub: 53, gap: 20, frameTop: 450, frame: 820, bezel: 13, rim: 5, island: true },
-  story: { top: 330, copy: 1120, title: 100, sub: 60, gap: 24, frameTop: 780, frame: 960, bezel: 15, rim: 6, island: true },
+  post: { top: 120, copy: 1120, title: 96, sub: 58, gap: 22, frameTop: 510, frame: 900, bezel: 14, rim: 6 },
+  square: { top: 100, copy: 1120, title: 88, sub: 53, gap: 20, frameTop: 450, frame: 820, bezel: 13, rim: 5 },
+  story: { top: 330, copy: 1120, title: 100, sub: 60, gap: 24, frameTop: 780, frame: 960, bezel: 15, rim: 6 },
 };
 // There is no iPad layout: the store set is iPhone and Play only (MZ, 20 October 2026; bipe#419).
+
+/** The phone width with its bezel, in panel pixels: `frame`, or less when `bottom` must stay free under it. */
+function frameWidth(L, s, capture, height) {
+  const edge = (L.bezel + L.rim) * s;
+  if (L.bottom === undefined) return L.frame * s;
+  const screenH = height - (L.frameTop + L.bottom) * s - 2 * edge;
+  return Math.min(L.frame * s, screenH * (capture.width / capture.height) + 2 * edge);
+}
 
 const abs = (style, ...children) => h("div", { style: { position: "absolute", display: "flex", ...style } }, ...children);
 
@@ -60,11 +72,10 @@ function copyBlock({ panel, L, s, t }) {
 }
 
 /**
- * The status bar and the Dynamic Island, in points of a 440 pt wide screen (iPhone 6.9"), scaled to
- * the screen width `w`. The island is 126 x 37 pt, 11 pt from the top; the time and the icons sit on
- * its centre line.
+ * The status bar, in points of a 440 pt wide screen (iPhone 6.9"), scaled to the screen width `w`.
+ * The time and the icons sit on the line where the Dynamic Island's centre would be, as on the device.
  */
-function statusBar(w, island) {
+function statusBar(w) {
   const k = w / 440;
   const cy = 29.5;
   const bars = [4, 6.2, 8.5, 11].map((bh, i) => h("rect", { x: 318 + i * 4.6, y: cy + 5.5 - bh, width: 3.2, height: bh, rx: 1, fill: INK }));
@@ -76,9 +87,10 @@ function statusBar(w, island) {
   return [
     abs({ left: 0, top: 0, width: w, height: 62 * k },
       h("svg", { width: w, height: 62 * k, viewBox: "0 0 440 62" },
-        island ? h("rect", { x: 157, y: 11, width: 126, height: 37, rx: 18.5, fill: INK }) : null,
         ...bars,
         ...[4.5, 8, 11.5].map((r) => h("path", { d: arc(r), fill: "none", stroke: INK, "stroke-width": 2.1, "stroke-linecap": "round" })),
+        // The dot under the arcs that closes the Wi-Fi glyph.
+        h("circle", { cx: 347.5, cy: cy + 4.2, r: 1.5, fill: INK }),
         h("rect", { x: 362, y: cy - 6, width: 25, height: 12, rx: 3.6, fill: "none", stroke: INK, "stroke-opacity": 0.4, "stroke-width": 1 }),
         h("rect", { x: 364, y: cy - 4, width: 21, height: 8, rx: 2.2, fill: INK }),
         h("rect", { x: 388.2, y: cy - 2, width: 1.6, height: 4, rx: 0.8, fill: INK, "fill-opacity": 0.4 }),
@@ -88,9 +100,14 @@ function statusBar(w, island) {
   ];
 }
 
-// Side buttons of an iPhone 6.9", in points along a 440 x 956 pt screen: [side, top, length].
+// Side buttons, in points along a 440 x 956 pt screen: [side, top, length]. iPhone 6.9":
 // Left: action button, volume up, volume down. Right: side button, camera control.
-const BUTTONS = [["left", 120, 34], ["left", 190, 62], ["left", 268, 62], ["right", 215, 100], ["right", 520, 60]];
+// Android: power and the volume rocker, both on the right. `none`: a bare screen (the Play panels).
+const BUTTONS = {
+  iphone: [["left", 120, 34], ["left", 190, 62], ["left", 268, 62], ["right", 215, 100], ["right", 520, 60]],
+  android: [["right", 190, 56], ["right", 280, 120]],
+  none: [],
+};
 const RIM = ["#8E8E93", "#F2F2F7", "#C7C7CC", "#F2F2F7", "#8E8E93"];
 
 /**
@@ -100,7 +117,7 @@ const RIM = ["#8E8E93", "#F2F2F7", "#C7C7CC", "#F2F2F7", "#8E8E93"];
  * the bezel, clipped with the screen path (Satori writes CSS clip-path as an SVG clipPath; an <image>
  * inside an inline SVG does not render).
  */
-function phone({ capture, left, top, screenW, bezel, rim, s, island }) {
+function phone({ capture, left, top, screenW, bezel, rim, s, buttons: kind = "iphone" }) {
   const screenH = screenW * (capture.height / capture.width);
   const radius = capture.radius * (screenW / capture.width);
   const edge = bezel + rim;
@@ -119,7 +136,7 @@ function phone({ capture, left, top, screenW, bezel, rim, s, island }) {
   const out = 5 * s;
   const metal = (id, x1, x2) => h("linearGradient", { id, x1, y1: "0", x2, y2: "0" },
     ...RIM.map((c, i) => h("stop", { offset: [0, 0.06, 0.5, 0.94, 1][i], "stop-color": c })));
-  const buttons = BUTTONS.map(([side, y, len]) =>
+  const buttons = BUTTONS[kind].map(([side, y, len]) =>
     h("rect", { x: side === "left" ? 0 : out + w - 2 * s, y: edge + y * k, width: out + 2 * s, height: len * k, rx: 2 * s, fill: "url(#rim)" }));
   const body = abs({ left: left - out, top, width: w + 2 * out, height: hh },
     h("svg", { width: w + 2 * out, height: hh, viewBox: `0 0 ${w + 2 * out} ${hh}`, style: { position: "absolute", left: 0, top: 0 } },
@@ -128,7 +145,7 @@ function phone({ capture, left, top, screenW, bezel, rim, s, island }) {
       h("g", { transform: `translate(${out} 0)` }, h("path", { d: outer, fill: "url(#rim)" }), h("path", { d: inner, fill: BEZEL })),
     ),
     h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { position: "absolute", left: out + edge, top: edge, clipPath: `path("${squirclePath(screenW, screenH, radius)}")` } }),
-    abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...statusBar(screenW, island)),
+    abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...statusBar(screenW)),
   );
   return [shadow, body];
 }
@@ -141,8 +158,9 @@ export function screenBox(dev, capture) {
   const s = dev.width / 1320;
   const L = LAYOUT[dev.kind];
   const edge = (L.bezel + L.rim) * s;
-  const width = L.frame * s - 2 * edge;
-  return { left: (dev.width - L.frame * s) / 2 + edge, top: L.frameTop * s + edge, width, height: width * (capture.height / capture.width) };
+  const frameW = frameWidth(L, s, capture, dev.height);
+  const width = frameW - 2 * edge;
+  return { left: (dev.width - frameW) / 2 + edge, top: L.frameTop * s + edge, width, height: width * (capture.height / capture.width) };
 }
 
 function capturePanel({ panel, width, height, kind, captures, tone: t }) {
@@ -151,10 +169,10 @@ function capturePanel({ panel, width, height, kind, captures, tone: t }) {
   const capture = captures.get(shotOf(panel));
   const bezel = L.bezel * s;
   const rim = L.rim * s;
-  const frameW = L.frame * s;
+  const frameW = frameWidth(L, s, capture, height);
   const screenW = frameW - 2 * (bezel + rim);
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
-    ...phone({ capture, left: (width - frameW) / 2, top: L.frameTop * s, screenW, bezel, rim, s, island: L.island }),
+    ...phone({ capture, left: (width - frameW) / 2, top: L.frameTop * s, screenW, bezel, rim, s, buttons: L.buttons }),
     abs({ left: (width - L.copy * s) / 2, top: L.top * s, width: L.copy * s, justifyContent: "center" }, copyBlock({ panel, L, s, t })),
   );
 }
@@ -203,9 +221,35 @@ function featureGraphic({ panel, subtitle, width, height, captures, tone: t, mar
   );
 }
 
+/**
+ * App Store product page header and search results art (iOS 27 creative assets): one universal 16:9
+ * image at 5244x2950 that App Store Connect crops to 21:9 (header) and 3:2 (search). Three phones of
+ * the first panels with captures, the middle one in front, no text (the product page sets the name).
+ * Everything stays inside the area both crops keep: the middle 4425x2247.
+ */
+export const HEADER = { phones: 3, screenH: 2050, sideScale: 0.86, sideOffset: 1150, sideDrop: 150 };
+
+/** The capture slugs the header shows, in order: middle, left, right. */
+export const headerSlugs = (panels) => panels.filter((p) => p.feature !== "-").slice(0, HEADER.phones).map(shotOf);
+
+function headerArt({ panels, width, height, captures, tone: t }) {
+  const [mid, left, right] = headerSlugs(panels).map((slug) => captures.get(slug));
+  const at = (capture, scale, dx, dy) => {
+    const screenW = (HEADER.screenH * scale) / (capture.height / capture.width);
+    const s = screenW / 950;
+    return phone({ capture, left: width / 2 + dx - screenW / 2 - 24 * s, top: (height - HEADER.screenH) / 2 + dy, screenW, bezel: 16 * s, rim: 8 * s, s });
+  };
+  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
+    ...at(left, HEADER.sideScale, -HEADER.sideOffset, HEADER.sideDrop),
+    ...at(right, HEADER.sideScale, HEADER.sideOffset, HEADER.sideDrop),
+    ...at(mid, 1, 0, 0),
+  );
+}
+
 /** The Satori node for one panel. `captures` maps slug to { dataUrl, width, height, radius }. */
-export function panelNode({ panel, dev, captures, tone: t, markPath, subtitle }) {
+export function panelNode({ panel, panels, dev, captures, tone: t, markPath, subtitle }) {
   const { width, height } = dev;
+  if (dev.kind === "header") return headerArt({ panels, width, height, captures, tone: t });
   if (!LAYOUT[dev.kind] && dev.kind !== "feature") throw new Error(`panels: no layout for ${dev.key} (${dev.kind}); the store set is iPhone and Play only (bipe#419)`);
   if (dev.kind === "feature") return featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath });
   if (panel.feature === "-") return textPanel({ panel, width, height, kind: dev.kind, tone: t });

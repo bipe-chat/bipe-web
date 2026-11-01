@@ -7,37 +7,61 @@
 //   mesh     2 or 3 large radial blobs from the ramps, layered on the base step
 //   pattern  mesh plus the Bipe mark at large scale, cropped, tone on tone
 //
-// Ramps come only from bipe-shared design/tokens.json (light theme): açaí, and the expressive ramps
-// (pitanga, caju, jabuticaba, jenipapo). The expressive ramps are for marketing backgrounds only: never
-// text, borders or trust states (bipe-shared design/README.md).
+// Ramps come only from bipe-shared design/tokens.json (light theme): the app palettes (`appThemes`,
+// bipe-chat/bipe#811), açaí first, so the images use the colours the user can pick in the app. Caju left
+// the app palettes but stays for the neutral callout card (lib/callouts.mjs). The expressive ramps are
+// for marketing backgrounds and callout accents only: never text or trust states (bipe-shared design/README.md).
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ramps = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-shared/design/tokens.json"), "utf8")).ramps;
-const light = (name) => ramps[name].light;
-export const ACCENTS = ["pitanga", "caju", "jabuticaba", "jenipapo"];
-export const RAMPS = Object.fromEntries(["acai", ...ACCENTS].map((k) => [k, light(k)]));
+const tokens = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../../../bipe-shared/design/tokens.json"), "utf8"));
+const light = (name) => tokens.ramps[name].light;
+export const ACCENTS = Object.keys(tokens.appThemes.palettes).filter((k) => k !== "acai");
+export const RAMPS = Object.fromEntries(["acai", ...ACCENTS, "caju"].map((k) => [k, light(k)]));
 
 // App ramps for the store callouts (lib/callouts.mjs), so an enlarged element has the colours it has in
-// the phone: amber is the caution colour of the scam warning, gray the text, açaí the buttons and badges.
-export const UI = Object.fromEntries(["amber", "gray", "acai"].map((k) => [k, light(k)]));
+// the phone: amber is the caution colour of the scam warning, gray the text. The buttons and badges take
+// the panel's palette from RAMPS (the app theme).
+export const UI = Object.fromEntries(["amber", "gray"].map((k) => [k, light(k)]));
 
 export const TEXTURES = ["mesh", "pattern"];
 const WHITE = "#FFFFFF";
-// Blobs never use a step lighter than 900, so white text keeps at least 5.25:1 under a blob.
+// On a dark tone, blobs never use a step lighter than 900, so white text keeps at least 5.25:1 under a blob.
 const BLOB_OPACITY = 0.85;
+
+// Palettes whose colour is only in the light steps: maracujá is yellow at 700 and olive at the dark
+// steps that hold white text (MZ, 1 November 2026: "a muddy green, no yellow"). Their images take a
+// light base and dark ink; checkTone() checks the ink the same way.
+const LIGHT = new Set(["maracuja"]);
 
 /**
  * A tone: the base ramp fills the image and the accent ramp adds one blob and the highlight.
- * `ramp` and `accent` are keys of RAMPS.
+ * `ramp` and `accent` are keys of RAMPS. `ink`, `sub` and `rule` are the text colours on it; `palette`
+ * is the ramp the app theme of the image uses (lib/callouts.mjs).
  */
 export function tone(ramp, accent = ramp) {
   const r = RAMPS[ramp];
   const a = RAMPS[accent];
   if (!r || !a) throw new Error(`backdrop: unknown ramp ${r ? accent : ramp}`);
+  if (LIGHT.has(ramp)) {
+    return {
+      name: accent === ramp ? ramp : `${ramp}+${accent}`,
+      palette: ramp,
+      base: r[700],
+      blobs: [r[600], a[accent === ramp ? 800 : 700], r[600]],
+      mark: [r[600], r[800]],
+      brandMark: r[600],
+      ink: r[1400],
+      sub: r[1200],
+      rule: r[900],
+      highlight: accent === ramp ? r[1200] : a[1100],
+      connector: r[1100],
+    };
+  }
   return {
     name: accent === ramp ? ramp : `${ramp}+${accent}`,
+    palette: ramp,
     base: r[1100],
     blobs: [r[900], a[1000], r[1300]],
     mark: [r[900], r[1300]],
@@ -45,7 +69,12 @@ export function tone(ramp, accent = ramp) {
     brandMark: r[1000],
     ink: WHITE,
     sub: "rgba(255,255,255,0.88)",
+    rule: "rgba(255,255,255,0.22)",
     highlight: accent === ramp ? r[500] : a[500],
+    // The callout connector and its dots (lib/callouts.mjs): the panel's own palette (MZ, 1 November
+    // 2026: the accents match the background), at a step that reads on the white screen, with a white
+    // edge for the dark backdrop.
+    connector: r[800],
   };
 }
 
@@ -122,14 +151,20 @@ export function compose(satoriSvg, backdrop) {
   return `${satoriSvg.slice(0, end)}${backdrop}${satoriSvg.slice(end)}`;
 }
 
+// The order of the app palettes in a set: the order with the largest OKLab distance (base step 1100)
+// between neighbouring images, the last one included, with açaí first (MZ, 1 November 2026: picker order
+// read as purple, pink, orange; then maracujá third, MZ the same day). It must hold every app palette once.
+const ORDER = ["acai", "jenipapo", "maracuja", "jabuticaba", "goiaba", "pitanga"];
+if (ORDER.length !== ACCENTS.length + 1 || !["acai", ...ACCENTS].every((k) => ORDER.includes(k)))
+  throw new Error(`backdrop: ORDER must list the app palettes once each (${["acai", ...ACCENTS].join(", ")})`);
+
 /**
  * The brand tone for image number i of a set (store panels in order, link-preview cards by route):
- * even images are açaí-led with the next accent as a blob, odd images are led by that accent. So the
- * colour changes on every image, panel 1 is açaí, and the accents come in a fixed order.
+ * each image is one palette of ORDER, base, blobs and accents alike (MZ, 1 November 2026: no second
+ * palette blended into a background). Every palette leads one image in turn and panel 1 is açaí.
  */
 export function brandTone(i) {
-  const accent = ACCENTS[Math.floor(i / 2) % ACCENTS.length];
-  return i % 2 === 0 ? tone("acai", accent) : tone(accent, "acai");
+  return tone(ORDER[i % ORDER.length]);
 }
 
 /**

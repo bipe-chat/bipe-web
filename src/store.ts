@@ -14,7 +14,7 @@ export type StoreSet = {
 const manifests = import.meta.glob<StoreSet>("../.brand-images/*/*/*/manifest.json", { eager: true, import: "default" });
 
 /** App Store first, then Play, then Instagram; on each Instagram format the store posts come before the social-only ones. */
-const ORDER = ["iphone69", "play-phone", "play-feature", "ig-post", "ig-story", "ig-square"];
+const ORDER = ["iphone69", "asc-header", "play-phone", "play-feature", "ig-post", "ig-story", "ig-square"];
 function rank(s: { device: string; group: string }) {
   return ORDER.indexOf(s.device) * 2 + (s.group === "posts" ? 1 : 0);
 }
