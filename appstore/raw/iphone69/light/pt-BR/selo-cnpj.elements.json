@@ -75,7 +75,7 @@
   },
   {
    "type": 1,
-   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana. PerguntaVocê confirma?ConfirmoQuero remarcarConsulta confirmada. Até amanhã.12:15",
+   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana. PerguntaVocê confirma?ConfirmoQuero remarcarConsulta confirmada. Até amanhã.12:21",
    "frame": [
     0,
     140.8,
@@ -255,7 +255,7 @@
   },
   {
    "type": 1,
-   "label": "Consulta confirmada. Até amanhã.12:15",
+   "label": "Consulta confirmada. Até amanhã.12:21",
    "frame": [
     0,
     768.4,
@@ -265,7 +265,7 @@
   },
   {
    "type": 1,
-   "label": "Consulta confirmada. Até amanhã.12:15",
+   "label": "Consulta confirmada. Até amanhã.12:21",
    "frame": [
     0,
     768.4,
@@ -275,7 +275,7 @@
   },
   {
    "type": 1,
-   "label": "Consulta confirmada. Até amanhã.12:15",
+   "label": "Consulta confirmada. Até amanhã.12:21",
    "frame": [
     20.1,
     779.7,
@@ -295,7 +295,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     306.9,
     817.4,

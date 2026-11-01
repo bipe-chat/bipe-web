@@ -55,7 +55,7 @@
   },
   {
    "type": 1,
-   "label": "Nome não verificadoConta criada há 2 dias. Não está nos seus contatos.Oi filha, troquei de número. Essa é minha conta nova aqui12:15Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.Mãe? O que houve com o outro?12:15Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
+   "label": "Nome não verificadoConta criada há 2 dias. Não está nos seus contatos.Oi filha, troquei de número. Essa é minha conta nova aqui12:21Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.Mãe? O que houve com o outro?12:21Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:21Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
    "frame": [
     0,
     140.8,
@@ -115,7 +115,7 @@
   },
   {
    "type": 1,
-   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:15Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:21Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
    "frame": [
     0,
     287.1,
@@ -125,7 +125,7 @@
   },
   {
    "type": 1,
-   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:15",
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:21",
    "frame": [
     0,
     287.1,
@@ -135,7 +135,7 @@
   },
   {
    "type": 1,
-   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:15",
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:21",
    "frame": [
     20.1,
     298.4,
@@ -155,7 +155,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     306.9,
     363.9,
@@ -205,7 +205,7 @@
   },
   {
    "type": 1,
-   "label": "Mãe? O que houve com o outro?12:15",
+   "label": "Mãe? O que houve com o outro?12:21",
    "frame": [
     0,
     513.9,
@@ -215,7 +215,7 @@
   },
   {
    "type": 1,
-   "label": "Mãe? O que houve com o outro?12:15",
+   "label": "Mãe? O que houve com o outro?12:21",
    "frame": [
     0,
     513.9,
@@ -225,7 +225,7 @@
   },
   {
    "type": 1,
-   "label": "Mãe? O que houve com o outro?12:15",
+   "label": "Mãe? O que houve com o outro?12:21",
    "frame": [
     80.5,
     525.2,
@@ -245,7 +245,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     367.3,
     563,
@@ -255,7 +255,7 @@
   },
   {
    "type": 1,
-   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
+   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:21Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
    "frame": [
     0,
     589.4,
@@ -265,7 +265,7 @@
   },
   {
    "type": 1,
-   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15",
+   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:21",
    "frame": [
     0,
     589.4,
@@ -275,7 +275,7 @@
   },
   {
    "type": 1,
-   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15",
+   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:21",
    "frame": [
     20.1,
     600.7,
@@ -295,7 +295,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     306.9,
     693.9,

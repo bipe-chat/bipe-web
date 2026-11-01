@@ -22,7 +22,7 @@
 //   --appearance  light | dark (default light)
 //   --texture     mesh | pattern for every panel (default: BRAND.texture)
 //   --accent      goiaba | pitanga | maracuja | jenipapo | jabuticaba: alternate açaí with this one app palette
-//                 (default: brandTone, all five)
+//                 (default: brandTone, all six)
 //   --out         output root (default out/appstore for iOS and Play, out/social for Instagram; out/ is gitignored)
 //
 // Writes <out>/<device>/<locale>/NN-<slug>-WxH.png (.jpg for social posts) and manifest.json. Each PNG is RGB with no alpha
@@ -184,7 +184,10 @@ const heroPanel = (panels) => panels[0];
 
 // --- Run -----------------------------------------------------------------------------------------
 
-/** Renders one device set per locale; `opt` takes the CLI options above. Returns the manifests it wrote. */
+/**
+ * Renders one device set per locale; `opt` takes the CLI options above. Returns the manifests it wrote,
+ * or with `needs: true` only the captures the set needs, as { slug, palette, locale } (scene-captures).
+ */
 export async function renderSet(opt) {
   const rel = (p) => resolve(root, p);
   const shared = rel(opt.shared ?? "../bipe-shared");
@@ -214,23 +217,38 @@ export async function renderSet(opt) {
     const ctx = { locale, strings, cast };
     if (!panels?.length) throw new Error(`appstore.md has no screenshot table for ${locale}`);
 
+    // Each image is themed in its backdrop's palette, as the app themes the accent and the own bubble:
+    // the capture of a slug comes in that palette, `<slug>@<palette>.png` (scripts/scene-captures.mjs).
+    const jobs = dev.kind === "feature" || dev.kind === "header"
+      ? [{ panel: heroPanel(panels), slug: dev.kind === "feature" ? "feature-graphic" : "header" }]
+      : panels.map((panel) => ({ panel, slug: panel.slug }));
+    for (const [i, job] of jobs.entries()) {
+      job.palette = toneFor(i).palette;
+      job.shots = !captureDev ? [] : dev.kind === "feature" ? [shotOf(job.panel)] : dev.kind === "header" ? headerSlugs(panels) : captureSlugs(job.panel);
+    }
+    if (opt.needs) {
+      written.push(...jobs.flatMap((j) => j.shots.map((slug) => ({ slug, palette: j.palette, locale }))));
+      continue;
+    }
+
     // Check every capture before anything is written, so a failed run leaves the old set in place.
     const captures = new Map();
     if (captureDev) {
       const problems = [];
-      const need = dev.kind === "feature" ? [shotOf(heroPanel(panels))] : dev.kind === "header" ? headerSlugs(panels) : panels.flatMap(captureSlugs);
-      for (const slug of need) {
-        const file = join(rawRoot, captureDev.key, appearance, locale, `${slug}.png`);
+      for (const { shots, palette } of jobs) for (const slug of shots) {
+        const id = `${slug}@${palette}`;
+        if (captures.has(id)) continue;
+        const file = join(rawRoot, captureDev.key, appearance, locale, `${id}.png`);
         if (!existsSync(file)) { problems.push(`missing ${file}`); continue; }
-        try { captures.set(slug, loadCapture(file, captureDev)); } catch (e) { problems.push(e.message); continue; }
-        // A panel with callouts places them on the element list that sits next to the capture.
-        const elements = file.replace(/\.png$/, ".elements.json");
+        try { captures.set(id, loadCapture(file, captureDev)); } catch (e) { problems.push(e.message); continue; }
+        // A panel with callouts places them on the element list next to the captures (one per slug).
+        const elements = join(rawRoot, captureDev.key, appearance, locale, `${slug}.elements.json`);
         if (panels.some((p) => shotOf(p) === slug && SPECS[p.slug])) {
-          if (existsSync(elements)) captures.get(slug).elements = JSON.parse(readFileSync(elements, "utf8"));
+          if (existsSync(elements)) captures.get(id).elements = JSON.parse(readFileSync(elements, "utf8"));
           else problems.push(`missing ${elements}`);
         }
       }
-      if (problems.length) throw new Error(`store-images: ${dev.key} ${locale}: ${problems.length} capture problem(s). Add the captures to ${rawRoot}.\n  ${problems.join("\n  ")}`);
+      if (problems.length) throw new Error(`store-images: ${dev.key} ${locale}: ${problems.length} capture problem(s). Run scripts/scene-captures.mjs.\n  ${problems.join("\n  ")}`);
     }
 
     const dir = join(outRoot, dev.key, locale);
@@ -242,18 +260,17 @@ export async function renderSet(opt) {
     // Social posts ship on the web, so they are JPEG; store panels stay PNG for App Store Connect.
     const format = dev.platform === "social" ? "jpeg" : "png";
     const ext = format === "jpeg" ? "jpg" : "png";
-    const jobs = dev.kind === "feature" || dev.kind === "header"
-      ? [{ panel: heroPanel(panels), slug: dev.kind === "feature" ? "feature-graphic" : "header" }]
-      : panels.map((panel) => ({ panel, slug: panel.slug }));
     const exports = [];
-    for (const [i, { panel, slug }] of jobs.entries()) {
-      const capture = captures.get(shotOf(panel));
+    for (const [i, { panel, slug, shots, palette }] of jobs.entries()) {
+      // The captures of this image, by slug, in its palette.
+      const themed = new Map(shots.map((shot) => [shot, captures.get(`${shot}@${palette}`)]));
+      const capture = themed.get(shotOf(panel));
       const subtitle = listing.platforms.ios?.locales[locale]?.subtitle ?? "";
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
       const file = `${String(i + 1).padStart(2, "0")}-${slug}-${size}.${ext}`;
-      writeFileSync(join(dir, file), await panelPng({ panel, panels, dev, captures, markPath, tone: t, texture, index: i, subtitle, format, ctx }));
-      exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}.png` : null });
+      writeFileSync(join(dir, file), await panelPng({ panel, panels, dev, captures: themed, markPath, tone: t, texture, index: i, subtitle, format, ctx }));
+      exports.push({ order: i + 1, slug, feature: panel.feature, file, title: panel.title, sub: panel.sub || null, capture: capture ? `${captureDev.key}/${appearance}/${locale}/${shotOf(panel)}@${palette}.png` : null });
       if (!opt.quiet) console.log(`${dev.key} ${locale} ${file}`);
     }
     const manifest = { device: dev.key, label: dev.label, platform: dev.platform, ascDeviceType: dev.ascDeviceType ?? null, locale, appearance, width, height, exports };

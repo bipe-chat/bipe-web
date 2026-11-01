@@ -55,7 +55,7 @@
   },
   {
    "type": 1,
-   "label": "Vô AntônioBom dia, família! Domingo tem almoço aqui em casa12:15Dona CidaBom dia! Levo a sobremesa12:15MãeEu levo a farofa12:15KauãEu levo o violão12:15Vou sim! Levo o refri12:15",
+   "label": "Vô AntônioBom dia, família! Domingo tem almoço aqui em casa12:21Dona CidaBom dia! Levo a sobremesa12:21MãeEu levo a farofa12:21KauãEu levo o violão12:21Vou sim! Levo o refri12:21",
    "frame": [
     0,
     140.8,
@@ -65,7 +65,7 @@
   },
   {
    "type": 1,
-   "label": "Vô AntônioBom dia, família! Domingo tem almoço aqui em casa12:15",
+   "label": "Vô AntônioBom dia, família! Domingo tem almoço aqui em casa12:21",
    "frame": [
     0,
     378.3,
@@ -75,7 +75,7 @@
   },
   {
    "type": 1,
-   "label": "Vô AntônioBom dia, família! Domingo tem almoço aqui em casa12:15",
+   "label": "Vô AntônioBom dia, família! Domingo tem almoço aqui em casa12:21",
    "frame": [
     0,
     378.3,
@@ -115,7 +115,7 @@
   },
   {
    "type": 1,
-   "label": "Bom dia, família! Domingo tem almoço aqui em casa12:15",
+   "label": "Bom dia, família! Domingo tem almoço aqui em casa12:21",
    "frame": [
     30.2,
     419.8,
@@ -135,7 +135,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     306.9,
     485.3,
@@ -145,7 +145,7 @@
   },
   {
    "type": 1,
-   "label": "Dona CidaBom dia! Levo a sobremesa12:15",
+   "label": "Dona CidaBom dia! Levo a sobremesa12:21",
    "frame": [
     0,
     511.7,
@@ -155,7 +155,7 @@
   },
   {
    "type": 1,
-   "label": "Dona CidaBom dia! Levo a sobremesa12:15",
+   "label": "Dona CidaBom dia! Levo a sobremesa12:21",
    "frame": [
     0,
     511.7,
@@ -185,7 +185,7 @@
   },
   {
    "type": 1,
-   "label": "Bom dia! Levo a sobremesa12:15",
+   "label": "Bom dia! Levo a sobremesa12:21",
    "frame": [
     30.2,
     553.2,
@@ -205,7 +205,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     295.2,
     575.9,
@@ -215,7 +215,7 @@
   },
   {
    "type": 1,
-   "label": "MãeEu levo a farofa12:15",
+   "label": "MãeEu levo a farofa12:21",
    "frame": [
     0,
     602.3,
@@ -225,7 +225,7 @@
   },
   {
    "type": 1,
-   "label": "MãeEu levo a farofa12:15",
+   "label": "MãeEu levo a farofa12:21",
    "frame": [
     0,
     602.3,
@@ -265,7 +265,7 @@
   },
   {
    "type": 1,
-   "label": "Eu levo a farofa12:15",
+   "label": "Eu levo a farofa12:21",
    "frame": [
     30.2,
     643.8,
@@ -285,7 +285,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     183.6,
     666.5,
@@ -295,7 +295,7 @@
   },
   {
    "type": 1,
-   "label": "KauãEu levo o violão12:15",
+   "label": "KauãEu levo o violão12:21",
    "frame": [
     0,
     692.9,
@@ -305,7 +305,7 @@
   },
   {
    "type": 1,
-   "label": "KauãEu levo o violão12:15",
+   "label": "KauãEu levo o violão12:21",
    "frame": [
     0,
     692.9,
@@ -335,7 +335,7 @@
   },
   {
    "type": 1,
-   "label": "Eu levo o violão12:15",
+   "label": "Eu levo o violão12:21",
    "frame": [
     30.2,
     734.4,
@@ -355,7 +355,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     184.9,
     757,
@@ -365,7 +365,7 @@
   },
   {
    "type": 1,
-   "label": "Vou sim! Levo o refri12:15",
+   "label": "Vou sim! Levo o refri12:21",
    "frame": [
     0,
     783.5,
@@ -375,7 +375,7 @@
   },
   {
    "type": 1,
-   "label": "Vou sim! Levo o refri12:15",
+   "label": "Vou sim! Levo o refri12:21",
    "frame": [
     0,
     783.5,
@@ -385,7 +385,7 @@
   },
   {
    "type": 1,
-   "label": "Vou sim! Levo o refri12:15",
+   "label": "Vou sim! Levo o refri12:21",
    "frame": [
     168.8,
     794.8,
@@ -405,7 +405,7 @@
   },
   {
    "type": 48,
-   "label": "12:15",
+   "label": "12:21",
    "frame": [
     367.3,
     817.4,

@@ -15,6 +15,8 @@ import { tmpdir } from "node:os";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
+import { BRAND_SETS } from "./brand-images.mjs";
+import { renderSet } from "./store-images.mjs";
 
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -36,6 +38,28 @@ const SIZE = { width: 1320, height: 2868, points: 440 };
 // The panel draws its own status bar, as on the app captures; the scene's bar and home indicator go.
 // The panel clips the corners itself, so the screen mask and the phone body go too.
 const CSS = ".statusbar, .home-indicator { visibility: hidden !important; } .msg { animation: none !important; } .phone { background: none !important; filter: none !important; } .phone .screen { -webkit-mask: none !important; mask: none !important; }";
+
+// The app theme (bipe-shared design/tokens.json appThemes): each themed token names an açaí step, and
+// a palette swaps the açaí ramp for its own at the same step. The site CSS reads the ramp
+// (--bipe-acai-N), its own shortcuts (--acai: var(--bipe-acai-1100) in site.css) and the semantic
+// tokens (--bipe-accent-ink), so the phone gets all three in the palette's colours.
+const tokens = JSON.parse(readFileSync(join(root, "../bipe-shared/design/tokens.json"), "utf8"));
+const shortcuts = [...readFileSync(join(root, "src/site.css"), "utf8").matchAll(/--(acai[a-z-]*): var\(--bipe-acai-(\d+)\)/g)].map((m) => [m[1], m[2]]);
+const kebab = (name) => name.replace(/\./g, "-").replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+export function themeCss(palette) {
+  const ramp = tokens.ramps[palette]?.light;
+  if (!ramp) throw new Error(`scene-captures: unknown palette ${palette}`);
+  const vars = [
+    ...Object.entries(ramp).map(([step, hex]) => [`bipe-acai-${step}`, hex]),
+    ...shortcuts.map(([name, step]) => [name, ramp[step]]),
+    ...tokens.appThemes.themed.map((name) => {
+      const ref = tokens.semantic[name].light.match(/^acai\.(\d+)$/);
+      if (!ref) throw new Error(`scene-captures: themed token ${name} is not an açaí step`);
+      return [`bipe-${kebab(name)}`, ramp[ref[1]]];
+    }),
+  ];
+  return `.phone { ${vars.map(([k, v]) => `--${k}: ${v};`).join(" ")} }`;
+}
 
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".json": "application/json" };
 function serve() {
@@ -126,7 +150,15 @@ async function main() {
     await new Promise((r) => setTimeout(r, 2500));
     await c.send("Runtime.evaluate", { expression: `document.head.insertAdjacentHTML("beforeend", ${JSON.stringify(`<style>${CSS}</style>`)}); document.fonts.ready`, awaitPromise: true }, s);
     mkdirSync(out, { recursive: true });
-    for (const [slug, id] of Object.entries(SCENE_FOR)) {
+    // The captures every brand set needs, slug@palette (store-images.mjs with `needs`).
+    const needs = new Map();
+    for (const { listing, devices } of Object.values(BRAND_SETS)) for (const device of devices)
+      for (const n of await renderSet({ device, locale: "pt-BR", needs: true, ...(listing && { listing }) })) needs.set(`${n.slug}@${n.palette}`, n);
+    const theme = `document.getElementById("scene-theme")?.remove(); document.head.insertAdjacentHTML("beforeend", "<style id=scene-theme>" + CSS_THEME + "</style>")`;
+    for (const { slug, palette } of [...needs.values()].sort((a, b) => a.palette.localeCompare(b.palette) || a.slug.localeCompare(b.slug))) {
+      const id = SCENE_FOR[slug];
+      if (!id) throw new Error(`scene-captures: no scene for ${slug} (SCENE_FOR)`);
+      await c.send("Runtime.evaluate", { expression: theme.replace("CSS_THEME", JSON.stringify(themeCss(palette))) }, s);
       const { result } = await c.send("Runtime.evaluate", { expression: `(${MEASURE})(${JSON.stringify(id)})`, returnByValue: true }, s);
       if (!result.value) throw new Error(`scene-captures: no scene ${id} on /elenco/ (for ${slug})`);
       await new Promise((r) => setTimeout(r, 400));
@@ -138,10 +170,10 @@ async function main() {
       // Chrome rounds the clip to whole device pixels; resvg sets it to the exact store size.
       const [w, h] = [raw.readUInt32BE(16), raw.readUInt32BE(20)];
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE.width}" height="${SIZE.height}"><rect width="100%" height="100%" fill="#fff"/><image href="data:image/png;base64,${shot.data}" width="${SIZE.width}" height="${(h * SIZE.width) / w}"/></svg>`;
-      const png = new Resvg(svg, { fitTo: { mode: "width", value: SIZE.width } }).render().asPng();
-      writeFileSync(join(out, `${slug}.png`), png);
+      writeFileSync(join(out, `${slug}@${palette}.png`), new Resvg(svg, { fitTo: { mode: "width", value: SIZE.width } }).render().asPng());
+      // The layout is the same in every palette, so one element list per slug.
       writeFileSync(join(out, `${slug}.elements.json`), `${JSON.stringify({ source: `scene ${id}`, width: SIZE.points, height: Math.round(SIZE.points * (SIZE.height / SIZE.width)), elements }, null, 1)}\n`);
-      console.log(`${slug} <- ${id} (${elements.length} elements)`);
+      console.log(`${slug}@${palette} <- ${id} (${elements.length} elements)`);
     }
   } finally {
     c.close();
