@@ -1,479 +1,367 @@
 {
-  "elements" : [
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "",
-      "label" : "Bipe",
-      "type" : 2
-    },
-    {
-      "frame" : [
-        0,
-        62,
-        440,
-        54
-      ],
-      "id" : "Conversa",
-      "label" : "",
-      "type" : 21
-    },
-    {
-      "frame" : [
-        20,
-        62,
-        139,
-        44
-      ],
-      "id" : "",
-      "label" : "Conversa",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        20,
-        62,
-        139,
-        44
-      ],
-      "id" : "room-name",
-      "label" : "Joana Lima",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        26,
-        68,
-        32,
-        32
-      ],
-      "id" : "room-avatar",
-      "label" : "",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        306,
-        66,
-        54,
-        36
-      ],
-      "id" : "",
-      "label" : "Iniciar uma chamada",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        314.04000000000002,
-        74.040000000000006,
-        19.919999999999959,
-        19.920000000000002
-      ],
-      "id" : "phone.fill",
-      "label" : "Ligar",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        339.36000000000001,
-        80.126666666666665,
-        13.279999999999973,
-        7.7466666666666697
-      ],
-      "id" : "chevron.down",
-      "label" : "Ir Para Baixo",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        384,
-        66,
-        28,
-        36
-      ],
-      "id" : "bubble.left.and.text.bubble.right",
-      "label" : "Balão De Fala Esquerdo; Balão De Fala Direito Com Texto",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        -18.959999084472656,
-        643.33331298828125,
-        392.62664794921875,
-        211.66668701171875
-      ],
-      "id" : "",
-      "label" : "Joana Lima, Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo, Pode ser um golpe, Pressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio., 10:22",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        -18.960000000000001,
-        751.06166158040367,
-        19.920000000000002,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        24,
-        751.99999491373694,
-        300,
-        71.333335876464844
-      ],
-      "id" : "",
-      "label" : "Pode ser um golpe, Pressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        35.700000000000003,
-        764.52999491373703,
-        16.599999999999994,
-        14.939999999999941
-      ],
-      "id" : "exclamationmark.triangle",
-      "label" : "Aviso",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        62,
-        761.99999745686853,
-        117.33333333333331,
-        15.666666666666629
-      ],
-      "id" : "",
-      "label" : "Pode ser um golpe",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        62,
-        779.66666412353516,
-        250.66666666666663,
-        33.666666666666742
-      ],
-      "id" : "",
-      "label" : "Pressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        28,
-        679.66666158040368,
-        333.66666666666663,
-        64.333333333333258
-      ],
-      "id" : "",
-      "label" : "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        151.5,
-        635.3333307902019,
-        86.666666666666657,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "Joana Lima",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        334.33333333333331,
-        828.99999491373694,
-        31.333333333333314,
-        10.333333333333371
-      ],
-      "id" : "",
-      "label" : "10:22",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84.7066650390625,
-        597,
-        339.2933349609375,
-        36.33331298828125
-      ],
-      "id" : "",
-      "label" : "Gabi, Mãe? O que houve com o outro?, 10:21",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        84.706666666666649,
-        635.06166285196934,
-        19.920000000000016,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        131.66666666666666,
-        633.33332951863611,
-        280.33333333333326,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "Mãe? O que houve com o outro?",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        254.33333333333334,
-        588.99999554951989,
-        35.000000000000028,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "Gabi",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        386.33333333333331,
-        643.33332951863611,
-        29.666666666666686,
-        10.333333333333258
-      ],
-      "id" : "",
-      "label" : "10:21",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        -18.959999084472656,
-        415.33331298828125,
-        372.95999145507812,
-        171.66668701171875
-      ],
-      "id" : "",
-      "label" : "Joana Lima, Oi filha, troquei de número. Essa é minha conta nova aqui, Pode ser um golpe, A mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar., 10:20",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        -18.960000000000001,
-        503.0616577657064,
-        19.920000000000002,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        24,
-        501.99999109903968,
-        300,
-        53.333333333333371
-      ],
-      "id" : "",
-      "label" : "Pode ser um golpe, A mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        35.700000000000003,
-        514.52999109903976,
-        16.599999999999994,
-        14.939999999999941
-      ],
-      "id" : "exclamationmark.triangle",
-      "label" : "Aviso",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        62,
-        511.99999364217126,
-        117.33333333333331,
-        15.666666666666629
-      ],
-      "id" : "",
-      "label" : "Pode ser um golpe",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        62,
-        529.66666030883789,
-        249.66666666666663,
-        15.666666666666742
-      ],
-      "id" : "",
-      "label" : "A mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        28,
-        451.66665776570636,
-        314,
-        42.333333333333314
-      ],
-      "id" : "",
-      "label" : "Oi filha, troquei de número. Essa é minha conta nova aqui",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        141.66666666666669,
-        407.33332697550458,
-        86.666666666666657,
-        20.333333333333314
-      ],
-      "id" : "",
-      "label" : "Joana Lima",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        314.33333333333331,
-        560.99999109903968,
-        31.666666666666686,
-        10.333333333333371
-      ],
-      "id" : "",
-      "label" : "10:20",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        407,
-        116,
-        30,
-        742
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        119,
-        440,
-        30
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem horizontal, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        388,
-        806,
-        36,
-        36
-      ],
-      "id" : "room-scroll_to_bottom",
-      "label" : "Ir para o final",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        12,
-        866,
-        44,
-        44
-      ],
-      "id" : "composer_toolbar-open_compose_options",
-      "label" : "Adicionar à linha do tempo",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        24.039999999999999,
-        878.03999999999996,
-        19.920000000000002,
-        19.920000000000073
-      ],
-      "id" : "plus",
-      "label" : "Adicionar",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        384,
-        866,
-        44,
-        44
-      ],
-      "id" : "mic.fill",
-      "label" : "Gravar mensagem de voz.",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        84,
-        877,
-        185.33333333333331,
-        20.333333333333371
-      ],
-      "id" : "room-message_composer",
-      "label" : "Escreva uma mensagem",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        877,
-        272,
-        22
-      ],
-      "id" : "room-message_composer",
-      "label" : "Escreva uma mensagem",
-      "type" : 52
-    },
-    {
-      "frame" : [
-        323,
-        877,
-        30,
-        22
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        84,
-        885,
-        272,
-        11
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem horizontal, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "Toolbar",
-      "label" : "Barra de Ferramentas",
-      "type" : 24
-    }
-  ],
-  "height" : 956,
-  "width" : 440
+ "source": "scene numero-novo",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Joana Lima @joana.lima.2",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima @joana.lima.2",
+   "frame": [
+    90.6,
+    67.8,
+    178.7,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima @joana.lima.2",
+   "frame": [
+    148.5,
+    75.4,
+    105.7,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Joana Lima",
+   "frame": [
+    148.5,
+    75.4,
+    105.7,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "@joana.lima.2",
+   "frame": [
+    148.5,
+    100.6,
+    105.7,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome não verificadoConta criada há 2 dias. Não está nos seus contatos.Oi filha, troquei de número. Essa é minha conta nova aqui12:15Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.Mãe? O que houve com o outro?12:15Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
+   "frame": [
+    0,
+    140.8,
+    440,
+    713.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome não verificadoConta criada há 2 dias. Não está nos seus contatos.",
+   "frame": [
+    20.1,
+    183.1,
+    399.8,
+    104
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome não verificadoConta criada há 2 dias. Não está nos seus contatos.",
+   "frame": [
+    40.2,
+    193.1,
+    359.5,
+    94
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Conta criada há 2 dias. Não está nos seus contatos.",
+   "frame": [
+    84.3,
+    207,
+    301.6,
+    66.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome não verificadoConta criada há 2 dias. Não está nos seus contatos.",
+   "frame": [
+    84.3,
+    207,
+    301.6,
+    66.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Nome não verificado",
+   "frame": [
+    84.3,
+    207,
+    301.6,
+    22.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:15Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
+   "frame": [
+    0,
+    287.1,
+    440,
+    226.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:15",
+   "frame": [
+    0,
+    287.1,
+    440,
+    103.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui12:15",
+   "frame": [
+    20.1,
+    298.4,
+    339.3,
+    90.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui",
+   "frame": [
+    30.2,
+    308.5,
+    319.2,
+    55.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "12:15",
+   "frame": [
+    306.9,
+    363.9,
+    42.5,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
+   "frame": [
+    20.1,
+    397.8,
+    399.8,
+    116.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "A mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
+   "frame": [
+    64.1,
+    411.7,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pode ser um golpeA mensagem fala de um número ou conta nova. Ligue para o número que você já tem da pessoa para confirmar.",
+   "frame": [
+    64.1,
+    411.7,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Pode ser um golpe",
+   "frame": [
+    64.1,
+    411.7,
+    341.9,
+    22.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe? O que houve com o outro?12:15",
+   "frame": [
+    0,
+    513.9,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe? O que houve com o outro?12:15",
+   "frame": [
+    0,
+    513.9,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe? O que houve com o outro?12:15",
+   "frame": [
+    80.5,
+    525.2,
+    339.3,
+    62.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mãe? O que houve com o outro?",
+   "frame": [
+    90.6,
+    535.3,
+    319.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "12:15",
+   "frame": [
+    367.3,
+    563,
+    42.5,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
+   "frame": [
+    0,
+    589.4,
+    440,
+    254.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15",
+   "frame": [
+    0,
+    589.4,
+    440,
+    130.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo12:15",
+   "frame": [
+    20.1,
+    600.7,
+    339.3,
+    118.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Caiu na água. Preciso pagar um boleto hoje ainda, me faz um Pix que amanhã te devolvo",
+   "frame": [
+    30.2,
+    610.8,
+    319.2,
+    83.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "12:15",
+   "frame": [
+    306.9,
+    693.9,
+    42.5,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
+   "frame": [
+    20.1,
+    727.8,
+    399.8,
+    116.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Pressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
+   "frame": [
+    64.1,
+    741.7,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pode ser um golpePressa e pedido de dinheiro aparecem muito em golpes. Antes de fazer qualquer coisa, confirme com a pessoa por outro meio.",
+   "frame": [
+    64.1,
+    741.7,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Pode ser um golpe",
+   "frame": [
+    64.1,
+    741.7,
+    341.9,
+    22.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem…",
+   "frame": [
+    0,
+    853.9,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mensagem…",
+   "frame": [
+    85.6,
+    864,
+    268.9,
+    55.4
+   ]
+  }
+ ]
 }

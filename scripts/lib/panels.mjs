@@ -100,20 +100,19 @@ function statusBar(w) {
   ];
 }
 
-// The Android status bar: 24 dp high on a 360 dp screen, the time at the left, signal, Wi-Fi and
-// battery at the right (Material 3 / Pixel layout).
-const ANDROID_BAR = 24 / 360;
+// The Android status bar (Material 3 / Pixel layout): the time at the left, signal, Wi-Fi and battery at
+// the right, 24 dp of a 360 dp screen, drawn in the top band the captures leave free.
 function androidStatusBar(w) {
   const k = w / 360;
   return [
-    abs({ left: 0, top: 0, width: w, height: 24 * k },
+    abs({ left: 0, top: 8 * k, width: w, height: 24 * k },
       h("svg", { width: w, height: 24 * k, viewBox: "0 0 360 24" },
         h("path", { d: "M300 17h10V7Z", fill: INK }),
         h("path", { d: "M314 9.5a9 9 0 0 1 12 0L320 17Z", fill: INK }),
         h("rect", { x: 331, y: 7, width: 7, height: 11, rx: 1.4, fill: INK }),
         h("rect", { x: 333, y: 5.6, width: 3, height: 1.6, rx: 0.5, fill: INK }),
       )),
-    abs({ left: 16 * k, top: 4 * k, height: 16 * k, alignItems: "center", fontSize: 13 * k, fontWeight: 600, color: INK }, "9:41"),
+    abs({ left: 16 * k, top: 12 * k, height: 16 * k, alignItems: "center", fontSize: 13 * k, fontWeight: 600, color: INK }, "9:41"),
   ];
 }
 
@@ -135,10 +134,8 @@ const RIM = ["#8E8E93", "#F2F2F7", "#C7C7CC", "#F2F2F7", "#8E8E93"];
  * inside an inline SVG does not render).
  */
 function phone({ capture, left, top, screenW, bezel, rim, s, buttons: kind = "iphone", bar = "ios" }) {
-  // iOS captures leave room for the status bar, which is drawn over them. Android captures start at the
-  // app bar, so the Android status bar gets its own band above the capture (24 of 360 dp).
-  const band = bar === "android" ? screenW * ANDROID_BAR : 0;
-  const screenH = band + screenW * (capture.height / capture.width);
+  // The captures leave room at the top for the status bar, which is drawn over them: iOS or Android.
+  const screenH = screenW * (capture.height / capture.width);
   const radius = capture.radius * (screenW / capture.width);
   const edge = bezel + rim;
   const w = screenW + 2 * edge;
@@ -165,11 +162,7 @@ function phone({ capture, left, top, screenW, bezel, rim, s, buttons: kind = "ip
       // A bare screen (no rim, no bezel) draws no frame paths, so no grey shows at its corners.
       edge ? h("g", { transform: `translate(${out} 0)` }, h("path", { d: outer, fill: "url(#rim)" }), h("path", { d: inner, fill: BEZEL })) : null,
     ),
-    // Satori clips an img with clip-path, not a div. With a band, the band carries the rounded top
-    // corners and the capture under it runs off the panel edge, so it needs no clip.
-    band ? h("svg", { width: screenW, height: band + radius, viewBox: `0 0 ${screenW} ${band + radius}`, style: { position: "absolute", left: out + edge, top: edge } },
-      h("path", { d: squirclePath(screenW, 2 * (band + radius), radius), fill: WHITE })) : null,
-    h("img", { src: capture.dataUrl, width: screenW, height: screenH - band, style: { position: "absolute", left: out + edge, top: edge + band, ...(band ? {} : { clipPath: `path("${squirclePath(screenW, screenH, radius)}")` }) } }),
+    h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { position: "absolute", left: out + edge, top: edge, clipPath: `path("${squirclePath(screenW, screenH, radius)}")` } }),
     abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...(bar === "android" ? androidStatusBar(screenW) : statusBar(screenW))),
   );
   return [shadow, body];
@@ -185,8 +178,7 @@ export function screenBox(dev, capture) {
   const edge = (L.bezel + L.rim) * s;
   const frameW = frameWidth(L, s, capture, dev.height);
   const width = frameW - 2 * edge;
-  const band = L.bar === "android" ? width * ANDROID_BAR : 0;
-  return { left: (dev.width - frameW) / 2 + edge, top: L.frameTop * s + edge + band, width, height: width * (capture.height / capture.width) };
+  return { left: (dev.width - frameW) / 2 + edge, top: L.frameTop * s + edge, width, height: width * (capture.height / capture.width) };
 }
 
 function capturePanel({ panel, width, height, kind, captures, tone: t }) {

@@ -1,413 +1,327 @@
 {
-  "elements" : [
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "",
-      "label" : "Bipe",
-      "type" : 2
-    },
-    {
-      "frame" : [
-        0,
-        62,
-        440,
-        54
-      ],
-      "id" : "Conversa",
-      "label" : "",
-      "type" : 21
-    },
-    {
-      "frame" : [
-        20,
-        62,
-        160,
-        44
-      ],
-      "id" : "",
-      "label" : "Conversa",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        25.5,
-        67.5,
-        33,
-        33
-      ],
-      "id" : "room-avatar",
-      "label" : "",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        66,
-        75,
-        84,
-        18
-      ],
-      "id" : "room-name",
-      "label" : "Clínica Vida",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        154,
-        77,
-        14,
-        14
-      ],
-      "id" : "",
-      "label" : "Empresa verificada",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        154,
-        77,
-        14,
-        14
-      ],
-      "id" : "building.2.fill",
-      "label" : "Empresa",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        306,
-        66,
-        54,
-        36
-      ],
-      "id" : "",
-      "label" : "Iniciar uma chamada",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        314.04000000000002,
-        74.040000000000006,
-        19.919999999999959,
-        19.920000000000002
-      ],
-      "id" : "phone.fill",
-      "label" : "Ligar",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        339.36000000000001,
-        80.126666666666665,
-        13.279999999999973,
-        7.7466666666666697
-      ],
-      "id" : "chevron.down",
-      "label" : "Ir Para Baixo",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        384,
-        66,
-        28,
-        36
-      ],
-      "id" : "bubble.left.and.text.bubble.right",
-      "label" : "Balão De Fala Esquerdo; Balão De Fala Direito Com Texto",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        -18.959999084472656,
-        818.66668701171875,
-        356.62664794921875,
-        36.33331298828125
-      ],
-      "id" : "",
-      "label" : "Clínica Vida, Consulta confirmada. Até amanhã., 10:22",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        -18.960000000000001,
-        856.72833460489903,
-        19.920000000000002,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        28,
-        855.00000127156579,
-        297.66666666666663,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "Consulta confirmada. Até amanhã.",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        132.33333333333334,
-        810.66666730244958,
-        89,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "Clínica Vida",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        298.33333333333331,
-        865.00000127156579,
-        31.333333333333314,
-        10.333333333333258
-      ],
-      "id" : "",
-      "label" : "10:22",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        323.37332153320312,
-        772.33331298828125,
-        100.62667846679688,
-        36.33331298828125
-      ],
-      "id" : "",
-      "label" : "Gabi, 1, 10:21",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        323.37333333333333,
-        810.39500254313145,
-        19.919999999999959,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        370.33333333333331,
-        808.66666920979821,
-        41.666666666666686,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "1",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        373.66666666666669,
-        764.333335240682,
-        35,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "Gabi",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        386.33333333333331,
-        818.66666920979821,
-        29.666666666666686,
-        10.333333333333258
-      ],
-      "id" : "",
-      "label" : "10:21",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        -18.959999084472656,
-        682,
-        388.95999145507812,
-        80.33331298828125
-      ],
-      "id" : "",
-      "label" : "Clínica Vida, Sua consulta é amanhã, às 14h, com a Dra. Ana. Responda 1 para confirmar ou 2 para remarcar., 10:20",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        -18.960000000000001,
-        742.06166666666672,
-        19.920000000000002,
-        16.876666666666551
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        28,
-        718.33333333333337,
-        330,
-        64.333333333333258
-      ],
-      "id" : "",
-      "label" : "Sua consulta é amanhã, às 14h, com a Dra. Ana. Responda 1 para confirmar ou 2 para remarcar.",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        148.5,
-        674.00000127156579,
-        89,
-        20.333333333333258
-      ],
-      "id" : "",
-      "label" : "Clínica Vida",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        330.33333333333331,
-        772.33333333333337,
-        31.666666666666686,
-        10.333333333333258
-      ],
-      "id" : "",
-      "label" : "10:20",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        407,
-        116,
-        30,
-        742
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        119,
-        440,
-        30
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem horizontal, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        388,
-        806,
-        36,
-        36
-      ],
-      "id" : "room-scroll_to_bottom",
-      "label" : "Ir para o final",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        12,
-        866,
-        44,
-        44
-      ],
-      "id" : "composer_toolbar-open_compose_options",
-      "label" : "Adicionar à linha do tempo",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        24.039999999999999,
-        878.03999999999996,
-        19.920000000000002,
-        19.920000000000073
-      ],
-      "id" : "plus",
-      "label" : "Adicionar",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        384,
-        866,
-        44,
-        44
-      ],
-      "id" : "mic.fill",
-      "label" : "Gravar mensagem de voz.",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        84,
-        877,
-        185.33333333333331,
-        20.333333333333371
-      ],
-      "id" : "room-message_composer",
-      "label" : "Escreva uma mensagem",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        877,
-        272,
-        22
-      ],
-      "id" : "room-message_composer",
-      "label" : "Escreva uma mensagem",
-      "type" : 52
-    },
-    {
-      "frame" : [
-        323,
-        877,
-        30,
-        22
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        84,
-        885,
-        272,
-        11
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem horizontal, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "Toolbar",
-      "label" : "Barra de Ferramentas",
-      "type" : 24
-    }
-  ],
-  "height" : 956,
-  "width" : 440
+ "source": "scene empresa-pergunta",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Clínica Vida Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    90.6,
+    67.8,
+    329.3,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Clínica Vida",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Empresa verificada",
+   "frame": [
+    255.8,
+    77.9,
+    20.1,
+    20.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    148.5,
+    100.6,
+    256.3,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana. PerguntaVocê confirma?ConfirmoQuero remarcarConsulta confirmada. Até amanhã.12:15",
+   "frame": [
+    0,
+    140.8,
+    440,
+    713.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana.",
+   "frame": [
+    20.1,
+    448.7,
+    399.8,
+    130.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana.",
+   "frame": [
+    40.2,
+    458.7,
+    359.5,
+    120.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mensagem automática",
+   "frame": [
+    41.5,
+    460,
+    357,
+    42.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automática",
+   "frame": [
+    41.5,
+    460,
+    357,
+    42.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Instituição verificada",
+   "frame": [
+    54.1,
+    473.8,
+    15.1,
+    15.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Sua consulta é amanhã, às 14h, com a Dra. Ana.",
+   "frame": [
+    41.5,
+    502.8,
+    357,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "PerguntaVocê confirma?ConfirmoQuero remarcar",
+   "frame": [
+    20.1,
+    589.6,
+    399.8,
+    178.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "PerguntaVocê confirma?ConfirmoQuero remarcar",
+   "frame": [
+    40.2,
+    599.7,
+    359.5,
+    168.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Pergunta",
+   "frame": [
+    56.6,
+    613.5,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pergunta",
+   "frame": [
+    56.6,
+    613.5,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Você confirma?",
+   "frame": [
+    56.6,
+    651.3,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Confirmo",
+   "frame": [
+    56.6,
+    689.1,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Confirmo",
+   "frame": [
+    56.6,
+    689.1,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Confirmo",
+   "frame": [
+    56.6,
+    689.1,
+    74.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Quero remarcar",
+   "frame": [
+    56.6,
+    726.8,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Quero remarcar",
+   "frame": [
+    56.6,
+    726.8,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Quero remarcar",
+   "frame": [
+    56.6,
+    726.8,
+    120.2,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Consulta confirmada. Até amanhã.12:15",
+   "frame": [
+    0,
+    768.4,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Consulta confirmada. Até amanhã.12:15",
+   "frame": [
+    0,
+    768.4,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Consulta confirmada. Até amanhã.12:15",
+   "frame": [
+    20.1,
+    779.7,
+    339.3,
+    62.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Consulta confirmada. Até amanhã.",
+   "frame": [
+    30.2,
+    789.7,
+    319.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "12:15",
+   "frame": [
+    306.9,
+    817.4,
+    42.5,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem…",
+   "frame": [
+    0,
+    853.9,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mensagem…",
+   "frame": [
+    85.6,
+    864,
+    268.9,
+    55.4
+   ]
+  }
+ ]
 }

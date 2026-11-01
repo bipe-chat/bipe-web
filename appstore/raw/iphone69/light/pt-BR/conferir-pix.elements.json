@@ -1,270 +1,287 @@
 {
-  "elements" : [
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "",
-      "label" : "Bipe",
-      "type" : 2
-    },
-    {
-      "frame" : [
-        0,
-        62,
-        440,
-        54
-      ],
-      "id" : "Conferir Pix",
-      "label" : "",
-      "type" : 21
-    },
-    {
-      "frame" : [
-        24,
-        66,
-        76.333333333333329,
-        36
-      ],
-      "id" : "",
-      "label" : "Fechar",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        173.33333333333331,
-        73.666666666666657,
-        93,
-        20.666666666666671
-      ],
-      "id" : "",
-      "label" : "Conferir Pix",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        20,
-        116,
-        400,
-        41
-      ],
-      "id" : "",
-      "label" : "Código Pix",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        176,
-        99.666666666666657,
-        15.666666666666657
-      ],
-      "id" : "",
-      "label" : "Nome no código",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        195.66666666666666,
-        143,
-        20.333333333333343
-      ],
-      "id" : "",
-      "label" : "RAFAEL OLIVEIRA",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        220,
-        333,
-        33.666666666666657
-      ],
-      "id" : "",
-      "label" : "Este nome foi escrito por quem fez o código. Confira o nome que aparece no app do banco antes de pagar.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        291.66666666666663,
-        31,
-        15.666666666666629
-      ],
-      "id" : "",
-      "label" : "Valor",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        311.33333333333326,
-        84,
-        20.333333333333371
-      ],
-      "id" : "",
-      "label" : "R$ 850,00",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        369.66666666666663,
-        38.666666666666657,
-        15.666666666666686
-      ],
-      "id" : "",
-      "label" : "E-mail",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        389.33333333333331,
-        200,
-        20.333333333333314
-      ],
-      "id" : "",
-      "label" : "rafa.bikes@example.com",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        447.66666666666669,
-        42.666666666666657,
-        15.666666666666686
-      ],
-      "id" : "",
-      "label" : "Cidade",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        40,
-        467.33333333333337,
-        145,
-        20.333333333333314
-      ],
-      "id" : "",
-      "label" : "BELO HORIZONTE",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        20,
-        541.66666666666674,
-        400,
-        68.333333333333371
-      ],
-      "id" : "",
-      "label" : "Antes de pagar, confira o nome de quem recebe no app do banco.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        38.039999999999999,
-        555.70666666666671,
-        19.920000000000002,
-        19.920000000000073
-      ],
-      "id" : "checkmark.circle",
-      "label" : "Selecionado",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        38.040000915527344,
-        554.66668701171875,
-        346.95999145507812,
-        42.33331298828125
-      ],
-      "id" : "",
-      "label" : "Antes de pagar, confira o nome de quem recebe no app do banco.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        20,
-        610,
-        400,
-        33.666666666666629
-      ],
-      "id" : "",
-      "label" : "A conferência acontece só no seu celular.",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        20,
-        661.33333333333337,
-        400,
-        48
-      ],
-      "id" : "",
-      "label" : "Enviar para uma conversa",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        38.039999999999999,
-        676.75666666666666,
-        19.920000000000002,
-        17.153333333333421
-      ],
-      "id" : "arrowshape.turn.up.right",
-      "label" : "Avançar",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        38.040000915527344,
-        674.33331298828125,
-        228.95999145507812,
-        20.33331298828125
-      ],
-      "id" : "",
-      "label" : "Enviar para uma conversa",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        407,
-        116,
-        30,
-        778
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        407,
-        116,
-        30,
-        778
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "Toolbar",
-      "label" : "Barra de Ferramentas",
-      "type" : 24
-    }
-  ],
-  "height" : 956,
-  "width" : 440
+ "source": "scene conferir-pix",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Conferir Pix",
+   "frame": [
+    0,
+    67.8,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Conferir Pix",
+   "frame": [
+    90.6,
+    81.7,
+    258.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Código PixEste código foi alterado ou está incompleto. Não pague com ele.Nome no códigoRAFAEL OLIVEIRAValorR$ 850,00Chaverafa.blkes@example.comCidadeBELO HORIZONTEEste nome foi escrito por quem fez o código. Confira o nome que aparece no app do banco antes de pagar.A conferência acontece só no seu celular.Fechar",
+   "frame": [
+    0,
+    133.3,
+    440,
+    786.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Código Pix",
+   "frame": [
+    20.1,
+    148.4,
+    399.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    20.1,
+    191.2,
+    399.8,
+    71.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    20.1,
+    191.2,
+    399.8,
+    71.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    64.1,
+    205,
+    341.9,
+    44.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    64.1,
+    205,
+    341.9,
+    44.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome no códigoRAFAEL OLIVEIRAValorR$ 850,00Chaverafa.blkes@example.comCidadeBELO HORIZONTE",
+   "frame": [
+    20.1,
+    278.1,
+    399.8,
+    358.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome no códigoRAFAEL OLIVEIRA",
+   "frame": [
+    20.1,
+    278.1,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome no códigoRAFAEL OLIVEIRA",
+   "frame": [
+    37.7,
+    293.2,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Nome no código",
+   "frame": [
+    37.7,
+    293.2,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "RAFAEL OLIVEIRA",
+   "frame": [
+    37.7,
+    318.4,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ValorR$ 850,00",
+   "frame": [
+    20.1,
+    370,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ValorR$ 850,00",
+   "frame": [
+    37.7,
+    385.1,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valor",
+   "frame": [
+    37.7,
+    385.1,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "R$ 850,00",
+   "frame": [
+    37.7,
+    410.2,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chaverafa.blkes@example.com",
+   "frame": [
+    20.1,
+    461.8,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chaverafa.blkes@example.com",
+   "frame": [
+    37.7,
+    476.9,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Chave",
+   "frame": [
+    37.7,
+    476.9,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "rafa.blkes@example.com",
+   "frame": [
+    37.7,
+    502.1,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "CidadeBELO HORIZONTE",
+   "frame": [
+    20.1,
+    553.7,
+    399.8,
+    83
+   ]
+  },
+  {
+   "type": 1,
+   "label": "CidadeBELO HORIZONTE",
+   "frame": [
+    37.7,
+    568.8,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Cidade",
+   "frame": [
+    37.7,
+    568.8,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "BELO HORIZONTE",
+   "frame": [
+    37.7,
+    593.9,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Este nome foi escrito por quem fez o código. Confira o nome que aparece no app do banco antes de pagar.",
+   "frame": [
+    20.1,
+    651.8,
+    399.8,
+    45.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "A conferência acontece só no seu celular.",
+   "frame": [
+    20.1,
+    712.2,
+    399.8,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechar",
+   "frame": [
+    20.1,
+    846.4,
+    399.8,
+    57.9
+   ]
+  }
+ ]
 }

@@ -1,13 +1,12 @@
-// Captures the site's phone scenes (src/sim/scenes.ts, shown on /elenco/) as store captures, so the
-// store panels have a second iPhone set made from the site's own simulations next to the app captures
-// (MZ, 1 November 2026). Each scene screen is saved as 1320x2868 PNG with a <slug>.elements.json in
+// Captures the site's phone scenes (src/sim/scenes.ts, shown on /elenco/) as the store captures: the
+// store images are components all the way down, with no app or simulator captures (MZ, 1 November 2026). Each scene screen is saved as 1320x2868 PNG with a <slug>.elements.json in
 // the shape the app's UI test writes (labels and frames in points of a 440 pt screen), so the callouts
 // in lib/callouts.mjs anchor on it the same way.
 //
 //   pnpm build && node scripts/scene-captures.mjs
 //
 // It serves dist/ itself and drives the installed Google Chrome over the DevTools protocol with Node's
-// built-in WebSocket: no browser package. The output is committed in appstore/scenes/; the site build
+// built-in WebSocket: no browser package. The output is committed in appstore/raw/iphone69/; the site build
 // only reads it, so CI needs no browser. Run it again when a scene or the mapping below changes.
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -19,7 +18,7 @@ import { Resvg } from "@resvg/resvg-js";
 
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const dist = join(root, "dist");
-const out = join(root, "appstore/scenes/iphone69/light/pt-BR");
+const out = join(root, "appstore/raw/iphone69/light/pt-BR");
 const CHROME = process.env.CHROME ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 /** Store slug (bipe-shared product/appstore.md) -> the scene that shows the same feature. */

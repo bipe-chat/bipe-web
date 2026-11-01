@@ -884,7 +884,7 @@ function ImageRow({ images, width, height, fit, view }: { images: { href: string
 
 export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: string; title: string; image: string }[] }) {
   const b = chrome[lang].brand;
-  const stores = storeSets.filter((s) => s.group === "loja" || s.group === "cenas");
+  const stores = storeSets.filter((s) => s.group === "loja");
   // The Instagram store posts and the social-only posts of one format share a row.
   const social = [...new Set(storeSets.filter((s) => s.group !== "loja").map((s) => s.device))]
     .map((device) => storeSets.filter((s) => s.group !== "loja" && s.device === device));
@@ -926,7 +926,7 @@ export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: strin
       <h2 id="stores" style={{ marginTop: 56 }}>{b.sections.stores}</h2>
       {stores.map((s) => (
         <div key={s.href}>
-          <h3>{s.group === "cenas" ? b.sceneSet : b.sets[s.device]}</h3>
+          <h3>{b.sets[s.device]}</h3>
           <ImageRow images={files(s)} width={s.width} height={s.height} fit={s.height > s.width} view={b.view} />
         </div>
       ))}
