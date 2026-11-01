@@ -1,9 +1,9 @@
 // The simulated Bipe iOS app. Sizes inside the phone are iOS points (1px = 1pt) and the
 // whole phone is scaled with CSS zoom, so every value can be copied 1:1 from the SwiftUI source
 // (bipe-ios: TimelineItemBubbledStylerView, RoomHeaderView, MessageComposer, HomeScreenRoomCell).
-import type { CSSProperties, ReactNode } from "react";
+import { createContext, useContext, useId, type CSSProperties, type ReactNode } from "react";
 import { Avatar, label, who } from "../cast";
-import { t, type Lang } from "../shared";
+import { chatBackground, markPath, t, type Lang } from "../shared";
 import { useClock } from "./clock";
 import { Icon, type IconName } from "./ui";
 
@@ -45,15 +45,54 @@ const PHONE_SHAPE = {
 type Layout = "chat" | "list" | "form";
 
 /**
+ * The app palette of the phones inside (ADR 0213). The phone sets data-palette, so the themed --bipe-* variables
+ * (accent, own bubble, chat background) take that palette, as in the app. The site around the phone stays açaí.
+ */
+export const PhonePalette = createContext("acai");
+
+/**
+ * The chat background of the app (ADR 0213, BipeChatBackground marca): blobs and Bipe marks on
+ * --bipe-chat-background, behind the whole chat screen. Places come from bipe-shared appThemes.chatBackground.
+ */
+function ChatBackdrop() {
+  const id = useId().replace(/:/g, "");
+  const long = Math.max(SCREEN_W, SCREEN_H), short = Math.min(SCREEN_W, SCREEN_H);
+  const tone = (t: string) => `var(--bipe-${t.replace(/\./g, "-").replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)})`;
+  return (
+    <svg className="chat-bg" viewBox={`0 0 ${SCREEN_W} ${SCREEN_H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        {chatBackground.blobs.map((b, i) => (
+          <radialGradient key={i} id={`${id}b${i}`}>
+            <stop offset="0" style={{ stopColor: tone(b.tone), stopOpacity: chatBackground.blobOpacity }} />
+            <stop offset="1" style={{ stopColor: tone(b.tone), stopOpacity: 0 }} />
+          </radialGradient>
+        ))}
+      </defs>
+      <rect width={SCREEN_W} height={SCREEN_H} style={{ fill: "var(--bipe-chat-background)" }} />
+      {chatBackground.blobs.map((b, i) => (
+        <circle key={i} cx={b.x * SCREEN_W} cy={b.y * SCREEN_H} r={b.radius * long} fill={`url(#${id}b${i})`} />
+      ))}
+      {chatBackground.marks.map((m, i) => {
+        // The mark path fills 8 to 56 of its 64-unit box.
+        const k = (m.side * short) / 48;
+        return <path key={i} d={markPath} transform={`translate(${m.x * SCREEN_W - 8 * k} ${m.y * SCREEN_H - 8 * k}) scale(${k})`} style={{ fill: tone(m.tone), fillOpacity: m.opacity }} />;
+      })}
+    </svg>
+  );
+}
+
+/**
  * The one phone frame. Every simulated screen renders through it.
  * `layout`: "chat" is a room (back button, header pill, timeline from the bottom, composer).
  * "list" is a tab root (large title, rows from the top). "form" is a pushed screen (back button, inline title).
  * `head` is the header pill content, the large title or the inline title. `footer` replaces the composer.
  */
 export function Phone({ lang, head, children, layout = "chat", footer }: { lang: Lang; head: ReactNode; children: ReactNode; layout?: Layout; footer?: ReactNode }) {
+  const palette = useContext(PhonePalette);
   return (
-    <div className="phone" style={PHONE_SHAPE} aria-hidden="true">
+    <div className="phone" style={PHONE_SHAPE} data-palette={palette === "acai" ? undefined : palette} aria-hidden="true">
       <div className="screen">
+        {layout === "chat" && <ChatBackdrop />}
         <StatusBar lang={lang} />
         <NavBar layout={layout}>{head}</NavBar>
         <div className={`screen-body ${layout}`}>{children}</div>
