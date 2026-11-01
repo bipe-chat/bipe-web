@@ -39,6 +39,9 @@ const stickers = join(dirname(fileURLToPath(import.meta.url)), "../../src/cast/s
  *            (1320 wide). place() moves and scales them with the phone screen, so other layouts (Play)
  *            put each card at the same place on the screen.
  *   from     the point of the card the connector leaves from, as fractions of the card
+ *   scenes   fields that replace these when the capture is a site scene (scripts/scene-captures.mjs,
+ *            `source` in the elements file): the scenes word and cast some screens differently.
+ *   buttons  (person) the button labels to show, found on the screen; default: the buttons under the anchor.
  *   image    (sticker) a file in src/cast/stickers/ (made with Codex image_gen, white die-cut edge included)
  *            in place of the cut-out of the capture, until the captures show these stickers.
  *   Text     { key } a bipe-shared string, { screen } the label of the element whose label contains it,
@@ -52,6 +55,7 @@ export const SPECS = {
     anchor: { text: "Pode ser um golpe, ", type: 48, pick: "outer", at: [1, 0.5] },
     card: { top: 1080, width: 1250, height: 340, tilt: -3 },
     from: [0.86, 1],
+    scenes: { anchor: { text: "Pode ser um golpe", type: 48, at: [1, 0.5] }, card: { top: 1700, width: 1250, height: 340, tilt: -3 }, from: [0.86, 0] },
   }],
   pedidos: [{
     kind: "person",
@@ -59,6 +63,7 @@ export const SPECS = {
     anchor: { text: "Camila Duarte", type: 48, pick: "outer", at: [1, 0.5] },
     card: { top: 2020, width: 1150, height: 470, tilt: -3 },
     from: [0.92, 0],
+    scenes: { cast: "golpista", anchor: { text: "Joana Lima", type: 48, at: [1, 0.5] }, buttons: ["Ignorar", "Aceitar"] },
   }],
   "conferir-pix": [{
     kind: "field",
@@ -81,12 +86,14 @@ export const SPECS = {
     anchor: { text: "@gabi.moreira", nth: -1, at: [1, 0.5] },
     card: { top: 1400, width: 1040, height: 220, tilt: -3 },
     from: [0.88, 1],
+    scenes: { cast: "rafa", anchor: { text: "Rafa", type: 48, at: [0.5, 1] }, from: [0.5, 0] },
   }],
   "selo-cnpj": [{
     kind: "seal",
     cast: "clinica",
     pill: { key: "bipe_badge_company_cnpj" },
     anchor: { text: "Clínica Vida", type: 9, at: [0.5, 1] },
+    scenes: { anchor: { text: "Clínica Vida", type: 48, at: [0.5, 1] } },
     card: { top: 1150, width: 1150, height: 320, tilt: -3 },
     from: [0.3, 0],
   }],
@@ -95,6 +102,7 @@ export const SPECS = {
     cast: "familia",
     sub: { screen: "Vô Antônio" },
     anchor: { text: "Família Lima", type: 9, pick: "outer", at: [1, 0.5] },
+    scenes: { sub: { screen: "Bom dia, família!" }, anchor: { text: "Família Lima", type: 48, at: [1, 0.5] } },
     card: { top: 1450, width: 1110, height: 300, tilt: -3 },
     from: [0.9, 0],
   }],
@@ -102,11 +110,13 @@ export const SPECS = {
     kind: "sticker",
     image: "caio-bora",
     anchor: { text: "Sticker, Sticker", nth: 0 },
+    scenes: { anchor: { text: "Fechou", type: 48 } },
     card: { top: 1000, x: -230, width: 780, tilt: -6 },
   }, {
     kind: "sticker",
     image: "vira-lata",
     anchor: { text: "Sticker, Sticker", nth: -1 },
+    scenes: { anchor: { text: "Valeu", type: 48 } },
     card: { top: 1800, x: 200, width: 640, tilt: 6 },
   }],
 };
@@ -176,9 +186,11 @@ const CONTENT = {
       text({ fontSize: 50 * s, fontWeight: 600, color: UI.amber[1100] }, textOf(spec.line, ctx)))),
   // A message request: photo, name and @, and the request's buttons as the screen labels them: the buttons
   // under the name, within 60 points (the last one is the primary action).
-  person: ({ entry, ctx, s, anchor }) => {
+  person: ({ spec, entry, ctx, s, anchor }) => {
     const [, top, , height] = anchor.frame;
-    const buttons = ctx.elements.elements.filter((e) => e.type === BUTTON && e.label && e.frame[1] >= top + height && e.frame[1] <= top + height + 60).sort((a, b) => a.frame[0] - b.frame[0]);
+    const buttons = spec.buttons
+      ? spec.buttons.map((text) => findElement(ctx.elements, { text, type: BUTTON }))
+      : ctx.elements.elements.filter((e) => e.type === BUTTON && e.label && e.frame[1] >= top + height && e.frame[1] <= top + height + 60).sort((a, b) => a.frame[0] - b.frame[0]);
     if (buttons.length < 2) fail(`the ${entry.id} row has ${buttons.length} button(s)`);
     return col({ gap: 40 * s, flex: 1 },
       row({ gap: 40 * s },
@@ -311,7 +323,9 @@ export async function calloutSvg({ panel, dev, captures, ctx, tone }) {
   const s = screen.width / ref.width;
   const place = (card, w) => ({ x: screen.left + (screen.width - w) / 2 + (card.x ?? 0) * s, y: screen.top + (card.top - ref.top) * s });
   const out = [];
-  for (const [index, spec] of specs.entries()) {
+  const fromScene = elements.source?.startsWith("scene ");
+  for (const [index, base] of specs.entries()) {
+    const spec = fromScene && base.scenes ? { ...base, ...base.scenes } : base;
     const at = (e) => `callouts: ${panel.slug} ${spec.kind}: ${e.message}`;
     let anchor;
     try { anchor = findElement(elements, spec.anchor); } catch (e) { throw new Error(at(e)); }

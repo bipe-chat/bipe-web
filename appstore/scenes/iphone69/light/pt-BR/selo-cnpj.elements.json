@@ -1,0 +1,327 @@
+{
+ "source": "scene empresa-pergunta",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Clínica Vida Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    90.6,
+    67.8,
+    329.3,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Clínica Vida",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Empresa verificada",
+   "frame": [
+    255.8,
+    77.9,
+    20.1,
+    20.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Empresa verificada · CNPJ 00.000.000/0001-00",
+   "frame": [
+    148.5,
+    100.6,
+    256.3,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana. PerguntaVocê confirma?ConfirmoQuero remarcarConsulta confirmada. Até amanhã.11:47",
+   "frame": [
+    0,
+    140.8,
+    440,
+    713.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana.",
+   "frame": [
+    20.1,
+    448.7,
+    399.8,
+    130.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automáticaSua consulta é amanhã, às 14h, com a Dra. Ana.",
+   "frame": [
+    40.2,
+    458.7,
+    359.5,
+    120.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mensagem automática",
+   "frame": [
+    41.5,
+    460,
+    357,
+    42.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem automática",
+   "frame": [
+    41.5,
+    460,
+    357,
+    42.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Instituição verificada",
+   "frame": [
+    54.1,
+    473.8,
+    15.1,
+    15.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Sua consulta é amanhã, às 14h, com a Dra. Ana.",
+   "frame": [
+    41.5,
+    502.8,
+    357,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "PerguntaVocê confirma?ConfirmoQuero remarcar",
+   "frame": [
+    20.1,
+    589.6,
+    399.8,
+    178.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "PerguntaVocê confirma?ConfirmoQuero remarcar",
+   "frame": [
+    40.2,
+    599.7,
+    359.5,
+    168.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Pergunta",
+   "frame": [
+    56.6,
+    613.5,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pergunta",
+   "frame": [
+    56.6,
+    613.5,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Você confirma?",
+   "frame": [
+    56.6,
+    651.3,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Confirmo",
+   "frame": [
+    56.6,
+    689.1,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Confirmo",
+   "frame": [
+    56.6,
+    689.1,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Confirmo",
+   "frame": [
+    56.6,
+    689.1,
+    74.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Quero remarcar",
+   "frame": [
+    56.6,
+    726.8,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Quero remarcar",
+   "frame": [
+    56.6,
+    726.8,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Quero remarcar",
+   "frame": [
+    56.6,
+    726.8,
+    120.2,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Consulta confirmada. Até amanhã.11:47",
+   "frame": [
+    0,
+    768.4,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Consulta confirmada. Até amanhã.11:47",
+   "frame": [
+    0,
+    768.4,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Consulta confirmada. Até amanhã.11:47",
+   "frame": [
+    20.1,
+    779.7,
+    339.3,
+    62.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Consulta confirmada. Até amanhã.",
+   "frame": [
+    30.2,
+    789.7,
+    319.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "11:47",
+   "frame": [
+    306.9,
+    817.4,
+    42.5,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mensagem…",
+   "frame": [
+    0,
+    853.9,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mensagem…",
+   "frame": [
+    85.6,
+    864,
+    268.9,
+    55.4
+   ]
+  }
+ ]
+}

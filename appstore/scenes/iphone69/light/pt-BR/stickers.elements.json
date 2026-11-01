@@ -1,0 +1,327 @@
+{
+ "source": "scene stickers",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 pessoas",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 pessoas",
+   "frame": [
+    90.6,
+    67.8,
+    247,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 pessoas",
+   "frame": [
+    148.5,
+    75.4,
+    174,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Galera da faculdade",
+   "frame": [
+    148.5,
+    75.4,
+    174,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "34 pessoas",
+   "frame": [
+    148.5,
+    100.6,
+    174,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaSexta tem churrasco lá em casa11:47FechouValeu",
+   "frame": [
+    0,
+    140.8,
+    440,
+    504.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaSexta tem churrasco lá em casa11:47",
+   "frame": [
+    0,
+    207.3,
+    440,
+    105.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaSexta tem churrasco lá em casa11:47",
+   "frame": [
+    0,
+    207.3,
+    440,
+    105.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Bia",
+   "frame": [
+    10.1,
+    218.7,
+    72.5,
+    40.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bia",
+   "frame": [
+    55.4,
+    218.7,
+    27.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Sexta tem churrasco lá em casa11:47",
+   "frame": [
+    30.2,
+    248.9,
+    329.3,
+    62.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Sexta tem churrasco lá em casa",
+   "frame": [
+    40.2,
+    258.9,
+    309.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "11:47",
+   "frame": [
+    306.9,
+    286.6,
+    42.5,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Fechou",
+   "frame": [
+    0,
+    313.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Fechou",
+   "frame": [
+    0,
+    313.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechou",
+   "frame": [
+    35.6,
+    324.7,
+    147.8,
+    147.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Valeu",
+   "frame": [
+    0,
+    474.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Valeu",
+   "frame": [
+    0,
+    474.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valeu",
+   "frame": [
+    256.7,
+    485.8,
+    147.8,
+    147.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Meus stickersDesta conversaBom diaValeuKkkkkAmémSaudadeBoraFechouBoa noite",
+   "frame": [
+    0,
+    645.3,
+    440,
+    274.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Meus stickersDesta conversa",
+   "frame": [
+    15.1,
+    656.6,
+    409.8,
+    37.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Meus stickers",
+   "frame": [
+    15.1,
+    656.6,
+    128.6,
+    37.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Desta conversa",
+   "frame": [
+    153.8,
+    656.6,
+    140.5,
+    37.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Bom diaValeuKkkkkAmémSaudadeBoraFechouBoa noite",
+   "frame": [
+    15.1,
+    694.4,
+    409.8,
+    225
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bom dia",
+   "frame": [
+    11.9,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valeu",
+   "frame": [
+    116.9,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Kkkkk",
+   "frame": [
+    221.8,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Amém",
+   "frame": [
+    326.8,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Saudade",
+   "frame": [
+    11.9,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bora",
+   "frame": [
+    116.9,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechou",
+   "frame": [
+    221.8,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Boa noite",
+   "frame": [
+    326.8,
+    808.7,
+    101.3,
+    101.3
+   ]
+  }
+ ]
+}

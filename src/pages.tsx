@@ -867,7 +867,7 @@ export function HelpPage({ lang }: { lang: Lang }) {
 /** Logo downloads (/sobre/marca/). The files are rendered at build time by scripts/brand.mjs from brand-assets.json. */
 /**
  * One row of images: each opens large on the page (components/lightbox.ts), with a download link
- * there, and its size under it. Without JavaScript the link opens the file. A `fit` row shows every
+ * there. Without JavaScript the link opens the file. A `fit` row shows every
  * image at once (the store sets, MZ 1 November 2026); the others scroll sideways.
  */
 function ImageRow({ images, width, height, fit, view }: { images: { href: string; alt: string }[]; width: number; height: number; fit?: boolean; view: { download: string; close: string } }) {
@@ -876,7 +876,6 @@ function ImageRow({ images, width, height, fit, view }: { images: { href: string
       {images.map((i) => (
         <figure key={i.href} style={fit ? undefined : { flexBasis: width > height ? 360 : 180 }}>
           <a href={i.href} data-lightbox="" data-download={view.download} data-close={view.close}><img src={i.href} alt={i.alt} width={width} height={height} loading="lazy" /></a>
-          <figcaption className="small mono muted">{width}x{height} {i.href.split(".").pop()?.toUpperCase()}</figcaption>
         </figure>
       ))}
     </div>
@@ -885,7 +884,7 @@ function ImageRow({ images, width, height, fit, view }: { images: { href: string
 
 export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: string; title: string; image: string }[] }) {
   const b = chrome[lang].brand;
-  const stores = storeSets.filter((s) => s.group === "loja");
+  const stores = storeSets.filter((s) => s.group === "loja" || s.group === "cenas");
   // The Instagram store posts and the social-only posts of one format share a row.
   const social = [...new Set(storeSets.filter((s) => s.group !== "loja").map((s) => s.device))]
     .map((device) => storeSets.filter((s) => s.group !== "loja" && s.device === device));
@@ -927,7 +926,7 @@ export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: strin
       <h2 id="stores" style={{ marginTop: 56 }}>{b.sections.stores}</h2>
       {stores.map((s) => (
         <div key={s.href}>
-          <h3>{b.sets[s.device]}</h3>
+          <h3>{s.group === "cenas" ? b.sceneSet : b.sets[s.device]}</h3>
           <ImageRow images={files(s)} width={s.width} height={s.height} fit={s.height > s.width} view={b.view} />
         </div>
       ))}

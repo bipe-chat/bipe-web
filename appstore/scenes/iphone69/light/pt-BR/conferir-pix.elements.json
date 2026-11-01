@@ -1,0 +1,287 @@
+{
+ "source": "scene conferir-pix",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Conferir Pix",
+   "frame": [
+    0,
+    67.8,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Conferir Pix",
+   "frame": [
+    90.6,
+    81.7,
+    258.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Código PixEste código foi alterado ou está incompleto. Não pague com ele.Nome no códigoRAFAEL OLIVEIRAValorR$ 850,00Chaverafa.blkes@example.comCidadeBELO HORIZONTEEste nome foi escrito por quem fez o código. Confira o nome que aparece no app do banco antes de pagar.A conferência acontece só no seu celular.Fechar",
+   "frame": [
+    0,
+    133.3,
+    440,
+    786.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Código Pix",
+   "frame": [
+    20.1,
+    148.4,
+    399.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    20.1,
+    191.2,
+    399.8,
+    71.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    20.1,
+    191.2,
+    399.8,
+    71.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    64.1,
+    205,
+    341.9,
+    44.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Este código foi alterado ou está incompleto. Não pague com ele.",
+   "frame": [
+    64.1,
+    205,
+    341.9,
+    44.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome no códigoRAFAEL OLIVEIRAValorR$ 850,00Chaverafa.blkes@example.comCidadeBELO HORIZONTE",
+   "frame": [
+    20.1,
+    278.1,
+    399.8,
+    358.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome no códigoRAFAEL OLIVEIRA",
+   "frame": [
+    20.1,
+    278.1,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome no códigoRAFAEL OLIVEIRA",
+   "frame": [
+    37.7,
+    293.2,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Nome no código",
+   "frame": [
+    37.7,
+    293.2,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "RAFAEL OLIVEIRA",
+   "frame": [
+    37.7,
+    318.4,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ValorR$ 850,00",
+   "frame": [
+    20.1,
+    370,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ValorR$ 850,00",
+   "frame": [
+    37.7,
+    385.1,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valor",
+   "frame": [
+    37.7,
+    385.1,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "R$ 850,00",
+   "frame": [
+    37.7,
+    410.2,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chaverafa.blkes@example.com",
+   "frame": [
+    20.1,
+    461.8,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chaverafa.blkes@example.com",
+   "frame": [
+    37.7,
+    476.9,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Chave",
+   "frame": [
+    37.7,
+    476.9,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "rafa.blkes@example.com",
+   "frame": [
+    37.7,
+    502.1,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "CidadeBELO HORIZONTE",
+   "frame": [
+    20.1,
+    553.7,
+    399.8,
+    83
+   ]
+  },
+  {
+   "type": 1,
+   "label": "CidadeBELO HORIZONTE",
+   "frame": [
+    37.7,
+    568.8,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Cidade",
+   "frame": [
+    37.7,
+    568.8,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "BELO HORIZONTE",
+   "frame": [
+    37.7,
+    593.9,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Este nome foi escrito por quem fez o código. Confira o nome que aparece no app do banco antes de pagar.",
+   "frame": [
+    20.1,
+    651.8,
+    399.8,
+    45.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "A conferência acontece só no seu celular.",
+   "frame": [
+    20.1,
+    712.2,
+    399.8,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechar",
+   "frame": [
+    20.1,
+    846.4,
+    399.8,
+    57.9
+   ]
+  }
+ ]
+}

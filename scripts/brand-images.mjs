@@ -6,9 +6,11 @@ import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { renderSet } from "./store-images.mjs";
 
-/** Group -> listing (relative to bipe-web, null for bipe-shared/product/appstore.md) and devices. */
+/** Group -> listing (relative to bipe-web, null for bipe-shared/product/appstore.md), devices and the captures folder. */
 export const BRAND_SETS = {
   loja: { listing: null, devices: ["iphone69", "asc-header", "play-phone", "play-feature"] },
+  // The same iPhone panels from the site's phone scenes (scripts/scene-captures.mjs), next to the app captures.
+  cenas: { listing: null, devices: ["iphone69"], raw: "appstore/scenes" },
   social: { listing: null, devices: ["ig-post", "ig-story", "ig-square"] },
   posts: { listing: "social/posts.md", devices: ["ig-post", "ig-story", "ig-square"] },
 };
@@ -22,9 +24,9 @@ export async function writeBrandImages(root, outDir) {
   const ledger = JSON.parse(readFileSync(join(root, "../bipe-shared/product/parity.json"), "utf8"));
   const surface = (v) => (typeof v === "string" ? v : v?.status);
   const status = new Map(ledger.items.map((i) => [i.id, [surface(i.ios), surface(i.android)]]));
-  for (const [group, { listing, devices }] of Object.entries(BRAND_SETS)) {
+  for (const [group, { listing, devices, raw }] of Object.entries(BRAND_SETS)) {
     for (const device of devices) for (const locale of LOCALES) {
-      const manifests = await renderSet({ device, locale, out: join(outDir, group), quiet: true, ...(listing && { listing }) });
+      const manifests = await renderSet({ device, locale, out: join(outDir, group), quiet: true, ...(listing && { listing }), ...(raw && { raw }) });
       // Public images claim only features that ship (bipe-shared/product/appstore.md rule).
       for (const m of manifests) for (const e of m.exports) {
         if (e.feature !== "-" && !status.get(e.feature)?.some((s) => SHOWN.has(s))) throw new Error(`brand-images: ${group} ${device} ${e.file} shows feature ${e.feature}, which does not ship`);

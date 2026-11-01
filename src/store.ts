@@ -13,13 +13,13 @@ export type StoreSet = {
 
 const manifests = import.meta.glob<StoreSet>("../.brand-images/*/*/*/manifest.json", { eager: true, import: "default" });
 
-/** App Store first, then Play, then Instagram; on each Instagram format the store posts come before the social-only ones. */
+/** App Store first, then Play, then Instagram. The app captures come before the scene set (cenas), and on each Instagram format the store posts before the social-only ones. */
 const ORDER = ["iphone69", "asc-header", "play-phone", "play-feature", "ig-post", "ig-story", "ig-square"];
 function rank(s: { device: string; group: string }) {
-  return ORDER.indexOf(s.device) * 2 + (s.group === "posts" ? 1 : 0);
+  return ORDER.indexOf(s.device) * 2 + (s.group === "posts" || s.group === "cenas" ? 1 : 0);
 }
 
-/** `group` is the folder under .brand-images (loja, social, posts); `dir` is relative to src/; `href` is the folder in dist/. */
+/** `group` is the folder under .brand-images (loja, cenas, social, posts); `dir` is relative to src/; `href` is the folder in dist/. */
 export const storeSets: (StoreSet & { group: string; dir: string; href: string })[] = Object.entries(manifests)
   .map(([path, set]) => {
     const group = path.split("/")[2];
