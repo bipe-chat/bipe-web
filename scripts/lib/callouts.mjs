@@ -39,11 +39,14 @@ const stickers = join(dirname(fileURLToPath(import.meta.url)), "../../src/cast/s
  *            (1320 wide). place() moves and scales them with the phone screen, so other layouts (Play)
  *            put each card at the same place on the screen.
  *   from     the point of the card the connector leaves from, as fractions of the card
+ *   fork     fields for the old fork captures (appstore/raw/iphone69 until the bipe-app iOS captures
+ *            land): used when the entry's own anchor or screen text is not on the screen. Delete it then.
  *   scenes   fields that replace these when the capture is a site scene (scripts/scene-captures.mjs,
  *            `source` in the elements file): the scenes word and cast some screens differently.
- *   buttons  (person) the button labels to show, found on the screen; default: the buttons under the anchor.
- *   image    (sticker) a file in src/cast/stickers/ (made with Codex image_gen, white die-cut edge included)
- *            in place of the cut-out of the capture, until the captures show these stickers.
+ *   buttons  (person) the button labels to show, found on the screen; default: the buttons under the
+ *            anchor, or none when the screen has none there.
+ *   image    (sticker) a file in src/cast/stickers/ (made with Codex image_gen, white die-cut edge
+ *            included) in place of a cut-out of the capture; it needs no anchor.
  *   Text     { key } a bipe-shared string, { screen } the label of the element whose label contains it,
  *            or a value per locale. `cast` names a cast entry: its name, handle and photo.
  */
@@ -52,26 +55,31 @@ export const SPECS = {
     kind: "alert",
     title: { key: "bipe_scam_warning_title" },
     line: { "pt-BR": "Confirme com a pessoa por outro meio.", "en-US": "Check with the person another way." },
-    anchor: { text: "Pode ser um golpe, ", type: 48, pick: "outer", at: [1, 0.5] },
+    anchor: { text: "Pode ser um golpe", type: 48, at: [1, 0.5] },
     card: { top: 1080, width: 1250, height: 340, tilt: -3 },
     from: [0.86, 1],
-    scenes: { anchor: { text: "Pode ser um golpe", type: 48, at: [1, 0.5] }, card: { top: 1700, width: 1250, height: 340, tilt: -3 }, from: [0.86, 0] },
+    fork: { anchor: { text: "Pode ser um golpe, ", type: 48, pick: "outer", at: [1, 0.5] } },
+    scenes: { card: { top: 1700, width: 1250, height: 340, tilt: -3 }, from: [0.86, 0] },
   }],
   pedidos: [{
+    // The new requests box has no buttons per row: the card shows the name and the @ only.
     kind: "person",
-    cast: "camila",
-    anchor: { text: "Camila Duarte", type: 48, pick: "outer", at: [1, 0.5] },
-    card: { top: 2020, width: 1150, height: 470, tilt: -3 },
+    cast: "golpista",
+    anchor: { text: "Joana Lima", type: 48, at: [1, 0.5] },
+    buttons: [],
+    card: { top: 1500, width: 1150, height: 300, tilt: -3 },
     from: [0.92, 0],
-    scenes: { cast: "golpista", anchor: { text: "Joana Lima", type: 48, at: [1, 0.5] }, buttons: ["Ignorar", "Aceitar"] },
+    fork: { cast: "camila", anchor: { text: "Camila Duarte", type: 48, pick: "outer", at: [1, 0.5] }, buttons: undefined, card: { top: 2020, width: 1150, height: 470, tilt: -3 } },
+    scenes: { buttons: ["Ignorar", "Aceitar"], card: { top: 2020, width: 1150, height: 470, tilt: -3 } },
   }],
   "conferir-pix": [{
     kind: "field",
     label: { key: "bipe_pix_check_field_name" },
-    value: { screen: "RAFAEL OLIVEIRA" },
-    anchor: { text: "RAFAEL OLIVEIRA", at: [1, 0.5] },
+    value: { screen: "Rafael Oliveira" },
+    anchor: { text: "Rafael Oliveira", at: [1, 0.5] },
     card: { top: 1990, x: -60, width: 1100, height: 300, tilt: -3 },
     from: [0.12, 0],
+    fork: { value: { screen: "RAFAEL OLIVEIRA" }, anchor: { text: "RAFAEL OLIVEIRA", at: [1, 0.5] } },
   }, {
     kind: "field",
     label: { key: "bipe_pix_check_field_amount" },
@@ -92,31 +100,31 @@ export const SPECS = {
     kind: "seal",
     cast: "clinica",
     pill: { key: "bipe_badge_company_cnpj" },
-    anchor: { text: "Clínica Vida", type: 9, at: [0.5, 1] },
-    scenes: { anchor: { text: "Clínica Vida", type: 48, at: [0.5, 1] } },
+    // The legal name in the seal facts; the chat header is not a button on Android.
+    anchor: { text: "Clínica Vida Serviços Médicos", type: 48, at: [0.5, 0] },
     card: { top: 1150, width: 1150, height: 320, tilt: -3 },
-    from: [0.3, 0],
+    from: [0.3, 1],
+    fork: { anchor: { text: "Clínica Vida", type: 9, at: [0.5, 1] }, from: [0.3, 0] },
+    scenes: { anchor: { text: "Clínica Vida", type: 48, at: [0.5, 1] }, from: [0.3, 0] },
   }],
   grupos: [{
     kind: "row",
     cast: "familia",
-    sub: { screen: "Vô Antônio" },
+    sub: { screen: "Seu Antônio" },
     anchor: { text: "Família Lima", type: 9, pick: "outer", at: [1, 0.5] },
-    scenes: { sub: { screen: "Bom dia, família!" }, anchor: { text: "Família Lima", type: 48, at: [1, 0.5] } },
     card: { top: 1450, width: 1110, height: 300, tilt: -3 },
     from: [0.9, 0],
+    fork: { sub: { screen: "Vô Antônio" } },
+    scenes: { sub: { screen: "Bom dia, família!" }, anchor: { text: "Família Lima", type: 48, at: [1, 0.5] } },
   }],
+  // A sticker with an `image` is placed by `card` alone, so it needs no anchor on the screen.
   stickers: [{
     kind: "sticker",
     image: "caio-bora",
-    anchor: { text: "Sticker, Sticker", nth: 0 },
-    scenes: { anchor: { text: "Fechou", type: 48 } },
     card: { top: 1000, x: -230, width: 780, tilt: -6 },
   }, {
     kind: "sticker",
     image: "vira-lata",
-    anchor: { text: "Sticker, Sticker", nth: -1 },
-    scenes: { anchor: { text: "Valeu", type: 48 } },
     card: { top: 1800, x: 200, width: 640, tilt: 6 },
   }],
 };
@@ -191,12 +199,12 @@ const CONTENT = {
     const buttons = spec.buttons
       ? spec.buttons.map((text) => findElement(ctx.elements, { text, type: BUTTON }))
       : ctx.elements.elements.filter((e) => e.type === BUTTON && e.label && e.frame[1] >= top + height && e.frame[1] <= top + height + 60).sort((a, b) => a.frame[0] - b.frame[0]);
-    if (buttons.length < 2) fail(`the ${entry.id} row has ${buttons.length} button(s)`);
+    if (buttons.length === 1) fail(`the ${entry.id} row has 1 button`);
     return col({ gap: 40 * s, flex: 1 },
       row({ gap: 40 * s },
         avatar(photoUrl(entry), 170 * s),
         col({ gap: 8 * s }, text({ fontSize: 88 * s, fontWeight: 900, letterSpacing: "-0.02em" }, entry.name), text({ fontSize: 52 * s, fontWeight: 600, color: UI.gray[1000] }, `@${entry.handle}`))),
-      row({ gap: 30 * s }, ...buttons.map((b, i) => {
+      buttons.length === 0 ? null : row({ gap: 30 * s }, ...buttons.map((b, i) => {
         const primary = i === buttons.length - 1;
         return row({ flex: 1, height: 120 * s, justifyContent: "center", borderRadius: 999, fontSize: 56 * s, fontWeight: 800, backgroundColor: primary ? ctx.accent[1200] : WHITE, color: primary ? WHITE : INK, border: primary ? "none" : `${4 * s}px solid ${UI.gray[500]}` }, b.label);
       })));
@@ -303,6 +311,25 @@ function stickerSvg({ spec, capture, el, dev, s, index, place }) {
 }
 
 /**
+ * The entry as it applies to these elements: with `scenes` merged on a scene capture, else the entry
+ * itself, or with `fork` merged when the entry's anchor or screen texts are not on the screen. The first
+ * one that resolves wins; when none does, the entry is returned and its error stops the build.
+ */
+function pickSpec(base, elements, fromScene) {
+  if (fromScene && base.scenes) return { ...base, ...base.scenes };
+  const texts = (spec) => [spec.value, spec.sub].filter((t) => t?.screen).map((t) => ({ text: t.screen }));
+  const fits = (spec) => {
+    try {
+      if (spec.anchor) findElement(elements, spec.anchor);
+      for (const t of texts(spec)) findElement(elements, t);
+      return true;
+    } catch { return false; }
+  };
+  for (const spec of [base, ...(base.fork ? [{ ...base, ...base.fork }] : [])]) if (fits(spec)) return spec;
+  return base;
+}
+
+/**
  * The callouts of a panel as SVG markup in panel pixels, or "" when it has none. `ctx` holds the
  * locale, the `strings` object of bipe-shared/strings/<lang>.json and the cast entries by id. `tone` is
  * the panel's backdrop tone (lib/backdrop.mjs): the connector and its dots take its `connector` colour.
@@ -325,10 +352,10 @@ export async function calloutSvg({ panel, dev, captures, ctx, tone }) {
   const out = [];
   const fromScene = elements.source?.startsWith("scene ");
   for (const [index, base] of specs.entries()) {
-    const spec = fromScene && base.scenes ? { ...base, ...base.scenes } : base;
+    const spec = pickSpec(base, elements, fromScene);
     const at = (e) => `callouts: ${panel.slug} ${spec.kind}: ${e.message}`;
     let anchor;
-    try { anchor = findElement(elements, spec.anchor); } catch (e) { throw new Error(at(e)); }
+    if (!(spec.kind === "sticker" && spec.image)) try { anchor = findElement(elements, spec.anchor); } catch (e) { throw new Error(at(e)); }
     if (spec.kind === "sticker") {
       out.push(stickerSvg({ spec, capture, el: anchor, dev: { ...dev, screenPoints: elements.width }, s, index, place }));
       continue;

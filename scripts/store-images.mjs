@@ -43,11 +43,12 @@ import { calloutSvg, overlay, SPECS } from "./lib/callouts.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// Targets that are not in appstore/devices.mjs. Play has no capture tool yet, so the phone
-// panels use the iPhone captures (`captureFrom`) for layout checks only, until bipe-app has Android captures. The Instagram targets (bipe-chat/bipe#465) use the iPhone captures
-// too; the story keeps text out of the bands the IG bars cover (LAYOUT.story in lib/panels.mjs).
+// Targets that are not in appstore/devices.mjs. The Play phone panels use the bipe-app Android captures
+// (`captures`: appstore/raw/play-phone); the feature graphic, the App Store header and the Instagram
+// targets (bipe-chat/bipe#465) use the iPhone captures (`captureFrom`); the story keeps text out of the bands the IG bars cover (LAYOUT.story in lib/panels.mjs).
 const OTHER_DEVICES = {
-  "play-phone": { label: "Play phone", platform: "android", kind: "play", width: 1080, height: 1920, captureFrom: "iphone69" },
+  // Native Android captures from bipe-app (store-captures.yml), 1080x1920; the panel rounds the corners.
+  "play-phone": { label: "Play phone", platform: "android", kind: "play", width: 1080, height: 1920, captures: true, screenRadius: 72 },
   "play-feature": { label: "Play feature graphic", platform: "android", kind: "feature", width: 1024, height: 500, captureFrom: "iphone69" },
   // App Store product page header and search results (iOS 27 creative assets): one universal 16:9 PNG.
   "asc-header": { label: "App Store header", platform: "ios", kind: "header", width: 5244, height: 2950, captureFrom: "iphone69" },
@@ -197,7 +198,7 @@ export async function renderSet(opt) {
   const key = opt.device ?? "iphone69";
   const other = OTHER_DEVICES[key];
   const dev = other ? { key, ...other } : { platform: "ios", ...iosDevice(key) };
-  const captureDev = other?.captureFrom ? iosDevice(other.captureFrom) : other ? null : dev;
+  const captureDev = other?.captureFrom ? iosDevice(other.captureFrom) : other?.captures ? dev : other ? null : dev;
   const outRoot = rel(opt.out ?? OUT[dev.platform]);
   const rawRoot = opt.raw ? rel(opt.raw) : join(appstore, "raw");
   const appearance = opt.appearance ?? "light";

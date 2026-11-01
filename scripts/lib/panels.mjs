@@ -38,7 +38,7 @@ const LAYOUT = {
   phone: { top: 150, copy: 1200, title: 114, sub: 70, gap: 24, frameTop: 560, frame: 1180, bottom: 170, bezel: 16, rim: 8 },
   // Play: no device frame (Google advises against device imagery, and it counts for promotion
   // eligibility), so the screen alone, as wide as the iPhone screen, running off the bottom edge.
-  play: { top: 120, copy: 1200, title: 106, sub: 64, gap: 22, frameTop: 520, frame: 950, bezel: 0, rim: 0, buttons: "none" },
+  play: { top: 120, copy: 1200, title: 106, sub: 64, gap: 22, frameTop: 520, frame: 950, bezel: 0, rim: 0, buttons: "none", bar: "android" },
   // Instagram (bipe-chat/bipe#465), all 1080 wide. The story keeps text out of the bands the IG bars
   // cover: the top 250 px and the bottom 340 px (306 and 416 units). Only the phone runs into them.
   post: { top: 120, copy: 1120, title: 96, sub: 58, gap: 22, frameTop: 510, frame: 900, bezel: 14, rim: 6 },
@@ -100,6 +100,23 @@ function statusBar(w) {
   ];
 }
 
+// The Android status bar: 24 dp high on a 360 dp screen, the time at the left, signal, Wi-Fi and
+// battery at the right (Material 3 / Pixel layout).
+const ANDROID_BAR = 24 / 360;
+function androidStatusBar(w) {
+  const k = w / 360;
+  return [
+    abs({ left: 0, top: 0, width: w, height: 24 * k },
+      h("svg", { width: w, height: 24 * k, viewBox: "0 0 360 24" },
+        h("path", { d: "M300 17h10V7Z", fill: INK }),
+        h("path", { d: "M314 9.5a9 9 0 0 1 12 0L320 17Z", fill: INK }),
+        h("rect", { x: 331, y: 7, width: 7, height: 11, rx: 1.4, fill: INK }),
+        h("rect", { x: 333, y: 5.6, width: 3, height: 1.6, rx: 0.5, fill: INK }),
+      )),
+    abs({ left: 16 * k, top: 4 * k, height: 16 * k, alignItems: "center", fontSize: 13 * k, fontWeight: 600, color: INK }, "9:41"),
+  ];
+}
+
 // Side buttons, in points along a 440 x 956 pt screen: [side, top, length]. iPhone 6.9":
 // Left: action button, volume up, volume down. Right: side button, camera control.
 // Android: power and the volume rocker, both on the right. `none`: a bare screen (the Play panels).
@@ -117,8 +134,11 @@ const RIM = ["#8E8E93", "#F2F2F7", "#C7C7CC", "#F2F2F7", "#8E8E93"];
  * the bezel, clipped with the screen path (Satori writes CSS clip-path as an SVG clipPath; an <image>
  * inside an inline SVG does not render).
  */
-function phone({ capture, left, top, screenW, bezel, rim, s, buttons: kind = "iphone" }) {
-  const screenH = screenW * (capture.height / capture.width);
+function phone({ capture, left, top, screenW, bezel, rim, s, buttons: kind = "iphone", bar = "ios" }) {
+  // iOS captures leave room for the status bar, which is drawn over them. Android captures start at the
+  // app bar, so the Android status bar gets its own band above the capture (24 of 360 dp).
+  const band = bar === "android" ? screenW * ANDROID_BAR : 0;
+  const screenH = band + screenW * (capture.height / capture.width);
   const radius = capture.radius * (screenW / capture.width);
   const edge = bezel + rim;
   const w = screenW + 2 * edge;
@@ -142,10 +162,15 @@ function phone({ capture, left, top, screenW, bezel, rim, s, buttons: kind = "ip
     h("svg", { width: w + 2 * out, height: hh, viewBox: `0 0 ${w + 2 * out} ${hh}`, style: { position: "absolute", left: 0, top: 0 } },
       h("defs", {}, metal("rim", "0", "1")),
       ...buttons,
-      h("g", { transform: `translate(${out} 0)` }, h("path", { d: outer, fill: "url(#rim)" }), h("path", { d: inner, fill: BEZEL })),
+      // A bare screen (no rim, no bezel) draws no frame paths, so no grey shows at its corners.
+      edge ? h("g", { transform: `translate(${out} 0)` }, h("path", { d: outer, fill: "url(#rim)" }), h("path", { d: inner, fill: BEZEL })) : null,
     ),
-    h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { position: "absolute", left: out + edge, top: edge, clipPath: `path("${squirclePath(screenW, screenH, radius)}")` } }),
-    abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...statusBar(screenW)),
+    // Satori clips an img with clip-path, not a div. With a band, the band carries the rounded top
+    // corners and the capture under it runs off the panel edge, so it needs no clip.
+    band ? h("svg", { width: screenW, height: band + radius, viewBox: `0 0 ${screenW} ${band + radius}`, style: { position: "absolute", left: out + edge, top: edge } },
+      h("path", { d: squirclePath(screenW, 2 * (band + radius), radius), fill: WHITE })) : null,
+    h("img", { src: capture.dataUrl, width: screenW, height: screenH - band, style: { position: "absolute", left: out + edge, top: edge + band, ...(band ? {} : { clipPath: `path("${squirclePath(screenW, screenH, radius)}")` }) } }),
+    abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...(bar === "android" ? androidStatusBar(screenW) : statusBar(screenW))),
   );
   return [shadow, body];
 }
@@ -160,7 +185,8 @@ export function screenBox(dev, capture) {
   const edge = (L.bezel + L.rim) * s;
   const frameW = frameWidth(L, s, capture, dev.height);
   const width = frameW - 2 * edge;
-  return { left: (dev.width - frameW) / 2 + edge, top: L.frameTop * s + edge, width, height: width * (capture.height / capture.width) };
+  const band = L.bar === "android" ? width * ANDROID_BAR : 0;
+  return { left: (dev.width - frameW) / 2 + edge, top: L.frameTop * s + edge + band, width, height: width * (capture.height / capture.width) };
 }
 
 function capturePanel({ panel, width, height, kind, captures, tone: t }) {
@@ -172,7 +198,7 @@ function capturePanel({ panel, width, height, kind, captures, tone: t }) {
   const frameW = frameWidth(L, s, capture, height);
   const screenW = frameW - 2 * (bezel + rim);
   return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
-    ...phone({ capture, left: (width - frameW) / 2, top: L.frameTop * s, screenW, bezel, rim, s, buttons: L.buttons }),
+    ...phone({ capture, left: (width - frameW) / 2, top: L.frameTop * s, screenW, bezel, rim, s, buttons: L.buttons, bar: L.bar }),
     abs({ left: (width - L.copy * s) / 2, top: L.top * s, width: L.copy * s, justifyContent: "center" }, copyBlock({ panel, L, s, t })),
   );
 }
