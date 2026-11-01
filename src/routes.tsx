@@ -193,7 +193,8 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   body: () => <Island name="InviteLanding" props={{}} />,
 }, {
   // Target of the Caddy rewrite for /g/<code> (group links, bipe ADR 0184).
-  path: "/g/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "convite",
+  // Its own card: sharing "convite" made the build write the group card over og/convite.jpg.
+  path: "/g/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "grupo",
   title: "Link de grupo do Bipe", description: chrome.pt.invite.lead,
   body: () => <Island name="InviteLanding" props={{ group: true }} />,
 }, {
