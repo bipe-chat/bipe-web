@@ -1,402 +1,447 @@
 {
-  "elements" : [
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "",
-      "label" : "Bipe",
-      "type" : 2
-    },
-    {
-      "frame" : [
-        0,
-        62,
-        440,
-        54
-      ],
-      "id" : "Conversas",
-      "label" : "",
-      "type" : 21
-    },
-    {
-      "frame" : [
-        20,
-        64,
-        191.66666666666666,
-        40
-      ],
-      "id" : "",
-      "label" : "Conversas",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        20,
-        64,
-        40,
-        40
-      ],
-      "id" : "home_screen-user_avatar",
-      "label" : "Configurações",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        72,
-        67.166666666666671,
-        139.66666666666666,
-        33.666666666666657
-      ],
-      "id" : "",
-      "label" : "Conversas",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        384,
-        66,
-        28,
-        36
-      ],
-      "id" : "home_screen-start_chat",
-      "label" : "Nova conversa",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        16,
-        132,
-        24,
-        24
-      ],
-      "id" : "xmark",
-      "label" : "Limpar filtros",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        48,
-        128,
-        166.33332824707031,
-        32
-      ],
-      "id" : "",
-      "label" : "Pedidos de conversa",
-      "type" : 40
-    },
-    {
-      "frame" : [
-        16,
-        184,
-        52,
-        52
-      ],
-      "id" : "home_screen-room_name:Joana Lima",
-      "label" : "",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        84,
-        184,
-        340,
-        38.333328247070312
-      ],
-      "id" : "home_screen-room_name:Joana Lima",
-      "label" : "Joana Lima, @joana.lima.2",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        184,
-        90.333333333333314,
-        20.333333333333314
-      ],
-      "id" : "",
-      "label" : "Joana Lima",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        204.33333333333331,
-        95.333333333333314,
-        18
-      ],
-      "id" : "",
-      "label" : "@joana.lima.2",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        236.33333333333331,
-        153,
-        34.333333333333314
-      ],
-      "id" : "home_screen-room_name:Joana Lima",
-      "label" : "Recusar",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        249,
-        236.33333333333331,
-        153,
-        34.333333333333314
-      ],
-      "id" : "home_screen-room_name:Joana Lima",
-      "label" : "Aceitar",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        16,
-        298.66666666666663,
-        52,
-        52
-      ],
-      "id" : "home_screen-room_name:Camila Duarte",
-      "label" : "",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        84,
-        298.66665649414062,
-        340,
-        38.333343505859375
-      ],
-      "id" : "home_screen-room_name:Camila Duarte",
-      "label" : "Camila Duarte, @camila.vagas",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        298.66666666666669,
-        112.66666666666666,
-        20.333333333333314
-      ],
-      "id" : "",
-      "label" : "Camila Duarte",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        319,
-        101,
-        18
-      ],
-      "id" : "",
-      "label" : "@camila.vagas",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        351,
-        153,
-        34.333333333333314
-      ],
-      "id" : "home_screen-room_name:Camila Duarte",
-      "label" : "Recusar",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        249,
-        351,
-        153,
-        34.333333333333314
-      ],
-      "id" : "home_screen-room_name:Camila Duarte",
-      "label" : "Aceitar",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        16,
-        413.33333333333331,
-        52,
-        52
-      ],
-      "id" : "home_screen-room_name:Atendimento Cartões",
-      "label" : "",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        84,
-        413.33334350585938,
-        340,
-        38.33331298828125
-      ],
-      "id" : "home_screen-room_name:Atendimento Cartões",
-      "label" : "Atendimento Cartões, @atendimento.cartoes",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        413.33333333333331,
-        169.33333333333331,
-        20.333333333333314
-      ],
-      "id" : "",
-      "label" : "Atendimento Cartões",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        433.66666666666663,
-        155,
-        18
-      ],
-      "id" : "",
-      "label" : "@atendimento.cartoes",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        465.66666666666663,
-        153,
-        34.333333333333314
-      ],
-      "id" : "home_screen-room_name:Atendimento Cartões",
-      "label" : "Recusar",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        249,
-        465.66666666666663,
-        153,
-        34.333333333333314
-      ],
-      "id" : "home_screen-room_name:Atendimento Cartões",
-      "label" : "Aceitar",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        407,
-        116,
-        30,
-        757
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        407,
-        116,
-        30,
-        757
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "Toolbar",
-      "label" : "Barra de Ferramentas",
-      "type" : 24
-    },
-    {
-      "frame" : [
-        0,
-        873,
-        440,
-        83
-      ],
-      "id" : "",
-      "label" : "Barra de Abas",
-      "type" : 22
-    },
-    {
-      "frame" : [
-        25,
-        877,
-        111.33333333333331,
-        54
-      ],
-      "id" : "",
-      "label" : "Conversas",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        129.33333333333334,
-        877,
-        111.33333333333334,
-        54
-      ],
-      "id" : "person.2",
-      "label" : "Grupos",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        166.66666666666669,
-        884.66666666666663,
-        37,
-        26
-      ],
-      "id" : "person.2.fill",
-      "label" : "Duas pessoas, preenchidas",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        233.66666666666666,
-        877,
-        111.33333333333334,
-        54
-      ],
-      "id" : "",
-      "label" : "Você",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        357,
-        873,
-        62,
-        62
-      ],
-      "id" : "magnifyingglass",
-      "label" : "Search",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        374,
-        890.66666666666663,
-        28,
-        26.666666666666629
-      ],
-      "id" : "magnifyingglass",
-      "label" : "Buscar",
-      "type" : 43
-    }
-  ],
-  "height" : 956,
-  "width" : 440
+ "source": "scene pedidos",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 48,
+   "label": "Conversas",
+   "frame": [
+    0,
+    67.8,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pedidos de conversa1Você escolhe com quem conversarJoana Lima Conta criada há 2 dias. Não está nos seus contatos.Oi filha, troquei de número. Essa é minha conta nova aquiO nome desta conta ainda não foi verificado. Se não tiver certeza de quem é, confirme por outro meio antes de aceitar.IgnorarAceitarMãe 10:24Chego sábado de manhã. Me busca?2Família Lima 09:58Vô Antônio: Domingo tem almoço aqui em casa5Rafa ontemPix recebido, valeuClínica Vida ontemConsulta confirmada. Até amanhã.",
+   "frame": [
+    0,
+    133.3,
+    440,
+    698
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pedidos de conversa1Você escolhe com quem conversarJoana Lima Conta criada há 2 dias. Não está nos seus contatos.Oi filha, troquei de número. Essa é minha conta nova aquiO nome desta conta ainda não foi verificado. Se não tiver certeza de quem é, confirme por outro meio antes de aceitar.IgnorarAceitar",
+   "frame": [
+    20.1,
+    138.3,
+    399.8,
+    378.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pedidos de conversa1",
+   "frame": [
+    35.2,
+    153.4,
+    369.6,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Pedidos de conversa",
+   "frame": [
+    35.2,
+    153.4,
+    201.6,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1",
+   "frame": [
+    379.6,
+    154.7,
+    25.2,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Você escolhe com quem conversar",
+   "frame": [
+    35.2,
+    191.2,
+    369.6,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima Conta criada há 2 dias. Não está nos seus contatos.Oi filha, troquei de número. Essa é minha conta nova aquiO nome desta conta ainda não foi verificado. Se não tiver certeza de quem é, confirme por outro meio antes de aceitar.IgnorarAceitar",
+   "frame": [
+    35.2,
+    223.9,
+    369.6,
+    278.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima Conta criada há 2 dias. Não está nos seus contatos.",
+   "frame": [
+    35.2,
+    235.2,
+    369.6,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima Conta criada há 2 dias. Não está nos seus contatos.",
+   "frame": [
+    98.1,
+    235.2,
+    306.7,
+    73
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Joana Lima",
+   "frame": [
+    98.1,
+    235.2,
+    96.9,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Conta criada há 2 dias. Não está nos seus contatos.",
+   "frame": [
+    98.1,
+    262.9,
+    306.7,
+    45.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Oi filha, troquei de número. Essa é minha conta nova aqui",
+   "frame": [
+    35.2,
+    315.7,
+    369.6,
+    55.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "O nome desta conta ainda não foi verificado. Se não tiver certeza de quem é, confirme por outro meio antes de aceitar.",
+   "frame": [
+    35.2,
+    378.7,
+    369.6,
+    67.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "IgnorarAceitar",
+   "frame": [
+    35.2,
+    454.2,
+    369.6,
+    47.9
+   ]
+  },
+  {
+   "type": 9,
+   "label": "Ignorar",
+   "frame": [
+    35.2,
+    454.2,
+    179.7,
+    47.9
+   ]
+  },
+  {
+   "type": 9,
+   "label": "Aceitar",
+   "frame": [
+    225,
+    454.2,
+    179.8,
+    47.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe 10:24Chego sábado de manhã. Me busca?2",
+   "frame": [
+    0,
+    532.2,
+    440,
+    174.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe 10:24Chego sábado de manhã. Me busca?2",
+   "frame": [
+    43,
+    617.8,
+    354,
+    89.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe 10:24",
+   "frame": [
+    43,
+    632.9,
+    354,
+    29
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mãe",
+   "frame": [
+    43,
+    632.9,
+    66.1,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe",
+   "frame": [
+    43,
+    632.9,
+    66.1,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Nome verificado",
+   "frame": [
+    89,
+    636.6,
+    20.1,
+    20.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "10:24",
+   "frame": [
+    352.4,
+    634.1,
+    44.6,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chego sábado de manhã. Me busca?2",
+   "frame": [
+    43,
+    664.3,
+    354,
+    26.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Chego sábado de manhã. Me busca?",
+   "frame": [
+    43,
+    664.3,
+    308.7,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "2",
+   "frame": [
+    371.8,
+    665.6,
+    25.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 09:58Vô Antônio: Domingo tem almoço aqui em casa5",
+   "frame": [
+    0,
+    707.1,
+    440,
+    198.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 09:58Vô Antônio: Domingo tem almoço aqui em casa5",
+   "frame": [
+    20.1,
+    792.7,
+    399.8,
+    113.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 09:58",
+   "frame": [
+    20.1,
+    807.8,
+    399.8,
+    29
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Família Lima",
+   "frame": [
+    20.1,
+    807.8,
+    117.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "09:58",
+   "frame": [
+    372,
+    809,
+    47.9,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Vô Antônio: Domingo tem almoço aqui em casa5",
+   "frame": [
+    20.1,
+    839.3,
+    399.8,
+    50.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Vô Antônio: Domingo tem almoço aqui em casa",
+   "frame": [
+    20.1,
+    839.3,
+    354.5,
+    50.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "5",
+   "frame": [
+    394.7,
+    840.5,
+    25.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Rafa ontemPix recebido, valeu",
+   "frame": [
+    0,
+    906,
+    440,
+    173.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ConversasGruposVocê",
+   "frame": [
+    0,
+    831.3,
+    440,
+    88.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ConversasGruposVocê",
+   "frame": [
+    26.4,
+    841.3,
+    294,
+    78
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Conversas",
+   "frame": [
+    31.5,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Conversas",
+   "frame": [
+    31.5,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Grupos",
+   "frame": [
+    126.1,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Grupos",
+   "frame": [
+    126.1,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Você",
+   "frame": [
+    220.8,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Você",
+   "frame": [
+    220.8,
+    846.4,
+    94.7,
+    68
+   ]
+  }
+ ]
 }

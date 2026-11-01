@@ -1,14 +1,14 @@
 // Renders the store panels and the social posts for /sobre/marca/ (bipe-chat/bipe#466) with
 // scripts/store-images.mjs, into .brand-images/<group>/<device>/<locale>/. src/store.ts reads the
 // manifests at build time and scripts/build.mjs copies the PNGs into dist/. The captures come from
-// appstore/raw; a missing or blank capture stops the build, as in store-images.mjs.
+// appstore/raw (the site's phone scenes, scripts/scene-captures.mjs); a missing or blank capture stops the build, as in store-images.mjs.
 import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { renderSet } from "./store-images.mjs";
 
 /** Group -> listing (relative to bipe-web, null for bipe-shared/product/appstore.md) and devices. */
 export const BRAND_SETS = {
-  loja: { listing: null, devices: ["iphone69", "play-phone", "play-feature"] },
+  loja: { listing: null, devices: ["iphone69", "asc-header", "play-phone", "play-feature"] },
   social: { listing: null, devices: ["ig-post", "ig-story", "ig-square"] },
   posts: { listing: "social/posts.md", devices: ["ig-post", "ig-story", "ig-square"] },
 };

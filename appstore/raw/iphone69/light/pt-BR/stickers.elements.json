@@ -1,402 +1,327 @@
 {
-  "elements" : [
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "",
-      "label" : "Bipe",
-      "type" : 2
-    },
-    {
-      "frame" : [
-        0,
-        62,
-        440,
-        54
-      ],
-      "id" : "Conversa",
-      "label" : "",
-      "type" : 21
-    },
-    {
-      "frame" : [
-        20,
-        62,
-        200.66666666666666,
-        44
-      ],
-      "id" : "",
-      "label" : "Conversa",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        20,
-        62,
-        200.66666666666666,
-        44
-      ],
-      "id" : "room-name",
-      "label" : "Galera da faculdade",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        26,
-        68,
-        32,
-        32
-      ],
-      "id" : "room-avatar",
-      "label" : "",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        328,
-        66,
-        28,
-        36
-      ],
-      "id" : "video.fill",
-      "label" : "Start a video call",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        384,
-        66,
-        28,
-        36
-      ],
-      "id" : "bubble.left.and.text.bubble.right",
-      "label" : "Balão De Fala Esquerdo; Balão De Fala Direito Com Texto",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        89.040000915527344,
-        528,
-        334.95999145507812,
-        300
-      ],
-      "id" : "",
-      "label" : "Gabi, Sticker, Sticker, 10:22",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        89.039999999999992,
-        683.72833333333335,
-        19.920000000000016,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        124,
-        556.33333333333337,
-        271.66666666666663,
-        271.66666666666663
-      ],
-      "id" : "",
-      "label" : "Sticker, Sticker",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        242.33333333333334,
-        520,
-        35.000000000000028,
-        20.333333333333371
-      ],
-      "id" : "",
-      "label" : "Gabi",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        352.33333333333331,
-        805.66666666666663,
-        43.333333333333314,
-        22.333333333333371
-      ],
-      "id" : "",
-      "label" : "10:22",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        409.36000000000001,
-        837.36000000000001,
-        13.279999999999973,
-        13.279999999999973
-      ],
-      "id" : "checkmark.circle",
-      "label" : "Enviado",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        -10.960000038146973,
-        192,
-        334.95999145507812,
-        326
-      ],
-      "id" : "",
-      "label" : "Léo, Sticker, Sticker, 10:21",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        -10.960000000000001,
-        373.72833333333335,
-        19.920000000000002,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        24,
-        246.33333333333331,
-        271.66666666666663,
-        271.66666666666669
-      ],
-      "id" : "",
-      "label" : "Sticker, Sticker",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        145.83333333333334,
-        218,
-        28,
-        20.333333333333314
-      ],
-      "id" : "",
-      "label" : "Léo",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        254,
-        495.66666666666663,
-        41.666666666666686,
-        22.333333333333371
-      ],
-      "id" : "",
-      "label" : "10:21",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        44,
-        197,
-        26,
-        18
-      ],
-      "id" : "",
-      "label" : "Léo",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        -10.960000038146973,
-        121.66666412353516,
-        336.95999145507812,
-        62.333320617675781
-      ],
-      "id" : "",
-      "label" : "Bia, Sexta tem churrasco lá em casa, 10:20",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        -10.960000000000001,
-        185.72833079020182,
-        19.920000000000002,
-        16.876666666666665
-      ],
-      "id" : "arrowshape.turn.up.left",
-      "label" : "Responder",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        36,
-        183.99999745686847,
-        278,
-        20.333333333333343
-      ],
-      "id" : "",
-      "label" : "Sexta tem churrasco lá em casa",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        163.16666666666666,
-        147.66666539510092,
-        23.666666666666657,
-        20.333333333333343
-      ],
-      "id" : "",
-      "label" : "Bia",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        286.33333333333331,
-        193.99999745686847,
-        31.666666666666686,
-        10.333333333333343
-      ],
-      "id" : "",
-      "label" : "10:20",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        44,
-        126.66666539510092,
-        22.333333333333329,
-        18
-      ],
-      "id" : "",
-      "label" : "Bia",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        407,
-        116,
-        30,
-        742
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 2 páginas",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        119,
-        440,
-        30
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem horizontal, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        388,
-        806,
-        36,
-        36
-      ],
-      "id" : "room-scroll_to_bottom",
-      "label" : "Ir para o final",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        12,
-        866,
-        44,
-        44
-      ],
-      "id" : "composer_toolbar-open_compose_options",
-      "label" : "Adicionar à linha do tempo",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        24.039999999999999,
-        878.03999999999996,
-        19.920000000000002,
-        19.920000000000073
-      ],
-      "id" : "plus",
-      "label" : "Adicionar",
-      "type" : 43
-    },
-    {
-      "frame" : [
-        384,
-        866,
-        44,
-        44
-      ],
-      "id" : "mic.fill",
-      "label" : "Gravar mensagem de voz.",
-      "type" : 9
-    },
-    {
-      "frame" : [
-        84,
-        877,
-        185.33333333333331,
-        20.333333333333371
-      ],
-      "id" : "room-message_composer",
-      "label" : "Escreva uma mensagem",
-      "type" : 48
-    },
-    {
-      "frame" : [
-        84,
-        877,
-        272,
-        22
-      ],
-      "id" : "room-message_composer",
-      "label" : "Escreva uma mensagem",
-      "type" : 52
-    },
-    {
-      "frame" : [
-        323,
-        877,
-        30,
-        22
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem vertical, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        84,
-        885,
-        272,
-        11
-      ],
-      "id" : "",
-      "label" : "Barra de rolagem horizontal, 1 página",
-      "type" : 1
-    },
-    {
-      "frame" : [
-        0,
-        0,
-        440,
-        956
-      ],
-      "id" : "Toolbar",
-      "label" : "Barra de Ferramentas",
-      "type" : 24
-    }
-  ],
-  "height" : 956,
-  "width" : 440
+ "source": "scene stickers",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 pessoas",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 pessoas",
+   "frame": [
+    90.6,
+    67.8,
+    247,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 pessoas",
+   "frame": [
+    148.5,
+    75.4,
+    174,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Galera da faculdade",
+   "frame": [
+    148.5,
+    75.4,
+    174,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "34 pessoas",
+   "frame": [
+    148.5,
+    100.6,
+    174,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaSexta tem churrasco lá em casa12:21FechouValeu",
+   "frame": [
+    0,
+    140.8,
+    440,
+    504.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaSexta tem churrasco lá em casa12:21",
+   "frame": [
+    0,
+    207.3,
+    440,
+    105.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaSexta tem churrasco lá em casa12:21",
+   "frame": [
+    0,
+    207.3,
+    440,
+    105.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Bia",
+   "frame": [
+    10.1,
+    218.7,
+    72.5,
+    40.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bia",
+   "frame": [
+    55.4,
+    218.7,
+    27.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Sexta tem churrasco lá em casa12:21",
+   "frame": [
+    30.2,
+    248.9,
+    329.3,
+    62.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Sexta tem churrasco lá em casa",
+   "frame": [
+    40.2,
+    258.9,
+    309.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "12:21",
+   "frame": [
+    306.9,
+    286.6,
+    42.5,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Fechou",
+   "frame": [
+    0,
+    313.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Fechou",
+   "frame": [
+    0,
+    313.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechou",
+   "frame": [
+    35.6,
+    324.7,
+    147.8,
+    147.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Valeu",
+   "frame": [
+    0,
+    474.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Valeu",
+   "frame": [
+    0,
+    474.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valeu",
+   "frame": [
+    256.7,
+    485.8,
+    147.8,
+    147.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Meus stickersDesta conversaBom diaValeuKkkkkAmémSaudadeBoraFechouBoa noite",
+   "frame": [
+    0,
+    645.3,
+    440,
+    274.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Meus stickersDesta conversa",
+   "frame": [
+    15.1,
+    656.6,
+    409.8,
+    37.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Meus stickers",
+   "frame": [
+    15.1,
+    656.6,
+    128.6,
+    37.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Desta conversa",
+   "frame": [
+    153.8,
+    656.6,
+    140.5,
+    37.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Bom diaValeuKkkkkAmémSaudadeBoraFechouBoa noite",
+   "frame": [
+    15.1,
+    694.4,
+    409.8,
+    225
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bom dia",
+   "frame": [
+    11.9,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valeu",
+   "frame": [
+    116.9,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Kkkkk",
+   "frame": [
+    221.8,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Amém",
+   "frame": [
+    326.8,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Saudade",
+   "frame": [
+    11.9,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bora",
+   "frame": [
+    116.9,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechou",
+   "frame": [
+    221.8,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Boa noite",
+   "frame": [
+    326.8,
+    808.7,
+    101.3,
+    101.3
+   ]
+  }
+ ]
 }

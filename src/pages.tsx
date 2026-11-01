@@ -865,14 +865,17 @@ export function HelpPage({ lang }: { lang: Lang }) {
 }
 
 /** Logo downloads (/sobre/marca/). The files are rendered at build time by scripts/brand.mjs from brand-assets.json. */
-/** One row of downloadable images: each links to the full file, with its size under it. */
-function ImageRow({ images, width, height }: { images: { href: string; alt: string }[]; width: number; height: number }) {
+/**
+ * One row of images: each opens large on the page (components/lightbox.ts), with a download link
+ * there. Without JavaScript the link opens the file. A `fit` row shows every
+ * image at once (the store sets, MZ 1 November 2026); the others scroll sideways.
+ */
+function ImageRow({ images, width, height, fit, view }: { images: { href: string; alt: string }[]; width: number; height: number; fit?: boolean; view: { download: string; close: string } }) {
   return (
-    <div className="brand-images">
+    <div className={fit ? "brand-images fit" : "brand-images"}>
       {images.map((i) => (
-        <figure key={i.href} style={{ flexBasis: width > height ? 360 : 180 }}>
-          <a href={i.href} download><img src={i.href} alt={i.alt} width={width} height={height} loading="lazy" /></a>
-          <figcaption className="small mono muted">{width}x{height} {i.href.split(".").pop()?.toUpperCase()}</figcaption>
+        <figure key={i.href} style={fit ? undefined : { flexBasis: width > height ? 360 : 180 }}>
+          <a href={i.href} data-lightbox="" data-download={view.download} data-close={view.close}><img src={i.href} alt={i.alt} width={width} height={height} loading="lazy" /></a>
         </figure>
       ))}
     </div>
@@ -924,16 +927,16 @@ export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: strin
       {stores.map((s) => (
         <div key={s.href}>
           <h3>{b.sets[s.device]}</h3>
-          <ImageRow images={files(s)} width={s.width} height={s.height} />
+          <ImageRow images={files(s)} width={s.width} height={s.height} fit={s.height > s.width} view={b.view} />
         </div>
       ))}
       <h2 id="cards" style={{ marginTop: 56 }}>{b.sections.cards}</h2>
-      <ImageRow images={cards.map((c) => ({ href: c.image, alt: c.title }))} width={1200} height={630} />
+      <ImageRow images={cards.map((c) => ({ href: c.image, alt: c.title }))} width={1200} height={630} view={b.view} />
       <h2 id="social" style={{ marginTop: 56 }}>{b.sections.social}</h2>
       {social.map((sets) => (
         <div key={sets[0].device}>
           <h3>{b.sets[sets[0].device]}</h3>
-          <ImageRow images={sets.flatMap(files)} width={sets[0].width} height={sets[0].height} />
+          <ImageRow images={sets.flatMap(files)} width={sets[0].width} height={sets[0].height} view={b.view} />
         </div>
       ))}
     </section>

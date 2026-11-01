@@ -1,7 +1,7 @@
 // The callout layer of the store panels (bipe-chat/bipe#463): one or two elements of the screen, set
 // again larger on tilted cards over the phone, each with a connector to the element in the phone.
 //
-// Where: the UI test that made the capture listed every element on the screen with its frame
+// Where: scripts/scene-captures.mjs listed every element on the scene's screen with its frame
 // (`<slug>.elements.json` next to the capture). An anchor names an element by its text, so a changed
 // screen moves the connector with it, and a missing element stops the build.
 // What: the card text comes from bipe-shared strings, the cast, or the label of an element on the
@@ -21,7 +21,11 @@ import { RAMPS, UI } from "./backdrop.mjs";
 import { screenBox, shotOf } from "./panels.mjs";
 import { encodeRgbaPng } from "./raster.mjs";
 
+// The panel SPECS positions are set on: the iPhone 6.9" store panel and its capture size.
+const REF_PANEL = { kind: "phone", width: 1320, height: 2868 };
+
 const photos = join(dirname(fileURLToPath(import.meta.url)), "../../src/cast/photos");
+const stickers = join(dirname(fileURLToPath(import.meta.url)), "../../src/cast/stickers");
 
 /**
  * The callouts of each panel slug. Card positions are in units of a canvas 1320 wide.
@@ -31,8 +35,14 @@ const photos = join(dirname(fileURLToPath(import.meta.url)), "../../src/cast/pho
  *            text, 9 button, 1 other), `nth` counts the matches from the top of the screen (-1 is the last),
  *            `at` is the point of its frame (x, y as fractions), `pick` is inner (default: the smallest
  *            match, a text) or outer (the largest, a row or a cell).
- *   card     { top, x (centre offset), width, height, tilt (degrees) }
+ *   card     { top, x (centre offset), width, height, tilt (degrees) }, in pixels of the iPhone 6.9" panel
+ *            (1320 wide). place() moves and scales them with the phone screen, so other layouts (Play)
+ *            put each card at the same place on the screen.
  *   from     the point of the card the connector leaves from, as fractions of the card
+ *   buttons  (person) the button labels to show, found on the screen; default: the buttons under the
+ *            anchor, or none when the screen has none there.
+ *   image    (sticker) a file in src/cast/stickers/ (made with Codex image_gen, white die-cut edge
+ *            included) in place of a cut-out of the capture; it needs no anchor.
  *   Text     { key } a bipe-shared string, { screen } the label of the element whose label contains it,
  *            or a value per locale. `cast` names a cast entry: its name, handle and photo.
  */
@@ -41,14 +51,15 @@ export const SPECS = {
     kind: "alert",
     title: { key: "bipe_scam_warning_title" },
     line: { "pt-BR": "Confirme com a pessoa por outro meio.", "en-US": "Check with the person another way." },
-    anchor: { text: "Pode ser um golpe, ", type: 48, pick: "outer", at: [1, 0.5] },
-    card: { top: 1080, width: 1250, height: 340, tilt: -3 },
-    from: [0.86, 1],
+    anchor: { text: "Pode ser um golpe", type: 48, at: [1, 0.5] },
+    card: { top: 1700, width: 1250, height: 340, tilt: -3 },
+    from: [0.86, 0],
   }],
   pedidos: [{
     kind: "person",
-    cast: "camila",
-    anchor: { text: "Camila Duarte", type: 48, pick: "outer", at: [1, 0.5] },
+    cast: "golpista",
+    anchor: { text: "Joana Lima", type: 48, at: [1, 0.5] },
+    buttons: ["Ignorar", "Aceitar"],
     card: { top: 2020, width: 1150, height: 470, tilt: -3 },
     from: [0.92, 0],
   }],
@@ -69,35 +80,36 @@ export const SPECS = {
   }],
   "seu-arroba": [{
     kind: "handle",
-    cast: "gabi",
-    anchor: { text: "@gabi.moreira", nth: -1, at: [1, 0.5] },
+    cast: "rafa",
+    anchor: { text: "Rafa", type: 48, at: [0.5, 1] },
     card: { top: 1400, width: 1040, height: 220, tilt: -3 },
-    from: [0.88, 1],
+    from: [0.5, 0],
   }],
   "selo-cnpj": [{
     kind: "seal",
     cast: "clinica",
     pill: { key: "bipe_badge_company_cnpj" },
-    anchor: { text: "Clínica Vida", type: 9, at: [0.5, 1] },
+    anchor: { text: "Clínica Vida", type: 48, at: [0.5, 1] },
     card: { top: 1150, width: 1150, height: 320, tilt: -3 },
     from: [0.3, 0],
   }],
   grupos: [{
     kind: "row",
     cast: "familia",
-    sub: { screen: "Vô Antônio" },
-    anchor: { text: "Família Lima", type: 9, pick: "outer", at: [1, 0.5] },
+    sub: { screen: "Bom dia, família!" },
+    anchor: { text: "Família Lima", type: 48, at: [1, 0.5] },
     card: { top: 1450, width: 1110, height: 300, tilt: -3 },
     from: [0.9, 0],
   }],
+  // A sticker with an `image` is placed by `card` alone, so it needs no anchor on the screen.
   stickers: [{
     kind: "sticker",
-    anchor: { text: "Sticker, Sticker", nth: 0 },
-    card: { top: 1020, x: -260, width: 760, tilt: -6 },
+    image: "caio-bora",
+    card: { top: 1000, x: -230, width: 780, tilt: -6 },
   }, {
     kind: "sticker",
-    anchor: { text: "Sticker, Sticker", nth: -1 },
-    card: { top: 1860, x: 150, width: 740, tilt: 6 },
+    image: "vira-lata",
+    card: { top: 1800, x: 200, width: 640, tilt: 6 },
   }],
 };
 
@@ -106,8 +118,18 @@ const LINK = "M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-
 const INK = UI.gray[1400];
 const WHITE = "#FFFFFF";
 // The neutral card: the cream steps of caju (expressive, so fill only), as in the reference panels.
-const CARD = { fill: RAMPS.caju[200], rim: RAMPS.caju[100], line: UI.gray[400], ink: INK };
-const CARDS = { alert: { fill: UI.amber[200], rim: UI.amber[100], line: UI.amber[500], ink: UI.amber[1200] }, handle: { fill: UI.acai[1100], rim: UI.acai[1000], line: UI.acai[900], ink: WHITE } };
+const CARD = { fill: RAMPS.caju[200], line: UI.gray[400], ink: INK };
+// The app's açaí elements (the handle card, the pill, the primary button) take the panel's palette at
+// the same step, as the app theme does (appThemes, bipe-chat/bipe#811; MZ, 1 November 2026). `accent`
+// is that ramp. The scam warning stays amber: trust and caution colours are never themed.
+// The rim (the outline of the card) is the panel's palette on every card (MZ, 1 November 2026: not white).
+const cardStyle = (kind, accent) => ({
+  rim: accent[300],
+  ...({
+    alert: { fill: UI.amber[200], line: UI.amber[500], ink: UI.amber[1200] },
+    handle: { fill: accent[1100], line: accent[900], ink: WHITE },
+  }[kind] ?? CARD),
+});
 
 // --- Elements ------------------------------------------------------------------------------------
 
@@ -144,7 +166,7 @@ const col = (style, ...children) => h("div", { style: { display: "flex", flexDir
 const row = (style, ...children) => h("div", { style: { display: "flex", alignItems: "center", ...style } }, ...children);
 const text = (style, value) => h("div", { style: { display: "block", lineHeight: 1.1, ...style } }, value);
 const avatar = (src, size, radius = size / 2) => h("img", { src, width: size, height: size, style: { width: size, height: size, borderRadius: radius, objectFit: "cover", flexShrink: 0 } });
-const pill = (value, s, style = {}) => row({ padding: `${12 * s}px ${30 * s}px`, borderRadius: 999, backgroundColor: UI.acai[1100], color: WHITE, fontSize: 50 * s, fontWeight: 900, flexShrink: 0, ...style }, value);
+const pill = (value, s, accent, style = {}) => row({ padding: `${12 * s}px ${30 * s}px`, borderRadius: 999, backgroundColor: accent[1100], color: WHITE, fontSize: 50 * s, fontWeight: 900, flexShrink: 0, ...style }, value);
 
 /** The content of each card kind, as a Satori node of the card size. */
 const CONTENT = {
@@ -156,17 +178,19 @@ const CONTENT = {
       text({ fontSize: 50 * s, fontWeight: 600, color: UI.amber[1100] }, textOf(spec.line, ctx)))),
   // A message request: photo, name and @, and the request's buttons as the screen labels them: the buttons
   // under the name, within 60 points (the last one is the primary action).
-  person: ({ entry, ctx, s, anchor }) => {
+  person: ({ spec, entry, ctx, s, anchor }) => {
     const [, top, , height] = anchor.frame;
-    const buttons = ctx.elements.elements.filter((e) => e.type === BUTTON && e.label && e.frame[1] >= top + height && e.frame[1] <= top + height + 60).sort((a, b) => a.frame[0] - b.frame[0]);
-    if (buttons.length < 2) fail(`the ${entry.id} row has ${buttons.length} button(s)`);
+    const buttons = spec.buttons
+      ? spec.buttons.map((text) => findElement(ctx.elements, { text, type: BUTTON }))
+      : ctx.elements.elements.filter((e) => e.type === BUTTON && e.label && e.frame[1] >= top + height && e.frame[1] <= top + height + 60).sort((a, b) => a.frame[0] - b.frame[0]);
+    if (buttons.length === 1) fail(`the ${entry.id} row has 1 button`);
     return col({ gap: 40 * s, flex: 1 },
       row({ gap: 40 * s },
         avatar(photoUrl(entry), 170 * s),
         col({ gap: 8 * s }, text({ fontSize: 88 * s, fontWeight: 900, letterSpacing: "-0.02em" }, entry.name), text({ fontSize: 52 * s, fontWeight: 600, color: UI.gray[1000] }, `@${entry.handle}`))),
-      row({ gap: 30 * s }, ...buttons.map((b, i) => {
+      buttons.length === 0 ? null : row({ gap: 30 * s }, ...buttons.map((b, i) => {
         const primary = i === buttons.length - 1;
-        return row({ flex: 1, height: 120 * s, justifyContent: "center", borderRadius: 999, fontSize: 56 * s, fontWeight: 800, backgroundColor: primary ? UI.acai[1200] : WHITE, color: primary ? WHITE : INK, border: primary ? "none" : `${4 * s}px solid ${UI.gray[500]}` }, b.label);
+        return row({ flex: 1, height: 120 * s, justifyContent: "center", borderRadius: 999, fontSize: 56 * s, fontWeight: 800, backgroundColor: primary ? ctx.accent[1200] : WHITE, color: primary ? WHITE : INK, border: primary ? "none" : `${4 * s}px solid ${UI.gray[500]}` }, b.label);
       })));
   },
   field: ({ spec, ctx, s }) => col({ gap: 6 * s },
@@ -179,20 +203,20 @@ const CONTENT = {
   seal: ({ spec, entry, ctx, s }) => row({ gap: 40 * s },
     avatar(photoUrl(entry), 170 * s, 44 * s),
     text({ fontSize: 88 * s, fontWeight: 900, letterSpacing: "-0.02em" }, entry.name),
-    pill(textOf(spec.pill, ctx), s)),
+    pill(textOf(spec.pill, ctx), s, ctx.accent)),
   row: ({ spec, entry, ctx, s }) => row({ gap: 36 * s, flex: 1 },
     avatar(photoUrl(entry), 150 * s),
     col({ gap: 8 * s, flex: 1, minWidth: 0 },
       text({ fontSize: 72 * s, fontWeight: 900, letterSpacing: "-0.02em" }, entry.name),
       text({ fontSize: 46 * s, fontWeight: 600, color: UI.gray[1000], lineHeight: 1.25 }, textOf(spec.sub, ctx))),
-    pill("@", s, { width: 96 * s, height: 96 * s, padding: 0, justifyContent: "center", fontSize: 56 * s })),
+    pill("@", s, ctx.accent, { width: 96 * s, height: 96 * s, padding: 0, justifyContent: "center", fontSize: 56 * s })),
 };
 
 // XCUIElement.ElementType.button.
 const BUTTON = 9;
 
 async function cardText({ spec, ctx, s, box, anchor, entry, index }) {
-  const style = CARDS[spec.kind] ?? CARD;
+  const style = cardStyle(spec.kind, ctx.accent);
   // Satori adds padding to a fixed width, so the content gets a fixed inner width instead.
   const node = h("div", { style: { width: box.w, height: box.hh, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Nunito", color: style.ink } },
     h("div", { style: { width: box.w - 128 * s, display: "flex" } }, CONTENT[spec.kind]({ spec, ctx, s, anchor, entry })));
@@ -244,18 +268,24 @@ function stickerCut(capture, frame) {
   return { url: `data:image/png;base64,${encodeRgbaPng(px, w, hh).toString("base64")}`, w, hh };
 }
 
+/** A sticker file (src/cast/stickers/<id>.png, RGBA) as { url, w, hh }. */
+function stickerFile(id) {
+  const buf = readFileSync(join(stickers, `${id}.png`));
+  return { url: `data:image/png;base64,${buf.toString("base64")}`, w: buf.readUInt32BE(16), hh: buf.readUInt32BE(20) };
+}
+
 /** The sticker callout: the cut-out larger, with a white die-cut edge and a soft shadow (SVG filters). */
-function stickerSvg({ spec, capture, el, dev, s, index }) {
+function stickerSvg({ spec, capture, el, dev, s, index, place }) {
   const scale = capture.width / dev.screenPoints;
-  const cut = stickerCut(capture, el.frame.map((v) => v * scale));
+  const cut = spec.image ? stickerFile(spec.image) : stickerCut(capture, el.frame.map((v) => v * scale));
   const w = spec.card.width * s;
   const hh = w * (cut.hh / cut.w);
-  const x = (dev.width - w) / 2 + (spec.card.x ?? 0) * s;
-  const y = spec.card.top * s;
+  const { x, y } = place(spec.card, w);
   const id = `sticker${index}`;
   return [
     `<defs><filter id="${id}" x="-20%" y="-20%" width="140%" height="140%">`,
-    `<feMorphology in="SourceAlpha" operator="dilate" radius="${18 * s}" result="grow"/>`,
+    // A sticker file has its own white edge; a cut-out of the capture gets one here.
+    `<feMorphology in="SourceAlpha" operator="dilate" radius="${(spec.image ? 0 : 18) * s}" result="grow"/>`,
     `<feFlood flood-color="${WHITE}"/><feComposite in2="grow" operator="in" result="edge"/>`,
     `<feGaussianBlur in="grow" stdDeviation="${30 * s}" result="blur"/><feOffset in="blur" dy="${30 * s}" result="drop"/>`,
     `<feFlood flood-color="rgba(40,0,20,0.45)"/><feComposite in2="drop" operator="in" result="shadow"/>`,
@@ -266,44 +296,50 @@ function stickerSvg({ spec, capture, el, dev, s, index }) {
 
 /**
  * The callouts of a panel as SVG markup in panel pixels, or "" when it has none. `ctx` holds the
- * locale, the `strings` object of bipe-shared/strings/<lang>.json and the cast entries by id.
+ * locale, the `strings` object of bipe-shared/strings/<lang>.json and the cast entries by id. `tone` is
+ * the panel's backdrop tone (lib/backdrop.mjs): the connector and its dots take its `connector` colour.
  */
-export async function calloutSvg({ panel, dev, captures, ctx }) {
+export async function calloutSvg({ panel, dev, captures, ctx, tone }) {
   const specs = SPECS[panel.slug];
   const capture = captures.get(shotOf(panel));
-  // Card positions are set for the iPhone layout; the Play and Instagram sets keep the plain panel for now.
-  if (!specs || !capture || dev.kind !== "phone") return "";
+  // The store sets get callouts; the Instagram sets keep the plain panel.
+  if (!specs || !capture || !["phone", "play"].includes(dev.kind)) return "";
   if (!capture.elements) throw new Error(`callouts: ${panel.slug} has no elements file`);
   const elements = capture.elements;
   const screen = screenBox(dev, capture);
   const k = screen.width / elements.width;
   const toPanel = (frame, [ax, ay]) => [screen.left + (frame[0] + ax * frame[2]) * k, screen.top + (frame[1] + ay * frame[3]) * k];
-  const s = dev.width / 1320;
+  // SPECS positions are pixels of the iPhone panel. `s` scales them by the screen width against the
+  // iPhone screen, and place() puts a card at the same place relative to the screen.
+  const ref = screenBox(REF_PANEL, REF_PANEL);
+  const s = screen.width / ref.width;
+  const place = (card, w) => ({ x: screen.left + (screen.width - w) / 2 + (card.x ?? 0) * s, y: screen.top + (card.top - ref.top) * s });
   const out = [];
   for (const [index, spec] of specs.entries()) {
     const at = (e) => `callouts: ${panel.slug} ${spec.kind}: ${e.message}`;
     let anchor;
-    try { anchor = findElement(elements, spec.anchor); } catch (e) { throw new Error(at(e)); }
+    if (!(spec.kind === "sticker" && spec.image)) try { anchor = findElement(elements, spec.anchor); } catch (e) { throw new Error(at(e)); }
     if (spec.kind === "sticker") {
-      out.push(stickerSvg({ spec, capture, el: anchor, dev: { ...dev, screenPoints: elements.width }, s, index }));
+      out.push(stickerSvg({ spec, capture, el: anchor, dev: { ...dev, screenPoints: elements.width }, s, index, place }));
       continue;
     }
     const entry = spec.cast ? ctx.cast.get(spec.cast) ?? fail(at({ message: `no cast entry ${spec.cast}` })) : null;
     const { card } = spec;
-    const box = { x: (dev.width - card.width * s) / 2 + (card.x ?? 0) * s, y: card.top * s, w: card.width * s, hh: card.height * s };
-    const style = CARDS[spec.kind] ?? CARD;
+    const box = { ...place(card, card.width * s), w: card.width * s, hh: card.height * s };
+    const style = cardStyle(spec.kind, RAMPS[tone.palette]);
     const r = Math.min(64 * s, box.hh / 2);
     const rim = 12 * s;
     const end = toPanel(anchor.frame, spec.anchor.at);
     const start = onCard(spec.from, box, card.tilt);
     const [cx, cy] = [box.x + box.w / 2, box.y + box.hh / 2];
     let content;
-    try { content = await cardText({ spec, ctx: { ...ctx, elements }, s, box, anchor, entry, index }); } catch (e) { throw new Error(at(e)); }
-    const ink = UI.gray[1300];
-    const dot = (p) => `<circle cx="${p[0]}" cy="${p[1]}" r="${16 * s}" fill="${ink}" stroke="${WHITE}" stroke-width="${5 * s}"/>`;
+    try { content = await cardText({ spec, ctx: { ...ctx, elements, accent: RAMPS[tone.palette] }, s, box, anchor, entry, index }); } catch (e) { throw new Error(at(e)); }
+    const ink = tone.connector;
+    const dot = (p) => `<circle cx="${p[0]}" cy="${p[1]}" r="${18 * s}" fill="${ink}" stroke="${WHITE}" stroke-width="${6 * s}"/>`;
     out.push(
       `<defs><filter id="callout-shadow${index}" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="${36 * s}"/></filter></defs>`,
-      `<path d="${connector(start, end, spec.anchor.at, s)}" fill="none" stroke="${ink}" stroke-width="${7 * s}" stroke-linecap="round"/>`,
+      `<path d="${connector(start, end, spec.anchor.at, s)}" fill="none" stroke="${WHITE}" stroke-width="${15 * s}" stroke-linecap="round"/>`,
+      `<path d="${connector(start, end, spec.anchor.at, s)}" fill="none" stroke="${ink}" stroke-width="${8 * s}" stroke-linecap="round"/>`,
       dot(end),
       `<g transform="rotate(${card.tilt} ${cx} ${cy})">`,
       `<path d="${rounded(box.x, box.y + 36 * s, box.w, box.hh, r)}" fill="rgba(40,0,20,0.45)" filter="url(#callout-shadow${index})"/>`,
