@@ -1,0 +1,3 @@
+# esbuild's install script fetches its binary (Vite). pnpm 11 stops on an unapproved build script.
+allowBuilds:
+  esbuild: true
