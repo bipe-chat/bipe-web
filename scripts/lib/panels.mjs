@@ -97,18 +97,19 @@ function statusBar(w, ink) {
 }
 
 // The Android status bar (Material 3 / Pixel layout): the time at the left, signal, Wi-Fi and battery at
-// the right, 24 dp of a 360 dp screen, drawn in the top band the captures leave free.
+// the right, 24 dp of a 360 dp screen, drawn in the top band the captures leave free. Both ends sit
+// 34 dp in and 4 dp lower than a flat screen would put them, clear of the rounded corners (MZ, 2 November 2026).
 function androidStatusBar(w, ink) {
   const k = w / 360;
   return [
     abs({ left: 0, top: 8 * k, width: w, height: 24 * k },
-      h("svg", { width: w, height: 24 * k, viewBox: "0 0 360 24" },
+      h("svg", { width: w, height: 24 * k, viewBox: "0 0 360 24" }, h("g", { transform: "translate(-18 4)" },
         h("path", { d: "M300 17h10V7Z", fill: ink }),
         h("path", { d: "M314 9.5a9 9 0 0 1 12 0L320 17Z", fill: ink }),
         h("rect", { x: 331, y: 7, width: 7, height: 11, rx: 1.4, fill: ink }),
         h("rect", { x: 333, y: 5.6, width: 3, height: 1.6, rx: 0.5, fill: ink }),
-      )),
-    abs({ left: 16 * k, top: 12 * k, height: 16 * k, alignItems: "center", fontSize: 13 * k, fontWeight: 600, color: ink }, "9:41"),
+      ))),
+    abs({ left: 34 * k, top: 16 * k, height: 16 * k, alignItems: "center", fontSize: 13 * k, fontWeight: 600, color: ink }, "9:41"),
   ];
 }
 
