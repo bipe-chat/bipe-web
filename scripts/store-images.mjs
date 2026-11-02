@@ -35,8 +35,8 @@ import { deflateSync } from "node:zlib";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { fonts } from "./og.mjs";
-import { captureSlugs, headerSlugs, illustrationBox, panelNode, shotOf } from "./lib/panels.mjs";
-import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
+import { captureSlugs, headerSlugs, panelNode, shotOf } from "./lib/panels.mjs";
+import { brazilNetworkSvg, brazilPalette } from "./lib/brazil-network.mjs";
 import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
 import { chunk, encodeJpeg } from "./lib/raster.mjs";
 import { calloutSvg, overlay, SPECS } from "./lib/callouts.mjs";
@@ -156,13 +156,6 @@ export async function renderPanel(node, width, height, backdrop, format = "png",
 
 /** One panel as PNG bytes: the layout for the device kind and the panel type, on the backdrop. */
 export async function panelPng({ panel, panels, dev, captures, markPath, tone: t, texture, index, subtitle, format, ctx }) {
-  // A panel with no capture shows the Brazil network on its own jabuticaba field, with no brand
-  // mark behind it (every such panel is about data in Brazil: dados-no-brasil, social text posts).
-  // Its text takes the jabuticaba tone, so a light tone (maracujá) never puts dark ink on that field.
-  if (panel.feature === "-" && dev.kind !== "feature") {
-    const field = tone("jabuticaba");
-    return renderPanel(panelNode({ panel, dev, captures, tone: field, markPath, subtitle }), dev.width, dev.height, { svg: brazilNetworkSvg({ width: dev.width, height: dev.height, box: illustrationBox(dev) }), tone: field }, format);
-  }
   const node = panelNode({ panel, panels, dev, captures, tone: t, markPath, subtitle });
   const top = ctx ? await calloutSvg({ panel, dev, captures, ctx, tone: t }) : "";
   return renderPanel(node, dev.width, dev.height, { texture, tone: t, markPath, variant: index, mark: BRAND.mark }, format, top);
@@ -177,6 +170,18 @@ export function loadCapture(file, captureDev) {
   if (isBlank(dataUrl, info.width, info.height)) throw new Error(`${file} is blank`);
   if (!(captureDev.screenRadius > 0)) throw new Error(`devices.mjs: ${captureDev.key} has no screenRadius`);
   return { dataUrl, width: info.width, height: info.height, radius: captureDev.screenRadius, file };
+}
+
+/**
+ * The screen of a panel with no feature (`-`, the data-in-Brazil panels): the Brazil network at the
+ * capture size, so it sits in the phone as the other panels' scenes do (MZ, 2 November 2026: on its
+ * own field it did not match the set). The field is dark, so the status bar takes the light core.
+ */
+export function brazilScreen(captureDev) {
+  const { width, height } = captureDev;
+  const svg = brazilNetworkSvg({ width, height, box: { x: width * 0.07, y: height * 0.12, w: width * 0.86, h: height * 0.8 } });
+  const png = new Resvg(svg, { fitTo: { mode: "width", value: width } }).render().asPng();
+  return { dataUrl: `data:image/png;base64,${png.toString("base64")}`, width, height, radius: captureDev.screenRadius, barInk: brazilPalette().core };
 }
 
 /** The panel the feature graphic shows: panel 1. */
@@ -265,6 +270,7 @@ export async function renderSet(opt) {
       // The captures of this image, by slug, in its palette.
       const themed = new Map(shots.map((shot) => [shot, captures.get(`${shot}@${palette}`)]));
       const capture = themed.get(shotOf(panel));
+      if (panel.feature === "-" && captureDev) themed.set(shotOf(panel), brazilScreen(captureDev));
       const subtitle = listing.platforms.ios?.locales[locale]?.subtitle ?? "";
       // The tone changes on every panel (brandTone), and the backdrop variant moves the blobs.
       const t = toneFor(i);
