@@ -24,7 +24,7 @@ export const FEATURE_REGION = { "aviso-golpe": [0.03, 0.578, 0.84, 0.21] };
 /** The capture slug of a panel: the `capture` column when set (social posts reuse store captures), else the slug. */
 export const shotOf = (panel) => panel.capture || panel.slug;
 
-/** Captures a panel needs, by slug. */
+/** Captures a panel needs, by slug. A panel with no feature (`-`) has none: store-images.mjs puts the Brazil network on its screen. */
 export const captureSlugs = (panel) => (panel.feature === "-" ? [] : [shotOf(panel)]);
 
 // Layout per device kind, in units of a canvas 1320 wide; `s` scales them to the real width, so the
@@ -72,13 +72,13 @@ function copyBlock({ panel, L, s, t }) {
 }
 
 /**
- * The status bar, in points of a 440 pt wide screen (iPhone 6.9"), scaled to the screen width `w`.
+ * The status bar in `ink`, in points of a 440 pt wide screen (iPhone 6.9"), scaled to the screen width `w`.
  * The time and the icons sit on the line where the Dynamic Island's centre would be, as on the device.
  */
-function statusBar(w) {
+function statusBar(w, ink) {
   const k = w / 440;
   const cy = 29.5;
-  const bars = [4, 6.2, 8.5, 11].map((bh, i) => h("rect", { x: 318 + i * 4.6, y: cy + 5.5 - bh, width: 3.2, height: bh, rx: 1, fill: INK }));
+  const bars = [4, 6.2, 8.5, 11].map((bh, i) => h("rect", { x: 318 + i * 4.6, y: cy + 5.5 - bh, width: 3.2, height: bh, rx: 1, fill: ink }));
   const arc = (r) => {
     const a = Math.PI / 4;
     const [cx, by] = [347.5, cy + 5.5];
@@ -88,31 +88,31 @@ function statusBar(w) {
     abs({ left: 0, top: 0, width: w, height: 62 * k },
       h("svg", { width: w, height: 62 * k, viewBox: "0 0 440 62" },
         ...bars,
-        ...[4.5, 8, 11.5].map((r) => h("path", { d: arc(r), fill: "none", stroke: INK, "stroke-width": 2.1, "stroke-linecap": "round" })),
+        ...[4.5, 8, 11.5].map((r) => h("path", { d: arc(r), fill: "none", stroke: ink, "stroke-width": 2.1, "stroke-linecap": "round" })),
         // The dot under the arcs that closes the Wi-Fi glyph.
-        h("circle", { cx: 347.5, cy: cy + 4.2, r: 1.5, fill: INK }),
-        h("rect", { x: 362, y: cy - 6, width: 25, height: 12, rx: 3.6, fill: "none", stroke: INK, "stroke-opacity": 0.4, "stroke-width": 1 }),
-        h("rect", { x: 364, y: cy - 4, width: 21, height: 8, rx: 2.2, fill: INK }),
-        h("rect", { x: 388.2, y: cy - 2, width: 1.6, height: 4, rx: 0.8, fill: INK, "fill-opacity": 0.4 }),
+        h("circle", { cx: 347.5, cy: cy + 4.2, r: 1.5, fill: ink }),
+        h("rect", { x: 362, y: cy - 6, width: 25, height: 12, rx: 3.6, fill: "none", stroke: ink, "stroke-opacity": 0.4, "stroke-width": 1 }),
+        h("rect", { x: 364, y: cy - 4, width: 21, height: 8, rx: 2.2, fill: ink }),
+        h("rect", { x: 388.2, y: cy - 2, width: 1.6, height: 4, rx: 0.8, fill: ink, "fill-opacity": 0.4 }),
       )),
     // The time is Satori text (paths), so it needs no font in resvg.
-    abs({ left: 40 * k, top: (cy - 11) * k, width: 80 * k, height: 22 * k, justifyContent: "center", alignItems: "center", fontSize: 17 * k, fontWeight: 700, color: INK, letterSpacing: "-0.01em" }, "9:41"),
+    abs({ left: 40 * k, top: (cy - 11) * k, width: 80 * k, height: 22 * k, justifyContent: "center", alignItems: "center", fontSize: 17 * k, fontWeight: 700, color: ink, letterSpacing: "-0.01em" }, "9:41"),
   ];
 }
 
 // The Android status bar (Material 3 / Pixel layout): the time at the left, signal, Wi-Fi and battery at
 // the right, 24 dp of a 360 dp screen, drawn in the top band the captures leave free.
-function androidStatusBar(w) {
+function androidStatusBar(w, ink) {
   const k = w / 360;
   return [
     abs({ left: 0, top: 8 * k, width: w, height: 24 * k },
       h("svg", { width: w, height: 24 * k, viewBox: "0 0 360 24" },
-        h("path", { d: "M300 17h10V7Z", fill: INK }),
-        h("path", { d: "M314 9.5a9 9 0 0 1 12 0L320 17Z", fill: INK }),
-        h("rect", { x: 331, y: 7, width: 7, height: 11, rx: 1.4, fill: INK }),
-        h("rect", { x: 333, y: 5.6, width: 3, height: 1.6, rx: 0.5, fill: INK }),
+        h("path", { d: "M300 17h10V7Z", fill: ink }),
+        h("path", { d: "M314 9.5a9 9 0 0 1 12 0L320 17Z", fill: ink }),
+        h("rect", { x: 331, y: 7, width: 7, height: 11, rx: 1.4, fill: ink }),
+        h("rect", { x: 333, y: 5.6, width: 3, height: 1.6, rx: 0.5, fill: ink }),
       )),
-    abs({ left: 16 * k, top: 12 * k, height: 16 * k, alignItems: "center", fontSize: 13 * k, fontWeight: 600, color: INK }, "9:41"),
+    abs({ left: 16 * k, top: 12 * k, height: 16 * k, alignItems: "center", fontSize: 13 * k, fontWeight: 600, color: ink }, "9:41"),
   ];
 }
 
@@ -163,7 +163,7 @@ function phone({ capture, left, top, screenW, bezel, rim, s, buttons: kind = "ip
       edge ? h("g", { transform: `translate(${out} 0)` }, h("path", { d: outer, fill: "url(#rim)" }), h("path", { d: inner, fill: BEZEL })) : null,
     ),
     h("img", { src: capture.dataUrl, width: screenW, height: screenH, style: { position: "absolute", left: out + edge, top: edge, clipPath: `path("${squirclePath(screenW, screenH, radius)}")` } }),
-    abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...(bar === "android" ? androidStatusBar(screenW) : statusBar(screenW))),
+    abs({ left: out + edge, top: edge, width: screenW, height: screenH }, ...(bar === "android" ? androidStatusBar(screenW, capture.barInk ?? INK) : statusBar(screenW, capture.barInk ?? INK))),
   );
   return [shadow, body];
 }
@@ -193,27 +193,6 @@ function capturePanel({ panel, width, height, kind, captures, tone: t }) {
     ...phone({ capture, left: (width - frameW) / 2, top: L.frameTop * s, screenW, bezel, rim, s, buttons: L.buttons, bar: L.bar }),
     abs({ left: (width - L.copy * s) / 2, top: L.top * s, width: L.copy * s, justifyContent: "center" }, copyBlock({ panel, L, s, t })),
   );
-}
-
-/**
- * A panel with no capture (feature `-`): the title and the sub at the same place as on the other
- * panels. The Brazil network fills the space under them; store-images.mjs draws it as the backdrop
- * of this panel, in the box that illustrationBox() gives.
- */
-function textPanel({ panel, width, height, kind, tone: t }) {
-  const s = width / 1320;
-  const L = LAYOUT[kind];
-  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
-    abs({ left: (width - L.copy * s) / 2, top: L.top * s, width: L.copy * s, justifyContent: "center" }, copyBlock({ panel, L, s, t })),
-  );
-}
-
-/** Where the illustration of a panel with no capture goes: under the copy, from the phone top line down. */
-export function illustrationBox(dev) {
-  const L = LAYOUT[dev.kind];
-  const s = dev.width / 1320;
-  const top = L.frameTop * s;
-  return { x: dev.width * 0.05, y: top, w: dev.width * 0.9, h: dev.height - top - dev.height * 0.03 };
 }
 
 /** Play feature graphic: mark and wordmark with the store subtitle, and one region of panel 1. */
@@ -270,6 +249,5 @@ export function panelNode({ panel, panels, dev, captures, tone: t, markPath, sub
   if (dev.kind === "header") return headerArt({ panels, width, height, captures, tone: t });
   if (!LAYOUT[dev.kind] && dev.kind !== "feature") throw new Error(`panels: no layout for ${dev.key} (${dev.kind}); the store set is iPhone and Play only (bipe#419)`);
   if (dev.kind === "feature") return featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath });
-  if (panel.feature === "-") return textPanel({ panel, width, height, kind: dev.kind, tone: t });
   return capturePanel({ panel, width, height, kind: dev.kind, captures, tone: t });
 }
