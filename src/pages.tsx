@@ -51,7 +51,7 @@ export function HomePage({ lang }: { lang: Lang }) {
   const biz = product.home.business;
   return (
     <>
-      <section className="wrap hero">
+      <section className="wrap hero tone-acai">
         <div>
           <h1 id="hero-title">{product.promise[lang].title}</h1>
           {lang === "pt" && HEADLINE.active && <script dangerouslySetInnerHTML={{ __html: assignScript() }} />}
@@ -72,7 +72,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           })}
         </ul>
       </section>
-      <section className="wrap section"><TentpoleSection lang={lang} tp={handle} flip /></section>
+      <section className="wrap section tone-jenipapo"><TentpoleSection lang={lang} tp={handle} flip /></section>
       <section className="wrap section">
         <h2>{c.home.featuresTitle}</h2>
         <div className="grid" style={{ marginTop: 24 }}>
@@ -82,12 +82,14 @@ export function HomePage({ lang }: { lang: Lang }) {
       </section>
       {biz && (
         <section className="wrap section" id="empresas">
-          <h2>{biz[lang].title}</h2>
-          <p className="lede">{biz[lang].line}</p>
-          <div className="grid" style={{ marginTop: 24 }}>
-            {biz.features.map((id) => <FeatureCard lang={lang} f={byId(id)} key={id} />)}
+          <div className="band tone-goiaba">
+            <h2>{biz[lang].title}</h2>
+            <p className="lede">{biz[lang].line}</p>
+            <div className="grid" style={{ marginTop: 24 }}>
+              {biz.features.map((id) => <FeatureCard lang={lang} f={byId(id)} key={id} />)}
+            </div>
+            <p className="more-links"><MoreLink href={paths.business(lang)}>{product.business[lang].nav}</MoreLink></p>
           </div>
-          <p className="more-links"><MoreLink href={paths.business(lang)}>{product.business[lang].nav}</MoreLink></p>
         </section>
       )}
       <section className="wrap section" id="convite">
