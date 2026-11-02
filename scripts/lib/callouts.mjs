@@ -119,7 +119,7 @@ export const SPECS = {
  * screen is the map's dark field: the map alone, larger than the screen and turned a little (MZ,
  * 2 November 2026). Same units as `card` in SPECS; the map keeps its aspect ratio in the box.
  */
-export const MAP_FLOAT = { top: 820, x: 0, width: 1500, height: 1500, tilt: -8 };
+export const MAP_FLOAT = { top: 900, x: 0, width: 1260, height: 1260, tilt: -8 };
 
 const WARNING = "M12 3 2 21h20L12 3Zm0 6v5m0 3v.5";
 const LINK = "M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7";
@@ -368,8 +368,11 @@ function mapSvg({ dev, capture }) {
   const ref = screenBox(REF_PANEL, REF_PANEL);
   const s = screen.width / ref.width;
   const m = MAP_FLOAT;
-  const [w, hh] = [m.width * s, m.height * s];
-  const [x, y] = [screen.left + (screen.width - w) / 2 + m.x * s, screen.top + (m.top - ref.top) * s];
+  const y = screen.top + (m.top - ref.top) * s;
+  // The whole map stays on the panel: where the phone runs off the bottom (Instagram post, square), it shrinks.
+  const fit = Math.min(1, (dev.height * 0.96 - y) / (m.height * s));
+  const [w, hh] = [m.width * s * fit, m.height * s * fit];
+  const x = screen.left + (screen.width - w) / 2 + m.x * s;
   const map = new Resvg(brazilNetworkSvg({ width: Math.round(w), height: Math.round(hh), box: { x: 0, y: 0, w, h: hh }, field: false })).render().asPng();
   return `<g transform="rotate(${m.tilt} ${x + w / 2} ${y + hh / 2})"><image href="data:image/png;base64,${map.toString("base64")}" x="${x}" y="${y}" width="${w}" height="${hh}"/></g>`;
 }
