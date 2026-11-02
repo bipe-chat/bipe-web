@@ -14,7 +14,7 @@ import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
 import { WhoCanReadSummary } from "./pages/PrivacyPage";
 import { storeSets } from "./store";
-import { codeLinks, compare, distribution, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
+import { codeLinks, compare, distribution, paletteColours, t, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index, tone }: { lang: Lang; tp: Tentpole; index: number; tone?: string }) {
   const id = tp.demos[index];
@@ -931,6 +931,16 @@ export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: strin
           <div className="card" key={hex}>
             <span className="swatch" style={{ background: hex }} />
             <strong>{name}</strong>
+            <span className="small mono">{hex}</span>
+          </div>
+        ))}
+      </div>
+      <h3 style={{ marginTop: 32 }}>{b.appColours}</h3>
+      <div className="brand-colours">
+        {paletteColours.map(({ id, hex }) => (
+          <div className="card" key={id}>
+            <span className="swatch" style={{ background: hex }} />
+            <strong>{t(lang, `bipe_colors_${id}`)}</strong>
             <span className="small mono">{hex}</span>
           </div>
         ))}
