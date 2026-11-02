@@ -31,6 +31,11 @@ import type { FigureId, SceneId } from "./sim/scenes";
  * marks and the Bipe mark path. The colours are the --bipe-chat-* variables, themed per palette by data-palette.
  */
 export const appPalettes: string[] = Object.keys(tokensJson.appThemes.palettes);
+/** Each app palette's colour on /sobre/marca/: its app icon step, light theme (tokens.json iconStep). */
+export const paletteColours = appPalettes.map((id) => {
+  const step = (tokensJson.appThemes.palettes as Record<string, { iconStep: string }>)[id].iconStep;
+  return { id, hex: (tokensJson.ramps as unknown as Record<string, { light: Record<string, string> }>)[id].light[step] };
+});
 export const chatBackground: {
   blobOpacity: number;
   blobs: { x: number; y: number; radius: number; tone: string }[];

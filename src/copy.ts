@@ -25,6 +25,7 @@ export const chrome = {
       sets: { iphone69: "iPhone", "asc-header": "Cabeçalho da App Store", "play-phone": "Celular Android", "play-feature": "Destaque do Google Play", "ig-post": "Post", "ig-story": "Story", "ig-square": "Post quadrado" } as Record<string, string>,
       colours: "Cores",
       plum: "Roxo Bipe", plumDark: "Roxo para fundo escuro",
+      appColours: "Cores do app",
       useTitle: "Uso",
       use: [
         "Use os arquivos como estão. Não mude cores, proporções nem a fonte.",
@@ -266,6 +267,7 @@ export const chrome = {
       sets: { iphone69: "iPhone", "asc-header": "App Store header", "play-phone": "Android phone", "play-feature": "Google Play feature graphic", "ig-post": "Post", "ig-story": "Story", "ig-square": "Square post" } as Record<string, string>,
       colours: "Colours",
       plum: "Bipe plum", plumDark: "Plum on dark backgrounds",
+      appColours: "App colours",
       useTitle: "Use",
       use: [
         "Use the files as they are. Do not change colours, proportions or the typeface.",
