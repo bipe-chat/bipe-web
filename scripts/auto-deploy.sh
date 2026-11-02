@@ -45,7 +45,7 @@ echo "$(date '+%F %T') changelog $key: deploying bipe-web $(git -C "$root/bipe-w
 
 test -f "$env_file" || { echo "missing $env_file (copy of scripts/deploy.env)" >&2; exit 1; }
 cd "$root/bipe-web"
-pnpm install -s --frozen-lockfile
+pnpm install --frozen-lockfile
 pnpm -s build
 cp "$env_file" scripts/deploy.env
 sh scripts/deploy.sh
