@@ -173,13 +173,13 @@ export function loadCapture(file, captureDev) {
 }
 
 /**
- * The screen of a panel with no feature (`-`, the data-in-Brazil panels): the Brazil network at the
- * capture size, so it sits in the phone as the other panels' scenes do (MZ, 2 November 2026: on its
- * own field it did not match the set). The field is dark, so the status bar takes the light core.
+ * The screen of a panel with no feature (`-`, data in Brazil): the dark field of the Brazil network
+ * at the capture size. The map floats over it, larger than the screen (MAP_FLOAT in lib/callouts.mjs;
+ * MZ, 2 November 2026). The field is dark, so the status bar takes the light core.
  */
 export function brazilScreen(captureDev) {
   const { width, height } = captureDev;
-  const svg = brazilNetworkSvg({ width, height, box: { x: width * 0.07, y: height * 0.12, w: width * 0.86, h: height * 0.8 } });
+  const svg = brazilNetworkSvg({ width, height, box: { x: width * 0.07, y: height * 0.12, w: width * 0.86, h: height * 0.8 }, mesh: false });
   const png = new Resvg(svg, { fitTo: { mode: "width", value: width } }).render().asPng();
   return { dataUrl: `data:image/png;base64,${png.toString("base64")}`, width, height, radius: captureDev.screenRadius, barInk: brazilPalette().core };
 }
