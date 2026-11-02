@@ -16,17 +16,17 @@ import { WhoCanReadSummary } from "./pages/PrivacyPage";
 import { storeSets } from "./store";
 import { codeLinks, compare, distribution, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
-function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
+function Demo({ lang, tp, index, tone }: { lang: Lang; tp: Tentpole; index: number; tone?: string }) {
   const id = tp.demos[index];
   if (!id) return <NoAdsFigure lang={lang} />;
-  return <Figure lang={lang} id={id} caption={tp[lang].demos[index]?.caption ?? ""} />;
+  return <Figure lang={lang} id={id} caption={tp[lang].demos[index]?.caption ?? ""} tone={tone} />;
 }
 
 function Points({ items }: { items: string[] }) {
   return <ul className="points">{items.map((p) => <li key={p}><Icon name="check" />{p}</li>)}</ul>;
 }
 
-function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp: Tentpole; flip?: boolean; headingLevel?: 1 | 2 }) {
+function TentpoleSection({ lang, tp, flip, headingLevel = 2, tone }: { lang: Lang; tp: Tentpole; flip?: boolean; headingLevel?: 1 | 2; tone?: string }) {
   const H = headingLevel === 1 ? "h1" : "h2";
   return (
     <div className={`split${flip ? " flip" : ""}`}>
@@ -36,7 +36,7 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
         <Points items={tp[lang].points} />
         {headingLevel === 2 && <p style={{ marginTop: 24 }}><MoreLink href={paths.tentpole(lang, tp)}>{chrome[lang].more}</MoreLink></p>}
       </div>
-      <Demo lang={lang} tp={tp} index={0} />
+      <Demo lang={lang} tp={tp} index={0} tone={tone} />
     </div>
   );
 }
@@ -51,7 +51,7 @@ export function HomePage({ lang }: { lang: Lang }) {
   const biz = product.home.business;
   return (
     <>
-      <section className="wrap hero tone-acai">
+      <section className="wrap hero">
         <div>
           <h1 id="hero-title">{product.promise[lang].title}</h1>
           {lang === "pt" && HEADLINE.active && <script dangerouslySetInnerHTML={{ __html: assignScript() }} />}
@@ -62,7 +62,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           </p>
           <p className="small muted" style={{ marginTop: 14 }}>{c.home.testing}</p>
         </div>
-        <Demo lang={lang} tp={lead} index={0} />
+        <Demo lang={lang} tp={lead} index={0} tone="acai" />
       </section>
       <section className="wrap">
         <ul className="proof">
@@ -72,7 +72,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           })}
         </ul>
       </section>
-      <section className="wrap section tone-jenipapo"><TentpoleSection lang={lang} tp={handle} flip /></section>
+      <section className="wrap section"><TentpoleSection lang={lang} tp={handle} flip tone="jenipapo" /></section>
       <section className="wrap section">
         <h2>{c.home.featuresTitle}</h2>
         <div className="grid" style={{ marginTop: 24 }}>

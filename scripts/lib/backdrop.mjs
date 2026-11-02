@@ -154,7 +154,8 @@ export function compose(satoriSvg, backdrop) {
 // The order of the app palettes in a set: the order with the largest OKLab distance (base step 1100)
 // between neighbouring images, the last one included, with açaí first (MZ, 1 November 2026: picker order
 // read as purple, pink, orange; then maracujá third, MZ the same day). It must hold every app palette once.
-const ORDER = ["acai", "jenipapo", "maracuja", "jabuticaba", "goiaba", "pitanga"];
+// src/palette-order.json is the one list: the site's figure stages (src/sim/Figure.tsx) read it too.
+const ORDER = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../../src/palette-order.json"), "utf8"));
 if (ORDER.length !== ACCENTS.length + 1 || !["acai", ...ACCENTS].every((k) => ORDER.includes(k)))
   throw new Error(`backdrop: ORDER must list the app palettes once each (${["acai", ...ACCENTS].join(", ")})`);
 
