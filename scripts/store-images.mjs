@@ -37,7 +37,7 @@ import satori from "satori";
 import { fonts } from "./og.mjs";
 import { captureSlugs, headerSlugs, panelNode, shotOf } from "./lib/panels.mjs";
 import { brazilNetworkSvg, brazilPalette } from "./lib/brazil-network.mjs";
-import { BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
+import { ACCENTS, BRAND, backdropSvg, compose, tone } from "./lib/backdrop.mjs";
 import { chunk, encodeJpeg } from "./lib/raster.mjs";
 import { calloutSvg, overlay, SPECS } from "./lib/callouts.mjs";
 
@@ -190,7 +190,8 @@ const heroPanel = (panels) => panels[0];
 // --- Run -----------------------------------------------------------------------------------------
 
 /**
- * Renders one device set per locale; `opt` takes the CLI options above. Returns the manifests it wrote,
+ * Renders one device set per locale; `opt` takes the CLI options above, and `everyPalette` (brand page only).
+ * Returns the manifests it wrote,
  * or with `needs: true` only the captures the set needs, as { slug, palette, locale } (scene-captures).
  */
 export async function renderSet(opt) {
@@ -224,8 +225,11 @@ export async function renderSet(opt) {
 
     // Each image is themed in its backdrop's palette, as the app themes the accent and the own bubble:
     // the capture of a slug comes in that palette, `<slug>@<palette>.png` (scripts/scene-captures.mjs).
-    const jobs = dev.kind === "feature" || dev.kind === "header"
-      ? [{ panel: heroPanel(panels), slug: dev.kind === "feature" ? "feature-graphic" : "header" }]
+    // The header and the feature graphic are one image; with `everyPalette` (the brand page) there is one
+    // in each app palette, in brandTone order, so açaí stays first.
+    const single = dev.kind === "feature" ? "feature-graphic" : dev.kind === "header" ? "header" : null;
+    const jobs = single
+      ? Array.from({ length: opt.everyPalette ? ACCENTS.length + 1 : 1 }, (_, i) => ({ panel: heroPanel(panels), slug: opt.everyPalette ? `${single}-${toneFor(i).palette}` : single }))
       : panels.map((panel) => ({ panel, slug: panel.slug }));
     for (const [i, job] of jobs.entries()) {
       job.palette = toneFor(i).palette;
