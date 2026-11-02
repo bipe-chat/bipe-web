@@ -8,6 +8,10 @@
 // metallic rim and a thin black bezel with continuous corners, side buttons and the status bar (9:41, signal, Wi-Fi,
 // battery), drawn here because the captures have none. No Dynamic Island (MZ, 1 November 2026: it says nothing
 // about the app, and Apple's 2027 design drops it). The backdrop is scripts/lib/backdrop.mjs.
+//
+// The Instagram sets are posts, not store panels (MZ, 2 November 2026: "not very post-like"). They
+// follow social/guide.md: left-aligned type, the Bipe mark and bipe.chat in a footer, and one of the
+// layouts in POST_LAYOUTS, picked per row with the `layout` column.
 import { h } from "../og.mjs";
 import { squirclePath } from "./squircle.mjs";
 
@@ -24,8 +28,26 @@ export const FEATURE_REGION = { "aviso-golpe": [0.03, 0.578, 0.84, 0.21] };
 /** The capture slug of a panel: the `capture` column when set (social posts reuse store captures), else the slug. */
 export const shotOf = (panel) => panel.capture || panel.slug;
 
-/** Captures a panel needs, by slug. A panel with no feature (`-`) has none: store-images.mjs puts the Brazil network on its screen. */
-export const captureSlugs = (panel) => (panel.feature === "-" ? [] : [shotOf(panel)]);
+/**
+ * The Instagram layouts (social/guide.md). `phone`: headline, then a capture in a phone offset to the
+ * right. `map`: headline and the Brazil network (lib/callouts.mjs draws it in postArtBox). `type`: large
+ * type only. `bubble`: one chat bubble (the `bubble` column, `from` over it) and the headline under it.
+ */
+export const POST_LAYOUTS = ["phone", "map", "type", "bubble"];
+
+/** The layout of a panel: the `layout` column, else `map` for a panel with no feature and `phone` for the others. */
+export function layoutOf(panel) {
+  const layout = panel.layout || (panel.feature === "-" ? "map" : "phone");
+  if (!POST_LAYOUTS.includes(layout)) throw new Error(`panels: ${panel.slug} has layout ${layout}; use one of ${POST_LAYOUTS.join(", ")}`);
+  if (layout === "bubble" && !panel.bubble) throw new Error(`panels: ${panel.slug} has layout bubble and no bubble text`);
+  return layout;
+}
+
+/**
+ * Captures a panel needs, by slug. A panel with no feature (`-`) has none: store-images.mjs puts the
+ * Brazil network on its screen. A post with a layout other than `phone` has none either.
+ */
+export const captureSlugs = (panel) => (panel.feature === "-" || (panel.layout && panel.layout !== "phone") ? [] : [shotOf(panel)]);
 
 // Layout per device kind, in units of a canvas 1320 wide; `s` scales them to the real width, so the
 // type has the same proportion on every device. `frameTop` is the same on every panel and leaves
@@ -39,11 +61,17 @@ const LAYOUT = {
   // Play: no device frame (Google advises against device imagery, and it counts for promotion
   // eligibility), so the screen alone, as wide as the iPhone screen, running off the bottom edge.
   play: { top: 120, copy: 1200, title: 106, sub: 64, gap: 22, frameTop: 520, frame: 950, bezel: 0, rim: 0, buttons: "none", bar: "android" },
-  // Instagram (bipe-chat/bipe#465), all 1080 wide. The story keeps text out of the bands the IG bars
-  // cover: the top 250 px and the bottom 340 px (306 and 416 units). Only the phone runs into them.
-  post: { top: 120, copy: 1120, title: 96, sub: 58, gap: 22, frameTop: 510, frame: 900, bezel: 14, rim: 6 },
-  square: { top: 100, copy: 1120, title: 88, sub: 53, gap: 20, frameTop: 450, frame: 820, bezel: 13, rim: 5 },
-  story: { top: 330, copy: 1120, title: 100, sub: 60, gap: 24, frameTop: 780, frame: 960, bezel: 15, rim: 6 },
+};
+
+// Instagram (bipe-chat/bipe#465), all 1080 wide, in the same units. `pad` is the side margin, `foot`
+// the margin under the footer. `title` is the headline size in the phone, map and bubble layouts,
+// `type` the size in the type layout. `frameTop` leaves room for a 3-line headline and a 2-line sub.
+// The phone is `frame` wide, `right` from the right edge, and runs off the bottom. The story keeps
+// text out of the bands the IG bars cover: the top 250 px and the bottom 340 px (306 and 416 units).
+const POST = {
+  post: { pad: 100, top: 120, foot: 100, title: 120, type: 168, sub: 54, gap: 28, frameTop: 740, frame: 720, right: 90, mark: 76, bezel: 12, rim: 5 },
+  square: { pad: 90, top: 100, foot: 90, title: 104, type: 148, sub: 48, gap: 24, frameTop: 610, frame: 600, right: 90, mark: 68, bezel: 11, rim: 5 },
+  story: { pad: 100, top: 330, foot: 470, title: 136, type: 176, sub: 58, gap: 30, frameTop: 990, frame: 800, right: 90, mark: 72, bezel: 12, rim: 5 },
 };
 // There is no iPad layout: the store set is iPhone and Play only (MZ, 20 October 2026; bipe#419).
 
@@ -57,9 +85,9 @@ function frameWidth(L, s, capture, height) {
 
 const abs = (style, ...children) => h("div", { style: { position: "absolute", display: "flex", ...style } }, ...children);
 
-function brandRow(markPath, size) {
+function brandRow(markPath, size, color = WHITE) {
   return h("div", { style: { display: "flex", alignItems: "center", gap: size * 0.3 } },
-    h("svg", { width: size, height: size, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: WHITE })),
+    h("svg", { width: size, height: size, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: color })),
     h("div", { style: { display: "flex", fontSize: size * 0.95, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
   );
 }
@@ -192,6 +220,68 @@ function capturePanel({ panel, width, height, kind, captures, tone: t }) {
   );
 }
 
+// --- Instagram posts (social/guide.md) ---------------------------------------------------------------
+
+/** The headline and the sub, left-aligned. `size` is the headline size in units. */
+function postCopy({ panel, P, s, t, size }) {
+  return h("div", { style: { display: "flex", flexDirection: "column", gap: P.gap * s } },
+    h("div", { style: { display: "block", fontSize: size * s, fontWeight: 900, letterSpacing: "-0.03em", lineHeight: 1.02 } }, panel.title),
+    panel.sub ? h("div", { style: { display: "block", fontSize: P.sub * s, fontWeight: 600, lineHeight: 1.28, color: t.sub, maxWidth: 1000 * s } }, panel.sub) : null,
+  );
+}
+
+/** The footer: the mark and the wordmark, bipe.chat under them, at the bottom left. */
+function postFooter({ P, s, t, markPath, height }) {
+  return abs({ left: P.pad * s, top: height - (P.foot + P.mark * 1.9) * s, flexDirection: "column", gap: 14 * s },
+    brandRow(markPath, P.mark * s, t.ink),
+    h("div", { style: { display: "flex", fontSize: P.mark * 0.5 * s, fontWeight: 700, color: t.sub } }, "bipe.chat"),
+  );
+}
+
+/** Where the art of a map post goes, in panel pixels: right of the footer, from under the copy to the bottom edge. */
+export function postArtBox(dev) {
+  const P = POST[dev.kind];
+  const s = dev.width / 1320;
+  const top = P.frameTop * s;
+  const w = dev.width * 0.82;
+  return { x: dev.width - w + dev.width * 0.04, y: top, w, h: Math.min(w, dev.height - top - 20 * s) };
+}
+
+/** One incoming chat bubble, as the app draws it: white, the corner at the sender flat, the time at the end. */
+function bubble({ panel, P, s }) {
+  const size = P.sub * 1.12;
+  return h("div", { style: { display: "flex", flexDirection: "column", gap: 10 * s, alignSelf: "flex-start", maxWidth: 1020 * s, padding: `${34 * s}px ${44 * s}px ${26 * s}px`, backgroundColor: WHITE, color: INK, borderRadius: `${54 * s}px ${54 * s}px ${54 * s}px ${12 * s}px`, boxShadow: `0 ${24 * s}px ${60 * s}px rgba(0,0,0,0.22)`, transform: "rotate(-2deg)" } },
+    panel.from ? h("div", { style: { display: "flex", fontSize: size * 0.62 * s, fontWeight: 800, color: "#6E6E78" } }, panel.from) : null,
+    h("div", { style: { display: "block", fontSize: size * s, fontWeight: 700, lineHeight: 1.25 } }, panel.bubble),
+    h("div", { style: { display: "flex", justifyContent: "flex-end", fontSize: size * 0.5 * s, fontWeight: 600, color: "#8E8E96" } }, "21:58"),
+  );
+}
+
+function postPanel({ panel, dev, captures, tone: t, markPath }) {
+  const { width, height } = dev;
+  const P = POST[dev.kind];
+  const s = width / 1320;
+  const layout = layoutOf(panel);
+  const root = (...children) => h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } }, ...children);
+  const copyW = (1320 - 2 * P.pad) * s;
+  const footer = postFooter({ P, s, t, markPath, height });
+  // The type and bubble layouts centre their block between the top margin and the footer.
+  const middle = (...children) => abs({ left: P.pad * s, top: P.top * s, width: copyW, height: height - (P.top + P.foot + P.mark * 2.6) * s, flexDirection: "column", justifyContent: "center", gap: 84 * s }, ...children);
+  if (layout === "type") return root(middle(postCopy({ panel, P, s, t, size: P.type })), footer);
+  if (layout === "bubble") return root(middle(bubble({ panel, P, s }), postCopy({ panel, P, s, t, size: P.title })), footer);
+  const copy = abs({ left: P.pad * s, top: P.top * s, width: copyW }, postCopy({ panel, P, s, t, size: P.title }));
+  if (layout === "map") return root(copy, footer);
+  const capture = captures.get(shotOf(panel));
+  const bezel = P.bezel * s;
+  const rim = P.rim * s;
+  const frameW = P.frame * s;
+  return root(
+    ...phone({ capture, left: width - (P.right + P.frame) * s, top: P.frameTop * s, screenW: frameW - 2 * (bezel + rim), bezel, rim, s }),
+    copy,
+    footer,
+  );
+}
+
 /** Play feature graphic: mark and wordmark with the store subtitle, and one region of panel 1. */
 function featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath }) {
   const capture = captures.get(shotOf(panel));
@@ -244,6 +334,7 @@ function headerArt({ panels, width, height, captures, tone: t }) {
 export function panelNode({ panel, panels, dev, captures, tone: t, markPath, subtitle }) {
   const { width, height } = dev;
   if (dev.kind === "header") return headerArt({ panels, width, height, captures, tone: t });
+  if (POST[dev.kind]) return postPanel({ panel, dev, captures, tone: t, markPath });
   if (!LAYOUT[dev.kind] && dev.kind !== "feature") throw new Error(`panels: no layout for ${dev.key} (${dev.kind}); the store set is iPhone and Play only (bipe#419)`);
   if (dev.kind === "feature") return featureGraphic({ panel, subtitle, width, height, captures, tone: t, markPath });
   return capturePanel({ panel, width, height, kind: dev.kind, captures, tone: t });
