@@ -79,21 +79,17 @@ function statusBar(w, ink) {
   const k = w / 440;
   const cy = 29.5;
   const bars = [4, 6.2, 8.5, 11].map((bh, i) => h("rect", { x: 318 + i * 4.6, y: cy + 5.5 - bh, width: 3.2, height: bh, rx: 1, fill: ink }));
-  const arc = (r) => {
-    const a = Math.PI / 4;
-    const [cx, by] = [347.5, cy + 5.5];
-    return `M${cx - r * Math.sin(a)} ${by - r * Math.cos(a)}A${r} ${r} 0 0 1 ${cx + r * Math.sin(a)} ${by - r * Math.cos(a)}`;
-  };
+  // iOS 27: two Wi-Fi arcs over a small wedge, and a solid full battery with no outline.
+  const wifi = "M340 27.7A10.6 10.6 0 0 1 355 27.7M342.9 30.6A6.5 6.5 0 0 1 352.1 30.6";
+  const wedge = "M347.5 35.2L345.24 32.94A3.2 3.2 0 0 1 349.76 32.94Z";
   return [
     abs({ left: 0, top: 0, width: w, height: 62 * k },
       h("svg", { width: w, height: 62 * k, viewBox: "0 0 440 62" },
         ...bars,
-        ...[4.5, 8, 11.5].map((r) => h("path", { d: arc(r), fill: "none", stroke: ink, "stroke-width": 2.1, "stroke-linecap": "round" })),
-        // The dot under the arcs that closes the Wi-Fi glyph.
-        h("circle", { cx: 347.5, cy: cy + 4.2, r: 1.5, fill: ink }),
-        h("rect", { x: 362, y: cy - 6, width: 25, height: 12, rx: 3.6, fill: "none", stroke: ink, "stroke-opacity": 0.4, "stroke-width": 1 }),
-        h("rect", { x: 364, y: cy - 4, width: 21, height: 8, rx: 2.2, fill: ink }),
-        h("rect", { x: 388.2, y: cy - 2, width: 1.6, height: 4, rx: 0.8, fill: ink, "fill-opacity": 0.4 }),
+        h("path", { d: wifi, fill: "none", stroke: ink, "stroke-width": 2.5, "stroke-linecap": "round" }),
+        h("path", { d: wedge, fill: ink, stroke: ink, "stroke-width": 1.1, "stroke-linejoin": "round" }),
+        h("rect", { x: 362, y: cy - 6, width: 25, height: 12, rx: 4, fill: ink }),
+        h("rect", { x: 388.4, y: cy - 2.2, width: 1.9, height: 4.4, rx: 0.95, fill: ink }),
       )),
     // The time is Satori text (paths), so it needs no font in resvg.
     abs({ left: 40 * k, top: (cy - 11) * k, width: 80 * k, height: 22 * k, justifyContent: "center", alignItems: "center", fontSize: 17 * k, fontWeight: 700, color: ink, letterSpacing: "-0.01em" }, "9:41"),

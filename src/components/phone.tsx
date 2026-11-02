@@ -103,7 +103,7 @@ export function Phone({ lang, head, children, layout = "chat", footer }: { lang:
   );
 }
 
-/** iOS status bar: the viewer's time, then signal, Wi-Fi and battery. No Dynamic Island (MZ, 2 November 2026), as on the store panels. */
+/** iOS status bar: the viewer's time, then signal, Wi-Fi and a full battery, in the iOS 27 style (solid battery, no outline). No Dynamic Island (MZ, 2 November 2026), as on the store panels. */
 function StatusBar({ lang }: { lang: Lang }) {
   return (
     <div className="statusbar">
@@ -113,10 +113,10 @@ function StatusBar({ lang }: { lang: Lang }) {
         <rect x="4.5" y="6" width="3" height="6" rx="1" />
         <rect x="9" y="3.5" width="3" height="8.5" rx="1" />
         <rect x="13.5" y="1" width="3" height="11" rx="1" />
-        <path d="M28 2.2c2.4 0 4.6.9 6.3 2.5l1.1-1.2A10.6 10.6 0 0 0 28 .6c-2.8 0-5.4 1.1-7.4 2.9l1.1 1.2A9 9 0 0 1 28 2.2Zm0 3.4c1.5 0 2.8.5 3.9 1.5l1.1-1.2a7.3 7.3 0 0 0-10 0l1.1 1.2c1.1-1 2.4-1.5 3.9-1.5Zm0 3.4c.6 0 1.1.2 1.5.6L28 11.4l-1.5-1.8c.4-.4.9-.6 1.5-.6Z" />
-        <rect x="40.5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4" />
-        <rect x="42.5" y="2.5" width="15" height="7" rx="2" />
-        <path d="M64 4v4c.8-.3 1.3-1.1 1.3-2S64.8 4.3 64 4Z" opacity=".4" />
+        <path d="M21.21 4.41A9.6 9.6 0 0 1 34.79 4.41M23.83 7.03A5.9 5.9 0 0 1 32.17 7.03" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" />
+        <path d="M28 11.2L25.95 9.15A2.9 2.9 0 0 1 30.05 9.15Z" stroke="currentColor" strokeWidth="1" strokeLinejoin="round" />
+        <rect x="40.5" y=".5" width="22" height="11" rx="3.6" />
+        <rect x="63.3" y="4" width="1.7" height="4" rx=".85" />
       </svg>
     </div>
   );
