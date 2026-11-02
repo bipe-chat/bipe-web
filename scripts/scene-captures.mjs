@@ -153,8 +153,8 @@ async function main() {
     mkdirSync(out, { recursive: true });
     // The captures every brand set needs, slug@palette (store-images.mjs with `needs`).
     const needs = new Map();
-    for (const { listing, devices } of Object.values(BRAND_SETS)) for (const device of devices)
-      for (const n of await renderSet({ device, locale: "pt-BR", needs: true, ...(listing && { listing }) })) needs.set(`${n.slug}@${n.palette}`, n);
+    for (const { listing, devices, everyPalette } of Object.values(BRAND_SETS)) for (const device of devices)
+      for (const n of await renderSet({ device, locale: "pt-BR", needs: true, everyPalette, ...(listing && { listing }) })) needs.set(`${n.slug}@${n.palette}`, n);
     const theme = `document.getElementById("scene-theme")?.remove(); document.head.insertAdjacentHTML("beforeend", "<style id=scene-theme>" + CSS_THEME + "</style>")`;
     for (const { slug, palette } of [...needs.values()].sort((a, b) => a.palette.localeCompare(b.palette) || a.slug.localeCompare(b.slug))) {
       const id = SCENE_FOR[slug];
