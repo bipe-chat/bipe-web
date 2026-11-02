@@ -183,10 +183,15 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 
 /* The stage holds a simulation, so it reads as separate from the page. */
-.stage { background: radial-gradient(120% 90% at 20% 0%, var(--acai-wash), transparent 60%), var(--surface); border-radius: 28px; padding: 28px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.stage { position: relative; background: radial-gradient(120% 90% at 20% 0%, var(--acai-wash), transparent 60%), var(--surface); border-radius: 28px; padding: 28px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .stage .caption { font-size: 13px; color: var(--muted); text-align: center; max-width: 34em; margin: 0; }
 .stage .controls { display: flex; gap: 8px; }
 .stage .controls button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; }
+.stage-toggle { position: absolute; top: 14px; right: 14px; z-index: 1; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 999px; background: var(--bg); color: var(--text); cursor: pointer; }
+.stage-toggle:hover { color: var(--acai); }
+.stage-toggle:focus-visible { outline: 2px solid var(--acai); outline-offset: 2px; }
+/* On a narrow screen the phone fills the stage width: start it below the corner button. */
+@media (max-width: 640px) { .stage:has(> .stage-toggle) { padding-top: 58px; } }
 
 /* Phone: the simulated iOS app (src/components/phone.tsx). Inside the phone 1px = 1pt, copied from the
    SwiftUI source. The frame is 417pt wide (402pt screen plus bezel); zoom scales the whole phone. */
