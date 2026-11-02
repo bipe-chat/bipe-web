@@ -30,6 +30,7 @@ export const paths = {
   lgpd: (lang: Lang) => `${base(lang)}lgpd/`,
   whoCanRead: (lang: Lang) => `${base(lang)}${privacyRegister.slug[lang]}/`,
   accessibility: (lang: Lang) => `${base(lang)}${accessibilityRegister.slug[lang]}/`,
+  versions: (lang: Lang) => `${base(lang)}${lang === "pt" ? "versoes" : "versions"}/`,
   terms: (lang: Lang) => (lang === "pt" ? "/termos/" : "/en/terms/"),
   docs: (lang: Lang, slug = "") => `${base(lang)}docs/${slug ? `${slug}/` : ""}`,
 };

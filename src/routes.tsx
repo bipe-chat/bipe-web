@@ -10,6 +10,7 @@ import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
 import { AccessibilityPage, accessibilityMarkdown } from "./pages/AccessibilityPage";
+import { VersionsPage, versionsMarkdown } from "./pages/VersionsPage";
 import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OrganisationsPage, OrganisationAudiencePage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -154,6 +155,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     title: `${accessibilityRegister[lang].title} · Bipe`, description: accessibilityRegister[lang].description,
     markdown: accessibilityMarkdown(lang),
     body: () => <AccessibilityPage lang={lang} />,
+  },
+  {
+    path: paths.versions(lang), alt: paths.versions(other(lang)), lang,
+    title: `${chrome[lang].versions.title} · Bipe`, description: chrome[lang].versions.lede,
+    markdown: versionsMarkdown(lang),
+    body: () => <VersionsPage lang={lang} />,
   },
   ...docs.map((d): Route => ({
     path: paths.docs(lang, d.slug[lang]), alt: paths.docs(other(lang), d.slug[other(lang)]), lang,

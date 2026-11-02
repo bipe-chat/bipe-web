@@ -38,6 +38,7 @@ export function links(lang: Lang) {
     terms: { href: paths.terms(lang), label: c.terms },
     accessibility: { href: paths.accessibility(lang), label: accessibilityRegister[lang].nav },
     source: { href: distribution.source.org, label: c.source },
+    versions: { href: paths.versions(lang), label: c.versions.title },
   } satisfies Record<string, Link>;
 }
 
@@ -55,7 +56,7 @@ export const headerCta = "download" satisfies LinkId;
 export const footer = [
   { group: "product", links: ["tentpoles", "features", "download"] }, // What does it do, and how do I get it?
   { group: "for", links: ["audiences", "business", "pricing"] }, // Is it for me?
-  { group: "learn", links: ["scams", "technology", "docs", "llms", "compare", "source"] }, // How does it work, can I check it?
+  { group: "learn", links: ["scams", "technology", "docs", "llms", "compare", "source", "versions"] }, // How does it work, can I check it?
   { group: "bipe", links: ["about", "brand", "organisations", "accessibility", "contact"] }, // Who is behind it?
   { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];

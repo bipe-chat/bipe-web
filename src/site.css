@@ -730,6 +730,8 @@ a.staff-tile:hover { border-color: var(--acai); }
 .who-more p { color: var(--muted); margin: 0 0 8px; }
 /* Accessibility (/acessibilidade/): each level in words, the colour only repeats it. */
 .a11y-card h3 { font-size: 18px; margin: 0 0 12px; }
+.versions-day { margin-top: 40px; }
+.versions-day li { margin-bottom: 12px; }
 .a11y-status { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 20px; margin: 0 0 14px; font-size: 14px; }
 .a11y-status dt { color: var(--muted); }
 .a11y-status dd { margin: 0; font-weight: 600; }
