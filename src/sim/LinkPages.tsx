@@ -184,6 +184,9 @@ function readGroupPreview(p: Record<string, unknown>): GroupPreview | null {
   };
 }
 
+/** Day and month in words, Brasília time, as the link preview shows it (bipe-api inviteExpiryLabel). */
+const inviteExpiryLabel = (d: Date) => new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long", timeZone: "America/Sao_Paulo" }).format(d);
+
 /** /convite/<code>, and /g/<code> with group: the same steps, with the group's name and count on top. */
 export function InviteLanding({ group = false }: { group?: boolean }) {
   const c = chrome.pt.invite;
@@ -193,6 +196,7 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
   const [platform, setPlatform] = useState<Platform>("ios");
   const [valid, setValid] = useState<boolean | null>(null);
   const [inviter, setInviter] = useState<string | null>(null);
+  const [expiresAt, setExpiresAt] = useState<Date | null>(null);
   const [groupInfo, setGroupInfo] = useState<GroupPreview | null>(null);
   const [copyLabel, setCopyLabel] = useState(c.copy);
 
@@ -209,6 +213,7 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
         setValid(p.valid === true);
         if (group) setGroupInfo(readGroupPreview(p));
         else if (p.valid && typeof p.inviter_handle === "string" && new RegExp(reg.handles.pattern).test(p.inviter_handle)) setInviter(p.inviter_handle);
+        if (!group && p.valid && typeof p.expires_at === "string" && !Number.isNaN(Date.parse(p.expires_at))) setExpiresAt(new Date(p.expires_at));
       })
       .catch(() => {});
   }, [group]);
@@ -226,6 +231,8 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
   return (
     <section className="wrap narrow section">
       <h1>{title}</h1>
+      {/* Urgency: the invite works only for a few days (7 for a personal invite). */}
+      {expiresAt && <p><strong>{t("pt", "bipe_invite_link_expires", inviteExpiryLabel(expiresAt))}</strong></p>}
       {groupInfo?.inviter && <p>{t("pt", "bipe_group_link_open_invited_by", groupInfo.inviter)}</p>}
       {groupInfo && <p>{t("pt", "bipe_app_room_link_members", String(groupInfo.members))}</p>}
       <p className="lede">{groupInfo && !groupInfo.signsUp ? g.existingOnly : c.lead}</p>
