@@ -47,6 +47,8 @@ export function HomePage({ lang }: { lang: Lang }) {
   const lead = product.tentpoles[0];
   const handle = product.tentpoles.find((tp) => tp.id === "handle")!;
   const byId = (id: string) => product.features.find((f) => f.id === id)!;
+  // The company section (MZ, 2 November 2026): optional until bipe-shared main has home.business.
+  const biz = product.home.business;
   return (
     <>
       <section className="wrap hero">
@@ -78,6 +80,16 @@ export function HomePage({ lang }: { lang: Lang }) {
         </div>
         <p className="more-links"><MoreLink href={paths.features(lang)}>{c.allFeatures}</MoreLink></p>
       </section>
+      {biz && (
+        <section className="wrap section" id="empresas">
+          <h2>{biz[lang].title}</h2>
+          <p className="lede">{biz[lang].line}</p>
+          <div className="grid" style={{ marginTop: 24 }}>
+            {biz.features.map((id) => <FeatureCard lang={lang} f={byId(id)} key={id} />)}
+          </div>
+          <p className="more-links"><MoreLink href={paths.business(lang)}>{product.business[lang].nav}</MoreLink></p>
+        </section>
+      )}
       <section className="wrap section" id="convite">
         <div className="closing">
           <div>
