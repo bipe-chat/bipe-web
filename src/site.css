@@ -208,10 +208,10 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 /* The phone is a picture: no selection, no image drag, no long-press menu. */
 .phone * { pointer-events: none; -webkit-user-drag: none; }
 .screen { --bubble-in: var(--bipe-bubble-other); --bubble-out: var(--bipe-bubble-own); isolation: isolate; flex: 1; min-width: 0; min-height: 0; background: var(--bg); color: var(--text); font-family: var(--app); font-size: 17px; line-height: 22px; letter-spacing: -.41px; overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
-/* iPhone 16 Pro: 62pt top safe area, 125x37pt Dynamic Island 11pt from the top. */
+/* iPhone 16 Pro: 62pt top safe area. The middle 125pt is where the Dynamic Island sits; the phone draws none (MZ, 2 November 2026). */
 .statusbar { height: 62px; flex: none; display: grid; grid-template-columns: 1fr 125px 1fr; grid-template-rows: 37px; align-items: center; padding-top: 11px; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .statusbar .clock, .statusbar .sysicons { justify-self: center; }
-.statusbar .island { height: 37px; border-radius: 99px; background: #000; }
+.statusbar .sysicons { grid-column: 3; }
 /* 34pt bottom safe area, 134x5pt indicator 8pt from the bottom. */
 .home-indicator { flex: none; height: 34px; position: relative; }
 .home-indicator::after { content: ""; position: absolute; left: 50%; bottom: 8px; width: 134px; height: 5px; margin-left: -67px; border-radius: 99px; background: var(--text); }

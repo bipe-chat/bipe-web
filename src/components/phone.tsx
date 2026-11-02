@@ -103,12 +103,11 @@ export function Phone({ lang, head, children, layout = "chat", footer }: { lang:
   );
 }
 
-/** iOS status bar: the viewer's time, the Dynamic Island, then signal, Wi-Fi and battery. */
+/** iOS status bar: the viewer's time, then signal, Wi-Fi and battery. No Dynamic Island (MZ, 2 November 2026), as on the store panels. */
 function StatusBar({ lang }: { lang: Lang }) {
   return (
     <div className="statusbar">
       <time className="clock" data-clock={lang}>{useClock(lang)}</time>
-      <span className="island" />
       <svg className="sysicons" width="77" height="14" viewBox="0 0 66 12" fill="currentColor">
         <rect x="0" y="8" width="3" height="4" rx="1" />
         <rect x="4.5" y="6" width="3" height="6" rx="1" />
