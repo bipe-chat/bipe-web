@@ -183,8 +183,8 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 
 /* The stage holds a simulation, so it reads as separate from the page. */
-.stage { position: relative; background: radial-gradient(120% 90% at 20% 0%, var(--acai-wash), transparent 60%), var(--surface); border-radius: 28px; padding: 28px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-.stage .caption { font-size: 13px; color: var(--muted); text-align: center; max-width: 34em; margin: 0; }
+.stage { position: relative; border-radius: 28px; padding: 28px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.stage .caption { font-size: 13px; text-align: center; max-width: 34em; margin: 0; }
 .stage .controls { display: flex; gap: 8px; }
 .stage .controls button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; }
 .stage-toggle { position: absolute; top: 14px; right: 14px; z-index: 1; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 999px; background: var(--bg); color: var(--text); cursor: pointer; }
@@ -778,31 +778,39 @@ a.staff-tile:hover { border-color: var(--acai); }
 .pin-dots i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--muted); }
 .pin-dots i.on { background: var(--text); border-color: var(--text); }
 
-/* Palette backdrops on the home page (MZ, 2 November 2026: "come alive like the App Store"): the mesh of the
-   store panels (scripts/lib/backdrop.mjs tone()), from the same app palette ramps, so the site and the store
-   look like one set. White text holds at least 5.2:1 on every step under text; the lighter highlight (--tone-hi)
-   stays in the top right corner, where no text is. The ramps flip in dark mode, so dark
-   mode takes the steps with the same contrast (700 for the base, as 1100 in light). */
+/* Palette backdrops (MZ, 2 November 2026: "come alive like the App Store", then on every screenshot): the mesh
+   of the store panels (scripts/lib/backdrop.mjs tone()), from the same app palette ramps, so the site and the
+   store look like one set. Every figure stage takes one palette of src/palette-order.json (src/sim/Figure.tsx);
+   the home page names its own. White text holds at least 5.2:1 on every step under text; the lighter highlight
+   (--tone-hi) stays in the top right corner, where no text is. The ramps flip in dark mode, so dark mode takes
+   the steps with the same contrast (700 for the base, as 1100 in light). Maracujá is yellow only at its light
+   steps, so it takes dark ink, and in dark mode its bright steps (MZ, 1 November 2026: no muddy green). */
 .tone-acai { --tone-hi: var(--bipe-acai-800); --tone-base: var(--bipe-acai-1100); --tone-b1: var(--bipe-acai-900); --tone-b2: var(--bipe-acai-1000); --tone-b3: var(--bipe-acai-1300); }
 .tone-jenipapo { --tone-hi: var(--bipe-jenipapo-800); --tone-base: var(--bipe-jenipapo-1100); --tone-b1: var(--bipe-jenipapo-900); --tone-b2: var(--bipe-jenipapo-1000); --tone-b3: var(--bipe-jenipapo-1300); }
+.tone-maracuja { --tone-hi: var(--bipe-maracuja-500); --tone-base: var(--bipe-maracuja-700); --tone-b1: var(--bipe-maracuja-600); --tone-b2: var(--bipe-maracuja-800); --tone-b3: var(--bipe-maracuja-600); --tone-ink: var(--bipe-maracuja-1400); --tone-sub: var(--bipe-maracuja-1300); }
+.tone-jabuticaba { --tone-hi: var(--bipe-jabuticaba-800); --tone-base: var(--bipe-jabuticaba-1100); --tone-b1: var(--bipe-jabuticaba-900); --tone-b2: var(--bipe-jabuticaba-1000); --tone-b3: var(--bipe-jabuticaba-1300); }
 .tone-goiaba { --tone-hi: var(--bipe-goiaba-800); --tone-base: var(--bipe-goiaba-1100); --tone-b1: var(--bipe-goiaba-900); --tone-b2: var(--bipe-goiaba-1000); --tone-b3: var(--bipe-goiaba-1300); }
+.tone-pitanga { --tone-hi: var(--bipe-pitanga-800); --tone-base: var(--bipe-pitanga-1100); --tone-b1: var(--bipe-pitanga-900); --tone-b2: var(--bipe-pitanga-1000); --tone-b3: var(--bipe-pitanga-1300); }
 @media (prefers-color-scheme: dark) {
   .tone-acai { --tone-hi: var(--bipe-acai-900); --tone-base: var(--bipe-acai-700); --tone-b1: var(--bipe-acai-800); --tone-b2: var(--bipe-acai-600); --tone-b3: var(--bipe-acai-500); }
   .tone-jenipapo { --tone-hi: var(--bipe-jenipapo-900); --tone-base: var(--bipe-jenipapo-700); --tone-b1: var(--bipe-jenipapo-800); --tone-b2: var(--bipe-jenipapo-600); --tone-b3: var(--bipe-jenipapo-500); }
+  .tone-maracuja { --tone-hi: var(--bipe-maracuja-1300); --tone-base: var(--bipe-maracuja-1100); --tone-b1: var(--bipe-maracuja-1200); --tone-b2: var(--bipe-maracuja-1000); --tone-b3: var(--bipe-maracuja-900); --tone-ink: var(--bipe-maracuja-100); --tone-sub: var(--bipe-maracuja-300); }
+  .tone-jabuticaba { --tone-hi: var(--bipe-jabuticaba-900); --tone-base: var(--bipe-jabuticaba-700); --tone-b1: var(--bipe-jabuticaba-800); --tone-b2: var(--bipe-jabuticaba-600); --tone-b3: var(--bipe-jabuticaba-500); }
   .tone-goiaba { --tone-hi: var(--bipe-goiaba-900); --tone-base: var(--bipe-goiaba-700); --tone-b1: var(--bipe-goiaba-800); --tone-b2: var(--bipe-goiaba-600); --tone-b3: var(--bipe-goiaba-500); }
+  .tone-pitanga { --tone-hi: var(--bipe-pitanga-900); --tone-base: var(--bipe-pitanga-700); --tone-b1: var(--bipe-pitanga-800); --tone-b2: var(--bipe-pitanga-600); --tone-b3: var(--bipe-pitanga-500); }
 }
-[class*="tone-"] .stage, .band {
+.stage, .band {
   background:
-    radial-gradient(45% 40% at 95% 0%, var(--tone-hi), transparent 75%),
-    radial-gradient(55% 50% at 70% 25%, var(--tone-b1), transparent 70%),
-    radial-gradient(50% 55% at 0% 55%, var(--tone-b2), transparent 70%),
-    radial-gradient(80% 55% at 40% 110%, var(--tone-b3), transparent 70%),
-    var(--tone-base);
-  color: #fff;
+    radial-gradient(45% 40% at 95% 0%, var(--tone-hi, var(--bipe-acai-800)), transparent 75%),
+    radial-gradient(55% 50% at 70% 25%, var(--tone-b1, var(--bipe-acai-900)), transparent 70%),
+    radial-gradient(50% 55% at 0% 55%, var(--tone-b2, var(--bipe-acai-1000)), transparent 70%),
+    radial-gradient(80% 55% at 40% 110%, var(--tone-b3, var(--bipe-acai-1300)), transparent 70%),
+    var(--tone-base, var(--bipe-acai-1100));
+  color: var(--tone-ink, #fff);
 }
-[class*="tone-"] .stage .caption { color: rgba(255, 255, 255, .88); }
+/* Text that sits on the stage itself, outside a phone or a card: the stage caption and the labels of the business minis. */
+.stage > .caption, .band .lede, .stage .step-now, .stage .steps-label, .stage .api-legend, .stage .api-label, .stage .api-wait, .stage .pair figcaption { color: var(--tone-sub, rgba(255, 255, 255, .88)); }
 .band { border-radius: 28px; padding: 40px 32px; }
-.band .lede { color: rgba(255, 255, 255, .88); }
 .band .card { color: var(--text); }
 .band .grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
 .band .button.secondary { background: var(--bg); border-color: transparent; }
