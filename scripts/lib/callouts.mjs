@@ -18,7 +18,7 @@ import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { fonts, h } from "../og.mjs";
 import { RAMPS, UI } from "./backdrop.mjs";
-import { screenBox, shotOf } from "./panels.mjs";
+import { layoutOf, postArtBox, screenBox, shotOf } from "./panels.mjs";
 import { encodeRgbaPng } from "./raster.mjs";
 import { brazilNetworkSvg } from "./brazil-network.mjs";
 
@@ -310,6 +310,8 @@ function stickerSvg({ spec, capture, el, dev, s, index, place }) {
 export async function calloutSvg({ panel, dev, captures, ctx, tone }) {
   const specs = SPECS[panel.slug];
   const capture = captures.get(shotOf(panel));
+  // Instagram posts (social/guide.md): only the map layout draws here.
+  if (dev.platform === "social") return layoutOf(panel) === "map" ? postMapSvg(dev) : "";
   if (panel.feature === "-" && capture) return mapSvg({ dev, capture });
   // The store sets get callouts; the Instagram sets keep the plain panel.
   if (!specs || !capture || !["phone", "play"].includes(dev.kind)) return "";
@@ -375,6 +377,13 @@ function mapSvg({ dev, capture }) {
   const x = screen.left + (screen.width - w) / 2 + m.x * s;
   const map = new Resvg(brazilNetworkSvg({ width: Math.round(w), height: Math.round(hh), box: { x: 0, y: 0, w, h: hh }, field: false })).render().asPng();
   return `<g transform="rotate(${m.tilt} ${x + w / 2} ${y + hh / 2})"><image href="data:image/png;base64,${map.toString("base64")}" x="${x}" y="${y}" width="${w}" height="${hh}"/></g>`;
+}
+
+/** The Brazil network of a map post, tilted as on the store panels, in postArtBox (lib/panels.mjs). */
+function postMapSvg(dev) {
+  const { x, y, w, h: hh } = postArtBox(dev);
+  const map = new Resvg(brazilNetworkSvg({ width: Math.round(w), height: Math.round(hh), box: { x: 0, y: 0, w, h: hh }, field: false })).render().asPng();
+  return `<g transform="rotate(${MAP_FLOAT.tilt} ${x + w / 2} ${y + hh / 2})"><image href="data:image/png;base64,${map.toString("base64")}" x="${x}" y="${y}" width="${w}" height="${hh}"/></g>`;
 }
 
 /** Puts SVG markup over a Satori SVG, before its closing tag. */

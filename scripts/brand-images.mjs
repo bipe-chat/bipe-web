@@ -9,10 +9,10 @@ import { renderSet } from "./store-images.mjs";
 /**
  * Group -> listing (relative to bipe-web, null for bipe-shared/product/appstore.md) and devices.
  * `everyPalette`: the header and the feature graphic in all six app palettes (MZ, 2 November 2026).
+ * Instagram is social/posts.md only: the store panels are not posts (social/guide.md).
  */
 export const BRAND_SETS = {
   loja: { listing: null, devices: ["iphone69", "asc-header", "play-phone", "play-feature"], everyPalette: true },
-  social: { listing: null, devices: ["ig-post", "ig-story", "ig-square"] },
   posts: { listing: "social/posts.md", devices: ["ig-post", "ig-story", "ig-square"] },
 };
 const SHOWN = new Set(["built", "testing", "policy"]);
