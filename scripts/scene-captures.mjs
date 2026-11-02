@@ -32,6 +32,7 @@ export const SCENE_FOR = {
   "selo-cnpj": "empresa-pergunta",
   grupos: "grupo",
   stickers: "stickers",
+  empresa: "agenda-dono",
 };
 
 const SIZE = { width: 1320, height: 2868, points: 440 };

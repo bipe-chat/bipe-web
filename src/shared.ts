@@ -198,7 +198,7 @@ const productData = productJson as unknown as { features: Omit<Feature, "status"
 
 export const product = { ...productData, features: productData.features.map((f) => ({ ...f, status: featureStatus(f.id) })) } as unknown as {
   promise: Copy<{ title: string; lede: string }>;
-  home: { proof: string[]; features: string[] };
+  home: { proof: string[]; features: string[]; business?: { features: string[] } & Copy<{ title: string; line: string }> };
   realFake: Copy<{ title: string; lede: string; caption: string }>;
   headlineTest: { experiment: string; active: boolean; arms: ({ id: string; angle: string } & Copy<string>)[] };
   sides: Side[];
