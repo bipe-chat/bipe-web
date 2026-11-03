@@ -6,6 +6,7 @@ import familyTerms from "@shared/registries/family-terms.json";
 import handles from "@shared/registries/handles.json";
 import homoglyphs from "@shared/registries/homoglyphs.json";
 import inviteCodes from "@shared/registries/invite-codes.json";
+import profilesJson from "@shared/registries/profiles.json";
 import accountsJson from "@shared/registries/accounts.json";
 import reservedNames from "@shared/registries/reserved-names.json";
 import scamPatterns from "@shared/registries/scam-patterns.json";
@@ -52,6 +53,7 @@ export type Registries = {
   inviteCodes: { pattern: string; alphabet: string; maxInputLength: number };
   handles: { minLength: number; ownerMinLength: number; maxLength: number; pattern: string; skeletonStrip: string; changeCooldownDays: number; releaseHoldDays: number };
   owners: { owners: Record<string, string[]>; handles: Record<string, string> };
+  profiles: { socials: Social[] };
   strings: { strings: Record<string, string> };
   stringsEn: { strings: Record<string, string> };
 };
@@ -63,6 +65,10 @@ export const handleProblem = lib.handleProblem as (handle: string, reg: Registri
 export const handleSkeleton = lib.handleSkeleton as (handle: string, reg: Registries) => string;
 export const extractInviteCodeRef = lib.extractInviteCode as (text: string, reg: Registries) => string | null;
 export const normalizeCnpj = lib.normalizeCnpj as (input: string) => string | null;
+/** A social network a public profile can list (ADR 0228, registries/profiles.json socials), in registry order. */
+export type Social = { id: string; name: string; pattern: string; url: string };
+/** The link to a social handle: the registry url template with the handle. The site never uses a URL from the API. */
+export const socialUrl = lib.socialUrl as (platform: string, input: string, reg: Registries) => string;
 export type PixCode = { status: "valid" | "badCrc" | "malformed"; dynamic: boolean; key: string | null; keyType: string | null; name: string | null; city: string | null; amount: string | null; info: string | null };
 /** The Conferir no Bipe check of shared text (pix-check, test-vectors/pix-check.json). */
 export const pixCheck = pixLib.pixCheck as (text: string, reg: Registries) => { code: PixCode | null; keys: { value: string; types: string[] }[]; warning: ScamKind | null };
@@ -84,6 +90,7 @@ export const reg = {
   // reserved-name-owners.json (ADR 0065). A short handle is then too_short, as for every new account.
   owners: { owners: {}, handles: {} },
   inviteCodes,
+  profiles: profilesJson,
   strings: stringsPt,
   stringsEn,
 } as unknown as Registries;
