@@ -1,5 +1,5 @@
 # Privacy policy
-_Bipe, test version. Updated 27 October 2026._
+_Bipe, test version. Updated 3 November 2026._
 
 Bipe is a Brazilian messaging app, still in testing. This page tells you plainly what data we keep, where it lives and why. The Portuguese version is the reference text.
 
@@ -17,6 +17,7 @@ During testing, Bipe is run by Envisioning. Questions or requests about your dat
 - **Message from the website:** if you write through the form on the help page, we store your name, your email, the message, the language and the replies in the conversation. We keep this data in Starlings, Envisioning's work system, on servers in the European Union. An email carries a private link so you can continue the conversation. The data stays until you ask us to delete it.
 - **Milestones:** the app sends no statistics. From what the server already sees, it notes a few milestones per day: account created, first sign-in, first message, contact verified, invite sent or used, group created, call started and day of use. Each one is tied to a code derived from your account, not to your username, with no content and nothing about who you talk to. It tells us whether Bipe is useful and at which step people give up. It is kept for 13 months.
 - **Clipboard:** when the app opens without an account, it asks the phone whether something is copied, without reading it. If there is, the app shows a "Paste" button. It reads what you copied only when you tap that button, and uses only the invite code it finds. That code goes to the Bipe server, the same as when you open an invite link. On Android installed from Google Play, the app also reads the invite that the store passes along with the install.
+- **Age range:** Bipe does not ask for your date of birth. The app asks the phone which age range you are in. On iPhone, Apple answers, and only if you agree to share. On Android installed from Google Play, Google answers. The server keeps only the range (under 13, 13 to 15, 16 to 17, or 18 and over), where it came from and the date. When the phone gives no answer, the account has no range. The range gives accounts of people under 18 the protections that Brazil's ECA Digital requires, and an account with no range gets the same protections. Nobody in the app sees your range. It is kept as long as the account exists.
 
 ## What we don't do
 - No ads.
