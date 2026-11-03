@@ -2,6 +2,7 @@ import { chrome } from "./copy";
 import { CodeList } from "./components/code";
 import { AppIcon, Mark } from "./components/brand";
 import brandAssets from "./components/brand-assets.json";
+import officialAccounts from "@shared/registries/official-accounts.json";
 import { DownloadButtons, FeatureIcon, Icon, MoreLink, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
@@ -858,14 +859,24 @@ export function AboutPage({ lang }: { lang: Lang }) {
 export function HelpPage({ lang }: { lang: Lang }) {
   const c = chrome[lang].help;
   const account = product.features.find((f) => f.id === "new-phone")!;
+  // The in-app names come from the app strings, so the page follows a rename in the app.
+  const room = t(lang, "bipe_support_room_name");
+  const settingsPath = [t(lang, "bipe_settings_section"), t(lang, "bipe_settings_help"), t(lang, "bipe_settings_support")].join(" > ");
   const ways = [[paths.download(lang), c.download], [paths.feature(lang, account), c.account], [paths.lgpd(lang), c.data], [paths.organisations(lang), c.organisations]];
   return (
     <section className="wrap section">
       <h1>{c.title}</h1>
       <p className="lede">{c.lede}</p>
+      <div style={{ marginTop: 40, maxWidth: 688 }}>
+        <h2 className="sub">{c.inApp.title}</h2>
+        <p>{c.inApp.body(room, settingsPath)}</p>
+        <p className="small muted">{c.inApp.official(room)}</p>
+        <p><a className="button primary" href={`/@${officialAccounts.accounts.support.handle}`}>{c.inApp.open(room)}</a></p>
+      </div>
       <div className="split top" style={{ marginTop: 40 }}>
         <div className="card" style={{ padding: 32 }}>
-          <p style={{ marginTop: 0 }}>{c.message}</p>
+          <h2 className="sub" style={{ marginTop: 0 }}>{c.noApp}</h2>
+          <p>{c.message}</p>
           <p className="small muted" style={{ marginBottom: 24 }}>{c.safety}</p>
           <Island name="HelpForm" props={{ lang, copy: c.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
         </div>
