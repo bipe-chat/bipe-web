@@ -2,7 +2,8 @@
 // title and description, and a footer rule with the page's section and the address. Satori lays the
 // card out and turns the text into paths; resvg rasterises it. No system tool is involved, so the
 // card is the same on every machine that builds the site.
-// Style: docs/design/identity.md in the umbrella repo. Brand plum acai.1100, Nunito for the brand.
+// Style: docs/design/identity.md in the umbrella repo. Brand plum acai.1100, Nunito for the brand,
+// Lora for the subtitle under a headline.
 import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
@@ -18,13 +19,13 @@ const PAD = 72;
 const WHITE = "#FFFFFF";
 
 const require = createRequire(import.meta.url);
-const fontDir = join(dirname(require.resolve("@fontsource/nunito/package.json")), "files");
-export const fonts = [600, 800, 900].map((weight) => ({
-  name: "Nunito",
-  data: readFileSync(join(fontDir, `nunito-latin-${weight}-normal.woff`)),
-  weight,
-  style: "normal",
-}));
+const fontFiles = (family, weights) => {
+  const dir = join(dirname(require.resolve(`@fontsource/${family.toLowerCase()}/package.json`)), "files");
+  return weights.map((weight) => ({ name: family, data: readFileSync(join(dir, `${family.toLowerCase()}-latin-${weight}-normal.woff`)), weight, style: "normal" }));
+};
+export const fonts = [...fontFiles("Nunito", [600, 800, 900]), ...fontFiles("Lora", [500])];
+/** The subtitle under a headline on every rendered image: serif, never Nunito (identity.md). */
+export const SUB_FONT = { fontFamily: "Lora", fontWeight: 500 };
 
 /** Minimal element factory: Satori takes React-shaped objects. */
 const h = (type, props, ...children) => ({ type, props: { ...props, children: children.length > 1 ? children : children[0] } });
@@ -53,7 +54,7 @@ function card({ markPath, title, description, illustration, ink }) {
     h("div", { style: { display: "flex", flexDirection: "column", gap: 22, width: illustration ? 560 : 880 } },
       // The clamp hides overflow, so the line box must hold the descenders of the last line.
       clamp(3, { fontSize: titleSize(title), fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.08, paddingBottom: "0.08em" }, title),
-      description ? clamp(title.length > 30 ? 1 : 2, { fontSize: 34, fontWeight: 600, lineHeight: 1.3, color: ink.sub }, description) : null,
+      description ? clamp(title.length > 30 ? 1 : 2, { ...SUB_FONT, fontSize: 34, lineHeight: 1.3, color: ink.sub }, description) : null,
     ),
     // Footer: the address only. No upper-case section label (MZ: no eyebrows).
     h("div", { style: { display: "flex", justifyContent: "flex-end", alignItems: "center", borderTop: `2px solid ${ink.rule}`, paddingTop: 22, fontSize: 26, fontWeight: 800, width: illustration ? 560 : "100%" } },

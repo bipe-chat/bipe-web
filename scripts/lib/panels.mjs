@@ -12,7 +12,7 @@
 // The Instagram sets are posts, not store panels (MZ, 2 November 2026: "not very post-like"). They
 // follow social/guide.md: left-aligned type, the Bipe mark and bipe.chat in a footer, and one of the
 // layouts in POST_LAYOUTS, picked per row with the `layout` column.
-import { h } from "../og.mjs";
+import { SUB_FONT, h } from "../og.mjs";
 import { squirclePath } from "./squircle.mjs";
 
 const WHITE = "#FFFFFF";
@@ -95,7 +95,7 @@ function brandRow(markPath, size, color = WHITE) {
 function copyBlock({ panel, L, s, t }) {
   return h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: L.gap * s, textAlign: "center" } },
     h("div", { style: { display: "block", fontSize: L.title * s, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.06 } }, panel.title),
-    panel.sub ? h("div", { style: { display: "block", fontSize: L.sub * s, fontWeight: 600, lineHeight: 1.25, color: t.sub } }, panel.sub) : null,
+    panel.sub ? h("div", { style: { display: "block", ...SUB_FONT, fontSize: L.sub * s, lineHeight: 1.25, color: t.sub } }, panel.sub) : null,
   );
 }
 
@@ -226,7 +226,7 @@ function capturePanel({ panel, width, height, kind, captures, tone: t }) {
 function postCopy({ panel, P, s, t, size }) {
   return h("div", { style: { display: "flex", flexDirection: "column", gap: P.gap * s } },
     h("div", { style: { display: "block", fontSize: size * s, fontWeight: 900, letterSpacing: "-0.03em", lineHeight: 1.02 } }, panel.title),
-    panel.sub ? h("div", { style: { display: "block", fontSize: P.sub * s, fontWeight: 600, lineHeight: 1.28, color: t.sub, maxWidth: 1000 * s } }, panel.sub) : null,
+    panel.sub ? h("div", { style: { display: "block", ...SUB_FONT, fontSize: P.sub * s, lineHeight: 1.28, color: t.sub, maxWidth: 1000 * s } }, panel.sub) : null,
   );
 }
 
