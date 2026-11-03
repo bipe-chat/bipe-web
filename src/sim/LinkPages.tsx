@@ -9,7 +9,7 @@ import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { CompanySeal } from "../components/brand";
 import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
-import { distribution, extractInviteCodeRef, reg, stickerPackLinkBase, t, type Lang } from "../shared";
+import { distribution, extractInviteCodeRef, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
 export function extractInviteCode(text: string): string | null {
@@ -87,21 +87,35 @@ function LinkQr({ url }: { url: string }) {
   );
 }
 
-type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string; company?: CompanyBadge };
+type ProfileSocial = { id: string; name: string; handle: string };
+type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string; company?: CompanyBadge; socials?: ProfileSocial[] };
+
+/** Social handles (ADR 0228): the API sends id to handle. Registry order; unknown ids and handles that fail the
+ *  registry pattern are left out, so the link the page builds from the registry template always fits that network. */
+function readSocials(socials: unknown): ProfileSocial[] {
+  if (!socials || typeof socials !== "object" || Array.isArray(socials)) return [];
+  const byId = socials as Record<string, unknown>;
+  return reg.profiles.socials.flatMap(({ id, name, pattern }) => {
+    const handle = byId[id];
+    return typeof handle === "string" && new RegExp(pattern).test(handle) ? [{ id, name, handle }] : [];
+  });
+}
 
 /** Accepts only the fields the page renders, and photos only from the API host (ADR 0041).
  *  The seal shows only for a badge that verifies as lvl "cnpj" (src/badge.ts); a person's page shows none. */
 async function readProfile(p: unknown, handle: string): Promise<PublicProfile | null> {
   if (!p || typeof p !== "object") return null;
-  const { handle: h, name, bio, photo_url, badge } = p as Record<string, unknown>;
+  const { handle: h, name, bio, photo_url, badge, socials: rawSocials } = p as Record<string, unknown>;
   if (h !== handle || typeof name !== "string" || !name) return null;
   const company = badge === undefined ? null : await verifyCompanyBadge(badge);
+  const socials = readSocials(rawSocials);
   return {
     handle,
     name,
     ...(typeof bio === "string" && bio ? { bio } : {}),
     ...(typeof photo_url === "string" && photo_url.startsWith(`${API_URL}/v1/profiles/`) ? { photo_url } : {}),
     ...(company ? { company } : {}),
+    ...(socials.length ? { socials } : {}),
   };
 }
 
@@ -145,6 +159,17 @@ export function ProfileLanding(_: Record<string, never>) {
           <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
         )}
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
+        {profile.socials && (
+          <div className="profile-socials">
+            <h2 className="sub">{t("pt", "bipe_public_profile_socials")}</h2>
+            <ul>
+              {profile.socials.map((s) => (
+                <li key={s.id}><a href={socialUrl(s.id, s.handle, reg)} rel="me nofollow noopener noreferrer" target="_blank">{s.name} · @{s.handle}</a></li>
+              ))}
+            </ul>
+            <p className="small muted">{t("pt", "bipe_public_profile_socials_not_verified")}</p>
+          </div>
+        )}
         <p className="lede">{c.lead}</p>
         <div className="link-card">
           <div>
