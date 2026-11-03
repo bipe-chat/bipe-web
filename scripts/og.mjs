@@ -3,7 +3,7 @@
 // card out and turns the text into paths; resvg rasterises it. No system tool is involved, so the
 // card is the same on every machine that builds the site.
 // Style: docs/design/identity.md in the umbrella repo. Brand plum acai.1100, Nunito for the brand,
-// Lora for the subtitle under a headline.
+// Inter for the subtitle under a headline, as on the website.
 import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
@@ -23,9 +23,9 @@ const fontFiles = (family, weights) => {
   const dir = join(dirname(require.resolve(`@fontsource/${family.toLowerCase()}/package.json`)), "files");
   return weights.map((weight) => ({ name: family, data: readFileSync(join(dir, `${family.toLowerCase()}-latin-${weight}-normal.woff`)), weight, style: "normal" }));
 };
-export const fonts = [...fontFiles("Nunito", [600, 800, 900]), ...fontFiles("Lora", [500])];
-/** The subtitle under a headline on every rendered image: serif, never Nunito (identity.md). */
-export const SUB_FONT = { fontFamily: "Lora", fontWeight: 500 };
+export const fonts = [...fontFiles("Nunito", [600, 800, 900]), ...fontFiles("Inter", [500])];
+/** The subtitle under a headline on every rendered image: Inter, like the website body. Titles stay Nunito (identity.md). */
+export const SUB_FONT = { fontFamily: "Inter", fontWeight: 500 };
 
 /** Minimal element factory: Satori takes React-shaped objects. */
 const h = (type, props, ...children) => ({ type, props: { ...props, children: children.length > 1 ? children : children[0] } });
