@@ -826,3 +826,20 @@ a.staff-tile:hover { border-color: var(--acai); }
 .band .grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
 .band .button.secondary { background: var(--bg); border-color: transparent; }
 @media (max-width: 720px) { .band { padding: 28px 18px; } }
+
+/* The shop on the web (bipe-shared spec loja-web). */
+.shop { display: grid; gap: 20px; margin: 20px 0; }
+.shop-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.shop-form { display: grid; gap: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.shop-field { display: grid; gap: 4px; }
+.shop-field input, .shop-field select, .shop-line input { font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: inherit; min-width: 0; }
+.shop-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.shop-line input { width: 76px; text-align: right; }
+.shop-text { display: block; }
+.shop-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.shop-chips .chip { font: inherit; font-size: 14px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: inherit; cursor: pointer; }
+.shop-chips .chip.on { background: var(--acai); color: var(--on-acai); border-color: var(--acai); }
+.shop-chips .chip:disabled { opacity: 0.4; cursor: default; }
+.shop-catalog ul, .shop-records ul { list-style: none; margin: 8px 0 12px; padding: 0; }
+.shop-catalog li, .shop-records li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.shop-records .link { font: inherit; font-size: 14px; background: none; border: 0; padding: 0; color: var(--acai); cursor: pointer; white-space: nowrap; }
