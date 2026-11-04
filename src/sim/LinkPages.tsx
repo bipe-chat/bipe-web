@@ -8,6 +8,7 @@ import { detectPlatform, type Platform } from "../platform";
 import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { CompanySeal } from "../components/brand";
+import { ShopWeb } from "./ShopWeb";
 import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
 import { distribution, extractInviteCodeRef, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
 
@@ -159,6 +160,7 @@ export function ProfileLanding(_: Record<string, never>) {
           <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
         )}
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
+        {profile.company && <ShopWeb handle={profile.handle} />}
         {profile.socials && (
           <div className="profile-socials">
             <h2 className="sub">{t("pt", "bipe_public_profile_socials")}</h2>
