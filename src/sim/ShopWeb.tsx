@@ -290,7 +290,8 @@ function RecordList({ handle, base, token, records, services, onChange }: { hand
   };
   const bookingStatus = (s: string) => (s === "requested" ? t("pt", "bipe_loja_waiting") : t("pt", `bipe_agenda_status_${s}`));
   // The fragment never reaches a server. The app reads it and claims the records into the account (ADR 0195 point 7).
-  const claimLink = `https://bipe.chat/@${handle}#claim=${encodeURIComponent(token)}`;
+  // www: a universal link opens the app only when it leaves the current host; www redirects here without the app.
+  const claimLink = `https://www.bipe.chat/@${handle}#claim=${encodeURIComponent(token)}`;
   return (
     <div className="shop-records">
       <h2 className="sub">{t("pt", "bipe_loja_records_title")}</h2>
