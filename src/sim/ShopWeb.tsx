@@ -11,8 +11,9 @@ type Slot = { start: string; end: string };
 type SlotDay = { date: string; slots: Slot[] };
 type Booking = { id: string; service_id: string; start: string; status: string };
 type Order = { id: string; lines: { name: string; quantity: number }[]; total_amount_cents: number; status: string };
-type Records = { bookings: Booking[]; orders: Order[] };
-type Tools = { tools: string[]; web_booking?: boolean; web_orders?: boolean };
+type QueuePosition = { place: { id: string; status: string }; position: number; wait?: { min_minutes: number; max_minutes: number } };
+type Records = { bookings: Booking[]; orders: Order[]; queue_place?: QueuePosition };
+type Tools = { tools: string[]; web_booking?: boolean; web_orders?: boolean; web_queue?: boolean };
 
 const POLL_MS = 20_000;
 const WEEK_DAYS = 7;
@@ -73,6 +74,9 @@ function errorText(e: unknown): string {
     order_already_open: "bipe_order_error_already_open",
     orders_closed: "bipe_order_error_closed",
     item_unavailable: "bipe_order_error_item",
+    queue_closed: "bipe_queue_closed",
+    already_in_queue: "bipe_queue_error_already_joined",
+    place_not_active: "bipe_queue_error_inactive",
     price_not_fixed: "bipe_order_error_price",
   };
   return t("pt", keys[code] ?? "bipe_error_generic");
@@ -90,7 +94,8 @@ export function ShopWeb({ handle }: { handle: string }) {
   const [services, setServices] = useState<Item[]>([]);
   const [token, setToken] = useState<string>();
   const [records, setRecords] = useState<Records>();
-  const [open, setOpen] = useState<"book" | "order">();
+  const [open, setOpen] = useState<"book" | "order" | "queue">();
+  const [queueOpen, setQueueOpen] = useState(false);
 
   useEffect(() => {
     setToken(readToken(handle));
@@ -102,6 +107,13 @@ export function ShopWeb({ handle }: { handle: string }) {
     if (!tools) return;
     if (tools.tools.includes("catalog") || tools.tools.includes("orders")) {
       call<{ items: Item[] }>(`${base}/catalog`).then((r) => setItems(r.items)).catch(() => {});
+    }
+    if (tools.tools.includes("queue")) {
+      call<{ open: boolean }>(`${base}/queue`).then((q) => {
+        setQueueOpen(q.open);
+        // The counter QR code holds https://bipe.chat/@handle?fila.
+        if (q.open && tools.web_queue && new URLSearchParams(location.search).has("fila")) setOpen("queue");
+      }).catch(() => {});
     }
     if (tools.tools.includes("agenda")) {
       call<{ services: Item[] }>(`${base}/agenda/services`).then((r) => setServices(r.services)).catch(() => {});
@@ -144,10 +156,16 @@ export function ShopWeb({ handle }: { handle: string }) {
         ) : (
           <p className="small muted">{t("pt", "bipe_order_make")}: {t("pt", "bipe_loja_app_only")}</p>
         ))}
+        {live("queue") && (queueOpen ? (tools.web_queue ? (
+          <button type="button" className="button primary" onClick={() => setOpen("queue")}>{t("pt", "bipe_queue_join")}</button>
+        ) : (
+          <p className="small muted">{t("pt", "bipe_queue_join")}: {t("pt", "bipe_loja_app_only")}</p>
+        )) : <p className="small muted">{t("pt", "bipe_queue_closed")}</p>)}
       </div>
+      {open === "queue" && <QueueForm base={base} token={token} onDone={remember} />}
       {open === "book" && <BookForm base={base} token={token} services={services} onDone={remember} />}
       {open === "order" && <OrderForm base={base} token={token} products={products} onDone={remember} />}
-      {records && (records.bookings.length > 0 || records.orders.length > 0) && (
+      {records && (records.bookings.length > 0 || records.orders.length > 0 || records.queue_place) && (
         <RecordList handle={handle} base={base} token={token!} records={records} services={services} onChange={refresh} />
       )}
       {live("catalog") && items.length > 0 && (
@@ -173,6 +191,30 @@ function NameField({ value, onChange }: { value: string; onChange: (v: string) =
       <span className="small">{t("pt", "bipe_loja_your_name")}</span>
       <input type="text" autoComplete="given-name" maxLength={40} value={value} onChange={(e) => onChange(e.target.value)} />
     </label>
+  );
+}
+
+function QueueForm({ base, token, onDone }: { base: string; token?: string; onDone: (fresh?: string) => void }) {
+  const [name, setName] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string>();
+  return (
+    <form
+      className="shop-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!name.trim()) return;
+        setBusy(true);
+        setError(undefined);
+        call<{ token?: string }>(`${base}/web/queue`, { method: "POST", body: JSON.stringify({ name: name.trim() }) }, token)
+          .then((r) => onDone(r.token), (err: unknown) => setError(errorText(err)))
+          .finally(() => setBusy(false));
+      }}
+    >
+      <NameField value={name} onChange={setName} />
+      {error && <p className="small" role="alert">{error}</p>}
+      <button type="submit" className="button primary" disabled={busy || !name.trim()}>{t("pt", "bipe_queue_join")}</button>
+    </form>
   );
 }
 
@@ -297,6 +339,21 @@ function RecordList({ handle, base, token, records, services, onChange }: { hand
       <h2 className="sub">{t("pt", "bipe_loja_records_title")}</h2>
       {error && <p className="small" role="alert">{error}</p>}
       <ul>
+        {records.queue_place && (
+          <li>
+            <span>
+              <strong>{records.queue_place.position === 0 ? t("pt", "bipe_queue_called") : t("pt", "bipe_loja_queue_position", String(records.queue_place.position))}</strong>
+              {records.queue_place.position > 0 && (
+                <span className="shop-text small muted">
+                  {records.queue_place.wait
+                    ? `${t("pt", "bipe_queue_wait", t("pt", "bipe_queue_wait_range", String(records.queue_place.wait.min_minutes), String(records.queue_place.wait.max_minutes)))} ${t("pt", "bipe_queue_estimate_hint")}`
+                    : t("pt", "bipe_queue_wait_unknown")}
+                </span>
+              )}
+            </span>
+            <button type="button" className="link" onClick={() => cancel(`${base}/web/queue/places/${encodeURIComponent(records.queue_place!.place.id)}/leave`)}>{t("pt", "bipe_queue_leave")}</button>
+          </li>
+        )}
         {records.bookings.map((b) => (
           <li key={b.id}>
             <span>
