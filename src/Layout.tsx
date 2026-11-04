@@ -24,7 +24,7 @@ export function Layout({ route }: { route: Route }) {
           <a className="staff-top-site small" href={paths.home(lang)}>bipe.chat ↗</a>
         </div>
       </header>
-      <main id="main">{route.body()}</main>
+      <main id="main" tabIndex={-1}>{route.body()}</main>
     </>
   );
   return (
@@ -39,7 +39,7 @@ export function Layout({ route }: { route: Route }) {
           <a className="nav-cta" href={l[headerCta].href} aria-current={current(headerCta)}>{l[headerCta].label}</a>
         </div>
       </header>
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         {trail.length > 0 && (
           <nav className="wrap crumbs small" aria-label={c.navLabel.crumbs}>
             <ol>{trail.map((t, i) => <li key={t.href}>{i < trail.length - 1 ? <a href={t.href}>{t.label}</a> : <span aria-current="page">{t.label}</span>}</li>)}</ol>

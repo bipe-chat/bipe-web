@@ -7,3 +7,13 @@ export function detectPlatform(): Platform {
   if (/iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1)) return "ios";
   return "other";
 }
+
+/** True when the person asked for reduced motion (bipe#492). Browser only. */
+export function reducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/** Scroll with no animation under reduced motion. Browser only. */
+export function scrollBehavior(): ScrollBehavior {
+  return reducedMotion() ? "auto" : "smooth";
+}
