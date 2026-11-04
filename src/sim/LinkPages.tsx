@@ -8,6 +8,7 @@ import { detectPlatform, type Platform } from "../platform";
 import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { CompanySeal } from "../components/brand";
+import { QuoteLanding } from "./QuoteLanding";
 import { ShopWeb } from "./ShopWeb";
 import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
 import { brandMarkRules, distribution, extractInviteCodeRef, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
@@ -125,6 +126,7 @@ export function ProfileLanding(_: Record<string, never>) {
   const c = chrome.pt.profile;
   const [handle, setHandle] = useState<string | null>(null);
   const [profile, setProfile] = useState<PublicProfile | null>(null);
+  const [quoteLink, setQuoteLink] = useState<string | null>(null);
   const [platform, setPlatform] = useState<Platform>("ios");
   useEffect(() => {
     setPlatform(detectPlatform());
@@ -133,6 +135,12 @@ export function ProfileLanding(_: Record<string, never>) {
     const h = m?.[1]?.toLowerCase();
     if (!h || !new RegExp(reg.handles.pattern).test(h)) return;
     setHandle(h);
+    // A quote shared as a link shows whether the profile is published or not (ADR 0185).
+    const link = new URLSearchParams(location.search).get("orcamento");
+    if (link) {
+      setQuoteLink(link);
+      return;
+    }
     // Published profiles only (opt-in). The API answers the same 404 for "no handle" and "profile off".
     fetch(`${API_URL}/v1/profiles/${encodeURIComponent(h)}`, { referrerPolicy: "no-referrer" })
       .then((r) => (r.ok ? r.json() : null))
@@ -140,6 +148,7 @@ export function ProfileLanding(_: Record<string, never>) {
       .then(setProfile)
       .catch(() => {});
   }, []);
+  if (handle && quoteLink) return <QuoteLanding handle={handle} link={quoteLink} />;
   if (profile) {
     return (
       <section className="wrap narrow section profile">
