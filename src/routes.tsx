@@ -10,6 +10,7 @@ import { LegalPage, legal, legalTitle, lgpdMarkdown } from "./pages/LegalPage";
 import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
 import { AccessibilityPage, accessibilityMarkdown } from "./pages/AccessibilityPage";
+import { VersionsPage, versionsMarkdown } from "./pages/VersionsPage";
 import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OrganisationsPage, OrganisationAudiencePage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -155,6 +156,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     markdown: accessibilityMarkdown(lang),
     body: () => <AccessibilityPage lang={lang} />,
   },
+  {
+    path: paths.versions(lang), alt: paths.versions(other(lang)), lang,
+    title: `${chrome[lang].versions.title} · Bipe`, description: chrome[lang].versions.lede,
+    markdown: versionsMarkdown(lang),
+    body: () => <VersionsPage lang={lang} />,
+  },
   ...docs.map((d): Route => ({
     path: paths.docs(lang, d.slug[lang]), alt: paths.docs(other(lang), d.slug[other(lang)]), lang,
     title: `${docTitle(d.md[lang])} · Bipe`, description: docLede(d.md[lang]),
@@ -191,6 +198,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   path: "/convite/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "convite",
   title: "Convite para o Bipe", description: chrome.pt.invite.lead,
   body: () => <Island name="InviteLanding" props={{}} />,
+}, {
+  // Target of the Caddy rewrite for /g/<code> (group links, bipe ADR 0184).
+  // Its own card: sharing "convite" made the build write the group card over og/convite.jpg.
+  path: "/g/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "grupo",
+  title: "Link de grupo do Bipe", description: chrome.pt.invite.lead,
+  body: () => <Island name="InviteLanding" props={{ group: true }} />,
 }, {
   // Target of the Caddy rewrite for /s/<room ID> (pack links, bipe ADR 0205).
   path: "/s/", alt: null, lang: "pt", noindex: true, noReferrer: true,

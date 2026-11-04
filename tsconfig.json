@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "types": ["node", "vite/client"],
     "paths": {
-      "@shared/*": ["../bipe-shared/*"]
+      "@shared/*": ["../bipe-shared/*"],
+      "@changelog": ["./.generated/changelog.json"]
     }
   },
   "include": ["src"]

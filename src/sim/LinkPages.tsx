@@ -1,5 +1,5 @@
 // Landing pages for links shared from the app. Caddy rewrites /@handle to /perfil/,
-// /convite/<code> to /convite/ and /s/<room ID> to /s/, so each reads the real path in the browser. With the app installed,
+// /convite/<code> to /convite/, /g/<code> to /g/ and /s/<room ID> to /s/, so each reads the real path in the browser. With the app installed,
 // universal links (.well-known/apple-app-site-association) open the app before these pages load.
 import { useEffect, useState, type MouseEvent } from "react";
 import { encode } from "uqr";
@@ -9,7 +9,7 @@ import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
 import { CompanySeal } from "../components/brand";
 import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
-import { brandMarkRules, distribution, extractInviteCodeRef, reg, stickerPackLinkBase, t, type Lang } from "../shared";
+import { brandMarkRules, distribution, extractInviteCodeRef, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
 import { paths } from "../paths";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
@@ -32,6 +32,10 @@ async function copyText(text: string): Promise<boolean> {
 
 /** Invite page (bipe#197): the store link keeps the invite through the install. Google Play hands `referrer` to the app
  *  (Play Install Referrer); the APK and TestFlight cannot, so the button also copies the invite link for the app's "Colar". */
+/** A group link code (bipe ADR 0184) is copied as a /g/ link. The app takes either code at sign-up, so the Play
+ *  referrer keeps the convite/ form the app reads. */
+type LinkPath = "convite" | "g";
+
 function storeUrl(url: string, inviteCode?: string): string {
   if (!inviteCode || new URL(url).hostname !== "play.google.com") return url;
   const u = new URL(url);
@@ -39,25 +43,25 @@ function storeUrl(url: string, inviteCode?: string): string {
   return u.toString();
 }
 
-function copyInviteThenOpen(inviteCode: string | undefined) {
+function copyInviteThenOpen(inviteCode: string | undefined, path: LinkPath = "convite") {
   if (!inviteCode) return undefined;
   return async (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const href = e.currentTarget.href;
-    await copyText(`${location.origin}/convite/${inviteCode}`);
+    await copyText(`${location.origin}/${path}/${inviteCode}`);
     location.href = href;
   };
 }
 
 /** The Android test build is an APK from distribution.json; no button while it is not available. */
-function AndroidDownloadButton({ lang = "pt", inviteCode }: { lang?: Lang; inviteCode?: string }) {
+function AndroidDownloadButton({ lang = "pt", inviteCode, path }: { lang?: Lang; inviteCode?: string; path?: LinkPath }) {
   const { android } = distribution;
-  return android.status === "available" && android.url ? <a className="button primary" href={storeUrl(android.url, inviteCode)} onClick={copyInviteThenOpen(inviteCode)}><Icon name="android" />{android[lang].label}</a> : null;
+  return android.status === "available" && android.url ? <a className="button primary" href={storeUrl(android.url, inviteCode)} onClick={copyInviteThenOpen(inviteCode, path)}><Icon name="android" />{android[lang].label}</a> : null;
 }
 
-export function InstallButton({ lang = "pt", inviteCode }: { lang?: Lang; inviteCode?: string }) {
+export function InstallButton({ lang = "pt", inviteCode, path }: { lang?: Lang; inviteCode?: string; path?: LinkPath }) {
   const { ios } = distribution;
-  return ios.url ? <a className="button primary" href={ios.url} onClick={copyInviteThenOpen(inviteCode)}><Icon name="apple" />{ios[lang].label}</a> : null;
+  return ios.url ? <a className="button primary" href={ios.url} onClick={copyInviteThenOpen(inviteCode, path)}><Icon name="apple" />{ios[lang].label}</a> : null;
 }
 
 /** The button for the visitor's phone; both badges on a computer. Availability comes from distribution.json. */
@@ -84,21 +88,35 @@ function LinkQr({ url }: { url: string }) {
   );
 }
 
-type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string; company?: CompanyBadge };
+type ProfileSocial = { id: string; name: string; handle: string };
+type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string; company?: CompanyBadge; socials?: ProfileSocial[] };
+
+/** Social handles (ADR 0228): the API sends id to handle. Registry order; unknown ids and handles that fail the
+ *  registry pattern are left out, so the link the page builds from the registry template always fits that network. */
+function readSocials(socials: unknown): ProfileSocial[] {
+  if (!socials || typeof socials !== "object" || Array.isArray(socials)) return [];
+  const byId = socials as Record<string, unknown>;
+  return reg.profiles.socials.flatMap(({ id, name, pattern }) => {
+    const handle = byId[id];
+    return typeof handle === "string" && new RegExp(pattern).test(handle) ? [{ id, name, handle }] : [];
+  });
+}
 
 /** Accepts only the fields the page renders, and photos only from the API host (ADR 0041).
  *  The seal shows only for a badge that verifies as lvl "cnpj" (src/badge.ts); a person's page shows none. */
 async function readProfile(p: unknown, handle: string): Promise<PublicProfile | null> {
   if (!p || typeof p !== "object") return null;
-  const { handle: h, name, bio, photo_url, badge } = p as Record<string, unknown>;
+  const { handle: h, name, bio, photo_url, badge, socials: rawSocials } = p as Record<string, unknown>;
   if (h !== handle || typeof name !== "string" || !name) return null;
   const company = badge === undefined ? null : await verifyCompanyBadge(badge);
+  const socials = readSocials(rawSocials);
   return {
     handle,
     name,
     ...(typeof bio === "string" && bio ? { bio } : {}),
     ...(typeof photo_url === "string" && photo_url.startsWith(`${API_URL}/v1/profiles/`) ? { photo_url } : {}),
     ...(company ? { company } : {}),
+    ...(socials.length ? { socials } : {}),
   };
 }
 
@@ -142,6 +160,17 @@ export function ProfileLanding(_: Record<string, never>) {
           <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
         )}
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
+        {profile.socials && (
+          <div className="profile-socials">
+            <h2 className="sub">{t("pt", "bipe_public_profile_socials")}</h2>
+            <ul>
+              {profile.socials.map((s) => (
+                <li key={s.id}><a href={socialUrl(s.id, s.handle, reg)} rel="me nofollow noopener noreferrer" target="_blank">{s.name} · @{s.handle}</a></li>
+              ))}
+            </ul>
+            <p className="small muted">{t("pt", "bipe_public_profile_socials_not_verified")}</p>
+          </div>
+        )}
         <p className="lede">{c.lead}</p>
         <div className="link-card">
           <div>
@@ -168,12 +197,33 @@ export function ProfileLanding(_: Record<string, never>) {
   );
 }
 
-export function InviteLanding(_: Record<string, never>) {
+/** The preview of a group link (bipe ADR 0184): GET /v1/group-links/{code}. Never member names. */
+type GroupPreview = { name?: string; members: number; inviter?: string; signsUp: boolean };
+
+function readGroupPreview(p: Record<string, unknown>): GroupPreview | null {
+  if (p.valid !== true || typeof p.members !== "number") return null;
+  return {
+    name: typeof p.name === "string" ? p.name : undefined,
+    members: p.members,
+    inviter: typeof p.inviter_name === "string" ? p.inviter_name : undefined,
+    signsUp: p.signs_up === true,
+  };
+}
+
+/** Day and month in words, Brasília time, as the link preview shows it (bipe-api inviteExpiryLabel). */
+const inviteExpiryLabel = (d: Date) => new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long", timeZone: "America/Sao_Paulo" }).format(d);
+
+/** /convite/<code>, and /g/<code> with group: the same steps, with the group's name and count on top. */
+export function InviteLanding({ group = false }: { group?: boolean }) {
   const c = chrome.pt.invite;
+  const g = chrome.pt.groupLink;
+  const path: LinkPath = group ? "g" : "convite";
   const [code, setCode] = useState<string | null>(null);
   const [platform, setPlatform] = useState<Platform>("ios");
   const [valid, setValid] = useState<boolean | null>(null);
   const [inviter, setInviter] = useState<string | null>(null);
+  const [expiresAt, setExpiresAt] = useState<Date | null>(null);
+  const [groupInfo, setGroupInfo] = useState<GroupPreview | null>(null);
   const [copyLabel, setCopyLabel] = useState(c.copy);
 
   useEffect(() => {
@@ -182,39 +232,46 @@ export function InviteLanding(_: Record<string, never>) {
     setCode(found);
     if (!found) return setValid(false);
     // The code is a secret the inviter shared. The page sends it only to api.bipe.net.br.
-    fetch(`${API_URL}/v1/invites/${encodeURIComponent(found)}`, { referrerPolicy: "no-referrer" })
+    fetch(`${API_URL}/v1/${group ? "group-links" : "invites"}/${encodeURIComponent(found)}`, { referrerPolicy: "no-referrer" })
       .then((r) => (r.ok ? r.json() : null))
       .then((p) => {
         if (!p) return; // API down or rate-limited: keep the steps visible.
         setValid(p.valid === true);
-        if (p.valid && typeof p.inviter_handle === "string" && new RegExp(reg.handles.pattern).test(p.inviter_handle)) setInviter(p.inviter_handle);
+        if (group) setGroupInfo(readGroupPreview(p));
+        else if (p.valid && typeof p.inviter_handle === "string" && new RegExp(reg.handles.pattern).test(p.inviter_handle)) setInviter(p.inviter_handle);
+        if (!group && p.valid && typeof p.expires_at === "string" && !Number.isNaN(Date.parse(p.expires_at))) setExpiresAt(new Date(p.expires_at));
       })
       .catch(() => {});
-  }, []);
+  }, [group]);
 
+  const title = group ? (groupInfo?.name ? t("pt", "bipe_group_link_preview_title", groupInfo.name) : g.title) : inviter ? c.titleFrom(inviter) : c.title;
   if (valid === false) {
     return (
       <section className="wrap narrow section">
-        <h1>{c.title}</h1>
-        <p className="lede">{c.invalid}</p>
-        <p>{c.askNew}</p>
+        <h1>{group ? g.title : c.title}</h1>
+        <p className="lede">{group ? t("pt", "bipe_group_link_open_invalid") : c.invalid}</p>
+        {!group && <p>{c.askNew}</p>}
       </section>
     );
   }
   return (
     <section className="wrap narrow section">
-      <h1>{inviter ? c.titleFrom(inviter) : c.title}</h1>
-      <p className="lede">{c.lead}</p>
+      <h1>{title}</h1>
+      {/* Urgency: the invite works only for a few days (7 for a personal invite). */}
+      {expiresAt && <p><strong>{t("pt", "bipe_invite_link_expires", inviteExpiryLabel(expiresAt))}</strong></p>}
+      {groupInfo?.inviter && <p>{t("pt", "bipe_group_link_open_invited_by", groupInfo.inviter)}</p>}
+      {groupInfo && <p>{t("pt", "bipe_app_room_link_members", String(groupInfo.members))}</p>}
+      <p className="lede">{groupInfo && !groupInfo.signsUp ? g.existingOnly : c.lead}</p>
       {platform === "ios" && (
         <ol className="steps">
-          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton inviteCode={code ?? undefined} /></div>{code && <p className="small muted">{c.copiesLink}</p>}</li>
+          <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton inviteCode={code ?? undefined} path={path} /></div>{code && <p className="small muted">{group ? g.copiesLink : c.copiesLink}</p>}</li>
           <li>{c.iosSteps[1]}</li>
           <li>{c.iosSteps[2]}</li>
         </ol>
       )}
       {platform === "android" && (
         <ol className="steps">
-          <li>{c.androidSteps[0]}<div style={{ marginTop: 10 }}><AndroidDownloadButton inviteCode={code ?? undefined} /></div>{code && <p className="small muted">{c.copiesLink}</p>}</li>
+          <li>{c.androidSteps[0]}<div style={{ marginTop: 10 }}><AndroidDownloadButton inviteCode={code ?? undefined} path={path} /></div>{code && <p className="small muted">{group ? g.copiesLink : c.copiesLink}</p>}</li>
           <li>{c.androidSteps[1]}</li>
         </ol>
       )}
@@ -222,14 +279,14 @@ export function InviteLanding(_: Record<string, never>) {
       {/* Below the steps: people typed this code into TestFlight's Redeem box when it came first. */}
       <div className="link-card">
         <div>
-          <p>{c.yourCode}</p>
+          <p>{group ? g.yourCode : c.yourCode}</p>
           <div className="actions">
             <output className="mono invite-code">{code ?? "····-····-····"}</output>
             <button type="button" className="button secondary" disabled={!code} onClick={async () => setCopyLabel((await copyText(code!)) ? c.copied : c.copyFailed)}>{copyLabel}</button>
           </div>
-          <p className="small muted">{platform === "ios" && `${c.notTestFlight} `}{c.oneUse}</p>
+          <p className="small muted">{platform === "ios" && `${c.notTestFlight} `}{group ? g.oneUse : c.oneUse}</p>
         </div>
-        {platform === "other" && code && <LinkQr url={`${location.origin}/convite/${code}`} />}
+        {platform === "other" && code && <LinkQr url={`${location.origin}/${path}/${code}`} />}
       </div>
     </section>
   );

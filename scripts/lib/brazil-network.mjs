@@ -171,9 +171,11 @@ const f = (v) => +v.toFixed(1);
 /**
  * Brazil as a glowing node network, as an SVG string.
  * `box` ({ x, y, w, h } in px) sets the area the map fits into; the map keeps its aspect ratio
- * and is centred in it. `corner` places the soft glow: "tl", "tr", "bl" or "br".
+ * and is centred in it. `corner` places the soft glow: "tl", "tr", "bl" or "br". `field: false` leaves out
+ * the background (field, corner glow, lift), so the map floats on what is under it; `mesh: false`
+ * draws only that background.
  */
-export function brazilNetworkSvg({ width, height, seed = 1, palette = {}, box = defaultBox(width, height), corner = "tr" }) {
+export function brazilNetworkSvg({ width, height, seed = 1, palette = {}, box = defaultBox(width, height), corner = "tr", field = true, mesh = true }) {
   const P = { ...brazilPalette(), ...palette };
   const rand = rng(seed);
 
@@ -308,10 +310,10 @@ export function brazilNetworkSvg({ width, height, seed = 1, palette = {}, box = 
 <filter id="bn-glow" ${full}><feGaussianBlur stdDeviation="${f(S * 0.004)}"/></filter>
 <filter id="bn-wide" ${full}><feGaussianBlur stdDeviation="${f(S * 0.012)}"/></filter>
 </defs>
-<rect width="${width}" height="${height}" fill="${P.field}"/>
+${field ? `<rect width="${width}" height="${height}" fill="${P.field}"/>
 <rect width="${width}" height="${height}" fill="url(#bn-corner)"/>
-<rect width="${width}" height="${height}" fill="url(#bn-lift)"/>
-<path d="${outline}" fill="url(#bn-sp)"/>
+<rect width="${width}" height="${height}" fill="url(#bn-lift)"/>` : ""}
+${mesh ? `<path d="${outline}" fill="url(#bn-sp)"/>
 <g filter="url(#bn-wide)" opacity="0.5"><g stroke="${P.line}" stroke-width="${f(lw * 3)}">${lines}</g></g>
 <g filter="url(#bn-glow)" opacity="0.9"><g stroke="${P.line}" stroke-width="${f(lw * 1.6)}">${lines}</g>${small}</g>
 ${halos}
@@ -319,5 +321,6 @@ ${halos}
 ${small}
 ${rings}
 ${cores}
+` : ""}
 </svg>`;
 }

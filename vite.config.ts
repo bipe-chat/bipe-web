@@ -26,6 +26,7 @@ export default defineConfig({
     alias: {
       "@shared": shared,
       "@colors": colors,
+      "@changelog": join(root, ".generated/changelog.json"),
       // registries.mjs reads files with node:fs in loadRegistries(). The site never calls it in the
       // browser; it passes the JSON in. These stubs keep the reference logic importable as-is.
       "node:fs": join(root, "src/node-stub.ts"),

@@ -6,6 +6,7 @@ import familyTerms from "@shared/registries/family-terms.json";
 import handles from "@shared/registries/handles.json";
 import homoglyphs from "@shared/registries/homoglyphs.json";
 import inviteCodes from "@shared/registries/invite-codes.json";
+import profilesJson from "@shared/registries/profiles.json";
 import accountsJson from "@shared/registries/accounts.json";
 import brandMarksJson from "@shared/registries/brand-marks.json";
 import reservedNames from "@shared/registries/reserved-names.json";
@@ -20,11 +21,29 @@ import compareJson from "@shared/product/compare.json";
 import dataJson from "@shared/product/data.json";
 import privacyJson from "@shared/product/privacy.json";
 import accessibilityJson from "@shared/product/accessibility.json";
+import tokensJson from "@shared/design/tokens.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import * as pixLib from "@shared/tools/lib/pix.mjs";
 import * as publicRoutesLib from "@shared/tools/lib/public-routes.mjs";
 import openapiYaml from "@shared/api/openapi.yaml?raw";
 import type { FigureId, SceneId } from "./sim/scenes";
+
+/**
+ * The app palettes in picker order, açaí first, and the chat background (ADR 0213): the places of its blobs and
+ * marks and the Bipe mark path. The colours are the --bipe-chat-* variables, themed per palette by data-palette.
+ */
+export const appPalettes: string[] = Object.keys(tokensJson.appThemes.palettes);
+/** Each app palette's colour on /sobre/marca/: its app icon step, light theme (tokens.json iconStep). */
+export const paletteColours = appPalettes.map((id) => {
+  const step = (tokensJson.appThemes.palettes as Record<string, { iconStep: string }>)[id].iconStep;
+  return { id, hex: (tokensJson.ramps as unknown as Record<string, { light: Record<string, string> }>)[id].light[step] };
+});
+export const chatBackground: {
+  blobOpacity: number;
+  blobs: { x: number; y: number; radius: number; tone: string }[];
+  marks: { x: number; y: number; side: number; opacity: number; tone: string }[];
+} = tokensJson.appThemes.chatBackground;
+export const markPath: string = tokensJson.appThemes.icon.path;
 
 export type ScamKind = "extortion" | "pixCode" | "boleto" | "remoteApp" | "pinRequest" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
 export type Registries = {
@@ -35,6 +54,7 @@ export type Registries = {
   inviteCodes: { pattern: string; alphabet: string; maxInputLength: number };
   handles: { minLength: number; ownerMinLength: number; maxLength: number; pattern: string; skeletonStrip: string; changeCooldownDays: number; releaseHoldDays: number };
   owners: { owners: Record<string, string[]>; handles: Record<string, string> };
+  profiles: { socials: Social[] };
   strings: { strings: Record<string, string> };
   stringsEn: { strings: Record<string, string> };
 };
@@ -46,6 +66,10 @@ export const handleProblem = lib.handleProblem as (handle: string, reg: Registri
 export const handleSkeleton = lib.handleSkeleton as (handle: string, reg: Registries) => string;
 export const extractInviteCodeRef = lib.extractInviteCode as (text: string, reg: Registries) => string | null;
 export const normalizeCnpj = lib.normalizeCnpj as (input: string) => string | null;
+/** A social network a public profile can list (ADR 0228, registries/profiles.json socials), in registry order. */
+export type Social = { id: string; name: string; pattern: string; url: string };
+/** The link to a social handle: the registry url template with the handle. The site never uses a URL from the API. */
+export const socialUrl = lib.socialUrl as (platform: string, input: string, reg: Registries) => string;
 export type PixCode = { status: "valid" | "badCrc" | "malformed"; dynamic: boolean; key: string | null; keyType: string | null; name: string | null; city: string | null; amount: string | null; info: string | null };
 /** The Conferir no Bipe check of shared text (pix-check, test-vectors/pix-check.json). */
 export const pixCheck = pixLib.pixCheck as (text: string, reg: Registries) => { code: PixCode | null; keys: { value: string; types: string[] }[]; warning: ScamKind | null };
@@ -67,6 +91,7 @@ export const reg = {
   // reserved-name-owners.json (ADR 0065). A short handle is then too_short, as for every new account.
   owners: { owners: {}, handles: {} },
   inviteCodes,
+  profiles: profilesJson,
   strings: stringsPt,
   stringsEn,
 } as unknown as Registries;
@@ -189,7 +214,7 @@ const productData = productJson as unknown as { features: Omit<Feature, "status"
 
 export const product = { ...productData, features: productData.features.map((f) => ({ ...f, status: featureStatus(f.id) })) } as unknown as {
   promise: Copy<{ title: string; lede: string }>;
-  home: { proof: string[]; features: string[] };
+  home: { proof: string[]; features: string[]; business?: { features: string[] } & Copy<{ title: string; line: string }> };
   realFake: Copy<{ title: string; lede: string; caption: string }>;
   headlineTest: { experiment: string; active: boolean; arms: ({ id: string; angle: string } & Copy<string>)[] };
   sides: Side[];
