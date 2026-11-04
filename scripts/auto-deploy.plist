@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- mini4p: ~/Library/LaunchAgents/chat.bipe.site-autodeploy.plist. Runs scripts/auto-deploy.sh as it is on bipe-web
+     origin/main every 30 minutes. Install: cp this file there, then launchctl bootstrap gui/$(id -u) <that path>. -->
+<plist version="1.0"><dict>
+  <key>Label</key><string>chat.bipe.site-autodeploy</string>
+  <key>ProgramArguments</key><array>
+    <string>/bin/sh</string><string>-c</string>
+    <string>cd "$HOME/Dev/Bipe/bipe-web" &amp;&amp; git fetch -q origin main &amp;&amp; git show origin/main:scripts/auto-deploy.sh &gt; "$HOME/Library/Caches/bipe-site-autodeploy.sh" &amp;&amp; exec sh "$HOME/Library/Caches/bipe-site-autodeploy.sh"</string>
+  </array>
+  <key>EnvironmentVariables</key><dict>
+    <key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+  <key>StartInterval</key><integer>1800</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/Users/mz/Library/Logs/bipe-site-autodeploy.log</string>
+  <key>StandardErrorPath</key><string>/Users/mz/Library/Logs/bipe-site-autodeploy.log</string>
+</dict></plist>

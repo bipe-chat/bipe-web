@@ -62,6 +62,14 @@ Base URL: `https://api.bipe.net.br`. These calls need no sign-in. Every other ca
 
 Browsers can call the API only from `https://bipe.chat`.
 
+## Public MCP server
+
+An AI assistant can check an @handle and a company seal through the public Bipe MCP server: `https://mcp.bipe.chat/mcp`. It needs no sign-in and shows only what the public @handle page shows.
+
+```
+{ "mcpServers": { "bipe": { "type": "http", "url": "https://mcp.bipe.chat/mcp" } } }
+```
+
 The full API contract is in [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml). The server code is in [bipe-api](https://github.com/bipe-chat/bipe-api).
 
 ## What the API does not do

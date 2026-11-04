@@ -2,6 +2,9 @@
 export function readFileSync(): never {
   throw new Error("node:fs is not available in the browser");
 }
+export function existsSync(): boolean {
+  return false;
+}
 export function join(...parts: string[]): string {
   return parts.join("/");
 }

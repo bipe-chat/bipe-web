@@ -1,5 +1,5 @@
 # Política de privacidade
-_Bipe, versão de testes. Atualizada em 27 de outubro de 2026._
+_Bipe, versão de testes. Atualizada em 3 de novembro de 2026._
 
 O Bipe é um app de mensagens brasileiro e ainda está em fase de testes. Aqui você vê, sem rodeio, quais dados a gente guarda, onde eles ficam e por quê.
 
@@ -17,6 +17,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - **Mensagem pelo site:** se você escreve pelo formulário da página de ajuda, a gente guarda seu nome, seu e-mail, a mensagem, o idioma e as respostas da conversa. A gente guarda esses dados no Starlings, o sistema de trabalho da Envisioning, em servidores na União Europeia. Um e-mail leva um link privado para você continuar a conversa. Os dados ficam até você pedir para apagar.
 - **Marcos de uso:** o app não manda estatística. O servidor anota, a partir do que ele já vê, alguns marcos por dia: conta criada, primeira entrada, primeira mensagem, contato verificado, convite enviado ou usado, grupo criado, chamada iniciada e dia de uso. Cada marco fica ligado a um código derivado da sua conta, não ao seu nome de usuário, sem conteúdo e sem saber com quem você fala. Serve para saber se o Bipe é útil e em que passo as pessoas desistem. Fica guardado por 13 meses.
 - **Área de transferência:** quando o app abre sem conta, ele pergunta ao celular se tem algo copiado, sem ler o conteúdo. Se tiver, o app mostra o botão "Colar". Ele só lê o que você copiou quando você toca nesse botão, e usa só o código de convite que encontrar. Esse código vai para o servidor do Bipe, como acontece quando você abre um link de convite. No Android instalado pela Google Play, o app também lê o convite que a loja entrega junto com a instalação.
+- **Faixa de idade:** o Bipe não pede sua data de nascimento. O app pergunta ao celular em que faixa de idade você está. No iPhone quem responde é a Apple, e só se você aceitar compartilhar. No Android instalado pela Google Play, quem responde é a Google. O servidor guarda só a faixa (menos de 13, 13 a 15, 16 a 17, ou 18 anos ou mais), de onde ela veio e a data. Quando o celular não responde, a conta fica sem faixa. A faixa serve para dar às contas de menores de 18 anos as proteções que o ECA Digital pede, e uma conta sem faixa recebe as mesmas proteções. Ninguém no app vê sua faixa. Ela fica guardada enquanto a conta existir.
 
 ## O que a gente não faz
 - Não mostra anúncio.
