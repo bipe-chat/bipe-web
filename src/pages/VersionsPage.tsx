@@ -1,7 +1,6 @@
-// Version history: every app version, its builds and what changed in them. The data is bipe-app changelog/
-// (scripts/changelog.mjs writes it at build time); the app links here from Configurações › Ajuda › Histórico de versões.
-// A version is released when bipe-app tags it (ADR 0227); the builds after the last release show under the next
-// version as in testing.
+// Version history: what changed in the app by day and then by build, newest first, the same order as the app's native
+// screen (bipe-shared product/screens/version-history.json). The data is bipe-app changelog/ (scripts/changelog.mjs
+// writes it at build time).
 import changelogJson from "@changelog";
 import { chrome } from "../copy";
 import type { Lang } from "../shared";
@@ -10,37 +9,28 @@ type Kind = "new" | "improved" | "fixed" | "removed";
 type Build = {
   build: number;
   version: string | null;
-  released?: boolean;
-  releaseDate?: string | null;
   date: string;
   updates: { id: string; kind: Kind; platforms: ("ios" | "android")[]; headline: string; detail: string }[];
 };
+type Update = Build["updates"][number];
 const builds = changelogJson as Build[];
 
-/** Versions newest first, each with one line per change and its build, grouped by day: most days carry several builds. */
-type Line = Build["updates"][number] & { build: number };
-type Day = { date: string; lines: Line[] };
-const versions: { version: string | null; released: boolean; releaseDate: string | null; days: Day[] }[] = [];
+/** Days newest first, each with its builds: most days carry several. */
+const days: { date: string; builds: Build[] }[] = [];
 for (const b of builds) {
-  let v = versions.at(-1);
-  if (!v || v.version !== b.version) {
-    v = { version: b.version, released: b.released ?? false, releaseDate: b.releaseDate ?? null, days: [] };
-    versions.push(v);
-  }
-  if (v.days.at(-1)?.date !== b.date) v.days.push({ date: b.date, lines: [] });
-  v.days.at(-1)!.lines.push(...b.updates.map((u) => ({ ...u, build: b.build })));
+  const day = days.find((d) => d.date === b.date);
+  if (day) day.builds.push(b);
+  else days.push({ date: b.date, builds: [b] });
 }
 
 const formatDate = (lang: Lang, date: string) =>
   new Date(`${date}T12:00:00Z`).toLocaleDateString(lang === "pt" ? "pt-BR" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
-const versionTitle = (lang: Lang, v: (typeof versions)[number]) => (v.version ? `${chrome[lang].versions.version} ${v.version}` : "Build");
+/** "Versão 1.0.1 (446)", the same text as the app. */
+const buildTitle = (lang: Lang, b: Build) => (b.version ? `${chrome[lang].versions.version} ${b.version} (${b.build})` : `Build ${b.build}`);
 
-const versionStatus = (lang: Lang, v: (typeof versions)[number]) =>
-  v.released && v.releaseDate ? chrome[lang].versions.released(formatDate(lang, v.releaseDate)) : chrome[lang].versions.testing;
-
-const tags = (lang: Lang, l: Line) =>
-  `Build ${l.build} · ${chrome[lang].versions.kinds[l.kind]} · ${l.platforms.map((p) => chrome[lang].surfaces[p]).join(", ")}`;
+const tags = (lang: Lang, u: Update) =>
+  `${chrome[lang].versions.kinds[u.kind]} · ${u.platforms.map((p) => chrome[lang].surfaces[p]).join(", ")}`;
 
 export function VersionsPage({ lang }: { lang: Lang }) {
   const c = chrome[lang].versions;
@@ -49,18 +39,17 @@ export function VersionsPage({ lang }: { lang: Lang }) {
       <h1>{c.title}</h1>
       <p className="lede">{c.lede}</p>
       {c.note && <p className="muted">{c.note}</p>}
-      {versions.map((v) => (
-        <section className="versions-version" key={v.version ?? "build"} id={v.version ? `v${v.version}` : undefined}>
-          <h2>{versionTitle(lang, v)}</h2>
-          <p className="small muted">{versionStatus(lang, v)}</p>
-          {v.days.map((d) => (
-            <section className="versions-day" key={d.date}>
-              <h3><time dateTime={d.date}>{formatDate(lang, d.date)}</time></h3>
+      {days.map((d) => (
+        <section className="versions-day" key={d.date}>
+          <h2><time dateTime={d.date}>{formatDate(lang, d.date)}</time></h2>
+          {d.builds.map((b) => (
+            <section className="versions-build" key={b.build} id={`build-${b.build}`}>
+              <h3>{buildTitle(lang, b)}</h3>
               <ul>
-                {d.lines.map((l) => (
-                  <li key={l.id} id={`build-${l.build}`}>
-                    <strong>{l.headline}</strong>{l.detail && ` ${l.detail}`}
-                    <br /><span className="small muted">{tags(lang, l)}</span>
+                {b.updates.map((u) => (
+                  <li key={u.id}>
+                    <strong>{u.headline}</strong>{u.detail && ` ${u.detail}`}
+                    <br /><span className="small muted">{tags(lang, u)}</span>
                   </li>
                 ))}
               </ul>
@@ -79,14 +68,13 @@ export function versionsMarkdown(lang: Lang): string {
     `# ${c.title}`,
     c.lede,
     ...(c.note ? [c.note] : []),
-    ...versions.map((v) =>
+    ...days.map((d) =>
       [
-        `## ${versionTitle(lang, v)}`,
-        versionStatus(lang, v),
-        ...v.days.map((d) =>
+        `## ${formatDate(lang, d.date)}`,
+        ...d.builds.map((b) =>
           [
-            `### ${formatDate(lang, d.date)}`,
-            d.lines.map((l) => `- **${l.headline}**${l.detail ? ` ${l.detail}` : ""} (${tags(lang, l)})`).join("\n"),
+            `### ${buildTitle(lang, b)}`,
+            b.updates.map((u) => `- **${u.headline}**${u.detail ? ` ${u.detail}` : ""} (${tags(lang, u)})`).join("\n"),
           ].join("\n\n"),
         ),
       ].join("\n\n"),
