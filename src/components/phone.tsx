@@ -1,9 +1,9 @@
 // The simulated Bipe iOS app. Sizes inside the phone are iOS points (1px = 1pt) and the
 // whole phone is scaled with CSS zoom, so every value can be copied 1:1 from the SwiftUI source
 // (bipe-ios: TimelineItemBubbledStylerView, RoomHeaderView, MessageComposer, HomeScreenRoomCell).
-import type { CSSProperties, ReactNode } from "react";
+import { createContext, useContext, useId, type CSSProperties, type ReactNode } from "react";
 import { Avatar, label, who } from "../cast";
-import { t, type Lang } from "../shared";
+import { chatBackground, markPath, t, type Lang } from "../shared";
 import { useClock } from "./clock";
 import { Icon, type IconName } from "./ui";
 
@@ -45,15 +45,54 @@ const PHONE_SHAPE = {
 type Layout = "chat" | "list" | "form";
 
 /**
+ * The app palette of the phones inside (ADR 0213). The phone sets data-palette, so the themed --bipe-* variables
+ * (accent, own bubble, chat background) take that palette, as in the app. The site around the phone stays açaí.
+ */
+export const PhonePalette = createContext("acai");
+
+/**
+ * The chat background of the app (ADR 0213, BipeChatBackground marca): blobs and Bipe marks on
+ * --bipe-chat-background, behind the whole chat screen. Places come from bipe-shared appThemes.chatBackground.
+ */
+function ChatBackdrop() {
+  const id = useId().replace(/:/g, "");
+  const long = Math.max(SCREEN_W, SCREEN_H), short = Math.min(SCREEN_W, SCREEN_H);
+  const tone = (t: string) => `var(--bipe-${t.replace(/\./g, "-").replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)})`;
+  return (
+    <svg className="chat-bg" viewBox={`0 0 ${SCREEN_W} ${SCREEN_H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        {chatBackground.blobs.map((b, i) => (
+          <radialGradient key={i} id={`${id}b${i}`}>
+            <stop offset="0" style={{ stopColor: tone(b.tone), stopOpacity: chatBackground.blobOpacity }} />
+            <stop offset="1" style={{ stopColor: tone(b.tone), stopOpacity: 0 }} />
+          </radialGradient>
+        ))}
+      </defs>
+      <rect width={SCREEN_W} height={SCREEN_H} style={{ fill: "var(--bipe-chat-background)" }} />
+      {chatBackground.blobs.map((b, i) => (
+        <circle key={i} cx={b.x * SCREEN_W} cy={b.y * SCREEN_H} r={b.radius * long} fill={`url(#${id}b${i})`} />
+      ))}
+      {chatBackground.marks.map((m, i) => {
+        // The mark path fills 8 to 56 of its 64-unit box.
+        const k = (m.side * short) / 48;
+        return <path key={i} d={markPath} transform={`translate(${m.x * SCREEN_W - 8 * k} ${m.y * SCREEN_H - 8 * k}) scale(${k})`} style={{ fill: tone(m.tone), fillOpacity: m.opacity }} />;
+      })}
+    </svg>
+  );
+}
+
+/**
  * The one phone frame. Every simulated screen renders through it.
  * `layout`: "chat" is a room (back button, header pill, timeline from the bottom, composer).
  * "list" is a tab root (large title, rows from the top). "form" is a pushed screen (back button, inline title).
  * `head` is the header pill content, the large title or the inline title. `footer` replaces the composer.
  */
 export function Phone({ lang, head, children, layout = "chat", footer }: { lang: Lang; head: ReactNode; children: ReactNode; layout?: Layout; footer?: ReactNode }) {
+  const palette = useContext(PhonePalette);
   return (
-    <div className="phone" style={PHONE_SHAPE} aria-hidden="true">
+    <div className="phone" style={PHONE_SHAPE} data-palette={palette === "acai" ? undefined : palette} aria-hidden="true">
       <div className="screen">
+        {layout === "chat" && <ChatBackdrop />}
         <StatusBar lang={lang} />
         <NavBar layout={layout}>{head}</NavBar>
         <div className={`screen-body ${layout}`}>{children}</div>
@@ -64,21 +103,20 @@ export function Phone({ lang, head, children, layout = "chat", footer }: { lang:
   );
 }
 
-/** iOS status bar: the viewer's time, the Dynamic Island, then signal, Wi-Fi and battery. */
+/** iOS status bar: the viewer's time, then signal, Wi-Fi and a full battery, in the iOS 27 style (solid battery, no outline). No Dynamic Island (MZ, 2 November 2026), as on the store panels. */
 function StatusBar({ lang }: { lang: Lang }) {
   return (
     <div className="statusbar">
       <time className="clock" data-clock={lang}>{useClock(lang)}</time>
-      <span className="island" />
       <svg className="sysicons" width="77" height="14" viewBox="0 0 66 12" fill="currentColor">
         <rect x="0" y="8" width="3" height="4" rx="1" />
         <rect x="4.5" y="6" width="3" height="6" rx="1" />
         <rect x="9" y="3.5" width="3" height="8.5" rx="1" />
         <rect x="13.5" y="1" width="3" height="11" rx="1" />
-        <path d="M28 2.2c2.4 0 4.6.9 6.3 2.5l1.1-1.2A10.6 10.6 0 0 0 28 .6c-2.8 0-5.4 1.1-7.4 2.9l1.1 1.2A9 9 0 0 1 28 2.2Zm0 3.4c1.5 0 2.8.5 3.9 1.5l1.1-1.2a7.3 7.3 0 0 0-10 0l1.1 1.2c1.1-1 2.4-1.5 3.9-1.5Zm0 3.4c.6 0 1.1.2 1.5.6L28 11.4l-1.5-1.8c.4-.4.9-.6 1.5-.6Z" />
-        <rect x="40.5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4" />
-        <rect x="42.5" y="2.5" width="15" height="7" rx="2" />
-        <path d="M64 4v4c.8-.3 1.3-1.1 1.3-2S64.8 4.3 64 4Z" opacity=".4" />
+        <path d="M21.21 4.41A9.6 9.6 0 0 1 34.79 4.41M23.83 7.03A5.9 5.9 0 0 1 32.17 7.03" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" />
+        <path d="M28 11.2L25.95 9.15A2.9 2.9 0 0 1 30.05 9.15Z" stroke="currentColor" strokeWidth="1" strokeLinejoin="round" />
+        <rect x="40.5" y=".5" width="22" height="11" rx="3.6" />
+        <rect x="63.3" y="4" width="1.7" height="4" rx=".85" />
       </svg>
     </div>
   );

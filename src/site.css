@@ -183,10 +183,15 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 .feature .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 
 /* The stage holds a simulation, so it reads as separate from the page. */
-.stage { background: radial-gradient(120% 90% at 20% 0%, var(--acai-wash), transparent 60%), var(--surface); border-radius: 28px; padding: 28px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-.stage .caption { font-size: 13px; color: var(--muted); text-align: center; max-width: 34em; margin: 0; }
+.stage { position: relative; border-radius: 28px; padding: 28px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.stage .caption { font-size: 13px; text-align: center; max-width: 34em; margin: 0; }
 .stage .controls { display: flex; gap: 8px; }
 .stage .controls button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; }
+.stage-toggle { position: absolute; top: 14px; right: 14px; z-index: 1; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 999px; background: var(--bg); color: var(--text); cursor: pointer; }
+.stage-toggle:hover { color: var(--acai); }
+.stage-toggle:focus-visible { outline: 2px solid var(--acai); outline-offset: 2px; }
+/* On a narrow screen the phone fills the stage width: start it below the corner button. */
+@media (max-width: 640px) { .stage:has(> .stage-toggle) { padding-top: 58px; } }
 
 /* Phone: the simulated iOS app (src/components/phone.tsx). Inside the phone 1px = 1pt, copied from the
    SwiftUI source. The frame is 417pt wide (402pt screen plus bezel); zoom scales the whole phone. */
@@ -195,15 +200,18 @@ a.card.tentpole-card { display: flex; align-items: flex-start; flex-direction: c
 @media (max-width: 360px) { .phone { --phone-zoom: .64; } }
 /* Display Zoom: the screen contents render 1.15x larger, as on an iPhone with Display Zoom set to
    "Larger Text" (a 350pt-wide layout). Status bar and home indicator stay at hardware size. */
-.screen > :not(.statusbar, .home-indicator) { zoom: 1.15; }
+.screen > :not(.statusbar, .home-indicator, .chat-bg) { zoom: 1.15; }
+/* Inside a phone the açaí variables are the app accent, so buttons follow the scene palette as in the app (ADR 0213). Trust colours keep their own tokens. */
+.phone { --acai: var(--bipe-accent-fill); --acai-deep: var(--bipe-accent-fill-pressed); --acai-wash: var(--bipe-accent-wash); }
+/* The app chat background (ADR 0213), behind everything on the chat screen. */
+.chat-bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
 /* The phone is a picture: no selection, no image drag, no long-press menu. */
 .phone * { pointer-events: none; -webkit-user-drag: none; }
-.screen { --bubble-in: var(--bipe-gray-300); --bubble-out: var(--bipe-gray-400); flex: 1; min-width: 0; min-height: 0; background: var(--bg); color: var(--text); font-family: var(--app); font-size: 17px; line-height: 22px; letter-spacing: -.41px; overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
-@media (prefers-color-scheme: dark) { .screen { --bubble-in: var(--bipe-gray-400); --bubble-out: var(--bipe-gray-500); } }
-/* iPhone 16 Pro: 62pt top safe area, 125x37pt Dynamic Island 11pt from the top. */
+.screen { --bubble-in: var(--bipe-bubble-other); --bubble-out: var(--bipe-bubble-own); isolation: isolate; flex: 1; min-width: 0; min-height: 0; background: var(--bg); color: var(--text); font-family: var(--app); font-size: 17px; line-height: 22px; letter-spacing: -.41px; overflow: hidden; display: flex; flex-direction: column; position: relative; -webkit-mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; mask: var(--phone-screen) 0 0 / 100% 100% no-repeat; }
+/* iPhone 16 Pro: 62pt top safe area. The middle 125pt is where the Dynamic Island sits; the phone draws none (MZ, 2 November 2026). */
 .statusbar { height: 62px; flex: none; display: grid; grid-template-columns: 1fr 125px 1fr; grid-template-rows: 37px; align-items: center; padding-top: 11px; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .statusbar .clock, .statusbar .sysicons { justify-self: center; }
-.statusbar .island { height: 37px; border-radius: 99px; background: #000; }
+.statusbar .sysicons { grid-column: 3; }
 /* 34pt bottom safe area, 134x5pt indicator 8pt from the bottom. */
 .home-indicator { flex: none; height: 34px; position: relative; }
 .home-indicator::after { content: ""; position: absolute; left: 50%; bottom: 8px; width: 134px; height: 5px; margin-left: -67px; border-radius: 99px; background: var(--text); }
@@ -317,6 +325,16 @@ a.card.repo svg { color: var(--acai); flex: none; }
 .brand-images { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; }
 .brand-images figure { margin: 0; flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; }
 .brand-images img { width: 100%; height: auto; border-radius: 8px; display: block; }
+.brand-images.fit { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); overflow-x: visible; }
+.brand-images.fit figure { min-width: 0; }
+.brand-images.fit figcaption { overflow-wrap: anywhere; }
+/* Brand page lightbox (components/lightbox.ts): the image as large as the window allows. */
+.lightbox { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; overflow: visible; }
+.lightbox::backdrop { background: rgb(0 0 0 / 0.8); }
+.lightbox img { display: block; width: auto; height: calc(100vh - 96px); max-width: calc(100vw - 32px); object-fit: contain; border-radius: 12px; }
+.lightbox img.wide { width: calc(100vw - 32px); height: auto; max-height: calc(100vh - 96px); }
+.lightbox-bar { display: flex; justify-content: flex-end; gap: 12px; padding-bottom: 12px; }
+.lightbox-bar a, .lightbox-bar button { font: inherit; font-weight: 600; color: #fff; background: rgb(255 255 255 / 0.16); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer; text-decoration: none; }
 
 /* Link landing pages (/@handle, /convite/<code>) */
 .invite-code { font-size: 22px; font-weight: 600; letter-spacing: 1px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; user-select: all; -webkit-user-select: all; }
@@ -326,6 +344,11 @@ a.card.repo svg { color: var(--acai); flex: none; }
 .profile-handle { color: var(--muted); margin-top: 0; overflow-wrap: anywhere; }
 .profile-bio { white-space: pre-line; overflow-wrap: anywhere; font-size: 18px; }
 .profile h1 .seal { vertical-align: -3px; }
+/* Social handles (ADR 0228): links built from the registry; Bipe does not check them, so no trust colour. */
+.profile-socials { margin: 28px 0 0; }
+.profile-socials ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.profile-socials li { overflow-wrap: anywhere; }
+.profile-socials p { margin: 10px 0 0; }
 /* Verified company (bipe#252): the verified trust surface, legal name and CNPJ from the signed badge. */
 .company-facts { background: var(--bipe-trust-verified-wash); border: 1px solid var(--bipe-trust-verified-line); border-radius: 12px; padding: 14px 16px; margin: 16px 0; }
 .company-facts > p { margin: 0; }
@@ -712,6 +735,9 @@ a.staff-tile:hover { border-color: var(--acai); }
 .who-more p { color: var(--muted); margin: 0 0 8px; }
 /* Accessibility (/acessibilidade/): each level in words, the colour only repeats it. */
 .a11y-card h3 { font-size: 18px; margin: 0 0 12px; }
+.versions-day { margin-top: 56px; }
+.versions-build { margin-top: 24px; }
+.versions-build li { margin-bottom: 12px; }
 .a11y-status { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 20px; margin: 0 0 14px; font-size: 14px; }
 .a11y-status dt { color: var(--muted); }
 .a11y-status dd { margin: 0; font-weight: 600; }
@@ -758,3 +784,41 @@ a.staff-tile:hover { border-color: var(--acai); }
 .pin-dots { display: flex; gap: 10px; }
 .pin-dots i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--muted); }
 .pin-dots i.on { background: var(--text); border-color: var(--text); }
+
+/* Palette backdrops (MZ, 2 November 2026: "come alive like the App Store", then on every screenshot): the mesh
+   of the store panels (scripts/lib/backdrop.mjs tone()), from the same app palette ramps, so the site and the
+   store look like one set. Every figure stage takes one palette of src/palette-order.json (src/sim/Figure.tsx);
+   the home page names its own. White text holds at least 5.2:1 on every step under text; the lighter highlight
+   (--tone-hi) stays in the top right corner, where no text is. The ramps flip in dark mode, so dark mode takes
+   the steps with the same contrast (700 for the base, as 1100 in light). Maracujá is yellow only at its light
+   steps, so it takes dark ink, and in dark mode its bright steps (MZ, 1 November 2026: no muddy green). */
+.tone-acai { --tone-hi: var(--bipe-acai-800); --tone-base: var(--bipe-acai-1100); --tone-b1: var(--bipe-acai-900); --tone-b2: var(--bipe-acai-1000); --tone-b3: var(--bipe-acai-1300); }
+.tone-jenipapo { --tone-hi: var(--bipe-jenipapo-800); --tone-base: var(--bipe-jenipapo-1100); --tone-b1: var(--bipe-jenipapo-900); --tone-b2: var(--bipe-jenipapo-1000); --tone-b3: var(--bipe-jenipapo-1300); }
+.tone-maracuja { --tone-hi: var(--bipe-maracuja-500); --tone-base: var(--bipe-maracuja-700); --tone-b1: var(--bipe-maracuja-600); --tone-b2: var(--bipe-maracuja-800); --tone-b3: var(--bipe-maracuja-600); --tone-ink: var(--bipe-maracuja-1400); --tone-sub: var(--bipe-maracuja-1300); }
+.tone-jabuticaba { --tone-hi: var(--bipe-jabuticaba-800); --tone-base: var(--bipe-jabuticaba-1100); --tone-b1: var(--bipe-jabuticaba-900); --tone-b2: var(--bipe-jabuticaba-1000); --tone-b3: var(--bipe-jabuticaba-1300); }
+.tone-goiaba { --tone-hi: var(--bipe-goiaba-800); --tone-base: var(--bipe-goiaba-1100); --tone-b1: var(--bipe-goiaba-900); --tone-b2: var(--bipe-goiaba-1000); --tone-b3: var(--bipe-goiaba-1300); }
+.tone-pitanga { --tone-hi: var(--bipe-pitanga-800); --tone-base: var(--bipe-pitanga-1100); --tone-b1: var(--bipe-pitanga-900); --tone-b2: var(--bipe-pitanga-1000); --tone-b3: var(--bipe-pitanga-1300); }
+@media (prefers-color-scheme: dark) {
+  .tone-acai { --tone-hi: var(--bipe-acai-900); --tone-base: var(--bipe-acai-700); --tone-b1: var(--bipe-acai-800); --tone-b2: var(--bipe-acai-600); --tone-b3: var(--bipe-acai-500); }
+  .tone-jenipapo { --tone-hi: var(--bipe-jenipapo-900); --tone-base: var(--bipe-jenipapo-700); --tone-b1: var(--bipe-jenipapo-800); --tone-b2: var(--bipe-jenipapo-600); --tone-b3: var(--bipe-jenipapo-500); }
+  .tone-maracuja { --tone-hi: var(--bipe-maracuja-1300); --tone-base: var(--bipe-maracuja-1100); --tone-b1: var(--bipe-maracuja-1200); --tone-b2: var(--bipe-maracuja-1000); --tone-b3: var(--bipe-maracuja-900); --tone-ink: var(--bipe-maracuja-100); --tone-sub: var(--bipe-maracuja-300); }
+  .tone-jabuticaba { --tone-hi: var(--bipe-jabuticaba-900); --tone-base: var(--bipe-jabuticaba-700); --tone-b1: var(--bipe-jabuticaba-800); --tone-b2: var(--bipe-jabuticaba-600); --tone-b3: var(--bipe-jabuticaba-500); }
+  .tone-goiaba { --tone-hi: var(--bipe-goiaba-900); --tone-base: var(--bipe-goiaba-700); --tone-b1: var(--bipe-goiaba-800); --tone-b2: var(--bipe-goiaba-600); --tone-b3: var(--bipe-goiaba-500); }
+  .tone-pitanga { --tone-hi: var(--bipe-pitanga-900); --tone-base: var(--bipe-pitanga-700); --tone-b1: var(--bipe-pitanga-800); --tone-b2: var(--bipe-pitanga-600); --tone-b3: var(--bipe-pitanga-500); }
+}
+.stage, .band {
+  background:
+    radial-gradient(45% 40% at 95% 0%, var(--tone-hi, var(--bipe-acai-800)), transparent 75%),
+    radial-gradient(55% 50% at 70% 25%, var(--tone-b1, var(--bipe-acai-900)), transparent 70%),
+    radial-gradient(50% 55% at 0% 55%, var(--tone-b2, var(--bipe-acai-1000)), transparent 70%),
+    radial-gradient(80% 55% at 40% 110%, var(--tone-b3, var(--bipe-acai-1300)), transparent 70%),
+    var(--tone-base, var(--bipe-acai-1100));
+  color: var(--tone-ink, #fff);
+}
+/* Text that sits on the stage itself, outside a phone or a card: the stage caption and the labels of the business minis. */
+.stage > .caption, .band .lede, .stage .step-now, .stage .steps-label, .stage .api-legend, .stage .api-label, .stage .api-wait, .stage .pair figcaption { color: var(--tone-sub, rgba(255, 255, 255, .88)); }
+.band { border-radius: 28px; padding: 40px 32px; }
+.band .card { color: var(--text); }
+.band .grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+.band .button.secondary { background: var(--bg); border-color: transparent; }
+@media (max-width: 720px) { .band { padding: 28px 18px; } }
