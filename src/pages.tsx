@@ -2,6 +2,7 @@ import { chrome } from "./copy";
 import { CodeList } from "./components/code";
 import { AppIcon, Mark } from "./components/brand";
 import brandAssets from "./components/brand-assets.json";
+import officialAccounts from "@shared/registries/official-accounts.json";
 import { DownloadButtons, FeatureIcon, Icon, MoreLink, PlatformStatus } from "./components/ui";
 import { Island } from "./island-registry";
 import { paths } from "./paths";
@@ -14,19 +15,19 @@ import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
 import { WhoCanReadSummary } from "./pages/PrivacyPage";
 import { storeSets } from "./store";
-import { codeLinks, compare, distribution, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
+import { codeLinks, compare, distribution, paletteColours, t, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
 
-function Demo({ lang, tp, index }: { lang: Lang; tp: Tentpole; index: number }) {
+function Demo({ lang, tp, index, tone }: { lang: Lang; tp: Tentpole; index: number; tone?: string }) {
   const id = tp.demos[index];
   if (!id) return <NoAdsFigure lang={lang} />;
-  return <Figure lang={lang} id={id} caption={tp[lang].demos[index]?.caption ?? ""} />;
+  return <Figure lang={lang} id={id} caption={tp[lang].demos[index]?.caption ?? ""} tone={tone} />;
 }
 
 function Points({ items }: { items: string[] }) {
   return <ul className="points">{items.map((p) => <li key={p}><Icon name="check" />{p}</li>)}</ul>;
 }
 
-function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp: Tentpole; flip?: boolean; headingLevel?: 1 | 2 }) {
+function TentpoleSection({ lang, tp, flip, headingLevel = 2, tone }: { lang: Lang; tp: Tentpole; flip?: boolean; headingLevel?: 1 | 2; tone?: string }) {
   const H = headingLevel === 1 ? "h1" : "h2";
   return (
     <div className={`split${flip ? " flip" : ""}`}>
@@ -36,7 +37,7 @@ function TentpoleSection({ lang, tp, flip, headingLevel = 2 }: { lang: Lang; tp:
         <Points items={tp[lang].points} />
         {headingLevel === 2 && <p style={{ marginTop: 24 }}><MoreLink href={paths.tentpole(lang, tp)}>{chrome[lang].more}</MoreLink></p>}
       </div>
-      <Demo lang={lang} tp={tp} index={0} />
+      <Demo lang={lang} tp={tp} index={0} tone={tone} />
     </div>
   );
 }
@@ -47,6 +48,8 @@ export function HomePage({ lang }: { lang: Lang }) {
   const lead = product.tentpoles[0];
   const handle = product.tentpoles.find((tp) => tp.id === "handle")!;
   const byId = (id: string) => product.features.find((f) => f.id === id)!;
+  // The company section (MZ, 2 November 2026): optional until bipe-shared main has home.business.
+  const biz = product.home.business;
   return (
     <>
       <section className="wrap hero">
@@ -60,7 +63,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           </p>
           <p className="small muted" style={{ marginTop: 14 }}>{c.home.testing}</p>
         </div>
-        <Demo lang={lang} tp={lead} index={0} />
+        <Demo lang={lang} tp={lead} index={0} tone="acai" />
       </section>
       <section className="wrap">
         <ul className="proof">
@@ -70,7 +73,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           })}
         </ul>
       </section>
-      <section className="wrap section"><TentpoleSection lang={lang} tp={handle} flip /></section>
+      <section className="wrap section"><TentpoleSection lang={lang} tp={handle} flip tone="jenipapo" /></section>
       <section className="wrap section">
         <h2>{c.home.featuresTitle}</h2>
         <div className="grid" style={{ marginTop: 24 }}>
@@ -78,6 +81,18 @@ export function HomePage({ lang }: { lang: Lang }) {
         </div>
         <p className="more-links"><MoreLink href={paths.features(lang)}>{c.allFeatures}</MoreLink></p>
       </section>
+      {biz && (
+        <section className="wrap section" id="empresas">
+          <div className="band tone-goiaba">
+            <h2>{biz[lang].title}</h2>
+            <p className="lede">{biz[lang].line}</p>
+            <div className="grid" style={{ marginTop: 24 }}>
+              {biz.features.map((id) => <FeatureCard lang={lang} f={byId(id)} key={id} />)}
+            </div>
+            <p className="more-links"><MoreLink href={paths.business(lang)}>{product.business[lang].nav}</MoreLink></p>
+          </div>
+        </section>
+      )}
       <section className="wrap section" id="convite">
         <div className="closing">
           <div>
@@ -844,14 +859,24 @@ export function AboutPage({ lang }: { lang: Lang }) {
 export function HelpPage({ lang }: { lang: Lang }) {
   const c = chrome[lang].help;
   const account = product.features.find((f) => f.id === "new-phone")!;
+  // The in-app names come from the app strings, so the page follows a rename in the app.
+  const room = t(lang, "bipe_support_room_name");
+  const settingsPath = [t(lang, "bipe_settings_section"), t(lang, "bipe_settings_help"), t(lang, "bipe_settings_support")].join(" > ");
   const ways = [[paths.download(lang), c.download], [paths.feature(lang, account), c.account], [paths.lgpd(lang), c.data], [paths.organisations(lang), c.organisations]];
   return (
     <section className="wrap section">
       <h1>{c.title}</h1>
       <p className="lede">{c.lede}</p>
+      <div style={{ marginTop: 40, maxWidth: 688 }}>
+        <h2 className="sub">{c.inApp.title}</h2>
+        <p>{c.inApp.body(room, settingsPath)}</p>
+        <p className="small muted">{c.inApp.official(room)}</p>
+        <p><a className="button primary" href={`/@${officialAccounts.accounts.support.handle}`}>{c.inApp.open(room)}</a></p>
+      </div>
       <div className="split top" style={{ marginTop: 40 }}>
         <div className="card" style={{ padding: 32 }}>
-          <p style={{ marginTop: 0 }}>{c.message}</p>
+          <h2 className="sub" style={{ marginTop: 0 }}>{c.noApp}</h2>
+          <p>{c.message}</p>
           <p className="small muted" style={{ marginBottom: 24 }}>{c.safety}</p>
           <Island name="HelpForm" props={{ lang, copy: c.form, privacy: paths.privacy(lang), privacyLabel: chrome[lang].privacy }} />
         </div>
@@ -865,14 +890,17 @@ export function HelpPage({ lang }: { lang: Lang }) {
 }
 
 /** Logo downloads (/sobre/marca/). The files are rendered at build time by scripts/brand.mjs from brand-assets.json. */
-/** One row of downloadable images: each links to the full file, with its size under it. */
-function ImageRow({ images, width, height }: { images: { href: string; alt: string }[]; width: number; height: number }) {
+/**
+ * One row of images: each opens large on the page (components/lightbox.ts), with a download link
+ * there. Without JavaScript the link opens the file. A `fit` row shows every
+ * image at once (the store sets, MZ 1 November 2026); the others scroll sideways.
+ */
+function ImageRow({ images, width, height, fit, view }: { images: { href: string; alt: string }[]; width: number; height: number; fit?: boolean; view: { download: string; close: string } }) {
   return (
-    <div className="brand-images">
+    <div className={fit ? "brand-images fit" : "brand-images"}>
       {images.map((i) => (
-        <figure key={i.href} style={{ flexBasis: width > height ? 360 : 180 }}>
-          <a href={i.href} download><img src={i.href} alt={i.alt} width={width} height={height} loading="lazy" /></a>
-          <figcaption className="small mono muted">{width}x{height} {i.href.split(".").pop()?.toUpperCase()}</figcaption>
+        <figure key={i.href} style={fit ? undefined : { flexBasis: width > height ? 360 : 180 }}>
+          <a href={i.href} data-lightbox="" data-download={view.download} data-close={view.close}><img src={i.href} alt={i.alt} width={width} height={height} loading="lazy" /></a>
         </figure>
       ))}
     </div>
@@ -918,22 +946,32 @@ export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: strin
           </div>
         ))}
       </div>
+      <h3 style={{ marginTop: 32 }}>{b.appColours}</h3>
+      <div className="brand-colours">
+        {paletteColours.map(({ id, hex }) => (
+          <div className="card" key={id}>
+            <span className="swatch" style={{ background: hex }} />
+            <strong>{t(lang, `bipe_colors_${id}`)}</strong>
+            <span className="small mono">{hex}</span>
+          </div>
+        ))}
+      </div>
       <h2 style={{ marginTop: 56 }}>{b.useTitle}</h2>
       <ul>{b.use.map((u) => <li key={u}>{u}</li>)}</ul>
       <h2 id="stores" style={{ marginTop: 56 }}>{b.sections.stores}</h2>
       {stores.map((s) => (
         <div key={s.href}>
           <h3>{b.sets[s.device]}</h3>
-          <ImageRow images={files(s)} width={s.width} height={s.height} />
+          <ImageRow images={files(s)} width={s.width} height={s.height} fit={s.height > s.width} view={b.view} />
         </div>
       ))}
       <h2 id="cards" style={{ marginTop: 56 }}>{b.sections.cards}</h2>
-      <ImageRow images={cards.map((c) => ({ href: c.image, alt: c.title }))} width={1200} height={630} />
+      <ImageRow images={cards.map((c) => ({ href: c.image, alt: c.title }))} width={1200} height={630} view={b.view} />
       <h2 id="social" style={{ marginTop: 56 }}>{b.sections.social}</h2>
       {social.map((sets) => (
         <div key={sets[0].device}>
           <h3>{b.sets[sets[0].device]}</h3>
-          <ImageRow images={sets.flatMap(files)} width={sets[0].width} height={sets[0].height} />
+          <ImageRow images={sets.flatMap(files)} width={sets[0].width} height={sets[0].height} view={b.view} />
         </div>
       ))}
     </section>

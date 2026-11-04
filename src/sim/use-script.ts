@@ -31,7 +31,6 @@ export function useScript(stage: RefObject<HTMLElement | null>, steps: number, h
     return () => window.clearTimeout(id);
   }, [beat, playing, visible, steps, holdMs]);
 
-  const restart = useCallback(() => { setBeat(0); setPlaying(true); }, []);
   const toggle = useCallback(() => setPlaying((p) => !p), []);
-  return { beat, playing, restart, toggle };
+  return { beat, playing, toggle };
 }

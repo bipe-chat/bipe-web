@@ -62,6 +62,14 @@ Endereço base: `https://api.bipe.net.br`. Estas chamadas não pedem login. Toda
 
 No navegador, só o `https://bipe.chat` pode chamar a API.
 
+## Servidor MCP público
+
+Um assistente de IA pode conferir um @ e o selo de empresa pelo servidor MCP público do Bipe: `https://mcp.bipe.chat/mcp`. Ele não pede login e só mostra o que a página pública do @ já mostra.
+
+```
+{ "mcpServers": { "bipe": { "type": "http", "url": "https://mcp.bipe.chat/mcp" } } }
+```
+
 O contrato completo da API está em [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml). O código do servidor está em [bipe-api](https://github.com/bipe-chat/bipe-api).
 
 ## Servidor MCP público
