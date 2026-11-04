@@ -6,6 +6,7 @@ import { Seal } from "../components/brand";
 import { Icon, TrustCard } from "../components/ui";
 import { chrome } from "../copy";
 import { handleProblem, reg, t, type Lang } from "../shared";
+import { reducedMotion } from "../platform";
 import { FakeQr } from "./PixCard";
 import { text, type Line, type RequestRow } from "./scenes";
 import { TrustMark } from "./ScenePhone";
@@ -13,18 +14,25 @@ import "./PixCard.css";
 
 const VERIFIED = ["pix", "govbr", "institution", "company"];
 
-/** Money pause: the money-request card, then the copy button counts down before it unlocks. */
+/** Money pause: the money-request card, then the copy button counts down before it unlocks.
+ *  Under reduced motion the card shows the end state with no countdown (bipe#492). A screen reader hears the unlock once. */
 export function PauseCard({ lang, seconds }: { lang: Lang; seconds: number }) {
   const [left, setLeft] = useState(seconds);
+  const [still, setStill] = useState(false);
   useEffect(() => {
-    if (left <= 0) return;
+    if (reducedMotion()) { setStill(true); setLeft(0); }
+  }, []);
+  useEffect(() => {
+    if (left <= 0 || still) return;
     const id = setTimeout(() => setLeft(left - 1), 1000);
     return () => clearTimeout(id);
-  }, [left]);
+  }, [left, still]);
+  const unlocked = left <= 0;
   return (
     <TrustCard level="caution" icon="warning" title={t(lang, "bipe_warning_money_request_title")}>
       {t(lang, "bipe_warning_money_request_body")}
-      <div className="buttons"><span className={left > 0 ? "locked" : ""}>{left > 0 ? t(lang, "bipe_pause_countdown", String(left)) : chrome[lang].sim.copyKey}</span></div>
+      <div className="buttons"><span className={unlocked ? "" : "locked"}>{unlocked ? chrome[lang].sim.copyKey : t(lang, "bipe_pause_countdown", String(left))}</span></div>
+      {!still && <span className="visually-hidden" aria-live="polite">{unlocked ? chrome[lang].sim.copyKey : ""}</span>}
     </TrustCard>
   );
 }

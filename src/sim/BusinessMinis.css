@@ -1,22 +1,22 @@
 /* The /empresas/ minis (src/sim/BusinessMinis.tsx). Colours only from the --bipe-* variables (site.css :root). */
 .biz-points { max-width: 46em; }
-.biz-points li { color: var(--muted); font-size: 16px; }
+.biz-points li { color: var(--muted); font-size: 1rem; }
 .biz-stage { width: 100%; min-width: 0; font-family: var(--app); }
 .biz-stage button { font: inherit; }
 
-.desk-btn { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
+.desk-btn { font-size: 0.8125rem; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
 .desk-btn.primary { background: var(--acai); border-color: var(--acai); color: var(--on-acai); }
 .desk-btn.primary:hover:not(:disabled) { background: var(--acai-deep); }
 .desk-btn:disabled { opacity: .7; cursor: default; }
 
 /* 1. Inbox: a small browser window. Three panes when wide; queue or chat when narrow. */
 .mini-window { width: 100%; max-width: 980px; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 18px 40px color-mix(in srgb, var(--acai-deep) 14%, transparent); }
-.mini-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--line); background: var(--surface); font-size: 12px; color: var(--muted); min-width: 0; }
+.mini-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--line); background: var(--surface); font-size: 0.75rem; color: var(--muted); min-width: 0; }
 .mini-bar > span { width: 10px; height: 10px; border-radius: 50%; background: var(--line); flex: none; }
 .mini-bar strong { margin-left: 8px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .desk-wrap { container: desk / inline-size; }
-.desk { display: grid; grid-template-columns: 230px minmax(0, 1fr) 210px; height: 470px; font-size: 14px; line-height: 1.4; text-align: left; }
-.desk-pane-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 12px 12px 6px; }
+.desk { display: grid; grid-template-columns: 230px minmax(0, 1fr) 210px; height: 470px; font-size: 0.875rem; line-height: 1.4; text-align: left; }
+.desk-pane-title { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 12px 12px 6px; }
 .desk-queue { border-right: 1px solid var(--line); overflow-y: auto; min-width: 0; }
 .desk-row { display: flex; gap: 10px; align-items: flex-start; width: 100%; text-align: left; padding: 10px 12px; border: 0; border-left: 3px solid transparent; background: none; color: var(--text); cursor: pointer; }
 .desk-row:hover { background: var(--surface); }
@@ -24,47 +24,47 @@
 .desk-row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .desk-row-top { display: flex; justify-content: space-between; gap: 6px; }
 .desk-row-top strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.desk-time { font-size: 12px; color: var(--muted); flex: none; }
+.desk-time { font-size: 0.75rem; color: var(--muted); flex: none; }
 .desk-row-mid { display: flex; gap: 6px; align-items: center; }
-.desk-owner { font-size: 11px; color: var(--acai); font-weight: 600; }
-.desk-preview { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.desk-unread { flex: none; min-width: 20px; height: 20px; border-radius: 99px; padding: 0 6px; background: var(--acai); color: var(--on-acai); font-size: 12px; font-weight: 600; display: grid; place-items: center; }
+.desk-owner { font-size: 0.6875rem; color: var(--acai); font-weight: 600; }
+.desk-preview { font-size: 0.8125rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.desk-unread { flex: none; min-width: 20px; height: 20px; border-radius: 99px; padding: 0 6px; background: var(--acai); color: var(--on-acai); font-size: 0.75rem; font-weight: 600; display: grid; place-items: center; }
 
 .desk-chat { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
 .desk-chat-head { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--line); }
 .desk-who { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.desk-who span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.desk-who span { font-size: 0.75rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .desk-back { display: none; border: 0; background: none; color: var(--acai); padding: 4px; cursor: pointer; }
 .desk-log { flex: 1; min-height: 0; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
-.desk-msg { max-width: 78%; padding: 7px 10px; border-radius: 12px; overflow-wrap: anywhere; animation: rise .3s ease-out both; }
+.desk-msg { max-width: 78%; padding: 7px 10px; border-radius: 12px; overflow-wrap: anywhere; }
 .desk-msg.customer { align-self: flex-start; background: var(--surface); }
 .desk-msg.agent { align-self: flex-end; background: var(--acai-wash); color: var(--text); }
 .desk-msg.card { background: none; padding: 0; width: 240px; max-width: 85%; }
-.desk-event { align-self: center; font-size: 12px; color: var(--bipe-trust-verified-ink); font-weight: 600; display: inline-flex; gap: 4px; align-items: center; animation: rise .3s ease-out both; }
-.desk-ask { border: 1px solid var(--line); border-radius: 12px; padding: 9px 10px; display: flex; flex-direction: column; gap: 6px; background: var(--bg); font-size: 13px; }
-.desk-ask-head { display: flex; gap: 5px; align-items: center; color: var(--acai); font-weight: 600; font-size: 11px; }
+.desk-event { align-self: center; font-size: 0.75rem; color: var(--bipe-trust-verified-ink); font-weight: 600; display: inline-flex; gap: 4px; align-items: center; }
+.desk-ask { border: 1px solid var(--line); border-radius: 12px; padding: 9px 10px; display: flex; flex-direction: column; gap: 6px; background: var(--bg); font-size: 0.8125rem; }
+.desk-ask-head { display: flex; gap: 5px; align-items: center; color: var(--acai); font-weight: 600; font-size: 0.6875rem; }
 .desk-ask-option { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 5px 8px; }
 .desk-ask-option.mine { border-color: var(--acai); color: var(--acai); font-weight: 600; }
 .desk-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 12px 0; border-top: 1px solid var(--line); }
-.desk-chips-label { font-size: 12px; color: var(--muted); }
-.desk-chip { font-size: 12px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.desk-chips-label { font-size: 0.75rem; color: var(--muted); }
+.desk-chip { font-size: 0.75rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .desk-chip:hover { border-color: var(--acai); }
 .desk-compose { position: relative; display: flex; gap: 8px; padding: 8px 12px 0; }
-.desk-compose input, .desk-notes input { flex: 1; min-width: 0; font: inherit; font-size: 14px; padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.desk-compose input, .desk-notes input { flex: 1; min-width: 0; font: inherit; font-size: 0.875rem; padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
 .desk-slash { position: absolute; left: 12px; right: 12px; bottom: calc(100% - 4px); list-style: none; margin: 0; padding: 4px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 20px color-mix(in srgb, var(--text) 12%, transparent); z-index: 2; }
-.desk-slash button { width: 100%; text-align: left; border: 0; background: none; color: var(--text); padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.desk-slash button { width: 100%; text-align: left; border: 0; background: none; color: var(--text); padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 0.8125rem; }
 .desk-slash button:hover { background: var(--surface); }
-.desk-slash .mono { font-size: 12px; color: var(--acai); }
+.desk-slash .mono { font-size: 0.75rem; color: var(--acai); }
 .desk-actions { display: flex; gap: 8px; padding: 8px 12px 12px; }
 
 .desk-card { border-left: 1px solid var(--line); overflow-y: auto; min-width: 0; padding-bottom: 12px; }
 .desk-card-who { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 12px 10px; text-align: center; }
-.desk-card-who .muted { font-size: 12px; }
-.desk-card dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; margin: 0; padding: 0 12px 10px; font-size: 13px; }
+.desk-card-who .muted { font-size: 0.75rem; }
+.desk-card dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; margin: 0; padding: 0 12px 10px; font-size: 0.8125rem; }
 .desk-card dt { color: var(--muted); }
 .desk-card dd { margin: 0; }
-.desk-notes { margin: 0 12px; padding: 10px; border-radius: 10px; background: var(--bipe-trust-caution-wash); color: var(--text); font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
-.desk-notes strong { font-size: 12px; }
+.desk-notes { margin: 0 12px; padding: 10px; border-radius: 10px; background: var(--bipe-trust-caution-wash); color: var(--text); font-size: 0.8125rem; display: flex; flex-direction: column; gap: 6px; }
+.desk-notes strong { font-size: 0.75rem; }
 .desk-notes strong .muted { font-weight: 400; }
 .desk-notes ul { margin: 0; padding-left: 16px; }
 
@@ -86,10 +86,10 @@
 /* Phones inside the minis are smaller than the feature-page phone. */
 .biz-phone { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; }
 .biz-phone .phone { --phone-zoom: .6; }
-.screen .url { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; font-weight: 400; color: var(--muted); }
+.screen .url { font-size: 0.8125rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; font-weight: 400; color: var(--muted); }
 .link-page { gap: 12px; }
 .link-page > svg { color: var(--acai); }
-.link-page strong { font-size: 22px; line-height: 27px; }
+.link-page strong { font-size: 1.375rem; line-height: 27px; }
 
 /* 2. API: code on the left, phone on the right; stacked when narrow. */
 .api-mini { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "head phone" "req phone" "send phone" "hook phone"; gap: 10px 28px; width: 100%; max-width: 980px; align-items: start; text-align: left; }
@@ -99,8 +99,8 @@
 .api-phone { grid-area: phone; grid-row: 1 / span 4; }
 .api-hook { grid-area: hook; min-width: 0; }
 .api-legend { margin: 0; }
-.api-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 4px 0 8px; }
-.code { margin: 0; padding: 12px 14px; border-radius: 12px; background: var(--bg); border: 1px solid var(--line); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text); }
+.api-label { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 4px 0 8px; }
+.code { margin: 0; padding: 12px 14px; border-radius: 12px; background: var(--bg); border: 1px solid var(--line); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text); }
 .code .hl { background: var(--acai-wash); color: var(--acai-deep); border-radius: 4px; padding: 0 2px; }
 .api-wait, .api-tapped { margin: 0; }
 @media (max-width: 760px) {
@@ -112,12 +112,13 @@
 /* 3. Arrive: steps, one figure, back and next. Step 1 is a printed sign at the counter. */
 .arrive-sign { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 26px; border-radius: 18px; background: var(--bg); border: 1px solid var(--line); box-shadow: 0 18px 40px color-mix(in srgb, var(--acai-deep) 14%, transparent); text-align: center; max-width: 260px; }
 .arrive-sign > svg:first-child { color: var(--acai); }
-.arrive-sign strong { font-size: 18px; line-height: 23px; }
+.arrive-sign strong { font-size: 1.125rem; line-height: 23px; }
 .steps-dots { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-.steps-dots button { display: inline-flex; gap: 6px; align-items: center; border: 0; background: none; color: var(--muted); cursor: pointer; padding: 4px 6px; border-radius: 999px; font-size: 13px; }
-.steps-dots .dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-weight: 700; font-size: 12px; background: var(--bg); }
+.steps-dots button { display: inline-flex; gap: 6px; align-items: center; border: 0; background: none; color: var(--muted); cursor: pointer; padding: 4px 6px; border-radius: 999px; font-size: 0.8125rem; }
+.steps-dots .dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-weight: 700; font-size: 0.75rem; background: var(--bg); }
 .steps-dots .on button { color: var(--text); font-weight: 600; }
 .steps-dots .on .dot { background: var(--acai); border-color: var(--acai); color: var(--on-acai); }
 .steps-label { display: none; }
 .step-now { margin: 0; text-align: center; font-weight: 600; min-height: 2.8em; }
 .stage .controls button:disabled { opacity: .5; cursor: default; }
+@media (prefers-reduced-motion: no-preference) { .desk-msg, .desk-event { animation: rise .3s ease-out both; } }
