@@ -38,6 +38,7 @@ Se o `bipe.chat` parar, as conversas continuam. Só o site e as prévias de link
 - Links de perfil: `bipe.chat/@arroba`.
 - Links de convite: `bipe.chat/convite/<código>`.
 - Links de e-mail para recuperar a conta e confirmar o e-mail.
+- O servidor MCP público para assistentes de IA: `mcp.bipe.chat/mcp`. Só dados públicos.
 - Termos e privacidade.
 - Os arquivos que deixam os apps abrirem esses links: `/.well-known/apple-app-site-association` (iPhone) e `/.well-known/assetlinks.json` (Android).
 - O endereço de cliente OAuth dos apps. O serviço de login confere se o esquema de retorno do app é este endereço ao contrário. Por isso o ID do app é `chat.bipe.app`.

@@ -38,6 +38,7 @@ If `bipe.chat` stops working, chat keeps working. Only the site and new link pre
 - Profile links: `bipe.chat/@handle`.
 - Invite links: `bipe.chat/convite/<code>`.
 - Email links for recovery and email confirmation.
+- The public MCP server for AI assistants: `mcp.bipe.chat/mcp`. Public data only.
 - Terms and privacy.
 - The files that let the apps open these links: `/.well-known/apple-app-site-association` (iPhone) and `/.well-known/assetlinks.json` (Android).
 - The OAuth client URI of the apps. The sign-in service checks that the app's redirect scheme is the reverse of this host, so the app ID is `chat.bipe.app`.
