@@ -32,6 +32,8 @@ export const paths = {
   accessibility: (lang: Lang) => `${base(lang)}${accessibilityRegister.slug[lang]}/`,
   versions: (lang: Lang) => `${base(lang)}${lang === "pt" ? "versoes" : "versions"}/`,
   terms: (lang: Lang) => (lang === "pt" ? "/termos/" : "/en/terms/"),
+  /** Brand mark invite link (bipe ADR 0162). The app makes PUBLIC_SITE_URL/marca/#<code>; the code stays in the fragment. */
+  brandMark: (lang: Lang) => (lang === "pt" ? "/marca/" : "/en/brand-mark/"),
   docs: (lang: Lang, slug = "") => `${base(lang)}docs/${slug ? `${slug}/` : ""}`,
 };
 

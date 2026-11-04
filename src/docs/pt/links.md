@@ -38,6 +38,19 @@ O ID da sala do pacote vai codificado para URL, por exemplo `/s/%21abc%3Abipe.ne
 - A página mostra o botão para instalar o Bipe. A página não lê o pacote.
 - A sala do pacote é pública e não tem criptografia. Ela guarda só os stickers e não tem mensagens.
 
+## Link de selo de revenda
+
+```
+https://bipe.chat/marca/#<código>
+```
+
+Uma marca com selo de CNPJ verificado cria esse link no app e manda para quem revende (Trabalho, Selos de revenda). O código tem 16 caracteres: `A-Z`, `a-z`, `0-9`, `-` e `_`. Ele vale uma vez.
+
+- O código vem depois do `#`, então o navegador nunca manda ele para o servidor. A página não manda o código para lugar nenhum.
+- A página mostra o código, um botão para copiar e os passos no app. O app mostra a marca antes de a pessoa aceitar.
+- Um link sem código válido mostra uma mensagem curta.
+- A página não envia referrer. A prévia do link nunca mostra o código.
+
 ## Links de e-mail
 
 A API do Bipe manda dois tipos de link por e-mail. O token vem depois do `#`, então o navegador nunca manda ele para o servidor.

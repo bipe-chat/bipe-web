@@ -37,6 +37,7 @@ Se o `bipe.chat` parar, as conversas continuam. Só o site e as prévias de link
 - O site, em português em `/` e em inglês em `/en/`.
 - Links de perfil: `bipe.chat/@arroba`.
 - Links de convite: `bipe.chat/convite/<código>`.
+- Links de selo de revenda: `bipe.chat/marca/#<código>`.
 - Links de e-mail para recuperar a conta e confirmar o e-mail.
 - O servidor MCP público para assistentes de IA: `mcp.bipe.chat/mcp`. Só dados públicos.
 - Termos e privacidade.

@@ -8,6 +8,7 @@ import homoglyphs from "@shared/registries/homoglyphs.json";
 import inviteCodes from "@shared/registries/invite-codes.json";
 import profilesJson from "@shared/registries/profiles.json";
 import accountsJson from "@shared/registries/accounts.json";
+import brandMarksJson from "@shared/registries/brand-marks.json";
 import reservedNames from "@shared/registries/reserved-names.json";
 import scamPatterns from "@shared/registries/scam-patterns.json";
 import stickersJson from "@shared/registries/stickers.json";
@@ -94,6 +95,9 @@ export const reg = {
   strings: stringsPt,
   stringsEn,
 } as unknown as Registries;
+
+/** Brand marks for resellers (bipe ADR 0162): life of an unused invite. */
+export const brandMarkRules = brandMarksJson as { inviteDays: number };
 
 /** Device-first account rules (ADR 0057, 0059): link lives and recovery delays. */
 export const accountRules = accountsJson as { recoveryLinkMinutes: number; emailVerifyLinkHours: number; recoveryDelayHours: { email: number } };

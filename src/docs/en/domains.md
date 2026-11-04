@@ -37,6 +37,7 @@ If `bipe.chat` stops working, chat keeps working. Only the site and new link pre
 - The site, in Portuguese at `/` and in English at `/en/`.
 - Profile links: `bipe.chat/@handle`.
 - Invite links: `bipe.chat/convite/<code>`.
+- Reseller mark links: `bipe.chat/marca/#<code>`.
 - Email links for recovery and email confirmation.
 - The public MCP server for AI assistants: `mcp.bipe.chat/mcp`. Public data only.
 - Terms and privacy.
