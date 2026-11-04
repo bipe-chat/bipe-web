@@ -72,10 +72,6 @@ Um assistente de IA pode conferir um @ e o selo de empresa pelo servidor MCP pú
 
 O contrato completo da API está em [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml). O código do servidor está em [bipe-api](https://github.com/bipe-chat/bipe-api).
 
-## Servidor MCP público
-
-Assistentes de IA podem consultar o Bipe pelo MCP em `https://mcp.bipe.chat/mcp`, sem login. Eles conferem um @ e o selo de CNPJ de uma empresa, e recebem só o que a página pública do perfil mostra.
-
 ## O que a API não faz
 
 - Não tem busca de @ nem lista de usuários.

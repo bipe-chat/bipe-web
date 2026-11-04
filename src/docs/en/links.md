@@ -72,10 +72,6 @@ An AI assistant can check an @handle and a company seal through the public Bipe 
 
 The full API contract is in [openapi.yaml](https://github.com/bipe-chat/bipe-shared/blob/main/api/openapi.yaml). The server code is in [bipe-api](https://github.com/bipe-chat/bipe-api).
 
-## Public MCP server
-
-AI assistants can query Bipe over MCP at `https://mcp.bipe.chat/mcp`, with no sign-in. They check a handle and a company's CNPJ seal, and get only what the public profile page shows.
-
 ## What the API does not do
 
 - No handle search and no user directory.
