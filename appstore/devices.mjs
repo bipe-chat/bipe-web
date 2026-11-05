@@ -1,6 +1,6 @@
 // The App Store screenshot sets Bipe ships (bipe-chat/bipe#454). The one source for their sizes:
 // the store image builder (scripts/store-images.mjs, bipe-chat/bipe#455) imports it for the panel size
-// and checks each capture in appstore/raw against it. Moved from bipe-ios (archived) on 26 October 2026.
+// and checks each capture in appstore/raw against it. Moved here on 26 October 2026.
 // Rules from App Store Connect: PNG, RGB with no alpha, exact pixels, 1 to 10 images per set.
 // ASC scales the smaller iPhone and iPad sets from these two.
 // `screenRadius` is the corner radius of the screen in capture pixels, for a continuous corner with

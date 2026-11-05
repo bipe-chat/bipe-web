@@ -116,7 +116,7 @@ export function PlatformStatus({ lang, f }: { lang: Lang; f: Feature }) {
   return <p className="small muted">{surfaceStatus(lang, f).join(" · ")}</p>;
 }
 
-/** Mirrors BipeScamWarningView (bipe-ios): caution card under the message. */
+/** Mirrors BipeScamWarningView of the old iOS app: caution card under the message. */
 export function ScamWarningCard({ lang, kind }: { lang: Lang; kind: ScamKind }) {
   return (
     <div className="trust caution" role="note">

@@ -1,6 +1,6 @@
 // The simulated Bipe iOS app. Sizes inside the phone are iOS points (1px = 1pt) and the
 // whole phone is scaled with CSS zoom, so every value can be copied 1:1 from the SwiftUI source
-// (bipe-ios: TimelineItemBubbledStylerView, RoomHeaderView, MessageComposer, HomeScreenRoomCell).
+// (old iOS app: TimelineItemBubbledStylerView, RoomHeaderView, MessageComposer, HomeScreenRoomCell).
 import { createContext, useContext, useId, type CSSProperties, type ReactNode } from "react";
 import { Avatar, label, who } from "../cast";
 import { chatBackground, markPath, t, type Lang } from "../shared";

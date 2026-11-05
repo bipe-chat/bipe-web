@@ -34,7 +34,7 @@ export function Wordmark({ id = MARK, size = 26 }: { id?: MarkId; size?: number 
   );
 }
 
-/** Verified company (CNPJ badge, bipe#252): the solid seal with a building glyph (design/trust-ui.md). Same drawing as BipeSealMark in bipe-ios. */
+/** Verified company (CNPJ badge, bipe#252): the solid seal with a building glyph (design/trust-ui.md). Same drawing as the BipeSealMark of the old iOS app. */
 export function CompanySeal({ size = 16, label }: { size?: number; label: string }) {
   return (
     <span className="seal company" title={label}>
