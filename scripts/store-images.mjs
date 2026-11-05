@@ -1,6 +1,6 @@
 // Renders the App Store, Google Play and Instagram images (bipe-chat/bipe#455, #463, #465): one captioned panel per
 // row of the `## Screenshots` table in bipe-shared/product/appstore.md, from the raw captures in
-// appstore/raw (moved from bipe-ios, archived). The panel parts (title, sub, phone with status bar) are in
+// appstore/raw (moved here on 26 October 2026). The panel parts (title, sub, phone with status bar) are in
 // scripts/lib/panels.mjs; the backdrop is scripts/lib/backdrop.mjs, shared with the
 // link-preview cards. Satori lays the panel out and resvg rasterises it, as in scripts/og.mjs, so the
 // output is the same on every machine and needs no browser.
