@@ -16,8 +16,8 @@ node -e 'if (!JSON.parse(require("fs").readFileSync(".generated/changelog.json",
 sh ../bipe-infra/scripts/check-deploy-source.sh . ../bipe-shared ../bipe-infra
 rsync -a dist/ ../bipe-infra/compose/site/
 
-# Preflight: some local networks cannot reach the SaveinCloud gate while the site is up for everyone
-# else (14 October 2026, Cirion AS11415 route). Say which case it is, instead of a 75 s rsync timeout.
+# Preflight: a local network can fail to reach the deploy host while the site is up for everyone
+# else. Say which case it is, instead of a 75 s rsync timeout.
 host=${BIPE_DEPLOY_TARGET#*@}
 # macOS nc limits the connect time with -G; -w there only limits idle time after connect.
 if [ "$(uname)" = Darwin ]; then wait_flag=-G; else wait_flag=-w; fi
