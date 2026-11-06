@@ -10,7 +10,7 @@ type Build = {
   build: number;
   version: string | null;
   date: string;
-  updates: { id: string; kind: Kind; platforms: ("ios" | "android")[]; headline: string; detail: string }[];
+  updates: { id: string; kind: Kind; platforms: ("ios" | "android" | "macos")[]; headline: string; detail: string }[];
 };
 type Update = Build["updates"][number];
 const builds = changelogJson as Build[];
