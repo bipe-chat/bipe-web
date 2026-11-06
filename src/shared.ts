@@ -321,6 +321,7 @@ type CodeLink = { id: string; repo: string; path: string } & Copy<string>;
 export const distribution = distributionJson as unknown as {
   ios: Channel;
   android: Channel;
+  macos: Channel & Copy<{ label: string; note: string; steps: string[]; signing: string }>;
   source: { org: string; repos: SourceRepo[]; code?: CodeLink[] };
   contact: string;
   steward: { name: string; url: string };

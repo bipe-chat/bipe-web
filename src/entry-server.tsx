@@ -204,6 +204,7 @@ export function renderMarkdown(route: Route): string {
   if (distribution.ios.url) out.push(`- ${distribution.ios[lang].label}: ${distribution.ios.url} (${distribution.ios[lang].note})`);
   if (distribution.android.status === "available" && distribution.android.url) out.push(`- ${distribution.android[lang].label}: ${distribution.android.url} (${distribution.android[lang].note})`);
   else out.push(`- ${distribution.android[lang].label}: ${distribution.android[lang].note} ${abs(paths.organisations(lang))}#form`);
+  if (distribution.macos.status === "available" && distribution.macos.url) out.push(`- ${distribution.macos[lang].label}: ${distribution.macos.url} (${distribution.macos[lang].note} ${distribution.macos.minOS}.)`, ...distribution.macos[lang].steps.map(step => `  - ${step}`), `  - ${distribution.macos[lang].signing}`);
   out.push("", `${c.steward} ${distribution.steward.name}: ${distribution.steward.url}`);
   if (publicRepos.length > 0 && route.path === paths.download(lang)) out.push("", `## ${c.sourceTitle}`, "", ...publicRepos.map((r) => `- ${r[lang]}: ${r.url}`));
   return out.join("\n") + "\n";

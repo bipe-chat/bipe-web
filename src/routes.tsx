@@ -274,11 +274,11 @@ function homeJsonLd(lang: Lang, abs: (p: string) => string): object[] {
   const org = { "@type": "Organization", name: "Bipe", url: abs(paths.home(lang)), logo: abs("/brand/app-icon.png"),
     parentOrganization: { "@type": "Organization", name: distribution.steward.name, url: distribution.steward.url },
     sameAs: [...distribution.social.accounts.map((a) => a.url), ...(publicRepos.length > 0 ? [distribution.source.org] : [])] };
-  const os = [distribution.ios.status === "available" && "iOS", distribution.android.status === "available" && "Android"].filter(Boolean).join(", ");
+  const os = [distribution.ios.status === "available" && "iOS", distribution.android.status === "available" && "Android", distribution.macos.status === "available" && "macOS"].filter(Boolean).join(", ");
   return [
     { "@context": "https://schema.org", ...org },
     { "@context": "https://schema.org", "@type": "WebSite", name: "Bipe", url: abs(paths.home(lang)), inLanguage: lang === "pt" ? "pt-BR" : "en" },
-    { "@context": "https://schema.org", "@type": "MobileApplication", name: "Bipe", description: product.promise[lang].lede,
+    { "@context": "https://schema.org", "@type": "SoftwareApplication", name: "Bipe", description: product.promise[lang].lede,
       applicationCategory: "CommunicationApplication", operatingSystem: os, url: abs(paths.download(lang)),
       offers: { "@type": "Offer", price: "0", priceCurrency: "BRL" }, publisher: org },
   ];
