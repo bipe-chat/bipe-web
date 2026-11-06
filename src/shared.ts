@@ -104,9 +104,9 @@ export const accountRules = accountsJson as { recoveryLinkMinutes: number; email
 
 export type Lang = "pt" | "en";
 export type Status = "testing" | "built" | "planned" | "policy";
-/** The four surfaces of the parity ledger (ADR 0092). web is bipe-web, server is bipe-api and infra. */
-export type Surface = "ios" | "android" | "web" | "server";
-export const SURFACES: Surface[] = ["ios", "android", "web", "server"];
+/** The parity ledger includes both native desktops (ADRs 0092, 0266). */
+export type Surface = "ios" | "android" | "macos" | "windows" | "web" | "server";
+export const SURFACES: Surface[] = ["ios", "android", "macos", "windows", "web", "server"];
 /** n/a: the surface has no part in the feature (no web chat, device only). */
 export type SurfaceStatus = Status | "n/a";
 type Copy<T> = { pt: T; en: T };
@@ -146,7 +146,7 @@ export type Feature = {
   id: string;
   area: string;
   /** From bipe-shared/product/parity.json, the item with the same id (bipe#300). product.json has no status. */
-  status: { ios: Status; android: Status; web: SurfaceStatus; server: SurfaceStatus };
+  status: { ios: Status; android: Status; macos: SurfaceStatus; windows: SurfaceStatus; web: SurfaceStatus; server: SurfaceStatus };
   slug: Copy<string>;
   /** Phone scenes and sims that show the feature in practice; the first sits beside the text (bipe#176). */
   figures?: FigureId[];
@@ -208,7 +208,7 @@ function featureStatus(id: string): Feature["status"] {
   const item = ledger.get(id);
   if (!item) throw new Error(`feature ${id} has no item in bipe-shared/product/parity.json`);
   const s = (x: LedgerSurface) => (typeof x === "string" ? x : x.status);
-  return { ios: s(item.ios) as Status, android: s(item.android) as Status, web: s(item.web), server: s(item.server) };
+  return { ios: s(item.ios) as Status, android: s(item.android) as Status, macos: s(item.macos), windows: s(item.windows), web: s(item.web), server: s(item.server) };
 }
 const productData = productJson as unknown as { features: Omit<Feature, "status">[] };
 
@@ -321,6 +321,7 @@ type CodeLink = { id: string; repo: string; path: string } & Copy<string>;
 export const distribution = distributionJson as unknown as {
   ios: Channel;
   android: Channel;
+  macos: Channel & Copy<{ label: string; note: string; steps: string[]; signing: string }>;
   source: { org: string; repos: SourceRepo[]; code?: CodeLink[] };
   contact: string;
   steward: { name: string; url: string };

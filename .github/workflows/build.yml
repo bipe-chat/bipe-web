@@ -39,6 +39,13 @@ jobs:
       # check-code-links compares with origin/main of the sibling clone, also when a branch is checked out.
       - name: Fetch bipe-shared main
         run: git -C bipe-shared fetch -q --depth 1 origin main:refs/remotes/origin/main
+      # Version history is generated from the app's actual main commits and release tags.
+      - uses: actions/checkout@v4
+        with:
+          repository: bipe-chat/bipe-app
+          path: bipe-app
+          fetch-depth: 0
+          persist-credentials: false
       - uses: pnpm/action-setup@v4
         with:
           package_json_file: bipe-web/package.json
@@ -54,7 +61,7 @@ jobs:
         working-directory: bipe-web
       - name: Record source revisions
         run: |
-          node -e 'const fs = require("node:fs"); const cp = require("node:child_process"); const revision = repo => cp.execFileSync("git", ["-C", repo, "rev-parse", "HEAD"], {encoding: "utf8"}).trim(); fs.writeFileSync("bipe-web/site-source.json", JSON.stringify({web: revision("bipe-web"), shared: revision("bipe-shared")}) + "\n");'
+          node -e 'const fs = require("node:fs"); const cp = require("node:child_process"); const revision = (repo, ref = "HEAD") => cp.execFileSync("git", ["-C", repo, "rev-parse", ref], {encoding: "utf8"}).trim(); fs.writeFileSync("bipe-web/site-source.json", JSON.stringify({web: revision("bipe-web"), shared: revision("bipe-shared"), app: revision("bipe-app", "origin/main")}) + "\n");'
       - uses: actions/upload-artifact@v4
         with:
           name: bipe-site

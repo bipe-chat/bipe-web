@@ -1,6 +1,6 @@
 // The app changelog for /versoes/ (/en/versions/): bipe-app tools/changelog.mjs --json, run in the sibling clone
 // (../bipe-app) against its origin/main, written to .generated/changelog.json (gitignored, one source). A sibling
-// that is not cloned gives an empty page with a warning, as check-code-links does (CI clones no bipe-app).
+// that is not cloned gives an empty page with a warning, as check-code-links does. CI clones the app's full history.
 // scripts/deploy.sh refuses an empty page. A clone whose checkout has no tool while origin/main has one fails
 // the build: on 2 November 2026 an old checkout shipped an empty /versoes/. Runs before tsc in `pnpm build`.
 import { execFileSync } from "node:child_process";

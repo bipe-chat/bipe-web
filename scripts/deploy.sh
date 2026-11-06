@@ -11,7 +11,7 @@ test -f scripts/deploy.env || { echo "scripts/deploy.env is missing: copy script
 . scripts/deploy.env
 
 # An empty /versoes/ means ../bipe-app was missing or old at build time (scripts/changelog.mjs).
-node -e 'if (!JSON.parse(require("fs").readFileSync(".generated/changelog.json", "utf8")).length) process.exit(1)' ||
+node -e 'if (!JSON.parse(require("fs").readFileSync("dist/versoes/changelog.json", "utf8")).length) process.exit(1)' ||
   { echo "the changelog is empty: put ../bipe-app on origin/main and run pnpm build" >&2; exit 1; }
 sh ../bipe-infra/scripts/check-deploy-source.sh . ../bipe-shared ../bipe-infra
 rsync -a dist/ ../bipe-infra/compose/site/

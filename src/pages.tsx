@@ -318,7 +318,7 @@ export function AudiencePage({ lang, a }: { lang: Lang; a: Audience }) {
 
 export function DownloadPage({ lang }: { lang: Lang }) {
   const c = chrome[lang];
-  const { ios, android } = distribution;
+  const { ios, android, macos } = distribution;
   return (
     <>
       <section className="wrap section">
@@ -331,18 +331,25 @@ export function DownloadPage({ lang }: { lang: Lang }) {
       <section className="wrap">
         <div className="download-grid">
           <div className="card platform">
-            <h2>{c.iosTitle}</h2>
+            <h2 className="sub">{c.iosTitle}</h2>
             <p className="muted">{ios[lang].note} {c.needs} {ios.minOS}.</p>
             <ol className="muted">{c.testflightSteps.map((s) => <li key={s}>{s}</li>)}</ol>
             {ios.url && <a className="button primary" href={ios.url}><Icon name="apple" />{ios[lang].label}</a>}
           </div>
           <div className="card platform" id="android">
-            <h2>{c.androidTitle}</h2>
+            <h2 className="sub">{c.androidTitle}</h2>
             <p className="muted">{android[lang].note}</p>
             {android.status === "available" && android.url
               ? <a className="button primary" href={android.url}><Icon name="android" />{android[lang].label}</a>
               : <Island name="WaitlistForm" props={{ lang, platform: "android", source: paths.download(lang) }} />}
           </div>
+          {macos.status === "available" && macos.url && <div className="card platform" id="mac">
+            <h2 className="sub">{c.macTitle}</h2>
+            <p className="muted">{macos[lang].note} {c.needs} {macos.minOS}.</p>
+            <ol className="muted">{macos[lang].steps.map(step => <li key={step}>{step}</li>)}</ol>
+            <a className="button primary" href={macos.url}><Icon name="apple" />{macos[lang].label}</a>
+            <p className="small muted">{macos[lang].signing}</p>
+          </div>}
         </div>
       </section>
       <section className="wrap section" id="convite">

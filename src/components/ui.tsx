@@ -146,7 +146,7 @@ export function TrustCard({ level, title, children, icon = "person" }: { level: 
  * icon, label, then the channel. Not the official badges: those may link only to the stores.
  */
 export function DownloadButtons({ lang }: { lang: Lang }) {
-  const { ios, android } = distribution;
+  const { ios, android, macos } = distribution;
   const androidLive = android.status === "available" && android.url;
   return (
     <div className="actions store-badges">
@@ -160,6 +160,10 @@ export function DownloadButtons({ lang }: { lang: Lang }) {
         <Icon name="android" size={24} />
         <span>{android[lang].label}<span className="sub">{androidLive ? "APK" : chrome[lang].waitlist.submit}</span></span>
       </a>
+      {macos.status === "available" && macos.url && <a className="button store" href={`${paths.download(lang)}#mac`}>
+        <Icon name="apple" size={24} />
+        <span>{macos[lang].label}<span className="sub">{macos.minOS}</span></span>
+      </a>}
     </div>
   );
 }
