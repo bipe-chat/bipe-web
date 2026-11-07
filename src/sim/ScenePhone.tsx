@@ -7,7 +7,7 @@ import { Bubble, Phone, PhonePalette, runs, TabBar } from "../components/phone";
 import { appPalettes, reg, scamWarningKind, t, type Lang } from "../shared";
 import { ME, REAL_VS_FAKE, scenes, text, TRUST_LEVEL_SCENES, type InboxRow, type Line, type Scene, type SceneId } from "./scenes";
 import { PixCard } from "./PixCard";
-import { AccountSwitcher, AppLockScreen, CallLine, ChargeCard, Contacts, Guardians, JoinCard, LocationBody, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, SettingsList, StickerPicker, VerifyPix, VoiceBody } from "./SceneParts";
+import { AccountSwitcher, TeamList, AppLockScreen, CallLine, ChargeCard, Contacts, Guardians, JoinCard, LocationBody, Lookup, PauseCard, PollCard, ReadOnlyBar, Requests, Scan, SettingsList, StickerPicker, VerifyPix, VoiceBody } from "./SceneParts";
 import settingsJson from "@shared/registries/settings.json";
 import { Stage } from "./Stage";
 import { AgendaDay, AgendaReminder, BookFlow } from "./AgendaParts";
@@ -201,6 +201,7 @@ export function sceneSteps(s: Scene): number {
     case "settings": return s.sections.length;
     case "appLock": return 1;
     case "accounts": return s.ids.length + 1;
+    case "team": return s.attendants.length + 2;
     case "guardians": return 2;
   }
 }
@@ -287,6 +288,8 @@ function SceneBody({ lang, id, beat = Infinity }: { lang: Lang; id: SceneId; bea
       return <Phone lang={lang} layout="list" head="" footer={<div />}><AppLockScreen lang={lang} beat={beat} /></Phone>;
     case "accounts":
       return <Phone lang={lang} layout="form" head={t(lang, "bipe_app_account_switcher_title")} footer={<TabBar lang={lang} active="you" />}><AccountSwitcher lang={lang} ids={scene.ids} beat={beat} /></Phone>;
+    case "team":
+      return <Phone lang={lang} layout="form" head={t(lang, "bipe_team_title")} footer={<TabBar lang={lang} active="you" />}><TeamList lang={lang} attendants={scene.attendants} beat={beat} /></Phone>;
     case "guardians":
       return <Phone lang={lang} layout="form" head={t(lang, "bipe_theft_title")}><Guardians lang={lang} guardians={scene.guardians} guarding={scene.guarding} beat={beat} /></Phone>;
     case "chat": {

@@ -108,7 +108,7 @@ export const chrome = {
       "bot-marcado": "Bot marcado",
       chamada: "Chamada de vídeo", "audio-texto": "Áudio com texto", "audio-golpe": "Golpe por áudio", localizacao: "Localização em tempo real",
       "foto-copiada": "Foto copiada", roubo: "Celular roubado", guardioes: "Guardiões", trava: "App bloqueado", "sua-conta": "Sua conta",
-      "seus-dados": "Seus dados", "duas-contas": "Duas contas",
+      "seus-dados": "Seus dados", "duas-contas": "Duas contas", "quem-atende": "Quem atende",
     } satisfies Record<SceneId, string>,
     // Labels inside scenes that the app has no string for yet (bipe#176). Move to bipe-shared/strings when the app ships them.
     sim: {
@@ -373,7 +373,7 @@ export const chrome = {
       "bot-marcado": "Marked bot",
       chamada: "Video call", "audio-texto": "Voice with text", "audio-golpe": "Voice message scam", localizacao: "Live location",
       "foto-copiada": "Copied photo", roubo: "Stolen phone", guardioes: "Guardians", trava: "App locked", "sua-conta": "Your account",
-      "seus-dados": "Your data", "duas-contas": "Two accounts",
+      "seus-dados": "Your data", "duas-contas": "Two accounts", "quem-atende": "Who answers",
     } satisfies Record<SceneId, string>,
     sim: {
       accept: "Accept", ignore: "Ignore", copyKey: "Copy Pix key", charge: "Charge", poll: "Poll", ask: "Question",

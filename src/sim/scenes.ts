@@ -72,6 +72,8 @@ export type Scene =
   | { kind: "appLock" }
   /** The account switcher on the Você tab (ADR 0086, ADR 0135): the accounts on this phone, the first one active. */
   | { kind: "accounts"; ids: string[] }
+  /** Quem atende (ADR 0251, ADR 0252): who answers for a work account, then what those people share. */
+  | { kind: "team"; attendants: string[] }
   /** Theft protection (ADR 0044): your guardians, then the accounts you protect. */
   | { kind: "guardians"; guardians: string[]; guarding: string[] };
 
@@ -639,6 +641,7 @@ export const scenes = {
   "sua-conta": { kind: "settings", group: "account", sections: ["waysBack", "pin", "devices", "leave"], on: ["appLock", "biometricUnlock"] },
   "seus-dados": { kind: "settings", group: "privacy", sections: ["data"] },
   "duas-contas": { kind: "accounts", ids: ["gabi", "gabidesign"] },
+  "quem-atende": { kind: "team", attendants: ["gabi"] },
 } satisfies Record<string, Scene>;
 
 export type SceneId = keyof typeof scenes;
