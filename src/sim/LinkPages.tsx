@@ -7,11 +7,11 @@ import { chrome } from "../copy";
 import { detectPlatform, type Platform } from "../platform";
 import { DownloadButtons, Icon } from "../components/ui";
 import { API_URL } from "../config";
-import { CompanySeal } from "../components/brand";
+import { CompanySeal, PersonSeal } from "../components/brand";
 import { QuoteLanding } from "./QuoteLanding";
 import { ShopWeb } from "./ShopWeb";
-import { formatCnpj, verifyCompanyBadge, type CompanyBadge } from "../badge";
-import { brandMarkRules, distribution, extractInviteCodeRef, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
+import { formatCnpj, verifyCompanyBadge, verifyPersonBadge, type CompanyBadge } from "../badge";
+import { brandMarkRules, distribution, extractInviteCodeRef, normalize, personProofs, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
 import { paths } from "../paths";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
@@ -91,7 +91,9 @@ function LinkQr({ url }: { url: string }) {
 }
 
 type ProfileSocial = { id: string; name: string; handle: string };
-type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string; company?: CompanyBadge; socials?: ProfileSocial[] };
+type ProfileProof = { mark: "regular" | "fill"; line: string };
+type ProfileProofs = { lines: ProfileProof[]; verifiedName?: string };
+type PublicProfile = { handle: string; name: string; bio?: string; photo_url?: string; company?: CompanyBadge; proofs?: ProfileProofs; socials?: ProfileSocial[] };
 
 /** Social handles (ADR 0228): the API sends id to handle. Registry order; unknown ids and handles that fail the
  *  registry pattern are left out, so the link the page builds from the registry template always fits that network. */
@@ -104,13 +106,34 @@ function readSocials(socials: unknown): ProfileSocial[] {
   });
 }
 
+/** The proof lines of a person (ADR 0275 point 16), strongest first. Only badges that verify here; an unknown scheme gives no line (fail closed).
+ *  The public name is free text, so a badge name that differs from it shows too, as in the apps (person-profile verifiedName). */
+async function readProofs(badge: unknown, proofs: unknown, displayName: string): Promise<ProfileProofs | null> {
+  const envelopes = Array.isArray(proofs) ? proofs : badge === undefined ? [] : [badge];
+  const verified = (await Promise.all(envelopes.map((e) => verifyPersonBadge(e)))).filter((p) => p !== null);
+  const found = personProofs(verified, reg).flatMap(({ scheme, mark }) => {
+    const entry = reg.schemes.schemes.find((s) => s.id === scheme);
+    const schemeName = entry?.names["pt-BR"];
+    const badgeName = verified.find((v) => v.lvl === entry?.alias)?.name;
+    return schemeName && badgeName ? [{ mark, schemeName, badgeName }] : [];
+  });
+  if (!found.length) return null;
+  const { schemeName, badgeName } = found[0];
+  const differs = normalize(badgeName, reg.homoglyphs.map) !== normalize(displayName, reg.homoglyphs.map);
+  return {
+    lines: found.map((f) => ({ mark: f.mark, line: t("pt", "bipe_badge_verified_via", f.schemeName) })),
+    ...(differs ? { verifiedName: t("pt", "bipe_badge_verified_name_via", schemeName, badgeName) } : {}),
+  };
+}
+
 /** Accepts only the fields the page renders, and photos only from the API host (ADR 0041).
- *  The seal shows only for a badge that verifies as lvl "cnpj" (src/badge.ts); a person's page shows none. */
+ *  A seal shows only for a badge that verifies (src/badge.ts). */
 async function readProfile(p: unknown, handle: string): Promise<PublicProfile | null> {
   if (!p || typeof p !== "object") return null;
-  const { handle: h, name, bio, photo_url, badge, socials: rawSocials } = p as Record<string, unknown>;
+  const { handle: h, name, bio, photo_url, badge, proofs: rawProofs, socials: rawSocials } = p as Record<string, unknown>;
   if (h !== handle || typeof name !== "string" || !name) return null;
   const company = badge === undefined ? null : await verifyCompanyBadge(badge);
+  const proofs = company ? null : await readProofs(badge, rawProofs, name);
   const socials = readSocials(rawSocials);
   return {
     handle,
@@ -118,6 +141,7 @@ async function readProfile(p: unknown, handle: string): Promise<PublicProfile | 
     ...(typeof bio === "string" && bio ? { bio } : {}),
     ...(typeof photo_url === "string" && photo_url.startsWith(`${API_URL}/v1/profiles/`) ? { photo_url } : {}),
     ...(company ? { company } : {}),
+    ...(proofs ? { proofs } : {}),
     ...(socials.length ? { socials } : {}),
   };
 }
@@ -153,7 +177,7 @@ export function ProfileLanding(_: Record<string, never>) {
     return (
       <section className="wrap narrow section profile">
         {profile.photo_url && <img className="profile-photo" src={profile.photo_url} alt="" width={112} height={112} referrerPolicy="no-referrer" />}
-        <h1 style={{ overflowWrap: "anywhere" }}>{profile.name}{profile.company && <> <CompanySeal size={28} label={t("pt", "bipe_badge_company")} /></>}</h1>
+        <h1 style={{ overflowWrap: "anywhere" }}>{profile.name}{profile.company && <> <CompanySeal size={28} label={t("pt", "bipe_badge_company")} /></>}{profile.proofs && <> <PersonSeal mark={profile.proofs.lines[0].mark} size={28} label={profile.proofs.lines[0].line} /></>}</h1>
         <p className="profile-handle">@{profile.handle}</p>
         {profile.company ? (
           <div className="company-facts">
@@ -166,6 +190,13 @@ export function ProfileLanding(_: Record<string, never>) {
             </dl>
             <p className="small muted">{t("pt", "bipe_badge_company_body")}</p>
           </div>
+        ) : profile.proofs ? (
+          <ul className="profile-proofs">
+            {profile.proofs.verifiedName && <li>{profile.proofs.verifiedName}</li>}
+            {profile.proofs.lines.map((proof) => (
+              <li key={proof.line}><PersonSeal mark={proof.mark} />{proof.line}</li>
+            ))}
+          </ul>
         ) : (
           <p><span className="chip policy">{t("pt", "bipe_public_profile_not_verified")}</span></p>
         )}

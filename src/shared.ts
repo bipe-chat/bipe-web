@@ -11,6 +11,7 @@ import accountsJson from "@shared/registries/accounts.json";
 import brandMarksJson from "@shared/registries/brand-marks.json";
 import reservedNames from "@shared/registries/reserved-names.json";
 import scamPatterns from "@shared/registries/scam-patterns.json";
+import schemesJson from "@shared/registries/schemes.json";
 import stickersJson from "@shared/registries/stickers.json";
 import stringsEn from "@shared/strings/en.json";
 import stringsPt from "@shared/strings/pt-BR.json";
@@ -47,6 +48,7 @@ export const markPath: string = tokensJson.appThemes.icon.path;
 
 export type ScamKind = "extortion" | "pixCode" | "boleto" | "remoteApp" | "pinRequest" | "pixKey" | "deliveryFee" | "lookalikeLink" | "bankAlert" | "receipt" | "newNumber" | "urgency";
 export type Registries = {
+  schemes: { schemes: { id: string; alias?: string; names: Record<string, string> }[]; personAssurance: { id: string; mark: string }[] };
   reserved: { categories: Record<string, string[]> };
   family: { terms: string[] };
   scam: { warningKindPriority: string[] } & Record<string, unknown>;
@@ -65,6 +67,7 @@ export const scamWarningKind = lib.scamWarningKind as (text: string, reg: Regist
 export const handleProblem = lib.handleProblem as (handle: string, reg: Registries) => "too_short" | "too_long" | "invalid_characters" | "reserved" | null;
 export const handleSkeleton = lib.handleSkeleton as (handle: string, reg: Registries) => string;
 export const extractInviteCodeRef = lib.extractInviteCode as (text: string, reg: Registries) => string | null;
+export const personProofs = lib.personProofs as (payloads: { lvl: string }[], reg: Registries) => { scheme: string; assurance: string; mark: "regular" | "fill" }[];
 export const normalizeCnpj = lib.normalizeCnpj as (input: string) => string | null;
 /** A social network a public profile can list (ADR 0228, registries/profiles.json socials), in registry order. */
 export type Social = { id: string; name: string; pattern: string; url: string };
@@ -85,6 +88,7 @@ export const reg = {
   reserved: reservedNames,
   family: familyTerms,
   scam: scamPatterns,
+  schemes: schemesJson,
   homoglyphs,
   handles,
   // Public pages never name MZ (AGENTS.md), so the site leaves out the owned handles of
