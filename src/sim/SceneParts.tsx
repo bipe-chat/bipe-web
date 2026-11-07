@@ -369,6 +369,40 @@ export function AccountSwitcher({ lang, ids, beat }: { lang: Lang; ids: string[]
   );
 }
 
+/** Quem atende (ADR 0251, ADR 0252): the person in charge, the people who answer, then what they share. */
+export function TeamList({ lang, attendants, beat }: { lang: Lang; attendants: string[]; beat: number }) {
+  return (
+    <>
+      <div className="contact-row msg">
+        <div className="contact-main">
+          <span className="name">{t(lang, "bipe_team_you")}</span>
+          <span className="sub">{t(lang, "bipe_team_role_owner")}</span>
+        </div>
+      </div>
+      {attendants.slice(0, Math.max(0, beat - 1)).map((id) => {
+        const e = who(id);
+        return (
+          <div className="contact-row msg" key={id}>
+            <Avatar id={id} size={40} />
+            <div className="contact-main">
+              <span className="name">{label(e)}</span>
+              <span className="sub">{t(lang, "bipe_team_role_attendant")}</span>
+            </div>
+          </div>
+        );
+      })}
+      {beat > attendants.length + 1 && (
+        <div className="contact-row msg">
+          <div className="contact-main">
+            <span className="name">{t(lang, "bipe_team_shared_title")}</span>
+            <span className="sub">{t(lang, "bipe_team_shared_read")}</span>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 /** Theft protection (ADR 0044): the guardians you chose, and the people who chose you, with the mark action. */
 export function Guardians({ lang, guardians, guarding, beat }: { lang: Lang; guardians: string[]; guarding: string[]; beat: number }) {
   const row = (id: string, action?: string) => {
