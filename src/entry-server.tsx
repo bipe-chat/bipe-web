@@ -149,7 +149,7 @@ export function renderMarkdown(route: Route): string {
       out.push(`### ${t.name}`, "", t.who, "", `**${tierPrice(lang, tier)}**. ${t.billing}`, "", ...t.points.map((x) => `- ${x}`), "");
       out.push(tier.cta === "app" ? `${p.ctaApp}: ${abs(paths.download(lang))}` : `${p.ctaForm}: ${abs(paths.organisations(lang))}#form`, "");
     }
-    out.push(p.nonprofit, "", `## ${p.tools.heading}`, "", p.tools.body, "");
+    out.push(p.nonprofit, "", `## ${p.offers.heading}`, "", p.offers.lede, "", `**${p.offers.price}**. ${p.offers.billing}`, "", ...p.offers.points.map((x) => `- ${x}`), "", `## ${p.tools.heading}`, "", p.tools.body, "");
     for (const f of product.pricing.tools.map((id) => product.features.find((x) => x.id === id)!)) out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (${c.status[f.status.ios]})`);
     out.push("", `## ${p.pilot.heading}`, "", ...p.pilot.points.map((x) => `- ${x}`), "");
     out.push(`${product.business[lang].cta} ${abs(paths.organisations(lang))}#form`, "");
