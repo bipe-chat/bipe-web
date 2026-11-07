@@ -178,7 +178,7 @@ export type OrganisationAudience = {
 
 /** Bipe's price rules (ADR 0206): two meters that add up. Tiers: [first customer of the band, BRL per customer per year]. */
 export type PriceProposal = {
-  /** Opt-in offers (ADR 0270, Proposed), outside the active-customer cap. */
+  /** Opt-in offers (ADR 0270; amounts are a proposal), outside the active-customer cap. */
   offers: { adr: string; free: number; monthlyPerFollower: number; sendsPerMonth: number };
   adr: string;
   customers: { free: number; tiers: [number, number][]; capYearly: number };
