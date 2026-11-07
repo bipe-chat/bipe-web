@@ -258,7 +258,7 @@ export function ReadOnlyBar({ lang }: { lang: Lang }) {
 export function CallLine({ lang, line }: { lang: Lang; line: Extract<Line, { card: "call" }> }) {
   const kind = t(lang, line.video ? "bipe_call_video" : "bipe_call_voice");
   return (
-    <div className={`call-line${line.missed ? " missed" : ""}`}>
+    <div className="call-line">
       <Icon name={line.video ? "video" : "call"} size={16} />
       <span>{line.missed ? t(lang, "bipe_call_missed") : `${kind} · ${t(lang, "bipe_call_duration", String(line.minutes ?? 1))}`}</span>
     </div>
