@@ -25,6 +25,8 @@ function base64url(s: string): Uint8Array<ArrayBuffer> | null {
 }
 
 const str = (v: unknown): v is string => typeof v === "string" && v.length > 0;
+// docs/badge-attestation.md "Parser rules" in bipe-shared.
+const isBadgeTime = (v: unknown): v is number => Number.isInteger(v) && (v as number) >= 0 && (v as number) <= 253402300799;
 
 /** The company fields of a valid lvl "cnpj" badge, else null. `keys` and `now` (Unix seconds) are for checks against test vectors. */
 export async function verifyCompanyBadge(envelope: unknown, keys: Record<string, string> = badgeKeys.keys, now = Date.now() / 1000): Promise<CompanyBadge | null> {
@@ -45,7 +47,7 @@ export async function verifyCompanyBadge(envelope: unknown, keys: Record<string,
     if (typeof p.method !== "string" || !METHODS.includes(p.method)) return null;
     if (typeof p.checked_month !== "string" || !/^[0-9]{4}-(0[1-9]|1[0-2])$/.test(p.checked_month)) return null;
     if (p.trade_name !== undefined && !str(p.trade_name)) return null;
-    if (!Number.isInteger(p.iat) || !Number.isInteger(p.exp) || !((p.iat as number) <= now && now < (p.exp as number))) return null;
+    if (!isBadgeTime(p.iat) || !isBadgeTime(p.exp) || !(p.iat <= now && now < p.exp)) return null;
     const [local, server, ...rest] = p.sub.split(":");
     if (rest.length || server !== HOMESERVER || !/^@[^:\s]+$/.test(local)) return null;
     return { name: p.name, legalName: p.legal_name, ...(p.trade_name ? { tradeName: p.trade_name as string } : {}), cnpj: p.cnpj };
