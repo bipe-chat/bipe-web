@@ -27,7 +27,8 @@ fi
 trap 'rm -f "${root:?}/bipe-web/scripts/deploy.env"; rmdir "$lock"' EXIT
 
 for repo in bipe-web bipe-shared bipe-app bipe-infra; do
-  git -C "$bipe/$repo" fetch -q origin main --tags
+  # --force: bipe-app moves the mac-preview tag on each preview, and a plain --tags fetch refuses a moved tag.
+  git -C "$bipe/$repo" fetch -q --force origin main --tags
   if [ -e "$root/$repo/.git" ]; then
     git -C "$root/$repo" checkout -q --force --detach origin/main
     git -C "$root/$repo" clean -q -fd
