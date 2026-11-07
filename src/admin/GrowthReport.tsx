@@ -16,6 +16,7 @@ const LABEL: Record<string, string> = {
   signup_done: "Criou a conta",
   onboarding_finished: "Terminou o início",
   first_message_sent: "Mandou a primeira mensagem",
+  first_human_conversation: "Conversou com outra pessoa",
   contact_verified: "Verificou um contato",
   invite_sent: "Mandou um convite",
   invite_redeemed: "Entrou por convite",
