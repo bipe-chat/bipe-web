@@ -755,8 +755,7 @@ a.staff-tile:hover { border-color: var(--acai); }
 
 /* Scenes for calls, voice, location, settings, app lock and theft protection (src/sim/SceneParts.tsx). */
 .danger-text { color: var(--bipe-trust-danger-ink); font-size: 0.875rem; font-weight: 600; }
-.call-line { display: flex; gap: 8px; align-items: center; justify-content: center; margin: 0 auto; width: fit-content; padding: 6px 12px; border-radius: 999px; background: var(--bipe-trust-neutral-wash); color: var(--bipe-trust-neutral-ink); font-size: 0.8125rem; }
-.call-line.missed { background: var(--bipe-trust-danger-wash); color: var(--bipe-trust-danger-ink); }
+.call-line { display: flex; gap: 8px; align-items: center; justify-content: center; margin: 0 auto; width: fit-content; padding: 6px 12px; border: 1px solid var(--bipe-accent-fill); border-radius: 999px; background: var(--bipe-accent-wash); color: var(--bipe-accent-ink); font-size: 0.8125rem; font-weight: 600; }
 .voice { display: grid; gap: 6px; min-width: 200px; }
 .voice-player { display: flex; gap: 8px; align-items: center; }
 .voice-play { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--bipe-accent-ink); color: var(--on-acai); font-size: 0.6875rem; }
