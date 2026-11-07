@@ -499,6 +499,19 @@ export function PricingPage({ lang }: { lang: Lang }) {
         </div>
         <p className="muted" style={{ marginTop: 20 }}>{p.nonprofit}</p>
       </section>
+      <section className="wrap section" id="ofertas">
+        <div className="split">
+          <div>
+            <h2>{p.offers.heading}</h2>
+            <p className="lede">{p.offers.lede}</p>
+          </div>
+          <div className="card tier">
+            <p className="tier-price display">{p.offers.price}</p>
+            <p>{p.offers.billing}</p>
+            <Points items={p.offers.points} />
+          </div>
+        </div>
+      </section>
       <section className="wrap section">
         <div className="grid">
           <div className="card">
