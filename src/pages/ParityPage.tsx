@@ -52,21 +52,26 @@ function FeatureDetails({ item, lang, clients }: { item: ParityItem; lang: Lang;
   return <details className="parity-detail">
     <summary><span className="parity-disclosure" aria-hidden="true">▸</span><span className="parity-feature-name">{nameFor(item, lang)}</span></summary>
     <div className="parity-detail-body">
-      <p>{cleanName(item.name)}</p>
+      {cleanName(item.name) !== nameFor(item, lang) ? <p>{cleanName(item.name)}</p> : null}
       {feature ? <a href={paths.feature(lang, feature)}>{chrome[lang].more}</a> : null}
       <p className="small muted">{records.length ? `${records.length} ${c.records}` : c.notRecorded}</p>
       {item.note ? <p>{cleanName(item.note)}</p> : null}
-      <dl>{clients.map(client => {
-        const value = entry(item, client);
-        const repos = publicRepos.filter(repo => value.evidence?.some(path => path.startsWith(`bipe-${repo.id === "app" ? "app" : repo.id}/`)));
-        return <div key={client}>
-          <dt>{clientLabels[client]}: {c.labels[value.level]}</dt>
-          <dd>{value.reason ? <p>{cleanName(value.reason)}</p> : null}{value.note ? <p>{cleanName(value.note)}</p> : null}{repos.map(repo => <a key={repo.id} href={repo.url}>{c.source}: {repo[lang]}</a>)}</dd>
-        </div>;
-      })}</dl>
       {records.map((record, index) => <p className="small" key={index}>{record.date}: {record.result}. {record.clients.map(client => `${clientLabels[client.id]} ${client.version} (${client.build}), ${client.os}`).join("; ")}</p>)}
     </div>
   </details>;
+}
+
+/** Notes and evidence stay with their platform column; the status appears only once. */
+function PlatformDetails({ item, lang, client }: { item: ParityItem; lang: Lang; client: Client }) {
+  const value = entry(item, client);
+  const repos = publicRepos.filter(repo => value.evidence?.some(path => path.startsWith(`bipe-${repo.id}/`)));
+  if (!value.reason && !value.note && !repos.length) return null;
+  const c = chrome[lang].parity;
+  return <div className="parity-cell-details">
+    {value.reason ? <p>{cleanName(value.reason)}</p> : null}
+    {value.note ? <p>{cleanName(value.note)}</p> : null}
+    {repos.map(repo => <a key={repo.id} href={repo.url} title={repo[lang]} aria-label={`${c.source}: ${clientLabels[client]}, ${repo[lang]}`}>{c.source}</a>)}
+  </div>;
 }
 
 export function ParityExplorer({ lang }: { lang: Lang }) {
@@ -127,7 +132,7 @@ export function ParityExplorer({ lang }: { lang: Lang }) {
         })}</tr></thead>
         {visible.map(group => <tbody key={group.id}>
           <tr className="parity-group"><th colSpan={clients.length + 1} scope="colgroup">{c.categories[group.id]} <span>{group.items.length}</span></th></tr>
-          {group.items.map(item => <tr key={item.id} id={`feature-${item.id}`}><th scope="row"><FeatureDetails item={item} lang={lang} clients={clients} /></th>{clients.map(client => <td key={client}><Badge lang={lang} level={entry(item, client).level} compact /></td>)}</tr>)}
+          {group.items.map(item => <tr key={item.id} id={`feature-${item.id}`}><th scope="row"><FeatureDetails item={item} lang={lang} clients={clients} /></th>{clients.map(client => <td key={client}><Badge lang={lang} level={entry(item, client).level} compact /><PlatformDetails item={item} lang={lang} client={client} /></td>)}</tr>)}
         </tbody>)}
       </table>
       {!total ? <p className="parity-empty">{c.empty}</p> : null}
