@@ -144,6 +144,7 @@ export function FeaturesPage({ lang }: { lang: Lang }) {
     <section className="wrap section">
       <h1>{c.allFeatures}</h1>
       <p className="lede">{product.featuresHub[lang].lede}</p>
+      <p className="more-links"><MoreLink href={paths.parity(lang)}>{c.parity.title}</MoreLink></p>
       {product.sides.map((side) => (
         <div className="side" id={side.id} key={side.id}>
           <h2>{side[lang].name}</h2>

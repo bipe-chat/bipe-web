@@ -4,6 +4,7 @@ export const base = (lang: Lang) => (lang === "pt" ? "/" : "/en/");
 export const paths = {
   home: base,
   tentpole: (lang: Lang, tp: Tentpole) => `${base(lang)}${tp.slug[lang]}/`,
+  parity: (lang: Lang) => `${base(lang)}${lang === "pt" ? "plataformas" : "platforms"}/`,
   features: (lang: Lang) => `${base(lang)}${lang === "pt" ? "recursos" : "features"}/`,
   feature: (lang: Lang, f: { slug: { pt: string; en: string } }) => `${base(lang)}${lang === "pt" ? "recursos" : "features"}/${f.slug[lang]}/`,
   audiences: (lang: Lang) => `${base(lang)}${lang === "pt" ? "para" : "for"}/`,

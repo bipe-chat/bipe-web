@@ -11,6 +11,7 @@ import { DocsPage, docs, docLede, docTitle } from "./pages/DocsPage";
 import { WhoCanReadPage, whoCanReadMarkdown } from "./pages/PrivacyPage";
 import { AccessibilityPage, accessibilityMarkdown } from "./pages/AccessibilityPage";
 import { VersionsPage, versionsMarkdown } from "./pages/VersionsPage";
+import { ParityPage, parityMarkdown } from "./pages/ParityPage";
 import { AboutPage, HelpPage, BrandKitPage, BusinessPage, PricingPage, OrganisationsPage, OrganisationAudiencePage, CastPage, CompareAppPage, ComparePage, AudiencePage, AudiencesPage, DownloadPage, FeaturePage, FeaturesPage, HomePage, TechnologyPage, TentpolePage } from "./pages";
 
 export type Route = {
@@ -61,6 +62,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     path: paths.features(lang), alt: paths.features(other(lang)), lang, section: "features",
     title: `${chrome[lang].allFeatures} · Bipe`, description: product.featuresHub[lang].lede,
     body: () => <FeaturesPage lang={lang} />,
+  },
+  {
+    path: paths.parity(lang), alt: paths.parity(other(lang)), lang, section: "features",
+    title: `${chrome[lang].parity.title} · Bipe`, description: chrome[lang].parity.lede,
+    markdown: parityMarkdown(lang),
+    body: () => <ParityPage lang={lang} />,
   },
   ...product.features.map((f): Route => ({
     path: paths.feature(lang, f), alt: paths.feature(other(lang), f), lang, section: "features",

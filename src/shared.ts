@@ -18,6 +18,9 @@ import stringsPt from "@shared/strings/pt-BR.json";
 import distributionJson from "@shared/product/distribution.json";
 import productJson from "@shared/product/product.json";
 import parityJson from "@shared/product/parity.json";
+import desktopPlanJson from "@shared/product/desktop-plan.json";
+import clientAssessmentJson from "@shared/product/client-assessment.json";
+import type { ParityItem, ParityPlan, ClientAssessment } from "./parity";
 import compareJson from "@shared/product/compare.json";
 import dataJson from "@shared/product/data.json";
 import privacyJson from "@shared/product/privacy.json";
@@ -113,6 +116,10 @@ export type Surface = "ios" | "android" | "macos" | "windows" | "web" | "server"
 export const SURFACES: Surface[] = ["ios", "android", "macos", "windows", "web", "server"];
 /** n/a: the surface has no part in the feature (no web chat, device only). */
 export type SurfaceStatus = Status | "n/a";
+/** The public comparison reads the same registry and assessment as the native clients. */
+export const parityItems = parityJson.items as unknown as ParityItem[];
+export const parityPlan = desktopPlanJson as ParityPlan;
+export const clientAssessment = clientAssessmentJson as ClientAssessment;
 type Copy<T> = { pt: T; en: T };
 
 export type Tentpole = {

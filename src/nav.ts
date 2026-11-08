@@ -20,6 +20,7 @@ export function links(lang: Lang) {
     trust: { href: paths.tentpole(lang, trust), label: trust[lang].name },
     scams: { href: paths.scams(lang), label: c.scams },
     features: { href: paths.features(lang), label: c.features },
+    parity: { href: paths.parity(lang), label: c.parity.title },
     compare: { href: paths.compare(lang), label: compare[lang].nav },
     technology: { href: paths.technology(lang), label: product.technical[lang].nav },
     docs: { href: paths.docs(lang), label: c.docs },
@@ -54,7 +55,7 @@ export const headerCta = "download" satisfies LinkId;
  * "tentpoles" expands to every tentpole page in product.json order.
  */
 export const footer = [
-  { group: "product", links: ["tentpoles", "features", "download"] }, // What does it do, and how do I get it?
+  { group: "product", links: ["tentpoles", "features", "parity", "download"] }, // What does it do, and how do I get it?
   { group: "for", links: ["audiences", "business", "pricing"] }, // Is it for me?
   { group: "learn", links: ["scams", "technology", "docs", "llms", "compare", "source", "versions"] }, // How does it work, can I check it?
   { group: "bipe", links: ["about", "brand", "organisations", "accessibility", "contact"] }, // Who is behind it?

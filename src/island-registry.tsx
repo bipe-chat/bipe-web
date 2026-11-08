@@ -12,8 +12,9 @@ import { RealVsFake, SceneReel, SceneSim, TrustLevels } from "./sim/ScenePhone";
 import { PixDemo } from "./sim/PixDemo";
 import { ApiMini, ArriveMini, InboxMini } from "./sim/BusinessMinis";
 import { NotFound } from "./sim/NotFound";
+import { ParityExplorer } from "./pages/ParityPage";
 
-export const ISLANDS = { SceneReel, IdentitySim, HandleSim, ProfileLanding, InviteLanding, StickerPackLanding, BrandMarkLanding, ConfirmEmailLanding, RecoverLanding, WaitlistForm, OrganisationForm, PriceCalculator, HelpForm, SceneSim, TrustLevels, RealVsFake, StaffApp, PixDemo, InboxMini, ApiMini, ArriveMini, NotFound } as const satisfies Record<string, ComponentType<any>>;
+export const ISLANDS = { ParityExplorer, SceneReel, IdentitySim, HandleSim, ProfileLanding, InviteLanding, StickerPackLanding, BrandMarkLanding, ConfirmEmailLanding, RecoverLanding, WaitlistForm, OrganisationForm, PriceCalculator, HelpForm, SceneSim, TrustLevels, RealVsFake, StaffApp, PixDemo, InboxMini, ApiMini, ArriveMini, NotFound } as const satisfies Record<string, ComponentType<any>>;
 export type IslandName = keyof typeof ISLANDS;
 
 /** Server-rendered component that the client hydrates with the same props. */
