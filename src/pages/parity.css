@@ -39,11 +39,12 @@
 .parity-detail summary::marker { color: var(--muted); }
 .parity-detail[open] summary { color: var(--acai); font-weight: 650; }
 .parity-detail-body { font-weight: 400; font-size: .8125rem; padding: 12px 0 4px; overflow-wrap: anywhere; }
-.parity-detail-body dl { margin: 12px 0 0; }
-.parity-detail-body dt { font-weight: 650; margin-top: 12px; }
-.parity-detail-body dd { margin: 4px 0 0; }
 .parity-detail-body p { margin: 4px 0 8px; }
 .parity-detail-body a { display: block; margin: 4px 0; }
+.parity-cell-details { display: none; margin-top: 12px; font-size: .75rem; overflow-wrap: anywhere; }
+.parity-table tr:has(.parity-detail[open]) .parity-cell-details { display: block; }
+.parity-cell-details p { margin: 0 0 8px; }
+.parity-cell-details a { display: block; margin-top: 8px; }
 .parity-single .parity-table { min-width: 0; }
 .parity-single .parity-table thead th:first-child { width: 65%; }
 .parity-empty { padding: 32px 16px; }
