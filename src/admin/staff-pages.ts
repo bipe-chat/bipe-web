@@ -29,6 +29,7 @@ export const STAFF_CONSOLE = {
   experimentos: { title: "Títulos", group: "Crescimento", path: "/admin/experimentos/" },
   espera: { title: "Lista de espera", group: "Operação", path: "/admin/lista-de-espera/" },
   problemas: { title: "Problemas", group: "Operação", issue: 367 },
+  servidor: { title: "Servidor", group: "Operação", path: "/admin/servidor/" },
   empresas: { title: "Empresas", group: "Empresas", path: "/admin/empresas/" },
   nomes: { title: "Nomes reservados", group: "Empresas", issue: 253 },
   denuncias: { title: "Denúncias", group: "Confiança", path: "/admin/denuncias/" },

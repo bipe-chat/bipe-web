@@ -29,6 +29,7 @@ type Summary = {
   empresas: { awaiting_proof: number; verified: number } | null;
   denuncias: { reports_7d: number } | null;
   lgpd: { over: number } | null;
+  servidor: { memory_pct: number; disk_pct: number; ooms_7d: number } | null;
 };
 
 const PERIODS = [28, 91, 182, 364] as const;
@@ -55,6 +56,9 @@ function Dashboard({ m, s }: { m: Metrics; s: Summary }) {
     { label: "Empresas sem prova", value: num(s.empresas?.awaiting_proof), href: path("empresas"), warn: Boolean(s.empresas?.awaiting_proof) },
     { label: "Denúncias, 7 dias", value: num(s.denuncias?.reports_7d), href: path("denuncias"), warn: Boolean(s.denuncias?.reports_7d) },
     { label: "LGPD fora do prazo", value: num(s.lgpd?.over), href: path("lgpd"), warn: Boolean(s.lgpd?.over) },
+    // Capacity (ADR 0285): "-" when no sample came in the last 15 minutes. Alert limits: memory 75%, disk 80%.
+    { label: "Servidor", value: s.servidor ? `${s.servidor.memory_pct}%` : "-", sub: s.servidor ? `memória · disco ${s.servidor.disk_pct}%` : "sem amostra",
+      href: path("servidor"), warn: !s.servidor || s.servidor.memory_pct > 75 || s.servidor.disk_pct > 80 || s.servidor.ooms_7d > 0 },
     { label: "Lista de espera", value: num(s.espera?.waiting), sub: "esperando", href: path("espera") },
     { label: "Título em teste", value: num(s.experimentos?.visitors), sub: s.experimentos?.id ?? "-", href: path("experimentos") },
   ];

@@ -243,7 +243,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   body: () => <Island name="StaffApp" props={{ page: "index" }} />,
 }, ...([
   // Read-only staff pages (bipe#368). Paths and titles come from src/admin/staff-pages.ts.
-  "propostas", "experimentos", "espera", "empresas", "denuncias", "lgpd", "pesquisa",
+  "propostas", "experimentos", "espera", "empresas", "denuncias", "lgpd", "pesquisa", "servidor",
 ] as const).map((page): Route => ({
   path: staffPath(page), alt: null, lang: "pt", noindex: true, noReferrer: true, noAnalytics: true, staff: true,
   title: `${STAFF_CONSOLE[page].title} · Bipe`, description: "Equipe.",
