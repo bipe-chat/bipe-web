@@ -4,7 +4,7 @@
   "license": "AGPL-3.0-only",
   "type": "module",
   "scripts": {
-    "build": "node scripts/changelog.mjs && tsc --noEmit && node scripts/build.mjs && node --test scripts/experiment.test.mjs",
+    "build": "node scripts/changelog.mjs && tsc --noEmit && node scripts/build.mjs && node --test scripts/experiment.test.mjs scripts/parity.test.mjs",
     "preview": "vite preview --outDir dist --port 4321",
     "deploy": "pnpm build && sh scripts/deploy.sh",
     "store:images": "node scripts/store-images.mjs"
