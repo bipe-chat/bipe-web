@@ -1,5 +1,5 @@
 // Header wordmark flair: a click on the mark or a letter sends a ripple out from that part.
-// Each neighbour lifts a little and takes the next palette colour one step later. Kept subtle (MZ, 9 November 2026).
+// Each neighbour grows towards the viewer and takes the next palette colour one step later. Kept subtle (MZ, 9 November 2026).
 // The header is static HTML (no island), so this is a plain DOM script.
 
 /** App palettes at their ink step, in the brand order (scripts/lib/backdrop.mjs ORDER). Maracujá is yellow only at its light steps, so it is left out. */
@@ -29,7 +29,7 @@ function play(mark: HTMLElement, parts: HTMLElement[], origin: number) {
     p.animate(
       [
         { transform: "none", color: base },
-        { transform: `translateY(-${0.06 - d * 0.01}em) scale(${1.07 - d * 0.012})`, color: tone(d + 1), offset: 0.4 },
+        { transform: `scale(${1.1 - d * 0.018})`, color: tone(d + 1), offset: 0.4 },
         { transform: "none", color: base },
       ],
       { duration: DURATION, delay: d * STEP, easing: "ease-out" },
