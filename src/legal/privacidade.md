@@ -34,7 +34,7 @@ No Brasil. Os servidores ficam em São Paulo, numa empresa brasileira de nuvem. 
 Quando as notificações estiverem ligadas, o sistema de avisos da Apple vai receber só um alerta de que chegou mensagem, sem o conteúdo.
 
 ## Seus direitos (LGPD)
-Você pode pedir para ver, corrigir ou apagar seus dados e sua conta pelo contato acima. Durante os testes, a conta é apagada por pedido. Cada dado, com a base legal e o prazo, está em [Seus dados no Bipe](/lgpd/).
+Você pode pedir para ver, corrigir ou apagar seus dados e sua conta pelo contato acima. No app Bipe, você apaga a conta em Você > Sua conta > Apagar conta. Ela é apagada 72 horas depois do pedido, e até lá você pode cancelar em qualquer aparelho seu. No app antigo, Bipe Chat, a conta é apagada por pedido pelo contato acima. Cada dado, com a base legal e o prazo, está em [Seus dados no Bipe](/lgpd/).
 
 ## Por quanto tempo
 Enquanto sua conta existir. Os registros de conexão ficam 6 meses, como a lei manda. Quando os testes acabarem, a gente pode apagar contas e mensagens de teste, sempre com aviso antes.

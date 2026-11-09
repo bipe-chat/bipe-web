@@ -34,7 +34,7 @@ In Brazil. The servers are in São Paulo, with a Brazilian cloud company. Bipe d
 Once notifications are on, Apple's notification service will only get an alert that a message arrived, never the content.
 
 ## Your rights (LGPD)
-You can ask to see, correct or delete your data and your account through the contact above. During testing, accounts are deleted on request. Every piece of data, with its legal basis and retention, is in [Your data on Bipe](/en/lgpd/).
+You can ask to see, correct or delete your data and your account through the contact above. In the Bipe app, you delete your account in You > Your account > Delete account. It is deleted 72 hours after the request, and until then you can cancel on any of your devices. In the old app, Bipe Chat, accounts are deleted on request through the contact above. Every piece of data, with its legal basis and retention, is in [Your data on Bipe](/en/lgpd/).
 
 ## How long
 As long as your account exists. Connection logs stay 6 months, as the law requires. When testing ends, we may delete test accounts and messages, always with notice first.
