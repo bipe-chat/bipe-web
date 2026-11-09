@@ -46,7 +46,7 @@ img, svg { display: block; }
 .site-head { border-bottom: 1px solid var(--line); }
 .site-head .wrap { display: flex; align-items: center; gap: 16px; min-height: 64px; flex-wrap: wrap; }
 .wordmark { display: inline-flex; align-items: center; gap: .3em; font-family: var(--brand); font-weight: 900; color: var(--acai); letter-spacing: -.02em; text-decoration: none; line-height: 1; }
-.wordmark .wm-ch { display: inline-block; transform-origin: 50% 80%; }
+.wordmark .wm-ch { display: inline-block; transform-origin: 50% 50%; }
 .site-head nav { margin-left: auto; display: flex; gap: 18px; align-items: center; font-size: 0.9375rem; flex-wrap: wrap; }
 .site-head nav a { color: var(--text); text-decoration: none; }
 .site-head nav a[aria-current="page"] { color: var(--acai); font-weight: 600; }
