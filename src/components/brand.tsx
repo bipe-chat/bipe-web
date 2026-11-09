@@ -28,8 +28,9 @@ export function AppIcon({ id = MARK, size = 60 }: { id?: MarkId; size?: number }
 export function Wordmark({ id = MARK, size = 26 }: { id?: MarkId; size?: number }) {
   return (
     <span className="wordmark" style={{ fontSize: size }}>
-      <Mark id={id} size={Math.round(size * 1.05)} />
-      <span>bipe</span>
+      <span className="wm-ch"><Mark id={id} size={Math.round(size * 1.05)} /></span>
+      {/* One span per letter: a click sends a ripple out from the touched part (wordmark-ripple.ts). */}
+      <span>{[..."bipe"].map((ch, i) => <span key={i} className="wm-ch">{ch}</span>)}</span>
     </span>
   );
 }
