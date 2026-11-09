@@ -137,7 +137,7 @@ export function Requests({ lang, rows }: { lang: Lang; rows: RequestRow[] }) {
                 <div className="sub">{t(lang, "bipe_banner_unverified_body", text(r.age, lang))}</div>
               </div>
             </div>
-            <p className="preview">{r.preview}</p>
+            <p className="preview">{text(r.preview, lang)}</p>
             <p className="sub">{t(lang, "bipe_request_unverified_body")}</p>
             <div className="request-buttons"><span>{c.ignore}</span><span className="primary">{c.accept}</span></div>
           </div>

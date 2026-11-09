@@ -142,7 +142,7 @@ function InboxItem({ lang, row }: { lang: Lang; row: InboxRow }) {
           <span className={`time${row.unread ? " on" : ""}`}>{row.time}</span>
         </div>
         <div className="inbox-bottom">
-          <span className="preview">{row.preview}</span>
+          <span className="preview">{text(row.preview, lang)}</span>
           {row.unread ? <span className="unread">{row.unread}</span> : null}
         </div>
       </div>
