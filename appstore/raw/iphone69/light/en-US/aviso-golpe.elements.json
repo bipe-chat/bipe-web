@@ -1,0 +1,367 @@
+{
+ "source": "scene numero-novo",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Joana Lima @joana.lima.2",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima @joana.lima.2",
+   "frame": [
+    90.6,
+    67.8,
+    178.7,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima @joana.lima.2",
+   "frame": [
+    148.5,
+    75.4,
+    105.7,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Joana Lima",
+   "frame": [
+    148.5,
+    75.4,
+    105.7,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "@joana.lima.2",
+   "frame": [
+    148.5,
+    100.6,
+    105.7,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name not verifiedAccount created 2 days ago. Not in your contacts.Hi sweetie, I changed my number. This is my new account1:09This could be a scamThe message mentions a new number or account. Call the number you already have for the person to check.Mom? What happened to the old one?1:09It fell in the water. I need to pay a bill today, send me a Pix and I will pay you back tomorrow1:09This could be a scamRush and money requests show up a lot in scams. Before you do anything, check with the person another way.",
+   "frame": [
+    0,
+    140.8,
+    440,
+    713.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name not verifiedAccount created 2 days ago. Not in your contacts.",
+   "frame": [
+    20.1,
+    155.4,
+    399.8,
+    104
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name not verifiedAccount created 2 days ago. Not in your contacts.",
+   "frame": [
+    40.2,
+    165.4,
+    359.5,
+    94
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Account created 2 days ago. Not in your contacts.",
+   "frame": [
+    84.3,
+    179.3,
+    301.6,
+    66.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name not verifiedAccount created 2 days ago. Not in your contacts.",
+   "frame": [
+    84.3,
+    179.3,
+    301.6,
+    66.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Name not verified",
+   "frame": [
+    84.3,
+    179.3,
+    301.6,
+    22.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Hi sweetie, I changed my number. This is my new account1:09This could be a scamThe message mentions a new number or account. Call the number you already have for the person to check.",
+   "frame": [
+    0,
+    259.4,
+    440,
+    226.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Hi sweetie, I changed my number. This is my new account1:09",
+   "frame": [
+    0,
+    259.4,
+    440,
+    103.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Hi sweetie, I changed my number. This is my new account1:09",
+   "frame": [
+    20.1,
+    270.7,
+    339.3,
+    90.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Hi sweetie, I changed my number. This is my new account",
+   "frame": [
+    30.2,
+    280.8,
+    319.2,
+    55.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    316.4,
+    336.2,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "This could be a scamThe message mentions a new number or account. Call the number you already have for the person to check.",
+   "frame": [
+    20.1,
+    370.1,
+    399.8,
+    116.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "The message mentions a new number or account. Call the number you already have for the person to check.",
+   "frame": [
+    64.1,
+    384,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "This could be a scamThe message mentions a new number or account. Call the number you already have for the person to check.",
+   "frame": [
+    64.1,
+    384,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "This could be a scam",
+   "frame": [
+    64.1,
+    384,
+    341.9,
+    22.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mom? What happened to the old one?1:09",
+   "frame": [
+    0,
+    486.2,
+    440,
+    103.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mom? What happened to the old one?1:09",
+   "frame": [
+    0,
+    486.2,
+    440,
+    103.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mom? What happened to the old one?1:09",
+   "frame": [
+    80.5,
+    497.5,
+    339.3,
+    90.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mom? What happened to the old one?",
+   "frame": [
+    90.6,
+    507.6,
+    319.2,
+    55.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    376.8,
+    563,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "It fell in the water. I need to pay a bill today, send me a Pix and I will pay you back tomorrow1:09This could be a scamRush and money requests show up a lot in scams. Before you do anything, check with the person another way.",
+   "frame": [
+    0,
+    589.4,
+    440,
+    254.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "It fell in the water. I need to pay a bill today, send me a Pix and I will pay you back tomorrow1:09",
+   "frame": [
+    0,
+    589.4,
+    440,
+    130.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "It fell in the water. I need to pay a bill today, send me a Pix and I will pay you back tomorrow1:09",
+   "frame": [
+    20.1,
+    600.7,
+    339.3,
+    118.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "It fell in the water. I need to pay a bill today, send me a Pix and I will pay you back tomorrow",
+   "frame": [
+    30.2,
+    610.8,
+    319.2,
+    83.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    316.4,
+    693.9,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "This could be a scamRush and money requests show up a lot in scams. Before you do anything, check with the person another way.",
+   "frame": [
+    20.1,
+    727.8,
+    399.8,
+    116.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Rush and money requests show up a lot in scams. Before you do anything, check with the person another way.",
+   "frame": [
+    64.1,
+    741.7,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "This could be a scamRush and money requests show up a lot in scams. Before you do anything, check with the person another way.",
+   "frame": [
+    64.1,
+    741.7,
+    341.9,
+    88.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "This could be a scam",
+   "frame": [
+    64.1,
+    741.7,
+    341.9,
+    22.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Message…",
+   "frame": [
+    0,
+    853.9,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Message…",
+   "frame": [
+    85.6,
+    864,
+    268.9,
+    55.4
+   ]
+  }
+ ]
+}

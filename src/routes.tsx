@@ -196,6 +196,11 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
   title: "Elenco e cenas (interno) · Bipe", description: "Pessoas de exemplo e cenas das simulações do site.",
   body: () => <CastPage />,
 }, {
+  // The same scenes with English text: scripts/scene-captures.mjs takes the en-US store captures here.
+  path: "/en/elenco/", alt: null, lang: "en", noindex: true,
+  title: "Cast and scenes (internal) · Bipe", description: "Sample people and scenes from the site's simulations.",
+  body: () => <CastPage lang="en" />,
+}, {
   // Target of the Caddy rewrite for /@handle.
   path: "/perfil/", alt: null, lang: "pt", noindex: true,
   title: "Bipe", description: chrome.pt.profile.lead,

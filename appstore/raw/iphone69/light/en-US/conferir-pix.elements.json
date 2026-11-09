@@ -1,0 +1,287 @@
+{
+ "source": "scene conferir-pix",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Check Pix",
+   "frame": [
+    0,
+    67.8,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Check Pix",
+   "frame": [
+    90.6,
+    81.7,
+    258.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Pix codeThis code was changed or is incomplete. Do not pay with it.Name in the codeRAFAEL OLIVEIRAAmountR$ 850,00Keyrafa.blkes@example.comCityBELO HORIZONTEThe person who made the code entered this name. Check the name in your bank's app before paying.The check runs only on your phone.Close",
+   "frame": [
+    0,
+    133.3,
+    440,
+    786.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Pix code",
+   "frame": [
+    20.1,
+    148.4,
+    399.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "This code was changed or is incomplete. Do not pay with it.",
+   "frame": [
+    20.1,
+    191.2,
+    399.8,
+    71.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "This code was changed or is incomplete. Do not pay with it.",
+   "frame": [
+    20.1,
+    191.2,
+    399.8,
+    71.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "This code was changed or is incomplete. Do not pay with it.",
+   "frame": [
+    64.1,
+    205,
+    341.9,
+    44.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "This code was changed or is incomplete. Do not pay with it.",
+   "frame": [
+    64.1,
+    205,
+    341.9,
+    44.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name in the codeRAFAEL OLIVEIRAAmountR$ 850,00Keyrafa.blkes@example.comCityBELO HORIZONTE",
+   "frame": [
+    20.1,
+    278.1,
+    399.8,
+    358.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name in the codeRAFAEL OLIVEIRA",
+   "frame": [
+    20.1,
+    278.1,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name in the codeRAFAEL OLIVEIRA",
+   "frame": [
+    37.7,
+    293.2,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Name in the code",
+   "frame": [
+    37.7,
+    293.2,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "RAFAEL OLIVEIRA",
+   "frame": [
+    37.7,
+    318.4,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "AmountR$ 850,00",
+   "frame": [
+    20.1,
+    370,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "AmountR$ 850,00",
+   "frame": [
+    37.7,
+    385.1,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Amount",
+   "frame": [
+    37.7,
+    385.1,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "R$ 850,00",
+   "frame": [
+    37.7,
+    410.2,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Keyrafa.blkes@example.com",
+   "frame": [
+    20.1,
+    461.8,
+    399.8,
+    84.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Keyrafa.blkes@example.com",
+   "frame": [
+    37.7,
+    476.9,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Key",
+   "frame": [
+    37.7,
+    476.9,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "rafa.blkes@example.com",
+   "frame": [
+    37.7,
+    502.1,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "CityBELO HORIZONTE",
+   "frame": [
+    20.1,
+    553.7,
+    399.8,
+    83
+   ]
+  },
+  {
+   "type": 1,
+   "label": "CityBELO HORIZONTE",
+   "frame": [
+    37.7,
+    568.8,
+    364.5,
+    52.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "City",
+   "frame": [
+    37.7,
+    568.8,
+    364.5,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "BELO HORIZONTE",
+   "frame": [
+    37.7,
+    593.9,
+    364.5,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "The person who made the code entered this name. Check the name in your bank's app before paying.",
+   "frame": [
+    20.1,
+    651.8,
+    399.8,
+    45.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "The check runs only on your phone.",
+   "frame": [
+    20.1,
+    712.2,
+    399.8,
+    22.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Close",
+   "frame": [
+    20.1,
+    846.4,
+    399.8,
+    57.9
+   ]
+  }
+ ]
+}

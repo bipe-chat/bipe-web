@@ -3,7 +3,7 @@
 // the shape the app's UI test writes (labels and frames in points of a 440 pt screen), so the callouts
 // in lib/callouts.mjs anchor on it the same way.
 //
-//   pnpm build && node scripts/scene-captures.mjs
+//   pnpm build && node scripts/scene-captures.mjs [--locale pt-BR|en-US]
 //
 // It serves dist/ itself and drives the installed Google Chrome over the DevTools protocol with Node's
 // built-in WebSocket: no browser package. The output is committed in appstore/raw/iphone69/; the site build
@@ -15,12 +15,14 @@ import { tmpdir } from "node:os";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
-import { BRAND_SETS } from "./brand-images.mjs";
+import { BRAND_SETS, LOCALES as BRAND_LOCALES } from "./brand-images.mjs";
 import { renderSet } from "./store-images.mjs";
 
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const dist = join(root, "dist");
-const out = join(root, "appstore/raw/iphone69/light/pt-BR");
+const rawDir = join(root, "appstore/raw/iphone69/light");
+/** Store locale -> the cast page that shows its scenes. */
+export const PAGE_FOR = { "pt-BR": "/elenco/", "en-US": "/en/elenco/" };
 const CHROME = process.env.CHROME ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 /** Store slug (bipe-shared product/appstore.md) -> the scene that shows the same feature. */
@@ -135,7 +137,12 @@ const MEASURE = `(id) => {
 }`;
 
 async function main() {
-  if (!existsSync(join(dist, "elenco/index.html"))) throw new Error("scene-captures: no dist/elenco/; run pnpm build first");
+  const arg = process.argv.indexOf("--locale");
+  const locales = arg > 0 ? [process.argv[arg + 1]] : Object.keys(PAGE_FOR);
+  for (const locale of locales) {
+    if (!PAGE_FOR[locale]) throw new Error(`scene-captures: unknown locale ${locale} (PAGE_FOR)`);
+    if (!existsSync(join(dist, PAGE_FOR[locale], "index.html"))) throw new Error(`scene-captures: no dist${PAGE_FOR[locale]}; run pnpm build first`);
+  }
   if (!existsSync(CHROME)) throw new Error(`scene-captures: no Chrome at ${CHROME} (set CHROME)`);
   const server = await serve();
   const browser = await chrome();
@@ -147,21 +154,25 @@ async function main() {
     await c.send("Page.enable", {}, s);
     await c.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }, { name: "prefers-color-scheme", value: "light" }] }, s);
     await c.send("Emulation.setDeviceMetricsOverride", { width: 1400, height: 1600, deviceScaleFactor: 1, mobile: false }, s);
-    await c.send("Page.navigate", { url: `http://127.0.0.1:${server.address().port}/elenco/` }, s);
+    for (const locale of locales) {
+    const out = join(rawDir, locale);
+    await c.send("Page.navigate", { url: `http://127.0.0.1:${server.address().port}${PAGE_FOR[locale]}` }, s);
     await new Promise((r) => setTimeout(r, 2500));
     await c.send("Runtime.evaluate", { expression: `document.head.insertAdjacentHTML("beforeend", ${JSON.stringify(`<style>${CSS}</style>`)}); document.fonts.ready`, awaitPromise: true }, s);
     mkdirSync(out, { recursive: true });
     // The captures every brand set needs, slug@palette (store-images.mjs with `needs`).
     const needs = new Map();
-    for (const { listing, devices, everyPalette } of Object.values(BRAND_SETS)) for (const device of devices)
-      for (const n of await renderSet({ device, locale: "pt-BR", needs: true, everyPalette, ...(listing && { listing }) })) needs.set(`${n.slug}@${n.palette}`, n);
+    // A set with its own listing (the social posts) has tables only in the brand page's locales; the store set has
+    // every store locale.
+    for (const { listing, devices, everyPalette } of Object.values(BRAND_SETS)) if (!listing || BRAND_LOCALES.includes(locale)) for (const device of devices)
+      for (const n of await renderSet({ device, locale, needs: true, everyPalette, ...(listing && { listing }) })) needs.set(`${n.slug}@${n.palette}`, n);
     const theme = `document.getElementById("scene-theme")?.remove(); document.head.insertAdjacentHTML("beforeend", "<style id=scene-theme>" + CSS_THEME + "</style>")`;
     for (const { slug, palette } of [...needs.values()].sort((a, b) => a.palette.localeCompare(b.palette) || a.slug.localeCompare(b.slug))) {
       const id = SCENE_FOR[slug];
       if (!id) throw new Error(`scene-captures: no scene for ${slug} (SCENE_FOR)`);
       await c.send("Runtime.evaluate", { expression: theme.replace("CSS_THEME", JSON.stringify(themeCss(palette))) }, s);
       const { result } = await c.send("Runtime.evaluate", { expression: `(${MEASURE})(${JSON.stringify(id)})`, returnByValue: true }, s);
-      if (!result.value) throw new Error(`scene-captures: no scene ${id} on /elenco/ (for ${slug})`);
+      if (!result.value) throw new Error(`scene-captures: no scene ${id} on ${PAGE_FOR[locale]} (for ${slug})`);
       await new Promise((r) => setTimeout(r, 400));
       const { rect, elements } = result.value;
       // The site screen is 402x874, the store capture 1320x2868: scale by width, crop the height.
@@ -174,7 +185,8 @@ async function main() {
       writeFileSync(join(out, `${slug}@${palette}.png`), new Resvg(svg, { fitTo: { mode: "width", value: SIZE.width } }).render().asPng());
       // The layout is the same in every palette, so one element list per slug.
       writeFileSync(join(out, `${slug}.elements.json`), `${JSON.stringify({ source: `scene ${id}`, width: SIZE.points, height: Math.round(SIZE.points * (SIZE.height / SIZE.width)), elements }, null, 1)}\n`);
-      console.log(`${slug}@${palette} <- ${id} (${elements.length} elements)`);
+      console.log(`${locale} ${slug}@${palette} <- ${id} (${elements.length} elements)`);
+    }
     }
   } finally {
     c.close();

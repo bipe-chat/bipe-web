@@ -1,0 +1,447 @@
+{
+ "source": "scene pedidos",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 48,
+   "label": "Chats",
+   "frame": [
+    0,
+    67.8,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chat requests1You choose who to talk toJoana Lima Account created 2 days ago. Not in your contacts.Hi sweetie, I changed my number. This is my new accountThis account's name hasn't been verified yet. If you aren't sure who it is, check another way before accepting.IgnoreAcceptMãe 10:24I arrive Saturday morning. Can you pick me up?2Família Lima 09:58Grandpa Antônio: Sunday lunch at my place5Rafa ontemPix received, thanksClínica Vida ontemAppointment confirmed. See you tomorrow.",
+   "frame": [
+    0,
+    133.3,
+    440,
+    698
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chat requests1You choose who to talk toJoana Lima Account created 2 days ago. Not in your contacts.Hi sweetie, I changed my number. This is my new accountThis account's name hasn't been verified yet. If you aren't sure who it is, check another way before accepting.IgnoreAccept",
+   "frame": [
+    20.1,
+    138.3,
+    399.8,
+    378.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chat requests1",
+   "frame": [
+    35.2,
+    153.4,
+    369.6,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Chat requests",
+   "frame": [
+    35.2,
+    153.4,
+    137.5,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1",
+   "frame": [
+    379.6,
+    154.7,
+    25.2,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "You choose who to talk to",
+   "frame": [
+    35.2,
+    191.2,
+    369.6,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima Account created 2 days ago. Not in your contacts.Hi sweetie, I changed my number. This is my new accountThis account's name hasn't been verified yet. If you aren't sure who it is, check another way before accepting.IgnoreAccept",
+   "frame": [
+    35.2,
+    223.9,
+    369.6,
+    278.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima Account created 2 days ago. Not in your contacts.",
+   "frame": [
+    35.2,
+    235.2,
+    369.6,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Joana Lima Account created 2 days ago. Not in your contacts.",
+   "frame": [
+    98.1,
+    235.2,
+    306.7,
+    73
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Joana Lima",
+   "frame": [
+    98.1,
+    235.2,
+    96.9,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Account created 2 days ago. Not in your contacts.",
+   "frame": [
+    98.1,
+    262.9,
+    306.7,
+    45.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Hi sweetie, I changed my number. This is my new account",
+   "frame": [
+    35.2,
+    315.7,
+    369.6,
+    55.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "This account's name hasn't been verified yet. If you aren't sure who it is, check another way before accepting.",
+   "frame": [
+    35.2,
+    378.7,
+    369.6,
+    67.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "IgnoreAccept",
+   "frame": [
+    35.2,
+    454.2,
+    369.6,
+    47.9
+   ]
+  },
+  {
+   "type": 9,
+   "label": "Ignore",
+   "frame": [
+    35.2,
+    454.2,
+    179.7,
+    47.9
+   ]
+  },
+  {
+   "type": 9,
+   "label": "Accept",
+   "frame": [
+    225,
+    454.2,
+    179.8,
+    47.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe 10:24I arrive Saturday morning. Can you pick me up?2",
+   "frame": [
+    0,
+    532.2,
+    440,
+    198.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe 10:24I arrive Saturday morning. Can you pick me up?2",
+   "frame": [
+    20.1,
+    617.8,
+    399.8,
+    113.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe 10:24",
+   "frame": [
+    20.1,
+    632.9,
+    399.8,
+    29
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mãe",
+   "frame": [
+    20.1,
+    632.9,
+    66.1,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe",
+   "frame": [
+    20.1,
+    632.9,
+    66.1,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name verified",
+   "frame": [
+    66.1,
+    636.6,
+    20.1,
+    20.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "10:24",
+   "frame": [
+    375.3,
+    634.1,
+    44.6,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I arrive Saturday morning. Can you pick me up?2",
+   "frame": [
+    20.1,
+    664.3,
+    399.8,
+    50.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "I arrive Saturday morning. Can you pick me up?",
+   "frame": [
+    20.1,
+    664.3,
+    354.5,
+    50.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "2",
+   "frame": [
+    394.7,
+    665.6,
+    25.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 09:58Grandpa Antônio: Sunday lunch at my place5",
+   "frame": [
+    0,
+    731.1,
+    440,
+    198.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 09:58Grandpa Antônio: Sunday lunch at my place5",
+   "frame": [
+    20.1,
+    816.6,
+    399.8,
+    113.3
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 09:58",
+   "frame": [
+    20.1,
+    831.7,
+    399.8,
+    29
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Família Lima",
+   "frame": [
+    20.1,
+    831.7,
+    117.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "09:58",
+   "frame": [
+    372,
+    833,
+    47.9,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Grandpa Antônio: Sunday lunch at my place5",
+   "frame": [
+    20.1,
+    863.2,
+    399.8,
+    50.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Grandpa Antônio: Sunday lunch at my place",
+   "frame": [
+    20.1,
+    863.2,
+    354.5,
+    50.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "5",
+   "frame": [
+    394.7,
+    864.4,
+    25.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Rafa ontemPix received, thanks",
+   "frame": [
+    0,
+    929.9,
+    440,
+    173.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ChatsGroupsYou",
+   "frame": [
+    0,
+    831.3,
+    440,
+    88.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "ChatsGroupsYou",
+   "frame": [
+    26.4,
+    841.3,
+    294,
+    78
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Chats",
+   "frame": [
+    31.5,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Chats",
+   "frame": [
+    31.5,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Groups",
+   "frame": [
+    126.1,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Groups",
+   "frame": [
+    126.1,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 48,
+   "label": "You",
+   "frame": [
+    220.8,
+    846.4,
+    94.7,
+    68
+   ]
+  },
+  {
+   "type": 1,
+   "label": "You",
+   "frame": [
+    220.8,
+    846.4,
+    94.7,
+    68
+   ]
+  }
+ ]
+}

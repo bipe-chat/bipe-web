@@ -1002,8 +1002,8 @@ export function BrandKitPage({ lang, cards }: { lang: Lang; cards: { path: strin
 /** Internal board (noindex): the sample cast and every phone scene, for review and screenshots. */
 /** Every route's link-preview card, for review (noindex). Cards are rendered by scripts/og.mjs at build time. */
 
-export function CastPage() {
-  const lang: Lang = "pt";
+// The page text stays Portuguese (internal page); `lang` sets the scenes, so /en/elenco/ feeds the en-US store captures.
+export function CastPage({ lang = "pt" }: { lang?: Lang }) {
   return (
     <section className="wrap section">
       <h1>Elenco e cenas</h1>

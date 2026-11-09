@@ -1,0 +1,437 @@
+{
+ "source": "scene grupo",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Família Lima 12 people",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 12 people",
+   "frame": [
+    90.6,
+    67.8,
+    180.5,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Família Lima 12 people",
+   "frame": [
+    148.5,
+    75.4,
+    107.6,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Família Lima",
+   "frame": [
+    148.5,
+    75.4,
+    107.6,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "12 people",
+   "frame": [
+    148.5,
+    100.6,
+    107.6,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Vô AntônioMorning, family! Sunday lunch at my place1:09Dona CidaMorning! I will bring dessert1:09MãeI will bring the farofa1:09KauãI will bring the guitar1:09I am coming! I will bring soda1:09",
+   "frame": [
+    0,
+    140.8,
+    440,
+    713.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Vô AntônioMorning, family! Sunday lunch at my place1:09",
+   "frame": [
+    0,
+    378.3,
+    440,
+    133.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Vô AntônioMorning, family! Sunday lunch at my place1:09",
+   "frame": [
+    0,
+    378.3,
+    440,
+    133.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Vô Antônio",
+   "frame": [
+    10.1,
+    389.6,
+    163.1,
+    40.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Vô Antônio",
+   "frame": [
+    55.4,
+    389.6,
+    95.1,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name verified",
+   "frame": [
+    155.5,
+    392.1,
+    17.6,
+    17.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Morning, family! Sunday lunch at my place1:09",
+   "frame": [
+    30.2,
+    419.8,
+    329.3,
+    90.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Morning, family! Sunday lunch at my place",
+   "frame": [
+    40.2,
+    429.9,
+    309.2,
+    55.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    316.4,
+    485.3,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Dona CidaMorning! I will bring dessert1:09",
+   "frame": [
+    0,
+    511.7,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Dona CidaMorning! I will bring dessert1:09",
+   "frame": [
+    0,
+    511.7,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Dona Cida",
+   "frame": [
+    10.1,
+    523,
+    135,
+    40.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Dona Cida",
+   "frame": [
+    55.4,
+    523,
+    89.7,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Morning! I will bring dessert1:09",
+   "frame": [
+    30.2,
+    553.2,
+    307.5,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Morning! I will bring dessert",
+   "frame": [
+    40.2,
+    563.3,
+    249.4,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    294.7,
+    575.9,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "MãeI will bring the farofa1:09",
+   "frame": [
+    0,
+    602.3,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "MãeI will bring the farofa1:09",
+   "frame": [
+    0,
+    602.3,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Mãe",
+   "frame": [
+    10.1,
+    613.6,
+    105.2,
+    40.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Mãe",
+   "frame": [
+    55.4,
+    613.6,
+    37.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name verified",
+   "frame": [
+    97.6,
+    616.1,
+    17.6,
+    17.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I will bring the farofa1:09",
+   "frame": [
+    30.2,
+    643.8,
+    239.9,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "I will bring the farofa",
+   "frame": [
+    40.2,
+    653.9,
+    181.7,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    227,
+    666.5,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "KauãI will bring the guitar1:09",
+   "frame": [
+    0,
+    692.9,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "KauãI will bring the guitar1:09",
+   "frame": [
+    0,
+    692.9,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Kauã",
+   "frame": [
+    10.1,
+    704.2,
+    89,
+    40.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Kauã",
+   "frame": [
+    55.4,
+    704.2,
+    43.7,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I will bring the guitar1:09",
+   "frame": [
+    30.2,
+    734.4,
+    239.5,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "I will bring the guitar",
+   "frame": [
+    40.2,
+    744.5,
+    181.3,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    226.6,
+    757,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I am coming! I will bring soda1:09",
+   "frame": [
+    0,
+    783.5,
+    440,
+    60.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I am coming! I will bring soda1:09",
+   "frame": [
+    0,
+    783.5,
+    440,
+    60.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I am coming! I will bring soda1:09",
+   "frame": [
+    101.3,
+    794.8,
+    318.6,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "I am coming! I will bring soda",
+   "frame": [
+    111.3,
+    804.9,
+    260.4,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    376.8,
+    817.4,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Message…",
+   "frame": [
+    0,
+    853.9,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Message…",
+   "frame": [
+    85.6,
+    864,
+    268.9,
+    55.4
+   ]
+  }
+ ]
+}
