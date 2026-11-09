@@ -8,6 +8,7 @@ import { Island } from "./island-registry";
 import { paths } from "./paths";
 import { assignScript, HEADLINE } from "./experiment";
 import { BusinessFigure } from "./sim/BusinessFigure";
+import { WorkAccountFigure, WorkAccountTerms } from "./sim/WorkAccountFigure";
 import { Figure } from "./sim/Figure";
 import { NoAdsFigure } from "./sim/NoAdsFigure";
 import { ScenePhone, TrustMark } from "./sim/ScenePhone";
@@ -398,6 +399,18 @@ export function BusinessPage({ lang }: { lang: Lang }) {
           <BusinessFigure lang={lang} caption={b.figureCaption} />
         </div>
       </section>
+      {b.accountModel && (
+        <section className="wrap section">
+          <div className="split">
+            <div>
+              <h2>{b.accountModel.heading}</h2>
+              <p className="lede">{b.accountModel.intro}</p>
+              <WorkAccountTerms model={b.accountModel} />
+            </div>
+            <WorkAccountFigure lang={lang} model={b.accountModel} />
+          </div>
+        </section>
+      )}
       <section className="wrap section">
         <h2>{inbox.heading}</h2>
         <ul className="points biz-points">{inbox.points.map((p) => <li key={p}><Icon name="check" size={16} />{p}</li>)}</ul>

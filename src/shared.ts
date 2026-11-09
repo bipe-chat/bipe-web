@@ -225,6 +225,12 @@ function featureStatus(id: string): Feature["status"] {
 }
 const productData = productJson as unknown as { features: Omit<Feature, "status">[] };
 
+/** The work account model on /empresas/ (bipe ADR 0287): the terms, in diagram order. Optional until bipe-shared main has it. */
+export type AccountModel = {
+  heading: string; intro: string; you: string; customerSees: string; caption: string;
+  terms: { name: string; what: string }[];
+};
+
 export const product = { ...productData, features: productData.features.map((f) => ({ ...f, status: featureStatus(f.id) })) } as unknown as {
   promise: Copy<{ title: string; lede: string }>;
   home: { proof: string[]; features: string[]; business?: { features: string[] } & Copy<{ title: string; line: string }> };
@@ -240,7 +246,7 @@ export const product = { ...productData, features: productData.features.map((f) 
   audiencesHub: Copy<{ nav: string; title: string; lede: string }>;
   about: Copy<{ title: string; lede: string; sections: { heading: string; body: string }[] }>;
   origin: Copy<{ title: string; body: string }>;
-  business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string }>;
+  business: Copy<{ nav: string; title: string; lede: string; label: string; sections: { heading: string; points: string[] }[]; cta: string; ctaSubject: string; figureCaption: string; accountModel?: AccountModel }>;
   pricing: {
     /** Feature ids of the tools that are free on every plan. */
     tools: string[];
