@@ -34,7 +34,7 @@ export function lgpdMarkdown(lang: Lang): string {
       `### ${i[lang].name}`,
       `- **${c.labels.what}:** ${i[lang].what}`,
       `- **${c.labels.why}:** ${i[lang].why}`,
-      `- **${c.labels.basis}:** ${b[lang]} (LGPD, ${b.article})`,
+      `- **${c.labels.basis}:** ${b[lang]} (LGPD, ${b.article})${i.review && c.labels.review ? `. ${c.labels.review}` : ""}`,
       `- **${c.labels.retention}:** ${i[lang].retention}`,
       `- **${c.labels.where}:** ${i.places.map((id) => `${place(id)[lang]} (${where(place(id).brazil)})`).join("; ")}`,
     ].join("\n");

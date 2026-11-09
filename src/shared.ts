@@ -290,11 +290,11 @@ export const dataRegister = dataJson as unknown as {
   encarregado: { name: string; contact: string } | null;
   bases: ({ id: string; article: string } & Copy<string>)[];
   places: ({ id: string; brazil: boolean | null } & Copy<string>)[];
-  items: ({ id: string; basis: string; places: string[] } & Copy<DataText>)[];
+  items: ({ id: string; basis: string; places: string[]; review?: boolean } & Copy<DataText>)[];
   device: ({ id: string } & Copy<string>)[];
 } & Copy<{
   nav: string; title: string; meta: string; lede: string; policy: string; itemsTitle: string;
-  labels: { what: string; why: string; basis: string; retention: string; where: string };
+  labels: { what: string; why: string; basis: string; retention: string; where: string; review?: string };
   brazil: { yes: string; no: string; unknown: string };
   outsideTitle: string; outsideLede: string; deviceTitle: string; deviceLede: string; notPersonal: string;
   rightsTitle: string; rights: string[]; rightsHow: string; controllerTitle: string; controller: string; encarregadoMissing: string;
