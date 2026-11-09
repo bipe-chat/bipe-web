@@ -1,11 +1,11 @@
 // Header wordmark flair: a click on the mark or a letter sends a ripple out from that part.
-// Each neighbour rises, grows and takes the next palette colour one step later, and a ring expands from the touched part.
+// Each neighbour lifts a little and takes the next palette colour one step later. Kept subtle (MZ, 9 November 2026).
 // The header is static HTML (no island), so this is a plain DOM script.
 
 /** App palettes at their ink step, in the brand order (scripts/lib/backdrop.mjs ORDER). Maracujá is yellow only at its light steps, so it is left out. */
 const TONES = ["--bipe-acai-1100", "--bipe-jenipapo-1100", "--bipe-jabuticaba-1100", "--bipe-goiaba-1100", "--bipe-pitanga-1100"];
-const STEP = 70; // ms between neighbours
-const DURATION = 520; // ms per part
+const STEP = 55; // ms between neighbours
+const DURATION = 420; // ms per part
 
 let turn = 0;
 
@@ -29,25 +29,12 @@ function play(mark: HTMLElement, parts: HTMLElement[], origin: number) {
     p.animate(
       [
         { transform: "none", color: base },
-        { transform: `translateY(-${0.2 - d * 0.03}em) scale(${1.24 - d * 0.04})`, color: tone(d + 1), offset: 0.35 },
+        { transform: `translateY(-${0.06 - d * 0.01}em) scale(${1.07 - d * 0.012})`, color: tone(d + 1), offset: 0.4 },
         { transform: "none", color: base },
       ],
-      { duration: DURATION, delay: d * STEP, easing: "cubic-bezier(.3,.7,.4,1)" },
+      { duration: DURATION, delay: d * STEP, easing: "ease-out" },
     );
   });
-
-  const o = parts[origin].getBoundingClientRect();
-  const m = mark.getBoundingClientRect();
-  const ring = document.createElement("span");
-  ring.className = "wm-ring";
-  ring.style.left = `${o.left - m.left + o.width / 2}px`;
-  ring.style.top = `${o.top - m.top + o.height / 2}px`;
-  ring.style.color = tone(1);
-  mark.append(ring);
-  ring.animate(
-    [{ transform: "translate(-50%, -50%) scale(.4)", opacity: 0.55 }, { transform: "translate(-50%, -50%) scale(4.5)", opacity: 0 }],
-    { duration: DURATION + parts.length * STEP, easing: "cubic-bezier(.2,.6,.3,1)" },
-  ).finished.finally(() => ring.remove());
 
   // When the wave has reached the far end.
   return Math.max(origin, parts.length - 1 - origin) * STEP + DURATION * 0.45;
