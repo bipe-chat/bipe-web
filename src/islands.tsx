@@ -7,6 +7,7 @@ import { ISLANDS, type IslandName } from "./island-registry";
 import { sendEvent } from "./experiment";
 import { runStaticClocks } from "./components/clock";
 import { runLightbox } from "./components/lightbox";
+import { runWordmarkRipple } from "./components/wordmark-ripple";
 
 // Headline test: count TestFlight clicks per arm, on every page.
 document.addEventListener("click", (e) => {
@@ -20,3 +21,4 @@ for (const el of document.querySelectorAll<HTMLElement>("[data-island]")) {
 
 runStaticClocks();
 runLightbox();
+runWordmarkRipple();
