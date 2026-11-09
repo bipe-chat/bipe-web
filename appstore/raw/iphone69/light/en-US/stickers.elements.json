@@ -1,0 +1,327 @@
+{
+ "source": "scene stickers",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 people",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 people",
+   "frame": [
+    90.6,
+    67.8,
+    247,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Galera da faculdade 34 people",
+   "frame": [
+    148.5,
+    75.4,
+    174,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Galera da faculdade",
+   "frame": [
+    148.5,
+    75.4,
+    174,
+    25.2
+   ]
+  },
+  {
+   "type": 48,
+   "label": "34 people",
+   "frame": [
+    148.5,
+    100.6,
+    174,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaBBQ at my place on Friday1:09FechouValeu",
+   "frame": [
+    0,
+    140.8,
+    440,
+    504.4
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaBBQ at my place on Friday1:09",
+   "frame": [
+    0,
+    222.5,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BiaBBQ at my place on Friday1:09",
+   "frame": [
+    0,
+    222.5,
+    440,
+    90.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Bia",
+   "frame": [
+    10.1,
+    233.8,
+    72.5,
+    40.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bia",
+   "frame": [
+    55.4,
+    233.8,
+    27.2,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "BBQ at my place on Friday1:09",
+   "frame": [
+    30.2,
+    264,
+    297.2,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "BBQ at my place on Friday",
+   "frame": [
+    40.2,
+    274,
+    239,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    284.3,
+    286.6,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Fechou",
+   "frame": [
+    0,
+    313.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Fechou",
+   "frame": [
+    0,
+    313.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechou",
+   "frame": [
+    35.6,
+    324.7,
+    147.8,
+    147.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Valeu",
+   "frame": [
+    0,
+    474.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Valeu",
+   "frame": [
+    0,
+    474.1,
+    440,
+    161.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valeu",
+   "frame": [
+    256.7,
+    485.8,
+    147.8,
+    147.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "My stickersFrom this chatBom diaValeuKkkkkAmémSaudadeBoraFechouBoa noite",
+   "frame": [
+    0,
+    645.3,
+    440,
+    274.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "My stickersFrom this chat",
+   "frame": [
+    15.1,
+    656.6,
+    409.8,
+    37.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "My stickers",
+   "frame": [
+    15.1,
+    656.6,
+    110.6,
+    37.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "From this chat",
+   "frame": [
+    135.8,
+    656.6,
+    131.9,
+    37.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Bom diaValeuKkkkkAmémSaudadeBoraFechouBoa noite",
+   "frame": [
+    15.1,
+    694.4,
+    409.8,
+    225
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bom dia",
+   "frame": [
+    11.9,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Valeu",
+   "frame": [
+    116.9,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Kkkkk",
+   "frame": [
+    221.8,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Amém",
+   "frame": [
+    326.8,
+    703.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Saudade",
+   "frame": [
+    11.9,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Bora",
+   "frame": [
+    116.9,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Fechou",
+   "frame": [
+    221.8,
+    808.7,
+    101.3,
+    101.3
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Boa noite",
+   "frame": [
+    326.8,
+    808.7,
+    101.3,
+    101.3
+   ]
+  }
+ ]
+}

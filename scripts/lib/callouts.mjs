@@ -44,7 +44,7 @@ const stickers = join(dirname(fileURLToPath(import.meta.url)), "../../src/cast/s
  *            anchor, or none when the screen has none there.
  *   image    (sticker) a file in src/cast/stickers/ (made with Codex image_gen, white die-cut edge
  *            included) in place of a cut-out of the capture; it needs no anchor.
- *   Text     { key } a bipe-shared string, { screen } the label of the element whose label contains it,
+ *   Text     { key } a bipe-shared string, { screen } the label of the element whose label contains it (per locale or one),
  *            or a value per locale. `cast` names a cast entry: its name, handle and photo.
  */
 export const SPECS = {
@@ -52,7 +52,7 @@ export const SPECS = {
     kind: "alert",
     title: { key: "bipe_scam_warning_title" },
     line: { "pt-BR": "Confirme com a pessoa por outro meio.", "en-US": "Check with the person another way." },
-    anchor: { text: "Pode ser um golpe", type: 48, at: [1, 0.5] },
+    anchor: { text: { "pt-BR": "Pode ser um golpe", "en-US": "This could be a scam" }, type: 48, at: [1, 0.5] },
     card: { top: 1700, width: 1250, height: 340, tilt: -3 },
     from: [0.86, 0],
   }],
@@ -60,7 +60,7 @@ export const SPECS = {
     kind: "person",
     cast: "golpista",
     anchor: { text: "Joana Lima", type: 48, at: [1, 0.5] },
-    buttons: ["Ignorar", "Aceitar"],
+    buttons: { "pt-BR": ["Ignorar", "Aceitar"], "en-US": ["Ignore", "Accept"] },
     card: { top: 2020, width: 1150, height: 470, tilt: -3 },
     from: [0.92, 0],
   }],
@@ -97,7 +97,7 @@ export const SPECS = {
   grupos: [{
     kind: "row",
     cast: "familia",
-    sub: { screen: "Bom dia, família!" },
+    sub: { screen: { "pt-BR": "Bom dia, família!", "en-US": "Morning, family!" } },
     anchor: { text: "Família Lima", type: 48, at: [1, 0.5] },
     card: { top: 1450, width: 1110, height: 300, tilt: -3 },
     from: [0.9, 0],
@@ -144,6 +144,18 @@ const cardStyle = (kind, accent) => ({
 const inside = (a, b) => a[0] >= b[0] - 0.5 && a[1] >= b[1] - 0.5 && a[0] + a[2] <= b[0] + b[2] + 0.5 && a[1] + a[3] <= b[1] + b[3] + 0.5;
 
 /** The element an anchor or a { screen } text names, or an Error that says what is missing. */
+// Screen text differs per locale: an anchor `text`, `buttons` and a `screen` source may be { "pt-BR": ..., "en-US": ... }.
+// This picks the locale's value; other fields keep their per-locale values for textOf().
+const pick = (v, locale) => (v && typeof v === "object" && !Array.isArray(v) ? v[locale] ?? fail(`no screen text for ${locale}`) : v);
+const onScreenSource = (v, locale) => (v?.screen ? { ...v, screen: pick(v.screen, locale) } : v);
+export function onScreen(spec, locale) {
+  const out = { ...spec };
+  if (spec.anchor) out.anchor = { ...spec.anchor, text: pick(spec.anchor.text, locale) };
+  if (spec.buttons) out.buttons = pick(spec.buttons, locale);
+  for (const key of ["sub", "value", "title", "line"]) if (spec[key]) out[key] = onScreenSource(spec[key], locale);
+  return out;
+}
+
 export function findElement(list, { text, type, nth = 0, pick = "inner" }) {
   const seen = new Set();
   const matches = list.elements
@@ -308,7 +320,7 @@ function stickerSvg({ spec, capture, el, dev, s, index, place }) {
  * the panel's backdrop tone (lib/backdrop.mjs): the connector and its dots take its `connector` colour.
  */
 export async function calloutSvg({ panel, dev, captures, ctx, tone }) {
-  const specs = SPECS[panel.slug];
+  const specs = SPECS[panel.slug]?.map((spec) => onScreen(spec, ctx.locale));
   const capture = captures.get(shotOf(panel));
   // Instagram posts (social/guide.md): only the map layout draws here.
   if (dev.platform === "social") return layoutOf(panel) === "map" ? postMapSvg(dev) : "";

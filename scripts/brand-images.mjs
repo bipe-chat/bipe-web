@@ -17,7 +17,7 @@ export const BRAND_SETS = {
 };
 const SHOWN = new Set(["built", "testing", "policy"]);
 // The store has pt-BR captures only. Add a locale here when appstore/raw has its captures.
-const LOCALES = ["pt-BR"];
+export const LOCALES = ["pt-BR"];
 
 export async function writeBrandImages(root, outDir) {
   rmSync(outDir, { recursive: true, force: true });

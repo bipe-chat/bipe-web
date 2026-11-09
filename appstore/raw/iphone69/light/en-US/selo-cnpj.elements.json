@@ -1,0 +1,327 @@
+{
+ "source": "scene empresa-pergunta",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Clínica Vida Verified business · CNPJ 00.000.000/0001-00",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida Verified business · CNPJ 00.000.000/0001-00",
+   "frame": [
+    90.6,
+    67.8,
+    329.3,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida Verified business · CNPJ 00.000.000/0001-00",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Clínica Vida",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Clínica Vida",
+   "frame": [
+    148.5,
+    75.4,
+    256.3,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Verified business",
+   "frame": [
+    255.8,
+    77.9,
+    20.1,
+    20.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Verified business · CNPJ 00.000.000/0001-00",
+   "frame": [
+    148.5,
+    100.6,
+    256.3,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Automated messageYour appointment with Dr Ana is tomorrow at 2 pm. QuestionDo you confirm?I confirmI want to rescheduleAppointment confirmed. See you tomorrow.1:09",
+   "frame": [
+    0,
+    140.8,
+    440,
+    713.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Automated messageYour appointment with Dr Ana is tomorrow at 2 pm.",
+   "frame": [
+    20.1,
+    421,
+    399.8,
+    130.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Automated messageYour appointment with Dr Ana is tomorrow at 2 pm.",
+   "frame": [
+    40.2,
+    431,
+    359.5,
+    120.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Automated message",
+   "frame": [
+    41.5,
+    432.3,
+    357,
+    42.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Automated message",
+   "frame": [
+    41.5,
+    432.3,
+    357,
+    42.8
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Verified organisation",
+   "frame": [
+    54.1,
+    446.1,
+    15.1,
+    15.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Your appointment with Dr Ana is tomorrow at 2 pm.",
+   "frame": [
+    41.5,
+    475.1,
+    357,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "QuestionDo you confirm?I confirmI want to reschedule",
+   "frame": [
+    20.1,
+    561.9,
+    399.8,
+    178.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "QuestionDo you confirm?I confirmI want to reschedule",
+   "frame": [
+    40.2,
+    572,
+    359.5,
+    168.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Question",
+   "frame": [
+    56.6,
+    585.8,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Question",
+   "frame": [
+    56.6,
+    585.8,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Do you confirm?",
+   "frame": [
+    56.6,
+    623.6,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I confirm",
+   "frame": [
+    56.6,
+    661.4,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I confirm",
+   "frame": [
+    56.6,
+    661.4,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "I confirm",
+   "frame": [
+    56.6,
+    661.4,
+    70.6,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I want to reschedule",
+   "frame": [
+    56.6,
+    699.1,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "I want to reschedule",
+   "frame": [
+    56.6,
+    699.1,
+    326.8,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "I want to reschedule",
+   "frame": [
+    56.6,
+    699.1,
+    153.6,
+    27.7
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Appointment confirmed. See you tomorrow.1:09",
+   "frame": [
+    0,
+    740.7,
+    440,
+    103.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Appointment confirmed. See you tomorrow.1:09",
+   "frame": [
+    0,
+    740.7,
+    440,
+    103.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Appointment confirmed. See you tomorrow.1:09",
+   "frame": [
+    20.1,
+    752,
+    339.3,
+    90.6
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Appointment confirmed. See you tomorrow.",
+   "frame": [
+    30.2,
+    762,
+    319.2,
+    55.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    316.4,
+    817.4,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Message…",
+   "frame": [
+    0,
+    853.9,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Message…",
+   "frame": [
+    85.6,
+    864,
+    268.9,
+    55.4
+   ]
+  }
+ ]
+}

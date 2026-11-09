@@ -1,0 +1,157 @@
+{
+ "source": "scene qr-conversa",
+ "width": 440,
+ "height": 956,
+ "elements": [
+  {
+   "type": 1,
+   "label": "Rafa Name verified: Rafael Oliveira",
+   "frame": [
+    0,
+    67.8,
+    440,
+    73
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Rafa Name verified: Rafael Oliveira",
+   "frame": [
+    90.6,
+    67.8,
+    296.8,
+    62.9
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Rafa Name verified: Rafael Oliveira",
+   "frame": [
+    148.5,
+    75.4,
+    223.9,
+    47.8
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Rafa",
+   "frame": [
+    148.5,
+    75.4,
+    223.9,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Rafa",
+   "frame": [
+    148.5,
+    75.4,
+    223.9,
+    25.2
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Name verified",
+   "frame": [
+    192.9,
+    77.9,
+    20.1,
+    20.1
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Name verified: Rafael Oliveira",
+   "frame": [
+    148.5,
+    100.6,
+    223.9,
+    22.6
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Hi Rafa, it's Gabi from the bike fair1:09",
+   "frame": [
+    0,
+    140.8,
+    440,
+    713.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Hi Rafa, it's Gabi from the bike fair1:09",
+   "frame": [
+    0,
+    768.4,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Hi Rafa, it's Gabi from the bike fair1:09",
+   "frame": [
+    0,
+    768.4,
+    440,
+    75.5
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Hi Rafa, it's Gabi from the bike fair1:09",
+   "frame": [
+    80.5,
+    779.7,
+    339.3,
+    62.9
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Hi Rafa, it's Gabi from the bike fair",
+   "frame": [
+    90.6,
+    789.7,
+    319.2,
+    27.7
+   ]
+  },
+  {
+   "type": 48,
+   "label": "1:09",
+   "frame": [
+    376.8,
+    817.4,
+    33,
+    20.1
+   ]
+  },
+  {
+   "type": 1,
+   "label": "Message…",
+   "frame": [
+    0,
+    853.9,
+    440,
+    65.4
+   ]
+  },
+  {
+   "type": 48,
+   "label": "Message…",
+   "frame": [
+    85.6,
+    864,
+    268.9,
+    55.4
+   ]
+  }
+ ]
+}
