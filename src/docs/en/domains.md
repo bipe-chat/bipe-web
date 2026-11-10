@@ -29,8 +29,8 @@ If `bipe.chat` stops working, chat keeps working. Only the site and new link pre
 | `rtc.bipe.net.br` | Voice and video calls (LiveKit) | Apps and browsers |
 | `turn.bipe.net.br` | Call relay (LiveKit TURN) for networks that block direct traffic | Apps and browsers |
 | `maps.bipe.net.br` | Maps for shared locations, with OpenStreetMap data (© OpenStreetMap), served from Bipe's servers in Brazil | Apps |
-| `chat.bipe.net.br` | Web client (Element Web) | Browsers |
-| `admin.bipe.net.br` | Staff console | Bipe staff only |
+| `web.bipe.chat` | Bipe on the web | Browsers |
+| `chat.bipe.net.br` | Old web address. Sends you to `web.bipe.chat` | Browsers |
 
 ## What lives on bipe.chat
 

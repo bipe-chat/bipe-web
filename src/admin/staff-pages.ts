@@ -1,5 +1,5 @@
-// The staff console registry (bipe#372): every staff page, built or planned. It feeds the MAS redirect URIs
-// (staff-auth.tsx), the routes (routes.tsx) and the index /admin/. Add a page here first.
+// The staff console registry (bipe#372): every staff page, built or planned. It feeds the routes (routes.tsx)
+// and the index /admin/. Add a page here first.
 
 export type StaffGroup = "Crescimento" | "Operação" | "Empresas" | "Confiança" | "Pesquisa";
 
@@ -18,7 +18,6 @@ export const STAFF_HOME = "Equipe";
 /** Tools outside the site, last in the staff nav. */
 export const STAFF_LINKS = [
   { title: "Umami", href: "https://stats.bipe.chat" },
-  { title: "Element Admin", href: "https://admin.bipe.net.br" },
 ];
 
 export const STAFF_CONSOLE = {
@@ -48,5 +47,3 @@ export function staffPath(page: StaffPage): string {
   return p.path;
 }
 
-/** Every built page and the index: the MAS client lists them all as redirect URIs. */
-export const STAFF_PATHS: string[] = [STAFF_INDEX, ...Object.values(STAFF_CONSOLE as Record<string, StaffPageInfo>).flatMap((p) => (p.path ? [p.path] : []))];
