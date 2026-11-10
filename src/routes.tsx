@@ -203,12 +203,12 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
 }, {
   // Target of the Caddy rewrite for /@handle.
   path: "/perfil/", alt: null, lang: "pt", noindex: true,
-  title: "Bipe", description: chrome.pt.profile.lead,
+  title: "Bipe", description: chrome.pt.profile.lead, og: { title: chrome.pt.profile.card },
   body: () => <Island name="ProfileLanding" props={{}} />,
 }, {
   // Target of the Caddy rewrite for /convite/<code>.
   path: "/convite/", alt: null, lang: "pt", noindex: true, noReferrer: true, ogCard: "convite",
-  title: "Convite para o Bipe", description: chrome.pt.invite.lead, og: { title: "Você tem um convite para o Bipe" },
+  title: "Convite para o Bipe", description: chrome.pt.invite.lead, og: { title: chrome.pt.invite.title },
   body: () => <Island name="InviteLanding" props={{}} />,
 }, {
   // Target of the Caddy rewrite for /g/<code> (group links, bipe ADR 0184).

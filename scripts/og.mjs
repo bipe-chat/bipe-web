@@ -64,11 +64,13 @@ function card({ markPath, title, description, illustration, ink }) {
 }
 
 /**
- * The invite card (/convite/, /g/): the invite itself is the subject. A white ticket in the middle of the
- * açaí backdrop holds the headline, with a torn-off stub that holds the mark. The description stays out of
- * the image: the messenger shows it under the card. Centred, so a square crop keeps the ticket.
+ * The link card for the pages people share from the app (invite, group, profile, sticker pack, reseller
+ * mark; ogIllustration in src/entry-server.tsx): the link itself is the subject. A white ticket in the
+ * middle of the açaí backdrop holds the headline, with a torn-off stub that holds the mark. The
+ * description stays out of the image: the messenger shows it under the card. Centred, so a square crop
+ * keeps the ticket.
  */
-function inviteCard({ markPath, title, ink }) {
+function ticketCard({ markPath, title, ink }) {
   const { width, height } = OG_SIZE;
   const acai = RAMPS.acai;
   return h("div", {
@@ -94,15 +96,15 @@ export { h };
 
 /**
  * Writes the card JPEG to outPath (lib/raster.mjs). `illustration: "brazil"` draws the Brazil network
- * (lib/brazil-network.mjs) on its own field in place of the brand backdrop. `illustration: "invite"`
- * draws the invite ticket (inviteCard) and always takes the açaí tone, the brand palette.
+ * (lib/brazil-network.mjs) on its own field in place of the brand backdrop. `illustration: "ticket"`
+ * draws the link ticket (ticketCard) and always takes the açaí tone, the brand palette.
  */
 export async function writeOgCard({ outPath, markPath, title, description, illustration, texture = BRAND.texture, tone = BRAND.tone(0) }) {
-  if (illustration === "invite") tone = makeTone("acai");
+  if (illustration === "ticket") tone = makeTone("acai");
   const back = illustration === "brazil" ? brazilNetworkSvg({ ...OG_SIZE }) : backdropSvg({ ...OG_SIZE, texture, tone, markPath, mark: BRAND.mark });
   // The Brazil network has its own dark field, so its card keeps white text whatever the tone.
   const ink = illustration === "brazil" ? { ink: WHITE, sub: "rgba(255,255,255,0.88)", rule: "rgba(255,255,255,0.22)" } : tone;
-  const layout = illustration === "invite" ? inviteCard({ markPath, title, ink }) : card({ markPath, title, description, illustration, ink });
+  const layout = illustration === "ticket" ? ticketCard({ markPath, title, ink }) : card({ markPath, title, description, illustration, ink });
   const svg = compose(await satori(layout, { ...OG_SIZE, fonts }), back);
   const img = new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width }, background: tone.base }).render();
   writeFileSync(outPath, encodeJpeg(img.pixels, img.width, img.height));
