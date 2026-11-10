@@ -146,7 +146,7 @@ export function renderMarkdown(route: Route): string {
     out.push(`## ${p.tiersHeading}`, "");
     for (const tier of product.pricing.tiers) {
       const t = p.tiers[tier.id];
-      out.push(`### ${t.name}`, "", t.who, "", `**${tierPrice(lang, tier)}**. ${t.billing}`, "", ...t.points.map((x) => `- ${x}`), "");
+      out.push(`### ${t.name}`, "", t.who, "", `**${t.price ?? tierPrice(lang, tier)}**. ${t.billing}`, "", ...t.points.map((x) => `- ${x}`), "");
       out.push(tier.cta === "app" ? `${p.ctaApp}: ${abs(paths.download(lang))}` : `${p.ctaForm}: ${abs(paths.organisations(lang))}#form`, "");
     }
     out.push(p.nonprofit, "", `## ${p.offers.heading}`, "", p.offers.lede, "", `**${p.offers.price}**. ${p.offers.billing}`, "", ...p.offers.points.map((x) => `- ${x}`), "", `## ${p.tools.heading}`, "", p.tools.body, "");

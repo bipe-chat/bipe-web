@@ -4,7 +4,11 @@
 // Facts that bipe-shared holds are not written in the .md: a {{name}} line is filled at build (FACTS).
 import { chrome } from "../copy";
 import { paths } from "../paths";
-import { publicRepos, publicRoutes, type Lang } from "../shared";
+import { publicRepos, type Lang } from "../shared";
+// The contract is read here, not in shared.ts: every island imports shared.ts, and the whole
+// openapi.yaml (387 KB) went into the client bundle.
+import * as publicRoutesLib from "@shared/tools/lib/public-routes.mjs";
+import openapiYaml from "@shared/api/openapi.yaml?raw";
 import { Markdown, mdTitle } from "../components/markdown";
 import { MoreLink } from "../components/ui";
 import ptIndex from "../docs/pt/index.md?raw";
@@ -15,6 +19,10 @@ import enIndex from "../docs/en/index.md?raw";
 import enDomains from "../docs/en/domains.md?raw";
 import enArchitecture from "../docs/en/architecture.md?raw";
 import enLinks from "../docs/en/links.md?raw";
+
+/** The API routes that take no access token (security: [] in api/openapi.yaml), in contract order. */
+type PublicRoute = { method: string; path: string; en: string; pt: string };
+const publicRoutes = (publicRoutesLib.publicRoutes as (yaml: string) => PublicRoute[])(openapiYaml);
 
 /** Generated blocks, by placeholder. A placeholder with no entry stops the build. */
 const FACTS: Record<string, (lang: Lang) => string> = {

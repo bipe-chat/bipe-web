@@ -1,7 +1,7 @@
 #!/bin/sh
 # Copies dist/ over the Caddy site directory: into bipe-infra (so a compose sync carries the same
-# files) and onto the dev node. No --delete: privacidade, termos, en/privacy, en/terms and
-# .well-known belong to bipe-infra and must stay.
+# files) and onto the dev node. No --delete: .well-known, icone.png, web/ and proposta/
+# belong to bipe-infra and must stay.
 # The node address lives in scripts/deploy.env (git-ignored): BIPE_DEPLOY_TARGET, BIPE_DEPLOY_PORT,
 # BIPE_DEPLOY_KEY. See scripts/deploy.env.example.
 set -eu
