@@ -14,10 +14,20 @@ export { analyticsTags } from "./analytics";
 export { storeSets } from "./store";
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
 
-/** The share card illustration: the Brazil network (scripts/lib/brazil-network.mjs) on the privacy pages. */
-export function ogIllustration(route: Route): "brazil" | undefined {
+/**
+ * The share card illustration: the link ticket (scripts/og.mjs) on the pages people share from the app,
+ * the Brazil network (scripts/lib/brazil-network.mjs) on the privacy pages.
+ */
+export function ogIllustration(route: Route): "brazil" | "ticket" | undefined {
+  const shared = ["/convite/", "/g/", "/perfil/", "/s/", paths.brandMark("pt"), paths.brandMark("en")];
+  if (shared.includes(route.path)) return "ticket";
   const brazil = (["pt", "en"] as Lang[]).flatMap((l) => [paths.privacy(l), paths.lgpd(l), paths.whoCanRead(l)]);
   return brazil.includes(route.path) ? "brazil" : undefined;
+}
+
+/** Cards that always take the açaí tone, the brand palette, in place of the route rotation: home and download. */
+export function ogAcai(route: Route): boolean {
+  return (["pt", "en"] as Lang[]).some((l) => route.path === paths.home(l) || route.path === paths.download(l));
 }
 
 import inviteCodes from "@shared/test-vectors/invite-codes.json";

@@ -183,6 +183,8 @@ export const chrome = {
     scanToOpen: "Aponte a câmera do celular para o QR code. O link abre lá.",
     profile: {
       lead: "Esse é um link de perfil do Bipe. Com o app instalado, abre direto na conversa.",
+      /** Headline of the profile link card (og image). */
+      card: "Fale comigo no Bipe",
       noApp: "Ainda não tem o Bipe? O app está em fase de testes. Instale no seu celular:",
     },
     invite: {

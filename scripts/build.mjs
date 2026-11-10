@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { build } from "vite";
 import { writeIcons } from "./icon.mjs";
 import { writeOgCard } from "./og.mjs";
-import { brandTone } from "./lib/backdrop.mjs";
+import { brandTone, tone } from "./lib/backdrop.mjs";
 import { checkCodeLinks } from "./check-code-links.mjs";
 import { writeBrandAssets } from "./brand.mjs";
 import { writeBrandImages } from "./brand-images.mjs";
@@ -55,7 +55,8 @@ const cardTitle = (title) => title.replace(/^Bipe · /, "").replace(/ · Bipe$/,
 async function ogImageTags(route) {
   const name = ssr.ogImageName(route);
   // The card tone rotates by route, as the store panels rotate by panel (scripts/lib/backdrop.mjs).
-  await writeOgCard({ outPath: join(dist, "og", `${name}.jpg`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, illustration: ssr.ogIllustration(route), tone: brandTone(ssr.routes.indexOf(route)) });
+  // Home and download take açaí (ssr.ogAcai); the link ticket takes açaí in og.mjs.
+  await writeOgCard({ outPath: join(dist, "og", `${name}.jpg`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, illustration: ssr.ogIllustration(route), tone: ssr.ogAcai(route) ? tone("acai") : brandTone(ssr.routes.indexOf(route)) });
   return [
     `<meta property="og:image" content="${site}/og/${name}.jpg">`,
     '<meta property="og:image:type" content="image/jpeg">',

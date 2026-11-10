@@ -10,7 +10,7 @@ import { dirname, join } from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 import { encodeJpeg } from "./lib/raster.mjs";
 import satori from "satori";
-import { BRAND, backdropSvg, compose } from "./lib/backdrop.mjs";
+import { BRAND, RAMPS, backdropSvg, compose, tone as makeTone } from "./lib/backdrop.mjs";
 import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
 
 export const OG_SIZE = { width: 1200, height: 630 };
@@ -63,17 +63,49 @@ function card({ markPath, title, description, illustration, ink }) {
   );
 }
 
+/**
+ * The link card for the pages people share from the app (invite, group, profile, sticker pack, reseller
+ * mark; ogIllustration in src/entry-server.tsx): the link itself is the subject. A white ticket in the
+ * middle of the açaí backdrop holds the headline, with a torn-off stub that holds the mark. The
+ * description stays out of the image: the messenger shows it under the card. Centred, so a square crop
+ * keeps the ticket.
+ */
+function ticketCard({ markPath, title, ink }) {
+  const { width, height } = OG_SIZE;
+  const acai = RAMPS.acai;
+  return h("div", {
+    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center", padding: "56px 72px", color: ink.ink, fontFamily: "Nunito" },
+  },
+    h("div", { style: { display: "flex", alignItems: "center", gap: 14 } },
+      h("svg", { width: 44, height: 44, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: ink.ink })),
+      h("div", { style: { display: "flex", fontSize: 40, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
+    ),
+    h("div", { style: { display: "flex", width: 960, height: 340, background: WHITE, borderRadius: 36, transform: "rotate(-2deg)" } },
+      h("div", { style: { display: "flex", flexDirection: "column", justifyContent: "center", flex: 1, padding: "0 56px" } },
+        clamp(3, { fontSize: title.length > 32 ? 64 : 68, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.06, paddingBottom: "0.08em", color: acai[1200] }, title),
+      ),
+      h("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", width: 200, borderLeft: `5px dashed ${acai[500]}` } },
+        h("svg", { width: 112, height: 112, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: acai[1000] })),
+      ),
+    ),
+    h("div", { style: { display: "flex", fontSize: 30, fontWeight: 800 } }, "bipe.chat"),
+  );
+}
+
 export { h };
 
 /**
  * Writes the card JPEG to outPath (lib/raster.mjs). `illustration: "brazil"` draws the Brazil network
- * (lib/brazil-network.mjs) on its own field in place of the brand backdrop.
+ * (lib/brazil-network.mjs) on its own field in place of the brand backdrop. `illustration: "ticket"`
+ * draws the link ticket (ticketCard) and always takes the açaí tone, the brand palette.
  */
 export async function writeOgCard({ outPath, markPath, title, description, illustration, texture = BRAND.texture, tone = BRAND.tone(0) }) {
+  if (illustration === "ticket") tone = makeTone("acai");
   const back = illustration === "brazil" ? brazilNetworkSvg({ ...OG_SIZE }) : backdropSvg({ ...OG_SIZE, texture, tone, markPath, mark: BRAND.mark });
   // The Brazil network has its own dark field, so its card keeps white text whatever the tone.
   const ink = illustration === "brazil" ? { ink: WHITE, sub: "rgba(255,255,255,0.88)", rule: "rgba(255,255,255,0.22)" } : tone;
-  const svg = compose(await satori(card({ markPath, title, description, illustration, ink }), { ...OG_SIZE, fonts }), back);
+  const layout = illustration === "ticket" ? ticketCard({ markPath, title, ink }) : card({ markPath, title, description, illustration, ink });
+  const svg = compose(await satori(layout, { ...OG_SIZE, fonts }), back);
   const img = new Resvg(svg, { fitTo: { mode: "width", value: OG_SIZE.width }, background: tone.base }).render();
   writeFileSync(outPath, encodeJpeg(img.pixels, img.width, img.height));
 }
