@@ -29,8 +29,8 @@ Se o `bipe.chat` parar, as conversas continuam. Só o site e as prévias de link
 | `rtc.bipe.net.br` | Chamadas de voz e vídeo (LiveKit) | Os apps e o navegador |
 | `turn.bipe.net.br` | Retransmissão das chamadas (TURN do LiveKit), para redes que bloqueiam o tráfego direto | Os apps e o navegador |
 | `maps.bipe.net.br` | Mapas das localizações compartilhadas, com dados do OpenStreetMap (© OpenStreetMap), servidos dos servidores do Bipe no Brasil | Os apps |
-| `chat.bipe.net.br` | App na web (Element Web) | Navegadores |
-| `admin.bipe.net.br` | Painel da equipe | Só a equipe do Bipe |
+| `web.bipe.chat` | Bipe na web | Navegadores |
+| `chat.bipe.net.br` | Endereço antigo. Leva para `web.bipe.chat` | Navegadores |
 
 ## O que fica no bipe.chat
 

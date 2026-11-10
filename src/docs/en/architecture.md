@@ -64,7 +64,7 @@ Voice message transcripts also run on the phone. The sender transcribes the audi
 | Sygnal | Push gateway: Apple push on iPhone and Google (Firebase) on Android. The Android build without Google services gets no push |
 | LiveKit | Voice and video calls (MatrixRTC), the token service that lets each person into a call, and TURN on `turn.bipe.net.br` |
 | Map server | Maps for shared locations on `maps.bipe.net.br`, with OpenStreetMap data (© OpenStreetMap) |
-| Element Web | Web client on `chat.bipe.net.br`. Sign-in only by a QR code that the phone scans |
+| Bipe on the web | Bipe's own web app on `web.bipe.chat`, served from Bipe's servers. Sign-in only by a QR code that the phone scans |
 | Postgres | Databases for Synapse, MAS and the Bipe API |
 | Caddy | TLS and routing for every host |
 
@@ -99,4 +99,3 @@ The API contract is in [openapi.yaml](https://github.com/bipe-chat/bipe-shared/b
 - [Matrix Authentication Service](https://github.com/element-hq/matrix-authentication-service)
 - [Sygnal](https://github.com/matrix-org/sygnal)
 - [LiveKit](https://github.com/livekit/livekit)
-- [Element Web](https://github.com/element-hq/element-web)

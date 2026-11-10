@@ -64,7 +64,7 @@ A transcrição de mensagens de voz também roda no celular. Quem manda transcre
 | Sygnal | Envia notificações pelo serviço da Apple no iPhone e pelo do Google (Firebase) no Android. A versão de Android sem os serviços do Google não recebe notificações |
 | LiveKit | Chamadas de voz e vídeo (MatrixRTC), o serviço de tokens que libera a entrada de cada pessoa na chamada, e o TURN em `turn.bipe.net.br` |
 | Servidor de mapas | Mapas das localizações compartilhadas em `maps.bipe.net.br`, com dados do OpenStreetMap (© OpenStreetMap) |
-| Element Web | App na web, em `chat.bipe.net.br`. Entra só por QR code lido no celular |
+| Bipe na web | O app do Bipe na web, em `web.bipe.chat`, servido dos servidores do Bipe. Entra só por QR code lido no celular |
 | Postgres | Bancos de dados do Synapse, do MAS e da API do Bipe |
 | Caddy | TLS e roteamento de todos os endereços |
 
@@ -99,4 +99,3 @@ O contrato da API está em [openapi.yaml](https://github.com/bipe-chat/bipe-shar
 - [Matrix Authentication Service](https://github.com/element-hq/matrix-authentication-service)
 - [Sygnal](https://github.com/matrix-org/sygnal)
 - [LiveKit](https://github.com/livekit/livekit)
-- [Element Web](https://github.com/element-hq/element-web)
