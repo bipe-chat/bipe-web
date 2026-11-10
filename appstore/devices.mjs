@@ -2,7 +2,7 @@
 // the store image builder (scripts/store-images.mjs, bipe-chat/bipe#455) imports it for the panel size
 // and checks each capture in appstore/raw against it. Moved here on 26 October 2026.
 // Rules from App Store Connect: PNG, RGB with no alpha, exact pixels, 1 to 10 images per set.
-// ASC scales the smaller iPhone and iPad sets from these two.
+// ASC scales the smaller iPhone sets from this one.
 // `screenRadius` is the corner radius of the screen in capture pixels, for a continuous corner with
 // smoothing 0.6 (bipe-web scripts/lib/squircle.mjs). Fitted to the simulator's framebufferMask PDF
 // (CoreSimulator/Profiles/DeviceTypes/<simulator>.simdevicetype, profile.plist) on 20 October 2026.
@@ -18,16 +18,6 @@ export const DEVICES = {
     width: 1320,
     height: 2868,
     screenRadius: 190,
-  },
-  ipad13: {
-    label: 'iPad 13"',
-    ascDeviceType: "IPAD_PRO_3GEN_129",
-    ascScreenshotType: "APP_IPAD_PRO_3GEN_129",
-    simulator: "iPad Pro 13-inch (M5)",
-    kind: "tablet",
-    width: 2064,
-    height: 2752,
-    screenRadius: 60,
   },
 };
 
