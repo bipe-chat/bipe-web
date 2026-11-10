@@ -58,7 +58,7 @@ async function ogImageTags(route) {
   await writeOgCard({ outPath: join(dist, "og", `${name}.jpg`), markPath: marks.paths[marks.chosen], title: route.og?.title ?? cardTitle(route.title), description: route.og?.description ?? route.description, illustration: ssr.ogIllustration(route), tone: brandTone(ssr.routes.indexOf(route)) });
   return [
     `<meta property="og:image" content="${site}/og/${name}.jpg">`,
-    '<meta property="og:image:type" content="image/png">',
+    '<meta property="og:image:type" content="image/jpeg">',
     '<meta property="og:image:width" content="1200">',
     '<meta property="og:image:height" content="630">',
     `<meta property="og:image:alt" content="${esc(route.title)}">`,

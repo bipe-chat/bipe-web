@@ -28,8 +28,6 @@ import accessibilityJson from "@shared/product/accessibility.json";
 import tokensJson from "@shared/design/tokens.json";
 import * as lib from "@shared/tools/lib/registries.mjs";
 import * as pixLib from "@shared/tools/lib/pix.mjs";
-import * as publicRoutesLib from "@shared/tools/lib/public-routes.mjs";
-import openapiYaml from "@shared/api/openapi.yaml?raw";
 import type { FigureId, SceneId } from "./sim/scenes";
 
 /**
@@ -79,10 +77,6 @@ export const socialUrl = lib.socialUrl as (platform: string, input: string, reg:
 export type PixCode = { status: "valid" | "badCrc" | "malformed"; dynamic: boolean; key: string | null; keyType: string | null; name: string | null; city: string | null; amount: string | null; info: string | null };
 /** The Conferir no Bipe check of shared text (pix-check, test-vectors/pix-check.json). */
 export const pixCheck = pixLib.pixCheck as (text: string, reg: Registries) => { code: PixCode | null; keys: { value: string; types: string[] }[]; warning: ScamKind | null };
-
-/** The API routes that take no access token (security: [] in api/openapi.yaml), in contract order. The docs page lists them. */
-export type PublicRoute = { method: string; path: string; en: string; pt: string };
-export const publicRoutes = (publicRoutesLib.publicRoutes as (yaml: string) => PublicRoute[])(openapiYaml);
 
 /** Pack links (bipe ADR 0205): this base plus the URL-encoded room ID. */
 export const stickerPackLinkBase: string = stickersJson.packLinkBase;

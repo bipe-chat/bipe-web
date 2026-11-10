@@ -2,7 +2,7 @@ import { ScenePhone } from "./ScenePhone";
 import type { Lang } from "../shared";
 
 // Static illustration of the proposed business messaging (bipe/docs/business-messaging.md):
-// a verified institution, an automated reminder marked as such, no link, a reply. Scene "instituicao".
+// a verified institution, an automated reminder marked as such, no link, a reply. Scene "empresa-pergunta".
 export function BusinessFigure({ lang, caption }: { lang: Lang; caption: string }) {
   return (
     <div className="stage">
