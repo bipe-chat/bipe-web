@@ -14,8 +14,12 @@ export { analyticsTags } from "./analytics";
 export { storeSets } from "./store";
 export const redirects = Object.fromEntries(Object.entries(product.redirects).filter(([k]) => k.startsWith("/")));
 
-/** The share card illustration: the Brazil network (scripts/lib/brazil-network.mjs) on the privacy pages. */
-export function ogIllustration(route: Route): "brazil" | undefined {
+/**
+ * The share card illustration: the invite ticket (scripts/og.mjs) on the invite and group link pages,
+ * the Brazil network (scripts/lib/brazil-network.mjs) on the privacy pages.
+ */
+export function ogIllustration(route: Route): "brazil" | "invite" | undefined {
+  if (route.path === "/convite/" || route.path === "/g/") return "invite";
   const brazil = (["pt", "en"] as Lang[]).flatMap((l) => [paths.privacy(l), paths.lgpd(l), paths.whoCanRead(l)]);
   return brazil.includes(route.path) ? "brazil" : undefined;
 }
