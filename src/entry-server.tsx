@@ -5,7 +5,7 @@ import { paths } from "./paths";
 import { ogImageName, routes, type Route } from "./routes";
 import { chrome, surfaceStatus } from "./copy";
 import { breadcrumbs, footerGroups } from "./nav";
-import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
+import { codeLinks, compare, distribution, product, publicRepos, t as tr, type Lang } from "./shared";
 import { bipeOn, tierPrice } from "./pages";
 import brandAssets from "./components/brand-assets.json";
 
@@ -34,6 +34,7 @@ import inviteCodes from "@shared/test-vectors/invite-codes.json";
 import { extractInviteCode } from "./sim/LinkPages";
 import { scams, scamsMarkdown, scamTypeMarkdown } from "./pages/ScamsPage";
 import { isFigureId } from "./sim/scenes";
+import { CompanySeal } from "./components/brand";
 
 /** Fails the build when the invite page disagrees with the shared invite-code vectors. */
 export function selfTest(): void {
@@ -73,6 +74,27 @@ export function selfTest(): void {
 
 export function renderBody(route: Route): string {
   return renderToString(<Layout route={route} />);
+}
+
+const CHROME_SLOT = '<div data-chrome-slot=""></div>';
+
+/**
+ * The site header and footer around an empty slot, for pages that bipe-api renders on bipe.chat
+ * (public feed /@handle, ADR 0280). scripts/build.mjs writes them to /site-chrome.json; bipe-api
+ * puts its own content between `before` and `after`, so those pages follow every site redesign.
+ */
+export function renderChrome(): { before: string; after: string; companySeal: string } {
+  const host = routes.find((r) => r.path === "/perfil/");
+  if (!host) throw new Error("renderChrome: no /perfil/ route");
+  const route: Route = { ...host, body: () => <div data-chrome-slot="" /> };
+  const html = renderToString(<Layout route={route} />);
+  const at = html.indexOf(CHROME_SLOT);
+  if (at < 0 || html.indexOf(CHROME_SLOT, at + 1) >= 0) throw new Error("renderChrome: slot not found once");
+  return {
+    before: html.slice(0, at),
+    after: html.slice(at + CHROME_SLOT.length),
+    companySeal: renderToString(<CompanySeal size={28} label={tr("pt", "bipe_badge_company")} />),
+  };
 }
 
 const site = "https://bipe.chat";

@@ -383,6 +383,16 @@ a.card.repo svg { color: var(--acai); flex: none; }
   .link-qr-bg { fill: var(--text); }
   .link-qr-fg { fill: var(--bg); }
 }
+/* Public feed (/@handle, /@handle/p/<id>, ADR 0280): bipe-api renders it inside the site chrome (/site-chrome.json). */
+.feed-label { margin: 0 0 8px; }
+.feed-posts { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 16px; }
+.feed-post { background: var(--surface); border-radius: var(--radius); padding: 22px; overflow-wrap: anywhere; }
+.feed-post p { margin: 0 0 12px; font-size: 1.0625rem; }
+.feed-post time a { color: var(--muted); font-size: 0.875rem; text-decoration: none; }
+.feed-post time a:hover { color: var(--acai); }
+.feed-domain { font-size: 0.8125rem; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; white-space: nowrap; }
+.feed-empty { margin: 40px 0 0; color: var(--muted); }
+.feed-more { margin: 24px 0 0; }
 .not-found-head { font-size: 1.125rem; margin: 36px 0 8px; }
 .not-found-list { padding-left: 22px; }
 .not-found-list li { margin-bottom: 8px; overflow-wrap: anywhere; }

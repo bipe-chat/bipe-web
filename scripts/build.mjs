@@ -146,6 +146,20 @@ for (const dir of ["versoes", "en/versions"]) {
   mkdirSync(join(dist, dir), { recursive: true });
   copyFileSync(join(root, ".generated/changelog.json"), join(dist, dir, "changelog.json"));
 }
+// Site header, footer and head links for the pages bipe-api renders on bipe.chat (public feed, ADR 0280).
+// bipe-api fetches this file and puts its content between `before` and `after`. No script and no analytics:
+// those pages set no cookie and run no script (bipe-api AGENTS.md, public feed).
+{
+  const c = ssr.renderChrome();
+  const head = [
+    '<meta name="theme-color" content="#80307B" media="(prefers-color-scheme: light)">',
+    '<meta name="theme-color" content="#101317" media="(prefers-color-scheme: dark)">',
+    '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+    '<link rel="apple-touch-icon" href="/brand/app-icon.png">',
+    preload, css,
+  ].filter(Boolean).join("\n");
+  writeFileSync(join(dist, "site-chrome.json"), JSON.stringify({ v: 1, head, before: c.before, after: c.after, companySeal: c.companySeal }));
+}
 writeFileSync(join(dist, "llms.txt"), ssr.llmsTxt());
 writeFileSync(join(dist, "llms-full.txt"), ssr.llmsFullTxt());
 writeFileSync(join(dist, "sitemap.xml"), ssr.sitemap());
