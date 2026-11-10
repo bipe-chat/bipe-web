@@ -342,7 +342,6 @@ export const distribution = distributionJson as unknown as {
   social: { accounts: { id: string; name: string; handle: string; url: string }[] };
 };
 /** The side a tentpole belongs to, or undefined (groups sit outside the frame). */
-export const sideOf = (tp: Tentpole): Side | undefined => product.sides.find((s) => s.tentpoles.includes(tp.id));
 
 /** Repos the site may link: only public ones (ADR 0024). Empty until the code is published. */
 export const publicRepos = distribution.source.repos.filter((r) => r.public);

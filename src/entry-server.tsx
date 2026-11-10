@@ -7,6 +7,7 @@ import { chrome, surfaceStatus } from "./copy";
 import { breadcrumbs, footerGroups } from "./nav";
 import { codeLinks, compare, distribution, product, publicRepos, type Lang } from "./shared";
 import { bipeOn, tierPrice } from "./pages";
+import brandAssets from "./components/brand-assets.json";
 
 export { routes, ogImageName };
 export { analyticsTags } from "./analytics";
@@ -77,6 +78,7 @@ export function renderMarkdown(route: Route): string {
   const cmpApp = compare.apps.find((a) => paths.compareApp(lang, a) === route.path);
   const feature = product.features.find((f) => paths.feature(lang, f) === route.path);
   const audience = product.audiences.find((a) => paths.audience(lang, a) === route.path);
+  const orgAudience = product.organisationAudiences.find((a) => paths.organisationAudience(lang, a) === route.path);
   if (route.path === paths.home(lang)) {
     const list = (ids: string[]) => ids.map((id) => {
       const f = product.features.find((f) => f.id === id)!;
@@ -133,6 +135,22 @@ export function renderMarkdown(route: Route): string {
       out.push("");
     });
     out.push(`${copy.cta} ${abs(paths.help(lang))}`, "");
+  } else if (orgAudience) {
+    // Same shape as the audience branch above (10 Nov audit, bipe#1362: these twins were empty).
+    const copy = orgAudience[lang];
+    out.push(`**${copy.headline}**`, "", `(${copy.note})`, "");
+    orgAudience.sections.forEach((s, i) => {
+      out.push(`## ${copy.sections[i].heading}`, "", copy.sections[i].body, "");
+      for (const f of s.features.map((id) => product.features.find((x) => x.id === id)!)) {
+        out.push(`- [${f[lang].name}](${abs(paths.feature(lang, f))}) (iPhone: ${c.status[f.status.ios]}; Android: ${c.status[f.status.android]}): ${f[lang].body}`);
+      }
+      out.push("");
+    });
+    out.push(`## ${copy.cta}`, "", abs(paths.organisationForm(lang, orgAudience.kind, paths.organisationAudience(lang, orgAudience))), "");
+  } else if (route.path === paths.brand(lang)) {
+    const b = c.brand;
+    out.push(`## ${b.sections.logo}`, "", ...brandAssets.assets.map((a) => `- ${b.assets[a.file]}: ${abs(`/brand/${a.file}.svg`)} (SVG), ${abs(`/brand/${a.file}.png`)} (PNG)`), "");
+    out.push(`## ${b.sections.cards}`, "", ...routes.filter((r) => !r.noindex && r.lang === lang).map((r) => `- [${r.title}](${abs(r.path)}): ${abs(`/og/${ogImageName(r)}.jpg`)}`), "");
   } else if (feature) {
     out.push(surfaceStatus(lang, feature).join("; "), "", `## ${c.howItWorks}`, "", ...feature[lang].points.map((p) => `- ${p}`), "");
     for (const t of product.tentpoles.filter((x) => x.features.includes(feature.id))) out.push(`${c.partOf} [${t[lang].name}](${abs(paths.tentpole(lang, t))})`, "");

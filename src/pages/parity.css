@@ -8,8 +8,6 @@
 .parity-planned, .parity-na { color: var(--bipe-trust-neutral-ink); }
 .parity-policy { color: var(--muted); }
 .parity-review { color: var(--bipe-trust-caution-ink); }
-.parity-table-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 16px; margin-top: 0; }
-.parity-table-head h2 { margin: 0; }
 .parity-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
 .parity-filters label { font-size: .8125rem; font-weight: 600; min-width: 0; }
 .parity-filters input, .parity-filters select { display: block; width: 100%; min-width: 0; min-height: 46px; margin-top: 6px; padding: 10px 12px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; font: 400 .9375rem var(--body); }
