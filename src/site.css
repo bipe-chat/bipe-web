@@ -393,6 +393,15 @@ a.card.repo svg { color: var(--acai); flex: none; }
 .feed-domain { font-size: 0.8125rem; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; white-space: nowrap; }
 .feed-empty { margin: 40px 0 0; color: var(--muted); }
 .feed-more { margin: 24px 0 0; }
+.feed-report { margin: 16px 0 0; color: var(--muted); font-size: 0.9375rem; }
+.feed-report summary { cursor: pointer; width: fit-content; }
+.feed-report summary:hover { color: var(--acai); }
+.feed-report form { margin-top: 12px; background: var(--surface); border-radius: var(--radius); padding: 18px 22px; color: var(--text); }
+.feed-report fieldset { border: 0; padding: 0; margin: 0 0 12px; }
+.feed-report legend { font-weight: 600; margin-bottom: 8px; }
+.feed-report label { display: flex; gap: 8px; align-items: center; padding: 6px 0; }
+.feed-report form p { margin: 0 0 12px; color: var(--muted); font-size: 0.875rem; }
+.feed-report-done { margin: 16px 0 0; color: var(--muted); }
 .not-found-head { font-size: 1.125rem; margin: 36px 0 8px; }
 .not-found-list { padding-left: 22px; }
 .not-found-list li { margin-bottom: 8px; overflow-wrap: anywhere; }
