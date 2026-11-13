@@ -8,10 +8,14 @@ import privacidade from "../legal/privacidade.md?raw";
 import termos from "../legal/termos.md?raw";
 import privacy from "../legal/privacy.md?raw";
 import terms from "../legal/terms.md?raw";
+import feeds from "../legal/feeds.md?raw";
+import feedRules from "../legal/feed-rules.md?raw";
 
-export const legal: Record<"privacy" | "terms", Record<Lang, string>> = {
+export const legal: Record<"privacy" | "terms" | "feedRules", Record<Lang, string>> = {
   privacy: { pt: privacidade, en: privacy },
   terms: { pt: termos, en: terms },
+  // What Bipe takes down from public feeds (bipe#1180, published by MZ on 13 November 2026).
+  feedRules: { pt: feeds, en: feedRules },
 };
 
 /** First "# " line of a legal file. */
