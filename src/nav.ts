@@ -37,6 +37,7 @@ export function links(lang: Lang) {
     privacy: { href: paths.privacy(lang), label: c.privacy },
     lgpd: { href: paths.lgpd(lang), label: dataRegister[lang].nav },
     terms: { href: paths.terms(lang), label: c.terms },
+    feedRules: { href: paths.feedRules(lang), label: c.feedRules },
     accessibility: { href: paths.accessibility(lang), label: accessibilityRegister[lang].nav },
     source: { href: distribution.source.org, label: c.source },
     versions: { href: paths.versions(lang), label: c.versions.title },
@@ -59,7 +60,7 @@ export const footer = [
   { group: "for", links: ["audiences", "business", "pricing"] }, // Is it for me?
   { group: "learn", links: ["scams", "technology", "docs", "llms", "compare", "source", "versions"] }, // How does it work, can I check it?
   { group: "bipe", links: ["about", "brand", "organisations", "accessibility", "contact"] }, // Who is behind it?
-  { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms"] }, // What happens to my data?
+  { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms", "feedRules"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];
 
 /** The footer groups with their headings and links, ready to render. The source link shows only when a repo is public. */

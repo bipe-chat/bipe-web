@@ -139,7 +139,7 @@ export const routes: Route[] = (["pt", "en"] as Lang[]).flatMap((lang): Route[] 
     jsonLd: (abs) => scamsJsonLd(lang, t, abs),
     body: () => <ScamTypePage lang={lang} t={t} />,
   })),
-  ...(["privacy", "terms"] as const).map((doc): Route => ({
+  ...(["privacy", "terms", "feedRules"] as const).map((doc): Route => ({
     path: paths[doc](lang), alt: paths[doc](other(lang)), lang,
     title: `${legalTitle(legal[doc][lang])} · Bipe`, description: legal[doc][lang].split("\n\n")[1],
     markdown: legal[doc][lang],
