@@ -216,6 +216,9 @@ export const chrome = {
       oneUse: "Ele vale só no Bipe.",
       copiesLink: "O botão copia o link do grupo. No app, toque em \"Colar\" para entrar com ele.",
       existingOnly: "Este link é para quem já tem o Bipe. Para criar sua conta, você precisa de um convite.",
+      haveApp: "Se você já tem o Bipe, toque no botão para abrir o grupo no app.",
+      openApp: "Abrir no Bipe",
+      askNew: "Peça um link novo para quem te mandou.",
     },
     // Pack links from the app (bipe ADR 0205): /s/<room ID>.
     stickerPack: {

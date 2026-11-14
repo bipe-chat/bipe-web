@@ -638,7 +638,7 @@ export const scenes = {
   },
   guardioes: { kind: "guardians", guardians: ["joana", "rafa"], guarding: ["joana"] },
   trava: { kind: "appLock" },
-  "sua-conta": { kind: "settings", group: "account", sections: ["waysBack", "pin", "devices", "leave"], on: ["appLock", "biometricUnlock"] },
+  "sua-conta": { kind: "settings", group: "account", sections: ["waysBack", "pin", "leave"], on: ["appLock", "biometricUnlock"] },
   "seus-dados": { kind: "settings", group: "privacy", sections: ["data"] },
   "duas-contas": { kind: "accounts", ids: ["gabi", "gabidesign"] },
   "quem-atende": { kind: "team", attendants: ["gabi"] },

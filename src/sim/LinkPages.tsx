@@ -255,6 +255,18 @@ function readGroupPreview(p: Record<string, unknown>): GroupPreview | null {
 /** Day and month in words, Brasília time, as the link preview shows it (bipe-api inviteExpiryLabel). */
 const inviteExpiryLabel = (d: Date) => new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long", timeZone: "America/Sao_Paulo" }).format(d);
 
+/**
+ * "Abrir no Bipe" for a group link (bipe ADR 0184). The app links do not open from a tap inside WhatsApp's browser or
+ * from a page on the same host. iOS: a tap to www.bipe.chat (another host, listed in the app's associated domains)
+ * opens the app; without the app, www redirects back here. Android: an intent: URL with no package, so the tester build
+ * (chat.bipe.app.next) opens too; without the app, Chrome comes back to this page.
+ */
+function openAppUrl(platform: Platform, code: string): string | null {
+  if (platform === "ios") return `https://www.bipe.chat/g/${code}`;
+  if (platform === "android") return `intent://bipe.chat/g/${code}#Intent;scheme=https;S.browser_fallback_url=${encodeURIComponent(location.href)};end`;
+  return null;
+}
+
 /** /convite/<code>, and /g/<code> with group: the same steps, with the group's name and count on top. */
 export function InviteLanding({ group = false }: { group?: boolean }) {
   const c = chrome.pt.invite;
@@ -286,13 +298,14 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
       .catch(() => {});
   }, [group]);
 
+  const existingOnly = group && groupInfo !== null && !groupInfo.signsUp;
   const title = group ? (groupInfo?.name ? t("pt", "bipe_group_link_preview_title", groupInfo.name) : g.title) : inviter ? c.titleFrom(inviter) : c.title;
   if (valid === false) {
     return (
       <section className="wrap narrow section">
         <h1>{group ? g.title : c.title}</h1>
         <p className="lede">{group ? t("pt", "bipe_group_link_open_invalid") : c.invalid}</p>
-        {!group && <p>{c.askNew}</p>}
+        <p>{group ? g.askNew : c.askNew}</p>
       </section>
     );
   }
@@ -303,7 +316,17 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
       {expiresAt && <p><strong>{t("pt", "bipe_invite_link_expires", inviteExpiryLabel(expiresAt))}</strong></p>}
       {groupInfo?.inviter && <p>{t("pt", "bipe_group_link_open_invited_by", groupInfo.inviter)}</p>}
       {groupInfo && <p>{t("pt", "bipe_app_room_link_members", String(groupInfo.members))}</p>}
-      <p className="lede">{groupInfo && !groupInfo.signsUp ? g.existingOnly : c.lead}</p>
+      <p className="lede">{existingOnly ? g.existingOnly : c.lead}</p>
+      {group && code && openAppUrl(platform, code) && (
+        <div className="link-card">
+          <div>
+            <p>{g.haveApp}</p>
+            <div className="actions"><a className="button primary" href={openAppUrl(platform, code)!}>{g.openApp}</a></div>
+          </div>
+        </div>
+      )}
+      {/* A link that signs nobody up: the install steps would end in a refused sign-up, so the page shows only the app button. */}
+      {!existingOnly && <>
       {platform === "ios" && (
         <ol className="steps">
           <li>{c.iosSteps[0]}<div style={{ marginTop: 10 }}><InstallButton inviteCode={code ?? undefined} path={path} /></div>{code && <p className="small muted">{group ? g.copiesLink : c.copiesLink}</p>}</li>
@@ -330,6 +353,7 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
         </div>
         {platform === "other" && code && <LinkQr url={`${location.origin}/${path}/${code}`} />}
       </div>
+      </>}
     </section>
   );
 }
