@@ -6,6 +6,7 @@ import familyTerms from "@shared/registries/family-terms.json";
 import handles from "@shared/registries/handles.json";
 import homoglyphs from "@shared/registries/homoglyphs.json";
 import inviteCodes from "@shared/registries/invite-codes.json";
+import groupLimitsJson from "@shared/registries/group-limits.json";
 import profilesJson from "@shared/registries/profiles.json";
 import accountsJson from "@shared/registries/accounts.json";
 import brandMarksJson from "@shared/registries/brand-marks.json";
@@ -96,6 +97,9 @@ export const reg = {
   strings: stringsPt,
   stringsEn,
 } as unknown as Registries;
+
+/** The size cap of a group (bipe ADR 0253, registries/group-limits.json). */
+export const groupMaxMembers: number = groupLimitsJson.maxMembers;
 
 /** Brand marks for resellers (bipe ADR 0162): life of an unused invite. */
 export const brandMarkRules = brandMarksJson as { inviteDays: number };
