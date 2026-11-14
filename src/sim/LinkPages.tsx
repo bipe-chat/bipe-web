@@ -11,7 +11,7 @@ import { CompanySeal, PersonSeal } from "../components/brand";
 import { QuoteLanding } from "./QuoteLanding";
 import { ShopWeb } from "./ShopWeb";
 import { formatCnpj, verifyCompanyBadge, verifyPersonBadge, type CompanyBadge } from "../badge";
-import { brandMarkRules, distribution, extractInviteCodeRef, normalize, personProofs, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
+import { brandMarkRules, distribution, extractInviteCodeRef, groupMaxMembers, normalize, personProofs, reg, socialUrl, stickerPackLinkBase, t, type Lang } from "../shared";
 import { paths } from "../paths";
 
 /** Same rule as the apps and the API: bipe-shared/registries/invite-codes.json. */
@@ -240,7 +240,7 @@ export function ProfileLanding(_: Record<string, never>) {
 }
 
 /** The preview of a group link (bipe ADR 0184): GET /v1/group-links/{code}. Never member names. */
-type GroupPreview = { name?: string; members: number; inviter?: string; signsUp: boolean };
+type GroupPreview = { name?: string; members: number; inviter?: string; signsUp: boolean; full: boolean };
 
 function readGroupPreview(p: Record<string, unknown>): GroupPreview | null {
   if (p.valid !== true || typeof p.members !== "number") return null;
@@ -249,6 +249,7 @@ function readGroupPreview(p: Record<string, unknown>): GroupPreview | null {
     members: p.members,
     inviter: typeof p.inviter_name === "string" ? p.inviter_name : undefined,
     signsUp: p.signs_up === true,
+    full: p.full === true,
   };
 }
 
@@ -299,6 +300,7 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
   }, [group]);
 
   const existingOnly = group && groupInfo !== null && !groupInfo.signsUp;
+  const full = group && groupInfo?.full === true;
   const title = group ? (groupInfo?.name ? t("pt", "bipe_group_link_preview_title", groupInfo.name) : g.title) : inviter ? c.titleFrom(inviter) : c.title;
   if (valid === false) {
     return (
@@ -316,6 +318,9 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
       {expiresAt && <p><strong>{t("pt", "bipe_invite_link_expires", inviteExpiryLabel(expiresAt))}</strong></p>}
       {groupInfo?.inviter && <p>{t("pt", "bipe_group_link_open_invited_by", groupInfo.inviter)}</p>}
       {groupInfo && <p>{t("pt", "bipe_app_room_link_members", String(groupInfo.members))}</p>}
+      {/* A full group (ADR 0253): nobody new can join, so the page shows no app button and no install steps. */}
+      {full && <p className="lede">{t("pt", "bipe_group_link_full", String(groupMaxMembers))}</p>}
+      {!full && <>
       <p className="lede">{existingOnly ? g.existingOnly : c.lead}</p>
       {group && code && openAppUrl(platform, code) && (
         <div className="link-card">
@@ -353,6 +358,7 @@ export function InviteLanding({ group = false }: { group?: boolean }) {
         </div>
         {platform === "other" && code && <LinkQr url={`${location.origin}/${path}/${code}`} />}
       </div>
+      </>}
       </>}
     </section>
   );
