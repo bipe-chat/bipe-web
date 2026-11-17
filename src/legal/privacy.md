@@ -1,5 +1,5 @@
 # Privacy policy
-_Bipe, test version. Updated 9 November 2026._
+_Bipe, test version. Updated 17 November 2026._
 
 Bipe is a Brazilian messaging app, still in testing. This page tells you plainly what data we keep, where it lives and why. The Portuguese version is the reference text.
 
@@ -14,7 +14,7 @@ During testing, Bipe is run by Envisioning. Questions or requests about your dat
 - **Your messages:** private conversations are end-to-end encrypted. The server stores them scrambled and can't read them. In rooms without encryption, the server stores the text. Who can read what, in plain words: [Who can read your chats](/en/who-can-read/).
 - **Connection data:** each time you connect, we log the IP address, source port, date and time. These logs stay for 6 months, encrypted after the first hour, as Brazil's Marco Civil da Internet (article 15) asks, and then we delete them. The server also keeps, per account and device, the IP addresses used and the last time of each, for up to 6 months. The last access of each device stays while the device is connected.
 - **Photos and files:** what you send stays on the server so the people you send it to can download it.
-- **Phone number and contact lookup:** sign-up does not ask for your number. If you let the app read your contacts, it sends the address-book numbers to the Bipe server over an encrypted connection. Names stay on the phone. The server compares the numbers with the numbers linked to accounts and does not keep the list. Linking a number to your account is optional: today only the Bipe team does it, when you ask. Being found by your number starts off, and only you turn it on. A number nobody confirmed for 12 months leaves the lookup and is deleted 30 days later.
+- **Phone number and contact lookup:** sign-up does not ask for your number. Linking a number to your account is optional: today only the Bipe team does it, when you ask. With a linked number, the server stores the number encrypted, plus a code made from it for the contact lookup. Only you see the number in the app. Being found by your number starts off, and only you turn it on. If another account proves it owns the same number, the server keeps both accounts, the dates and the encrypted number, waits 7 days and tells you, and you can block the move. If you let the app read your contacts, it sends the address-book numbers to the Bipe server over an encrypted connection. Names stay on the phone. The server compares the numbers with the numbers linked to accounts and does not keep the list. The number stays until you unlink it or delete the account. A number nobody confirmed for 12 months leaves the lookup and is deleted 30 days later.
 - **Verification:** if you verify your identity with gov.br, the server keeps the verified name and a protected version of the CPF. The signed document is not stored. If a work account asks for the company seal, the server keeps the CNPJ, the proof and the company's public data at Receita Federal and the CVM.
 - **Calls:** to carry audio and video, Bipe's call server sees your IP, your account, the chat and when you join and leave. The call content is end-to-end encrypted.
 - **Reports:** when you report a message, the team gets the message you chose to send, the chat and the reason.
@@ -31,7 +31,7 @@ During testing, Bipe is run by Envisioning. Questions or requests about your dat
 - No third-party analytics or crash reporting. The app sends no usage statistics.
 - On the site, we count visits with Umami, a statistics program that runs on Bipe's own server in Brazil. It uses no cookies, keeps no IP address and does not know who you are. It keeps only the page, the site you came from, the device and browser type, the language and the approximate city, for 13 months. Invite codes and usernames are removed from the address before it reaches the server. If your browser asks not to be tracked, nothing is counted.
 - On the site we also test which home page title works best: your browser keeps which version you saw, and the server only adds up visits and clicks per version, without knowing who visited.
-- We don't ask for your phone number to create the account.
+- We don't show your phone number to other people in the app.
 
 ## Where your data lives
 In Brazil. The servers are in São Paulo, with a Brazilian cloud company, and the encrypted backups are in Brazil too. Bipe doesn't exchange messages with other servers: federation is off. What leaves Brazil:
