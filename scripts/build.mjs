@@ -38,7 +38,7 @@ const manifest = JSON.parse(readFileSync(join(dist, ".vite/manifest.json"), "utf
 const entry = manifest["src/islands.tsx"];
 const css = (entry.css ?? []).map((f) => `<link rel="stylesheet" href="/${f}">`).join("\n");
 const js = `<script type="module" src="/${entry.file}"></script>`;
-const fonts = Object.values(manifest).flatMap((m) => m.assets ?? []).filter((f) => /nunito.*latin-wght.*\.woff2$/.test(f) && !/ext/.test(f));
+const fonts = Object.values(manifest).flatMap((m) => m.assets ?? []).filter((f) => /allo-(round|text).*\.woff2$/.test(f));
 const preload = fonts.map((f) => `<link rel="preload" href="/${f}" as="font" type="font/woff2" crossorigin>`).join("\n");
 
 const ssr = await import(pathToFileURL(join(ssrOut, "entry-server.js")).href);

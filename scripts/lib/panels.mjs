@@ -12,7 +12,7 @@
 // The Instagram sets are posts, not store panels (MZ, 2 November 2026: "not very post-like"). They
 // follow social/guide.md: left-aligned type, the Bipe mark and bipe.chat in a footer, and one of the
 // layouts in POST_LAYOUTS, picked per row with the `layout` column.
-import { SUB_FONT, h } from "../og.mjs";
+import { SUB_FONT, TITLE_FAMILY, WORDMARK_FAMILY, h } from "../og.mjs";
 import { squirclePath } from "./squircle.mjs";
 
 const WHITE = "#FFFFFF";
@@ -88,7 +88,7 @@ const abs = (style, ...children) => h("div", { style: { position: "absolute", di
 function brandRow(markPath, size, color = WHITE) {
   return h("div", { style: { display: "flex", alignItems: "center", gap: size * 0.3 } },
     h("svg", { width: size, height: size, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: color })),
-    h("div", { style: { display: "flex", fontSize: size * 0.95, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
+    h("div", { style: { display: "flex", fontFamily: WORDMARK_FAMILY, fontSize: size * 0.95, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
   );
 }
 
@@ -214,7 +214,7 @@ function capturePanel({ panel, width, height, kind, captures, tone: t }) {
   const rim = L.rim * s;
   const frameW = frameWidth(L, s, capture, height);
   const screenW = frameW - 2 * (bezel + rim);
-  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
+  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: TITLE_FAMILY } },
     ...phone({ capture, left: (width - frameW) / 2, top: L.frameTop * s, screenW, bezel, rim, s, buttons: L.buttons, bar: L.bar }),
     abs({ left: (width - L.copy * s) / 2, top: L.top * s, width: L.copy * s, justifyContent: "center" }, copyBlock({ panel, L, s, t })),
   );
@@ -262,7 +262,7 @@ function postPanel({ panel, dev, captures, tone: t, markPath }) {
   const P = POST[dev.kind];
   const s = width / 1320;
   const layout = layoutOf(panel);
-  const root = (...children) => h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } }, ...children);
+  const root = (...children) => h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: TITLE_FAMILY } }, ...children);
   const copyW = (1320 - 2 * P.pad) * s;
   const footer = postFooter({ P, s, t, markPath, height });
   // The type and bubble layouts centre their block between the top margin and the footer.
@@ -296,7 +296,7 @@ function featureGraphic({ panel, subtitle, width, height, captures, tone: t, mar
     card = abs({ left: width - cardW - 56, top: (height - cardH) / 2, width: cardW, height: cardH, overflow: "hidden", borderRadius: 16, border: `3px solid ${WHITE}`, boxShadow: "0 15px 35px rgba(0,0,0,0.4)", backgroundColor: WHITE },
       h("img", { src: capture.dataUrl, width: imgW, height: imgH, style: { position: "absolute", left: -rx * imgW, top: -ry * imgH } }));
   }
-  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
+  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: TITLE_FAMILY } },
     abs({ left: 64, top: 0, width: 470, height, flexDirection: "column", justifyContent: "center", gap: 28 },
       brandRow(markPath, 96),
       h("div", { style: { display: "block", fontSize: 46, fontWeight: 800, letterSpacing: "-0.01em", lineHeight: 1.12 } }, subtitle),
@@ -323,7 +323,7 @@ function headerArt({ panels, width, height, captures, tone: t }) {
     const s = screenW / 950;
     return phone({ capture, left: width / 2 + dx - screenW / 2 - 24 * s, top: (height - HEADER.screenH) / 2 + dy, screenW, bezel: 16 * s, rim: 8 * s, s });
   };
-  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: "Nunito" } },
+  return h("div", { style: { width, height, display: "flex", position: "relative", overflow: "hidden", color: t.ink, fontFamily: TITLE_FAMILY } },
     ...at(left, HEADER.sideScale, -HEADER.sideOffset, HEADER.sideDrop),
     ...at(right, HEADER.sideScale, HEADER.sideOffset, HEADER.sideDrop),
     ...at(mid, 1, 0, 0),
