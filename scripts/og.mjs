@@ -51,6 +51,22 @@ function titleSize(text) {
 /** A block of text clamped to N lines with an ellipsis. */
 const clamp = (lines, style, text) => h("div", { style: { display: "block", lineClamp: lines, overflow: "hidden", textOverflow: "ellipsis", ...style } }, text);
 
+/**
+ * The card line ends on a whole sentence, never on an ellipsis (MZ, 17 November 2026). Keeps the
+ * sentences that fit the line budget; a first sentence that is too long still falls back to the clamp.
+ * Budget: Allo Text 500 at 34 px sets about 0.06 characters per pixel of width (kept low for safety).
+ */
+export function wholeSentences(text, lines, width) {
+  const budget = Math.floor(lines * width * 0.06);
+  const sentences = text.split(/(?<=[.!?])\s+/);
+  let out = sentences[0];
+  for (const next of sentences.slice(1)) {
+    if (`${out} ${next}`.length > budget) break;
+    out = `${out} ${next}`;
+  }
+  return out;
+}
+
 function card({ markPath, title, description, illustration, ink }) {
   const { width, height } = OG_SIZE;
   return h("div", {
@@ -65,7 +81,7 @@ function card({ markPath, title, description, illustration, ink }) {
     h("div", { style: { display: "flex", flexDirection: "column", gap: 22, width: illustration ? 560 : 880 } },
       // The clamp hides overflow, so the line box must hold the descenders of the last line.
       clamp(3, { fontSize: titleSize(title), fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.08, paddingBottom: "0.08em" }, title),
-      description ? clamp(title.length > 30 ? 1 : 2, { ...SUB_FONT, fontSize: 34, lineHeight: 1.3, color: ink.sub }, description) : null,
+      description ? clamp(title.length > 30 ? 1 : 2, { ...SUB_FONT, fontSize: 34, lineHeight: 1.3, color: ink.sub }, wholeSentences(description, title.length > 30 ? 1 : 2, illustration ? 560 : 880)) : null,
     ),
     // Footer: the address only. No upper-case section label (MZ: no eyebrows).
     h("div", { style: { display: "flex", justifyContent: "flex-end", alignItems: "center", borderTop: `2px solid ${ink.rule}`, paddingTop: 22, fontSize: 26, fontWeight: 800, width: illustration ? 560 : "100%" } },
