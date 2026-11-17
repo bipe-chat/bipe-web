@@ -1,5 +1,5 @@
 # Política de privacidade
-_Bipe, versão de testes. Atualizada em 9 de novembro de 2026._
+_Bipe, versão de testes. Atualizada em 17 de novembro de 2026._
 
 O Bipe é um app de mensagens brasileiro e ainda está em fase de testes. Aqui você vê, sem rodeio, quais dados a gente guarda, onde eles ficam e por quê.
 
@@ -14,7 +14,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - **Suas mensagens:** conversas privadas são criptografadas de ponta a ponta. O servidor guarda tudo embaralhado e não consegue ler. Em salas sem criptografia, o servidor guarda o texto. Quem pode ler o quê, em linguagem simples: [Quem pode ler suas conversas](/quem-pode-ler/).
 - **Dados de conexão:** a cada acesso, registramos o endereço IP, a porta de origem, a data e a hora. Esses registros ficam 6 meses, criptografados depois da primeira hora, como pede o Marco Civil da Internet (artigo 15), e depois são apagados. O servidor também guarda, por conta e aparelho, os IPs usados e a última vez de cada um, por até 6 meses. O último acesso de cada aparelho fica enquanto ele estiver conectado.
 - **Fotos e arquivos:** o que você envia fica no servidor para quem recebe conseguir baixar.
-- **Número de telefone e busca de contatos:** o cadastro não pede seu número. Se você deixar o app ler seus contatos, ele manda os números da agenda para o servidor do Bipe, por conexão cifrada. Os nomes ficam no celular. O servidor compara os números com os números ligados a contas e não guarda a lista. Ligar um número à sua conta é opcional: hoje só a equipe do Bipe faz isso, a seu pedido. Ser achado pelo número vem desligado, e só você liga. Um número que ninguém confirmou por 12 meses sai da busca e é apagado 30 dias depois.
+- **Número de telefone e busca de contatos:** o cadastro não pede seu número. Ligar um número à sua conta é opcional: hoje só a equipe do Bipe faz isso, a seu pedido. Com um número ligado, o servidor guarda o número cifrado e um código feito a partir dele para a busca de contatos. Só você vê o número no app. Ser achado pelo número vem desligado, e só você liga. Se outra conta provar que é dona do mesmo número, o servidor guarda as duas contas, as datas e o número cifrado, espera 7 dias e te avisa, e você pode bloquear a troca. Se você deixar o app ler seus contatos, ele manda os números da agenda para o servidor do Bipe, por conexão cifrada. Os nomes ficam no celular. O servidor compara os números com os números ligados a contas e não guarda a lista. O número fica guardado até você desligar o número ou apagar a conta. Um número que ninguém confirmou por 12 meses sai da busca e é apagado 30 dias depois.
 - **Verificação:** se você verifica sua identidade pelo gov.br, o servidor guarda o nome verificado e uma versão protegida do CPF. O documento assinado não fica guardado. Se uma conta de trabalho pede o selo de empresa, o servidor guarda o CNPJ, a prova e os dados públicos da empresa na Receita Federal e na CVM.
 - **Chamadas:** para levar o áudio e o vídeo, o servidor de chamadas do Bipe vê seu IP, sua conta, a conversa e quando você entra e sai. O conteúdo da chamada é criptografado de ponta a ponta.
 - **Denúncias:** quando você denuncia uma mensagem, a equipe recebe a mensagem que você escolheu mandar, a conversa e o motivo.
@@ -31,7 +31,7 @@ Durante os testes, o Bipe é tocado pela Envisioning. Dúvidas ou pedidos sobre 
 - Não usa ferramenta de análise ou de relatório de erros de terceiros. O app não manda estatística de uso.
 - No site, a gente conta as visitas com o Umami, um programa de estatística que roda no servidor do Bipe, no Brasil. Ele não usa cookie, não guarda seu IP e não sabe quem você é. Guarda só a página, o site de onde você veio, o tipo de aparelho e de navegador, o idioma e a cidade aproximada, por 13 meses. Códigos de convite e nomes de usuário saem do endereço antes de chegar ao servidor. Se o seu navegador pede para não ser rastreado, nada é contado.
 - No site, a gente também testa qual título da página inicial funciona melhor: o navegador guarda qual versão você viu, e o servidor só soma quantas visitas e cliques cada versão teve, sem saber quem visitou.
-- Não pede seu número de telefone para criar a conta.
+- Não mostra seu número de telefone para outras pessoas no app.
 
 ## Onde seus dados ficam
 No Brasil. Os servidores ficam em São Paulo, numa empresa brasileira de nuvem, e as cópias de segurança cifradas também ficam no Brasil. O Bipe não troca mensagens com outros servidores: a federação está desligada. O que sai do Brasil:
