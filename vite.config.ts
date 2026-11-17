@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
 import { generateColors } from "../bipe-shared/tools/lib/gen-tokens.mjs";
 import { loadRegistries } from "../bipe-shared/tools/lib/registries.mjs";
+import { writeWebFonts } from "./scripts/fonts.mjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const shared = join(root, "../bipe-shared");
@@ -14,6 +15,9 @@ const shared = join(root, "../bipe-shared");
 const colors = join(root, ".generated/colors.css");
 mkdirSync(dirname(colors), { recursive: true });
 writeFileSync(colors, generateColors("css"));
+
+// Allo web faces (bipe ADR 0295), cut from the allo-font package into .generated/fonts/ on every run.
+const alloCss = await writeWebFonts();
 
 // Fail the build when a registry is invalid, the same check the app generators run.
 function validateRegistries(): Plugin {
@@ -26,6 +30,7 @@ export default defineConfig({
     alias: {
       "@shared": shared,
       "@colors": colors,
+      "@allo": alloCss,
       "@changelog": join(root, ".generated/changelog.json"),
       // registries.mjs reads files with node:fs in loadRegistries(). The site never calls it in the
       // browser; it passes the JSON in. These stubs keep the reference logic importable as-is.

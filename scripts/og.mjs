@@ -2,14 +2,15 @@
 // title and description, and a footer rule with the page's section and the address. Satori lays the
 // card out and turns the text into paths; resvg rasterises it. No system tool is involved, so the
 // card is the same on every machine that builds the site.
-// Style: docs/design/identity.md in the umbrella repo. Brand plum acai.1100, Nunito for the brand,
-// Inter for the subtitle under a headline, as on the website.
+// Style: docs/design/identity.md in the umbrella repo. Brand plum acai.1100, Allo for all text as on
+// the website (ADR 0295): Allo Round for titles, Allo Text for the subtitle. Nunito only for the wordmark.
 import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 import { encodeJpeg } from "./lib/raster.mjs";
 import satori from "satori";
+import { ROND, staticFont } from "./fonts.mjs";
 import { BRAND, RAMPS, backdropSvg, compose, tone as makeTone } from "./lib/backdrop.mjs";
 import { brazilNetworkSvg } from "./lib/brazil-network.mjs";
 
@@ -23,9 +24,19 @@ const fontFiles = (family, weights) => {
   const dir = join(dirname(require.resolve(`@fontsource/${family.toLowerCase()}/package.json`)), "files");
   return weights.map((weight) => ({ name: family, data: readFileSync(join(dir, `${family.toLowerCase()}-latin-${weight}-normal.woff`)), weight, style: "normal" }));
 };
-export const fonts = [...fontFiles("Nunito", [600, 800, 900]), ...fontFiles("Inter", [500])];
-/** The subtitle under a headline on every rendered image: Inter, like the website body. Titles stay Nunito (identity.md). */
-export const SUB_FONT = { fontFamily: "Inter", fontWeight: 500 };
+const alloFonts = async (name, rond, weights) => Promise.all(weights.map(async (weight) => ({ name, data: await staticFont(weight, rond), weight, style: "normal" })));
+/** Satori fonts: Allo Round (titles, the default face), Allo Text (subtitles), Nunito (the wordmark only). */
+export const fonts = [
+  ...(await alloFonts("Allo Round", ROND.title, [600, 700, 800, 900])),
+  ...(await alloFonts("Allo Text", ROND.body, [500])),
+  ...fontFiles("Nunito", [800, 900]),
+];
+/** The title face of every rendered image. Set it on the root element. */
+export const TITLE_FAMILY = "Allo Round";
+/** The wordmark face: set it on every "bipe" wordmark element. */
+export const WORDMARK_FAMILY = "Nunito";
+/** The subtitle under a headline on every rendered image: Allo Text, like the website body (identity.md). */
+export const SUB_FONT = { fontFamily: "Allo Text", fontWeight: 500 };
 
 /** Minimal element factory: Satori takes React-shaped objects. */
 const h = (type, props, ...children) => ({ type, props: { ...props, children: children.length > 1 ? children : children[0] } });
@@ -44,11 +55,11 @@ function card({ markPath, title, description, illustration, ink }) {
   const { width, height } = OG_SIZE;
   return h("div", {
     // No background: compose() puts the brand backdrop (scripts/lib/backdrop.mjs) under the card.
-    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: PAD, color: ink.ink, fontFamily: "Nunito", position: "relative" },
+    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: PAD, color: ink.ink, fontFamily: TITLE_FAMILY, position: "relative" },
   },
     h("div", { style: { display: "flex", alignItems: "center", gap: 18 } },
       h("svg", { width: 64, height: 64, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: ink.ink })),
-      h("div", { style: { display: "flex", fontSize: 58, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
+      h("div", { style: { display: "flex", fontFamily: WORDMARK_FAMILY, fontSize: 58, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
     ),
     // With an illustration (the Brazil network on the right half) the text keeps to the left half.
     h("div", { style: { display: "flex", flexDirection: "column", gap: 22, width: illustration ? 560 : 880 } },
@@ -74,11 +85,11 @@ function ticketCard({ markPath, title, ink }) {
   const { width, height } = OG_SIZE;
   const acai = RAMPS.acai;
   return h("div", {
-    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center", padding: "56px 72px", color: ink.ink, fontFamily: "Nunito" },
+    style: { width, height, boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center", padding: "56px 72px", color: ink.ink, fontFamily: TITLE_FAMILY },
   },
     h("div", { style: { display: "flex", alignItems: "center", gap: 14 } },
       h("svg", { width: 44, height: 44, viewBox: "0 0 64 64" }, h("path", { d: markPath, fill: ink.ink })),
-      h("div", { style: { display: "flex", fontSize: 40, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
+      h("div", { style: { display: "flex", fontFamily: WORDMARK_FAMILY, fontSize: 40, fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1 } }, "bipe"),
     ),
     h("div", { style: { display: "flex", width: 960, height: 340, background: WHITE, borderRadius: 36, transform: "rotate(-2deg)" } },
       h("div", { style: { display: "flex", flexDirection: "column", justifyContent: "center", flex: 1, padding: "0 56px" } },

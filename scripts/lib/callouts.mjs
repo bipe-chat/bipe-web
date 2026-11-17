@@ -16,7 +16,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
-import { fonts, h } from "../og.mjs";
+import { TITLE_FAMILY, fonts, h } from "../og.mjs";
 import { RAMPS, UI } from "./backdrop.mjs";
 import { layoutOf, postArtBox, screenBox, shotOf } from "./panels.mjs";
 import { encodeRgbaPng } from "./raster.mjs";
@@ -238,7 +238,7 @@ const BUTTON = 9;
 async function cardText({ spec, ctx, s, box, anchor, entry, index }) {
   const style = cardStyle(spec.kind, ctx.accent);
   // Satori adds padding to a fixed width, so the content gets a fixed inner width instead.
-  const node = h("div", { style: { width: box.w, height: box.hh, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Nunito", color: style.ink } },
+  const node = h("div", { style: { width: box.w, height: box.hh, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: TITLE_FAMILY, color: style.ink } },
     h("div", { style: { width: box.w - 128 * s, display: "flex" } }, CONTENT[spec.kind]({ spec, ctx, s, anchor, entry })));
   // Each Satori render numbers its ids from zero; a prefix keeps them apart from the panel's ids.
   return (await satori(node, { width: box.w, height: box.hh, fonts })).replace(/satori_/g, `callout${index}_`);

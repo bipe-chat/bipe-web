@@ -1,8 +1,9 @@
 /* Colours come only from bipe-shared design/tokens.json (light, dark and high contrast follow the system).
-   Titles use Nunito (rounded). Body text, nav and footer use Inter. In-app minis (phone screens, business minis) use the system font, like the apps (ADR 0020). */
+   Allo for all site text (bipe ADR 0295): Allo Round for titles, Allo Text for body text, nav and footer.
+   Nunito only for the wordmark. In-app minis (phone screens, business minis) use the system font, like the apps. */
 @import "@colors";
 @import "@fontsource-variable/nunito/wght.css";
-@import "@fontsource-variable/inter/wght.css";
+@import "@allo";
 
 :root {
   --bg: var(--bipe-background);
@@ -18,8 +19,9 @@
   --focus: var(--acai);
   --on-acai: var(--bipe-ink-on-accent);
   --ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --brand: "Nunito Variable", var(--ui);
-  --body: "Inter Variable", var(--ui);
+  --brand: "Allo Round", var(--ui);
+  --body: "Allo Text", var(--ui);
+  --wordmark: "Nunito Variable", var(--ui);
   --app: -apple-system, BlinkMacSystemFont, var(--ui);
   --radius: 20px;
   --gutter: 32px; /* one gap for every two-column layout (hero, splits, figure grids, compare, real vs fake) and stacked figures, so column edges line up page-wide. Small card grids keep 16px. */
@@ -45,7 +47,7 @@ img, svg { display: block; }
 /* Chrome */
 .site-head { border-bottom: 1px solid var(--line); }
 .site-head .wrap { display: flex; align-items: center; gap: 16px; min-height: 64px; flex-wrap: wrap; }
-.wordmark { display: inline-flex; align-items: center; gap: .3em; font-family: var(--brand); font-weight: 900; color: var(--acai); letter-spacing: -.02em; text-decoration: none; line-height: 1; }
+.wordmark { display: inline-flex; align-items: center; gap: .3em; font-family: var(--wordmark); font-weight: 900; color: var(--acai); letter-spacing: -.02em; text-decoration: none; line-height: 1; }
 .wordmark .wm-ch { display: inline-block; transform-origin: 50% 50%; }
 .site-head nav { margin-left: auto; display: flex; gap: 18px; align-items: center; font-size: 0.9375rem; flex-wrap: wrap; }
 .site-head nav a { color: var(--text); text-decoration: none; }
