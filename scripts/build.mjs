@@ -138,7 +138,7 @@ for (const set of ssr.storeSets) {
 // (bipe-infra). One source: pricing in bipe-shared product.json (ADR 0206).
 {
   const pricing = JSON.parse(readFileSync(join(root, "../bipe-shared/product/product.json"), "utf8")).pricing;
-  writeFileSync(join(dist, "precos.json"), JSON.stringify({ proposal: pricing.proposal, presets: pricing.calculatorPresets, copy: pricing.pt.calculator }));
+  writeFileSync(join(dist, "precos.json"), JSON.stringify({ proposal: pricing.proposal, presets: pricing.calculatorPresets, copy: pricing.pt.calculator, govPresets: pricing.govCalculatorPresets, govCopy: pricing.pt.govCalculator }));
 }
 // The changelog JSON next to /versoes/ and /en/versions/: the app's native Histórico de versões screen reads it
 // (bipe-shared registries/settings.json, url versionsData; spec version-history).

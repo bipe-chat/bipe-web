@@ -193,6 +193,17 @@ export type PriceProposal = {
   customers: { free: number; tiers: [number, number][]; capYearly: number };
   agents: { free: number; monthly: number; chargedUpTo: number };
   halfFactor: number; annualMonths: number; table: number[];
+  /** Public-body notices (ADR 0301): people who only get notices, one yearly rate, inside capYearly. Optional until bipe-shared main has it. */
+  notices?: { adr: string; free: number; yearlyPerPerson: number; dispensaLimit: number; dispensaYear: number };
+};
+/** An example public body on the government calculator (#avisos on /precos/). */
+export type GovCalculatorPreset = { id: string; icon: IconName; notices: number; people: number; seats: number };
+export type GovCalculatorCopy = {
+  heading: string; lede: string; presetsLabel: string; presets: Record<string, string>; presetNotes: Record<string, string>;
+  notices: string; noticesHint: string; people: string; peopleHint: string; seats: string; seatsHint: string;
+  resultLabel: string; year: string; monthLine: string;
+  rows: Record<"notices" | "people" | "agents" | "above" | "cap" | "half" | "total" | "free", string>;
+  dispensaBelow: string; dispensaAbove: string; dispensaNote: string; proposal: string; link: string;
 };
 /** company: any company or institution; half: public bodies, NGOs, churches and associations. */
 export type CalculatorOrg = "company" | "half";
@@ -255,6 +266,8 @@ export const product = { ...productData, features: productData.features.map((f) 
     proposal: PriceProposal;
     /** Example organisations above the sliders (bipe#812). */
     calculatorPresets: CalculatorPreset[];
+    /** Example public bodies on the government calculator (ADR 0301). Optional until bipe-shared main has it. */
+    govCalculatorPresets?: GovCalculatorPreset[];
   } & Copy<{
     nav: string; link: string; title: string; lede: string;
     principles: { heading: string; points: string[] }; why: { heading: string; points: string[] };
@@ -262,6 +275,7 @@ export const product = { ...productData, features: productData.features.map((f) 
     tiers: Record<PricingTierId, { name: string; who: string; billing: string; points: string[]; price?: string }>;
     nonprofit: string; tools: { heading: string; body: string }; pilot: { heading: string; points: string[] };
     calculator: CalculatorCopy;
+    govCalculator?: GovCalculatorCopy;
     offers: { heading: string; lede: string; price: string; billing: string; points: string[] };
   }>;
   organisations: Copy<{

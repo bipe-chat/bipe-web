@@ -486,6 +486,8 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .card p.calc-saving { margin: 6px 0 0; font-size: 1.25rem; font-weight: 700; color: var(--text); }
 .card p.calc-saving span { display: block; font-size: 0.875rem; font-weight: 400; color: var(--muted); }
 .card p.calc-proposal { margin: 16px 0 0; }
+.card p.calc-dispensa { display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 4px; font-weight: 600; }
+.calc-dispensa svg { flex: none; margin-top: 2px; }
 .calc-detail { margin-top: 16px; }
 .calc-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; font-variant-numeric: tabular-nums; margin-top: 8px; }
 .calc-table th, .calc-table td { text-align: right; padding: 6px 4px; border-bottom: 1px solid var(--line); }
