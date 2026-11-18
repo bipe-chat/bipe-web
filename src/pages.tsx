@@ -505,6 +505,12 @@ function Levels({ lang }: { lang: Lang }) {
             <ol className="level-steps">{l.signup.steps.map((x) => <li key={x}>{x}</li>)}</ol>
             <p className="small muted" style={{ marginTop: 12 }}>{l.signup.note}</p>
           </div>
+          {l.growth && (
+            <div className="card">
+              <h3 style={{ fontSize: "1.25rem" }}>{l.growth.heading}</h3>
+              <Points items={l.growth.points} />
+            </div>
+          )}
         </div>
       </section>
     </>

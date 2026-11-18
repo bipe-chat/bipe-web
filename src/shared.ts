@@ -205,6 +205,8 @@ export type LevelsCopy = {
   items: Record<LevelId, { name: string; served: string; who: string; threat: string; points: string[] }>;
   usage: { heading: string; lede: string }; early: { heading: string; points: string[] };
   signup: { heading: string; steps: string[]; note: string };
+  /** How the level follows the company (ADR 0303 point 3, ADR 0306). Optional until bipe-shared main has it. */
+  growth?: { heading: string; points: string[] };
 };
 /** An example public body on the government calculator (#avisos on /precos/). */
 export type GovCalculatorPreset = { id: string; icon: IconName; notices: number; people: number; seats: number };
