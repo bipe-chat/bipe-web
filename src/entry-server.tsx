@@ -203,6 +203,7 @@ export function renderMarkdown(route: Route): string {
         out.push(`### ${v.name}`, "", `${v.served}. **${month === 0 ? l.free : `${brl(month)} ${l.perMonth}`}**. ${v.who}`, "", `${l.threatLabel}: ${v.threat}`, "", ...v.points.map((x) => `- ${x}`), "");
       });
       out.push(`## ${l.early.heading}`, "", ...l.early.points.map((x) => `- ${x}`), "", `## ${l.signup.heading}`, "", ...l.signup.steps.map((x, i) => `${i + 1}. ${x}`), "", l.signup.note, "", `## ${l.usage.heading}`, "", l.usage.lede, "");
+      if (l.growth) out.push(`## ${l.growth.heading}`, "", ...l.growth.points.map((x) => `- ${x}`), "");
     } else out.push(`## ${p.tiersHeading}`, "");
     for (const tier of product.pricing.tiers.filter((t) => !(p.levels && floors && t.id === "small"))) {
       const t = p.tiers[tier.id];
