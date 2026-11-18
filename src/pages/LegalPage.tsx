@@ -10,12 +10,16 @@ import privacy from "../legal/privacy.md?raw";
 import terms from "../legal/terms.md?raw";
 import feeds from "../legal/feeds.md?raw";
 import feedRules from "../legal/feed-rules.md?raw";
+import posicoes from "../legal/posicoes.md?raw";
+import positions from "../legal/positions.md?raw";
 
-export const legal: Record<"privacy" | "terms" | "feedRules", Record<Lang, string>> = {
+export const legal: Record<"privacy" | "terms" | "feedRules" | "positions", Record<Lang, string>> = {
   privacy: { pt: privacidade, en: privacy },
   terms: { pt: termos, en: terms },
   // What Bipe takes down from public feeds (bipe#1180, published by MZ on 13 November 2026).
   feedRules: { pt: feeds, en: feedRules },
+  // Public positions on bills and policy (PL 4.675/2025, bipe ADR 0286).
+  positions: { pt: posicoes, en: positions },
 };
 
 /** First "# " line of a legal file. */
