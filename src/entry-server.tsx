@@ -193,8 +193,18 @@ export function renderMarkdown(route: Route): string {
   } else if (route.path === paths.pricing(lang)) {
     const p = product.pricing[lang];
     for (const sec of [p.principles, p.why]) out.push(`## ${sec.heading}`, "", ...sec.points.map((x) => `- ${x}`), "");
-    out.push(`## ${p.tiersHeading}`, "");
-    for (const tier of product.pricing.tiers) {
+    const floors = product.pricing.proposal.floors;
+    if (p.levels && floors) {
+      const l = p.levels;
+      const brl = (n: number) => n.toLocaleString(lang === "pt" ? "pt-BR" : "en-US", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+      out.push(`## ${l.heading}`, "", l.lede, "");
+      Object.values(l.items).forEach((v, i) => {
+        const month = floors.bands[i]?.[1] ?? 0;
+        out.push(`### ${v.name}`, "", `${v.served}. **${month === 0 ? l.free : `${brl(month)} ${l.perMonth}`}**. ${v.who}`, "", `${l.threatLabel}: ${v.threat}`, "", ...v.points.map((x) => `- ${x}`), "");
+      });
+      out.push(`## ${l.early.heading}`, "", ...l.early.points.map((x) => `- ${x}`), "", `## ${l.signup.heading}`, "", ...l.signup.steps.map((x, i) => `${i + 1}. ${x}`), "", l.signup.note, "", `## ${l.usage.heading}`, "", l.usage.lede, "");
+    } else out.push(`## ${p.tiersHeading}`, "");
+    for (const tier of product.pricing.tiers.filter((t) => !(p.levels && floors && t.id === "small"))) {
       const t = p.tiers[tier.id];
       out.push(`### ${t.name}`, "", t.who, "", `**${t.price ?? tierPrice(lang, tier)}**. ${t.billing}`, "", ...t.points.map((x) => `- ${x}`), "");
       out.push(tier.cta === "app" ? `${p.ctaApp}: ${abs(paths.download(lang))}` : `${p.ctaForm}: ${abs(paths.organisations(lang))}#form`, "");
