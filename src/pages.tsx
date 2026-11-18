@@ -16,7 +16,7 @@ import { scenes, SIMS, type SceneId } from "./sim/scenes";
 import { Avatar, cast, label } from "./cast";
 import { WhoCanReadSummary } from "./pages/PrivacyPage";
 import { storeSets } from "./store";
-import { codeLinks, compare, distribution, paletteColours, t, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type Tentpole } from "./shared";
+import { codeLinks, compare, distribution, paletteColours, t, privacyRegister, product, publicRepo, publicRepos, type Audience, type OrganisationAudience, type Status, type CompareApp, type CompareThreat, type Feature, type Lang, type LevelId, type Tentpole } from "./shared";
 
 function Demo({ lang, tp, index, tone }: { lang: Lang; tp: Tentpole; index: number; tone?: string }) {
   const id = tp.demos[index];
@@ -466,6 +466,51 @@ export function tierPrice(lang: Lang, tier: (typeof product.pricing.tiers)[numbe
 }
 
 /** How Bipe charges companies, with no amounts until the pilot ends. Copy and tiers: `pricing` in product.json. */
+/** The six levels by people served (bipe ADR 0303), the early-join terms and the hands-off sign-up (ADR 0304). */
+function Levels({ lang }: { lang: Lang }) {
+  const l = product.pricing[lang].levels!;
+  const bands = product.pricing.proposal.floors!.bands;
+  const ids = Object.keys(l.items) as LevelId[];
+  const brl = (n: number) => n.toLocaleString(lang === "pt" ? "pt-BR" : "en-US", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+  return (
+    <>
+      <section className="wrap section" id="niveis">
+        <h2>{l.heading}</h2>
+        <p className="lede" style={{ maxWidth: "40em" }}>{l.lede}</p>
+        <div className="level-grid">
+          {ids.map((id, i) => {
+            const v = l.items[id];
+            const month = bands[i]?.[1] ?? 0;
+            return (
+              <div className="card level" key={id}>
+                <p className="calc-eyebrow">{v.served}</p>
+                <h3>{v.name}</h3>
+                <p className="tier-price display">{month === 0 ? l.free : <>{brl(month)} <span>{l.perMonth}</span></>}</p>
+                <p className="small muted">{v.who}</p>
+                <p className="level-threat small"><Icon name="warning" size={16} /><span><strong>{l.threatLabel}:</strong> {v.threat}</span></p>
+                <ul className="points">{v.points.map((x) => <li key={x}><Icon name="check" size={16} />{x}</li>)}</ul>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+      <section className="wrap section">
+        <div className="grid">
+          <div className="card">
+            <h3 style={{ fontSize: "1.25rem" }}>{l.early.heading}</h3>
+            <Points items={l.early.points} />
+          </div>
+          <div className="card">
+            <h3 style={{ fontSize: "1.25rem" }}>{l.signup.heading}</h3>
+            <ol className="level-steps">{l.signup.steps.map((x) => <li key={x}>{x}</li>)}</ol>
+            <p className="small muted" style={{ marginTop: 12 }}>{l.signup.note}</p>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 export function PricingPage({ lang }: { lang: Lang }) {
   const p = product.pricing[lang];
   const tools = product.pricing.tools.map((id) => product.features.find((f) => f.id === id)!);
@@ -483,6 +528,7 @@ export function PricingPage({ lang }: { lang: Lang }) {
           </div>
         </div>
       </section>
+      {p.levels && product.pricing.proposal.floors && <Levels lang={lang} />}
       <section className="wrap narrow section">
         <h2>{p.why.heading}</h2>
         <Points items={p.why.points} />
@@ -490,7 +536,7 @@ export function PricingPage({ lang }: { lang: Lang }) {
       <section className="wrap section" id="calculadora">
         <h2>{p.calculator.heading}</h2>
         <p className="muted" style={{ maxWidth: "40em" }}>{p.calculator.lede}</p>
-        <Island name="PriceCalculator" props={{ lang, copy: p.calculator, proposal: product.pricing.proposal, presets: product.pricing.calculatorPresets }} />
+        <Island name="PriceCalculator" props={{ lang, copy: p.calculator, proposal: product.pricing.proposal, presets: product.pricing.calculatorPresets, levels: p.levels ? Object.values(p.levels.items).map((v) => v.name) : undefined }} />
       </section>
       {p.govCalculator && product.pricing.proposal.notices && product.pricing.govCalculatorPresets && (
         <section className="wrap section" id="avisos">
@@ -500,9 +546,10 @@ export function PricingPage({ lang }: { lang: Lang }) {
         </section>
       )}
       <section className="wrap section">
-        <h2 style={{ marginBottom: 24 }}>{p.tiersHeading}</h2>
+        <h2 style={{ marginBottom: p.levels ? 12 : 24 }}>{p.levels ? p.levels.usage.heading : p.tiersHeading}</h2>
+        {p.levels && <p className="muted" style={{ maxWidth: "40em", marginBottom: 24 }}>{p.levels.usage.lede}</p>}
         <div className="tier-grid">
-          {product.pricing.tiers.map((tier) => {
+          {product.pricing.tiers.filter((tier) => !(p.levels && tier.id === "small")).map((tier) => {
             const t = p.tiers[tier.id];
             return (
               <div className="card tier" key={tier.id}>

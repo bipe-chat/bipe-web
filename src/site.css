@@ -486,6 +486,18 @@ button.button { font: inherit; font-weight: 600; cursor: pointer; }
 .card p.calc-saving { margin: 6px 0 0; font-size: 1.25rem; font-weight: 700; color: var(--text); }
 .card p.calc-saving span { display: block; font-size: 0.875rem; font-weight: 400; color: var(--muted); }
 .card p.calc-proposal { margin: 16px 0 0; }
+/* Levels on /precos/ (bipe ADR 0303) */
+.level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; margin-top: 24px; }
+.card.level { display: flex; flex-direction: column; gap: 8px; }
+.card.level h3 { font-size: 1.375rem; margin: 0; }
+.card.level p.tier-price { margin: 4px 0; font-size: 2rem; color: var(--text); font-variant-numeric: tabular-nums; }
+.card.level p.tier-price span { font-size: 1rem; color: var(--muted); }
+.card.level p { margin: 0; }
+.card.level .points { margin-top: 8px; }
+.card.level .points li { font-size: 0.9375rem; }
+.level-threat { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: var(--bipe-trust-caution-wash); }
+.level-threat svg { flex: none; margin-top: 2px; }
+.level-steps { margin: 12px 0 0; padding-left: 1.25em; display: grid; gap: 8px; }
 .card p.calc-dispensa { display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 4px; font-weight: 600; }
 .calc-dispensa svg { flex: none; margin-top: 2px; }
 .calc-detail { margin-top: 16px; }
@@ -889,3 +901,5 @@ a.staff-tile:hover { border-color: var(--acai); }
   .wa-branches { grid-template-columns: 1fr; padding-top: 0; }
   .wa-branches::before, .wa-col::before { display: none; }
 }
+.calc-row.applied { font-weight: 600; }
+.calc-row.muted-row { color: var(--muted); }

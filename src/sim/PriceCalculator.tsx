@@ -20,15 +20,25 @@ export function agentsYearly(seats: number, p: PriceProposal): number {
   return Math.max(0, Math.min(seats, p.agents.chargedUpTo) - p.agents.free) * p.agents.monthly * 12;
 }
 
-/** Bipe's price under ADR 0206: the two meters added up, half for public bodies, NGOs, churches and associations. */
-export function bipePrice(org: CalculatorOrg, seats: number, people: number, p: PriceProposal) {
+/** The monthly floor of a company by people served (ADR 0303): "up to 1.000" is free, so a count on a band edge stays in the lower band. No floor for half-price organisations. */
+export function floorMonthly(org: CalculatorOrg, served: number | undefined, p: PriceProposal): number {
+  if (org !== "company" || served === undefined || !p.floors) return 0;
+  const bands = p.floors.bands;
+  return bands.reduce((m, [from, month], i) => (i === 0 || served > from ? month : m), 0);
+}
+
+/** Bipe's price under ADR 0206 and 0303: the two meters added up (half for public bodies, NGOs, churches and associations), or the company's floor when it is higher. */
+export function bipePrice(org: CalculatorOrg, seats: number, people: number, p: PriceProposal, served?: number) {
   const factor = org === "half" ? p.halfFactor : 1;
   const customers = customersYearly(people, p) * factor;
   const agents = agentsYearly(seats, p) * factor;
-  const year = customers + agents;
-  return { customers, agents, year, month: year / 12, annual: (year * p.annualMonths) / 12 };
+  const usage = customers + agents;
+  const floor = floorMonthly(org, served, p) * 12;
+  const year = Math.max(usage, floor);
+  return { customers, agents, usage, floor, year, month: year / 12, annual: (year * p.annualMonths) / 12 };
 }
 
+const SERVED_STEPS = [100, 300, 500, 1000, 3000, 5000, 10000, 30000, 50000, 100000, 300000, 500000, 1000000, 3000000, 5000000, 10000000, 30000000, 50000000, 100000000];
 const SEAT_STEPS = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30, 50, 100, 200, 500];
 const PEOPLE_STEPS = [100, 300, 500, 800, 1000, 2000, 3000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000];
 const SPEND_STEPS = [0, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
@@ -46,15 +56,17 @@ const stopOf = (steps: number[], n: number) => {
  * and shows the difference, without naming any platform. The detail shows the curve and the yearly amounts.
  * Rules, amounts and copy come from `pricing` in bipe-shared product.json; nothing is sent anywhere.
  */
-export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang: Lang; copy: CalculatorCopy; proposal: PriceProposal; presets: CalculatorPreset[] }) {
+export function PriceCalculator({ lang, copy: c, proposal: p, presets, levels }: { lang: Lang; copy: CalculatorCopy; proposal: PriceProposal; presets: CalculatorPreset[]; levels?: string[] }) {
   const first = presets[0]!;
   const [preset, setPreset] = useState<string | null>(first.id);
   const [org, setOrg] = useState<CalculatorOrg>(first.org);
   const [seats, setSeats] = useState(first.seats);
   const [people, setPeople] = useState(first.people);
   const [spend, setSpend] = useState(first.spend);
+  const [served, setServed] = useState(first.served);
   const pick = (x: CalculatorPreset) => {
     setPreset(x.id);
+    setServed(x.served);
     setOrg(x.org);
     setSeats(x.seats);
     setPeople(x.people);
@@ -65,7 +77,9 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
   const locale = lang === "pt" ? "pt-BR" : "en-US";
   const brl = (n: number, cents = false) => n.toLocaleString(locale, { style: "currency", currency: "BRL", minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 3 : 0 });
   const num = (n: number) => n.toLocaleString(locale);
-  const b = bipePrice(org, seats, people, p);
+  const b = bipePrice(org, seats, people, p, served);
+  const hasFloor = served !== undefined && !!p.floors && !!c.served;
+  const floorApplies = b.floor > 0 && b.floor >= b.usage;
   const factor = org === "half" ? p.halfFactor : 1;
   // Rows before the half-price discount, per month, so they add up to the total shown above them.
   const customersFull = customersYearly(people, p) / 12;
@@ -73,6 +87,8 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
   const extraPeople = Math.max(0, people - p.customers.free);
   const extraSeats = Math.max(0, Math.min(seats, p.agents.chargedUpTo) - p.agents.free);
   const saving = spend - b.month;
+  const levelIndex = served === undefined || !p.floors ? -1 : p.floors.bands.reduce((k, [from], i) => (i === 0 || served > from ? i : k), 0);
+  const levelName = levelIndex >= 0 ? levels?.[levelIndex] : undefined;
   const widest = Math.max(spend, b.month) || 1;
 
   const slider = (label: string, value: string, steps: number[], current: number, set: (n: number) => void, hint?: string) => (
@@ -101,6 +117,7 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
         </div>
         <div className="calc-sliders">
           <p className="calc-eyebrow">{c.groupOrg}</p>
+          {hasFloor && slider(c.served!, num(served!), SERVED_STEPS, served!, manual(setServed), c.servedHint)}
           {slider(c.seats, num(seats), SEAT_STEPS, seats, manual(setSeats), fill(c.seatsHint, num(p.agents.free)))}
           {slider(c.people, num(people), PEOPLE_STEPS, people, manual(setPeople), fill(c.peopleHint, num(p.customers.free)))}
           <label className="calc-check">
@@ -116,11 +133,12 @@ export function PriceCalculator({ lang, copy: c, proposal: p, presets }: { lang:
           <p className="small muted calc-year">{fill(c.yearLine, brl(b.annual))}</p>
           <div className="calc-rows">
             {b.year === 0
-              ? row(fill(c.rows.free, num(p.agents.free), num(p.customers.free)), "", brl(0))
+              ? row(hasFloor && org === "company" && c.rows.freeServed ? fill(c.rows.freeServed, num(p.floors!.bands[1]?.[0] ?? 0)) : fill(c.rows.free, num(p.agents.free), num(p.customers.free)), "", brl(0))
               : <>
                   {row(c.rows.customers, fill(c.rows.above, num(extraPeople), num(p.customers.free)), brl(customersFull))}
                   {row(c.rows.agents, fill(c.rows.above, num(extraSeats), num(p.agents.free)), brl(agentsFull))}
                   {factor < 1 && row(c.rows.half, "", `− ${brl((customersFull + agentsFull) * (1 - factor))}`)}
+                  {b.floor > 0 && c.rows.floor && row(fill(c.rows.floor, levelName ?? ""), (floorApplies ? c.rows.usageIn : c.rows.usageOver) ?? "", brl(b.floor / 12), floorApplies ? " applied" : " muted-row")}
                   {row(c.rows.total, "", brl(b.month), " total")}
                 </>}
           </div>

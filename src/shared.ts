@@ -195,6 +195,16 @@ export type PriceProposal = {
   halfFactor: number; annualMonths: number; table: number[];
   /** Public-body notices (ADR 0301): people who only get notices, one yearly rate, inside capYearly. Optional until bipe-shared main has it. */
   notices?: { adr: string; free: number; yearlyPerPerson: number; dispensaLimit: number; dispensaYear: number };
+  /** Company floors by people served (ADR 0303): [first person served, BRL per month]; the company pays max(floor, meters). Optional until bipe-shared main has it. */
+  floors?: { adr: string; bands: [number, number][]; foundingMonths: number };
+};
+export type LevelId = "street" | "shop" | "clinics" | "regional" | "national" | "brand";
+/** The six levels on /precos/ (ADR 0303, 0304), in the order of `floors.bands`. */
+export type LevelsCopy = {
+  heading: string; lede: string; perMonth: string; threatLabel: string; free: string;
+  items: Record<LevelId, { name: string; served: string; who: string; threat: string; points: string[] }>;
+  usage: { heading: string; lede: string }; early: { heading: string; points: string[] };
+  signup: { heading: string; steps: string[]; note: string };
 };
 /** An example public body on the government calculator (#avisos on /precos/). */
 export type GovCalculatorPreset = { id: string; icon: IconName; notices: number; people: number; seats: number };
@@ -207,13 +217,14 @@ export type GovCalculatorCopy = {
 };
 /** company: any company or institution; half: public bodies, NGOs, churches and associations. */
 export type CalculatorOrg = "company" | "half";
-export type CalculatorPreset = { id: string; icon: IconName; org: CalculatorOrg; seats: number; people: number; spend: number };
+export type CalculatorPreset = { id: string; icon: IconName; org: CalculatorOrg; seats: number; people: number; spend: number; served?: number };
 export type CalculatorCopy = {
   heading: string; lede: string; presetsLabel: string; presets: Record<string, string>; presetNotes: Record<string, string>;
   orgs: Record<CalculatorOrg, string>; groupOrg: string; groupToday: string;
   seats: string; seatsHint: string; people: string; peopleHint: string; spend: string; spendHint: string; spendNone: string;
   resultLabel: string; month: string; yearLine: string;
-  rows: Record<"customers" | "agents" | "above" | "half" | "free" | "total", string>;
+  rows: Record<"customers" | "agents" | "above" | "half" | "free" | "total", string> & Partial<Record<"floor" | "usage" | "usageIn" | "usageOver" | "freeServed", string>>;
+  served?: string; servedHint?: string;
   compareHeading: string; today: string; save: string; saveYear: string; more: string;
   proposal: string; detail: string; curveHeading: string; curveLede: string; curveFrom: string; curveBetween: string; curveAbove: string; curveColBand: string; curveColRate: string;
   agentsHeading: string; agentsLine: string;
@@ -276,6 +287,7 @@ export const product = { ...productData, features: productData.features.map((f) 
     nonprofit: string; tools: { heading: string; body: string }; pilot: { heading: string; points: string[] };
     calculator: CalculatorCopy;
     govCalculator?: GovCalculatorCopy;
+    levels?: LevelsCopy;
     offers: { heading: string; lede: string; price: string; billing: string; points: string[] };
   }>;
   organisations: Copy<{
