@@ -42,3 +42,26 @@ O Bipe acha que uma lei precisa ter consequência para quem não cumpre. Suspend
 
 ### O Bipe deixa você levar seus dados embora?
 Sim. No app, em Baixar meus dados, você recebe tudo o que o Bipe guarda sobre você. As mensagens não entram nesse arquivo, porque o Bipe não consegue lê-las: elas são criptografadas de ponta a ponta.
+
+## Regras para apps de mensagem
+
+O Brasil deve discutir novas regras para plataformas e apps de mensagem. O Bipe diz desde já o que entrega e o que recusa. A mesma resposta vale para todos: imprensa, Justiça, governo e parceiros.
+
+### O que o Bipe entrega
+- Identidade verificada onde ela existe: selo de CNPJ e nomes reservados para empresas e instituições, e níveis de confiança para pessoas.
+- Registros de acesso por 6 meses, como pede o artigo 15 do Marco Civil da Internet.
+- Metadados, como a conta, os grupos de que ela participa e os horários, só com ordem judicial.
+- O conteúdo que alguém denuncia. Quem denuncia envia a mensagem do próprio aparelho, e o Bipe age segundo as regras publicadas.
+- Um contato jurídico no Brasil e prazos publicados para responder a ordens judiciais.
+- Um relatório de transparência com cada ordem recebida e cada dado entregue.
+
+### O que o Bipe recusa
+- Porta dos fundos, cópia das chaves de criptografia ou chave de recuperação guardada pelo Bipe.
+- Vasculhar o conteúdo das mensagens a pedido de terceiros, no servidor ou no aparelho.
+- Rastrear mensagens encaminhadas. Para isso, o Bipe teria que marcar o conteúdo de cada mensagem.
+
+### Quando uma ordem pede o conteúdo das mensagens
+O Bipe responde que não tem o conteúdo, porque as mensagens são criptografadas de ponta a ponta, e diz o que tem. A ordem entra no relatório de transparência.
+
+### O que o Bipe pede
+Regras que funcionem para todo app de mensagem, grande ou pequeno. O Bipe não pede exceção para si nem regra contra nenhum concorrente.

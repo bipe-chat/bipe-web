@@ -42,3 +42,26 @@ Bipe thinks a law needs consequences for those who do not comply. Suspending a s
 
 ### Does Bipe let you take your data with you?
 Yes. In the app, Download my data gives you everything Bipe keeps about you. Messages are not in that file, because Bipe cannot read them: they are end-to-end encrypted.
+
+## Rules for messaging apps
+
+Brazil is likely to discuss new rules for platforms and messaging apps. Bipe says now what it gives and what it refuses. The same answer goes to everyone: press, courts, government and partners.
+
+### What Bipe gives
+- Verified identity where it exists: CNPJ seals and reserved names for companies and institutions, and trust levels for people.
+- Access logs for 6 months, as Article 15 of the Marco Civil da Internet requires.
+- Metadata, such as the account, the groups it belongs to and the times, only under a court order.
+- Content that someone reports. The person who reports sends the message from their own device, and Bipe acts under the published rules.
+- A legal contact in Brazil and published deadlines to answer court orders.
+- A transparency report with each order received and each piece of data handed over.
+
+### What Bipe refuses
+- A back door, a copy of the encryption keys, or a recovery key held by Bipe.
+- Scanning message content for anyone else, on the server or on the device.
+- Tracing forwarded messages. To do that, Bipe would have to mark the content of each message.
+
+### When an order asks for message content
+Bipe answers that it does not have the content, because messages are end-to-end encrypted, and says what it has. The order goes into the transparency report.
+
+### What Bipe asks for
+Rules that work for every messaging app, large or small. Bipe asks for no exception for itself and no rule against any competitor.
