@@ -492,6 +492,13 @@ export function PricingPage({ lang }: { lang: Lang }) {
         <p className="muted" style={{ maxWidth: "40em" }}>{p.calculator.lede}</p>
         <Island name="PriceCalculator" props={{ lang, copy: p.calculator, proposal: product.pricing.proposal, presets: product.pricing.calculatorPresets }} />
       </section>
+      {p.govCalculator && product.pricing.proposal.notices && product.pricing.govCalculatorPresets && (
+        <section className="wrap section" id="avisos">
+          <h2>{p.govCalculator.heading}</h2>
+          <p className="muted" style={{ maxWidth: "40em" }}>{p.govCalculator.lede.replace("%1$s", product.pricing.proposal.notices.yearlyPerPerson.toLocaleString(lang === "pt" ? "pt-BR" : "en-US", { style: "currency", currency: "BRL" }))}</p>
+          <Island name="GovCalculator" props={{ lang, copy: p.govCalculator, proposal: product.pricing.proposal, presets: product.pricing.govCalculatorPresets }} />
+        </section>
+      )}
       <section className="wrap section">
         <h2 style={{ marginBottom: 24 }}>{p.tiersHeading}</h2>
         <div className="tier-grid">
@@ -668,7 +675,8 @@ export function OrganisationAudiencePage({ lang, a }: { lang: Lang; a: Organisat
           <h2 className="sub">{copy.cta}</h2>
           <a className="button primary" href={paths.organisationForm(lang, a.kind, paths.organisationAudience(lang, a))}><Icon name="mail" />{chrome[lang].contact}</a>
         </div>
-        <p style={{ marginTop: 24 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
+        {a.kind === "public_body" && product.pricing[lang].govCalculator && <p style={{ marginTop: 24 }}><MoreLink href={`${paths.pricing(lang)}#avisos`}>{product.pricing[lang].govCalculator!.link}</MoreLink></p>}
+        <p style={{ marginTop: a.kind === "public_body" ? 8 : 24 }}><MoreLink href={paths.pricing(lang)}>{product.pricing[lang].link}</MoreLink></p>
       </section>
     </>
   );
