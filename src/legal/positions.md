@@ -6,7 +6,7 @@ Bipe is a messaging app. It has no party and asks no one for a vote. When a law 
 ## Bill PL 4.675/2025, on digital markets
 
 ### What the bill does
-The bill changes Brazil's competition law. It lets Cade, the body that already oversees competition in Brazil, set rules for the largest digital companies. Only groups with more than R$ 5 billion a year in revenue in Brazil, or more than R$ 50 billion worldwide, are in scope. Even then, Cade looks at each case and explains each decision, and the company has the right to defend itself.
+[Bill PL 4.675/2025](https://www.camara.leg.br/propostas-legislativas/2562481) changes Brazil's competition law. It lets Cade, the body that already oversees competition in Brazil, set rules for the largest digital companies. Only groups with more than R$ 5 billion a year in revenue in Brazil, or more than R$ 50 billion worldwide, are in scope. Even then, Cade looks at each case and explains each decision, and the company has the right to defend itself.
 
 Some of the possible rules: install apps from outside the official store, take your data to another service, choose another app as the default, and talk across different services.
 

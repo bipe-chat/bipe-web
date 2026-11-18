@@ -6,7 +6,7 @@ O Bipe é um app de mensagens. Ele não tem partido e não pede voto para ningu�
 ## PL 4.675/2025, sobre mercados digitais
 
 ### O que o projeto faz
-O projeto muda a lei de defesa da concorrência. Ele deixa o Cade, o órgão que já cuida da concorrência no Brasil, criar regras para as maiores empresas digitais. Só entram grupos que faturam mais de R$ 5 bilhões por ano no Brasil ou mais de R$ 50 bilhões no mundo. Mesmo assim, o Cade analisa cada caso e explica cada decisão, e a empresa tem direito de defesa.
+O [PL 4.675/2025](https://www.camara.leg.br/propostas-legislativas/2562481) muda a lei de defesa da concorrência. Ele deixa o Cade, o órgão que já cuida da concorrência no Brasil, criar regras para as maiores empresas digitais. Só entram grupos que faturam mais de R$ 5 bilhões por ano no Brasil ou mais de R$ 50 bilhões no mundo. Mesmo assim, o Cade analisa cada caso e explica cada decisão, e a empresa tem direito de defesa.
 
 Algumas das regras possíveis: instalar apps de fora da loja oficial, levar seus dados para outro serviço, escolher outro app como padrão e conversar entre serviços diferentes.
 
