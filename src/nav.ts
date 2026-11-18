@@ -38,6 +38,7 @@ export function links(lang: Lang) {
     lgpd: { href: paths.lgpd(lang), label: dataRegister[lang].nav },
     terms: { href: paths.terms(lang), label: c.terms },
     feedRules: { href: paths.feedRules(lang), label: c.feedRules },
+    positions: { href: paths.positions(lang), label: c.positions },
     accessibility: { href: paths.accessibility(lang), label: accessibilityRegister[lang].nav },
     source: { href: distribution.source.org, label: c.source },
     versions: { href: paths.versions(lang), label: c.versions.title },
@@ -59,7 +60,7 @@ export const footer = [
   { group: "product", links: ["tentpoles", "features", "parity", "download"] }, // What does it do, and how do I get it?
   { group: "for", links: ["audiences", "business", "pricing"] }, // Is it for me?
   { group: "learn", links: ["scams", "technology", "docs", "llms", "compare", "source", "versions"] }, // How does it work, can I check it?
-  { group: "bipe", links: ["about", "brand", "organisations", "accessibility", "contact"] }, // Who is behind it?
+  { group: "bipe", links: ["about", "positions", "brand", "organisations", "accessibility", "contact"] }, // Who is behind it?
   { group: "legal", links: ["whoCanRead", "privacy", "lgpd", "terms", "feedRules"] }, // What happens to my data?
 ] as const satisfies readonly { group: keyof (typeof chrome)["pt"]["footerGroups"]; links: readonly (LinkId | "tentpoles")[] }[];
 
